@@ -1,0 +1,905 @@
+[
+  {
+    "name": "index_inventory_car",
+    "path": "/index_inventory_car",
+    "component": "/Users/kitchanut/Desktop/Nuxt/prasertpol-backend/pages/index_inventory_car.vue",
+    "chunkName": "pages/index_inventory_car",
+    "_name": "_03427558"
+  },
+  {
+    "name": "index_sale",
+    "path": "/index_sale",
+    "component": "/Users/kitchanut/Desktop/Nuxt/prasertpol-backend/pages/index_sale.vue",
+    "chunkName": "pages/index_sale",
+    "_name": "_d3624398"
+  },
+  {
+    "name": "index_sale_team",
+    "path": "/index_sale_team",
+    "component": "/Users/kitchanut/Desktop/Nuxt/prasertpol-backend/pages/index_sale_team.vue",
+    "chunkName": "pages/index_sale_team",
+    "_name": "_cd833490"
+  },
+  {
+    "name": "index_status",
+    "path": "/index_status",
+    "component": "/Users/kitchanut/Desktop/Nuxt/prasertpol-backend/pages/index_status.vue",
+    "chunkName": "pages/index_status",
+    "_name": "_5ad2bf1f"
+  },
+  {
+    "name": "login",
+    "path": "/login",
+    "component": "/Users/kitchanut/Desktop/Nuxt/prasertpol-backend/pages/login.vue",
+    "chunkName": "pages/login",
+    "_name": "_3e40e30e"
+  },
+  {
+    "name": "check-receive_money",
+    "path": "/check/receive_money",
+    "component": "/Users/kitchanut/Desktop/Nuxt/prasertpol-backend/pages/check/receive_money.vue",
+    "chunkName": "pages/check/receive_money",
+    "_name": "_d94062a6"
+  },
+  {
+    "name": "commission-commission",
+    "path": "/commission/commission",
+    "component": "/Users/kitchanut/Desktop/Nuxt/prasertpol-backend/pages/commission/commission.vue",
+    "chunkName": "pages/commission/commission",
+    "_name": "_4cd9cc9f"
+  },
+  {
+    "name": "customer-customerDetails",
+    "path": "/customer/customerDetails",
+    "component": "/Users/kitchanut/Desktop/Nuxt/prasertpol-backend/pages/customer/customerDetails.vue",
+    "chunkName": "pages/customer/customerDetails",
+    "_name": "_73e80973"
+  },
+  {
+    "name": "customer-customers",
+    "path": "/customer/customers",
+    "component": "/Users/kitchanut/Desktop/Nuxt/prasertpol-backend/pages/customer/customers.vue",
+    "chunkName": "pages/customer/customers",
+    "_name": "_3e7fee04"
+  },
+  {
+    "name": "customer-customerVisits",
+    "path": "/customer/customerVisits",
+    "component": "/Users/kitchanut/Desktop/Nuxt/prasertpol-backend/pages/customer/customerVisits.vue",
+    "chunkName": "pages/customer/customerVisits",
+    "_name": "_0e219e67"
+  },
+  {
+    "name": "historys-history_cars",
+    "path": "/historys/history_cars",
+    "component": "/Users/kitchanut/Desktop/Nuxt/prasertpol-backend/pages/historys/history_cars.vue",
+    "chunkName": "pages/historys/history_cars",
+    "_name": "_7db1502a"
+  },
+  {
+    "name": "historys-history_part_cars",
+    "path": "/historys/history_part_cars",
+    "component": "/Users/kitchanut/Desktop/Nuxt/prasertpol-backend/pages/historys/history_part_cars.vue",
+    "chunkName": "pages/historys/history_part_cars",
+    "_name": "_2984ea20"
+  },
+  {
+    "name": "historys-history_parts",
+    "path": "/historys/history_parts",
+    "component": "/Users/kitchanut/Desktop/Nuxt/prasertpol-backend/pages/historys/history_parts.vue",
+    "chunkName": "pages/historys/history_parts",
+    "_name": "_755a5c36"
+  },
+  {
+    "name": "historys-history_purchase_POparts",
+    "path": "/historys/history_purchase_POparts",
+    "component": "/Users/kitchanut/Desktop/Nuxt/prasertpol-backend/pages/historys/history_purchase_POparts.vue",
+    "chunkName": "pages/historys/history_purchase_POparts",
+    "_name": "_a7b0fce4"
+  },
+  {
+    "name": "historys-history_repairs",
+    "path": "/historys/history_repairs",
+    "component": "/Users/kitchanut/Desktop/Nuxt/prasertpol-backend/pages/historys/history_repairs.vue",
+    "chunkName": "pages/historys/history_repairs",
+    "_name": "_3b56df4b"
+  },
+  {
+    "name": "historys-history_repairsOut",
+    "path": "/historys/history_repairsOut",
+    "component": "/Users/kitchanut/Desktop/Nuxt/prasertpol-backend/pages/historys/history_repairsOut.vue",
+    "chunkName": "pages/historys/history_repairsOut",
+    "_name": "_323e5533"
+  },
+  {
+    "name": "historys-history_stock_parts",
+    "path": "/historys/history_stock_parts",
+    "component": "/Users/kitchanut/Desktop/Nuxt/prasertpol-backend/pages/historys/history_stock_parts.vue",
+    "chunkName": "pages/historys/history_stock_parts",
+    "_name": "_6ac4cb88"
+  },
+  {
+    "name": "historys-history_workings",
+    "path": "/historys/history_workings",
+    "component": "/Users/kitchanut/Desktop/Nuxt/prasertpol-backend/pages/historys/history_workings.vue",
+    "chunkName": "pages/historys/history_workings",
+    "_name": "_1477f526"
+  },
+  {
+    "name": "incomes-income",
+    "path": "/incomes/income",
+    "component": "/Users/kitchanut/Desktop/Nuxt/prasertpol-backend/pages/incomes/income.vue",
+    "chunkName": "pages/incomes/income",
+    "_name": "_768aa5e4"
+  },
+  {
+    "name": "infocar-infocar",
+    "path": "/infocar/infocar",
+    "component": "/Users/kitchanut/Desktop/Nuxt/prasertpol-backend/pages/infocar/infocar.vue",
+    "chunkName": "pages/infocar/infocar",
+    "_name": "_74a55ecd"
+  },
+  {
+    "name": "liff-appointment",
+    "path": "/liff/appointment",
+    "component": "/Users/kitchanut/Desktop/Nuxt/prasertpol-backend/pages/liff/appointment.vue",
+    "chunkName": "pages/liff/appointment",
+    "_name": "_b9b338a6"
+  },
+  {
+    "name": "liff-bankApprove",
+    "path": "/liff/bankApprove",
+    "component": "/Users/kitchanut/Desktop/Nuxt/prasertpol-backend/pages/liff/bankApprove.vue",
+    "chunkName": "pages/liff/bankApprove",
+    "_name": "_3e33287f"
+  },
+  {
+    "name": "liff-booking",
+    "path": "/liff/booking",
+    "component": "/Users/kitchanut/Desktop/Nuxt/prasertpol-backend/pages/liff/booking.vue",
+    "chunkName": "pages/liff/booking",
+    "_name": "_f957e332"
+  },
+  {
+    "name": "liff-cancle",
+    "path": "/liff/cancle",
+    "component": "/Users/kitchanut/Desktop/Nuxt/prasertpol-backend/pages/liff/cancle.vue",
+    "chunkName": "pages/liff/cancle",
+    "_name": "_24d05d2e"
+  },
+  {
+    "name": "liff-changeCar",
+    "path": "/liff/changeCar",
+    "component": "/Users/kitchanut/Desktop/Nuxt/prasertpol-backend/pages/liff/changeCar.vue",
+    "chunkName": "pages/liff/changeCar",
+    "_name": "_f331addc"
+  },
+  {
+    "name": "liff-changeCustomer",
+    "path": "/liff/changeCustomer",
+    "component": "/Users/kitchanut/Desktop/Nuxt/prasertpol-backend/pages/liff/changeCustomer.vue",
+    "chunkName": "pages/liff/changeCustomer",
+    "_name": "_20428a90"
+  },
+  {
+    "name": "liff-login",
+    "path": "/liff/login",
+    "component": "/Users/kitchanut/Desktop/Nuxt/prasertpol-backend/pages/liff/login.vue",
+    "chunkName": "pages/liff/login",
+    "_name": "_a12b1a12"
+  },
+  {
+    "name": "liff-money",
+    "path": "/liff/money",
+    "component": "/Users/kitchanut/Desktop/Nuxt/prasertpol-backend/pages/liff/money.vue",
+    "chunkName": "pages/liff/money",
+    "_name": "_a07bbe64"
+  },
+  {
+    "name": "liff-moneyWithdraw",
+    "path": "/liff/moneyWithdraw",
+    "component": "/Users/kitchanut/Desktop/Nuxt/prasertpol-backend/pages/liff/moneyWithdraw.vue",
+    "chunkName": "pages/liff/moneyWithdraw",
+    "_name": "_24995610"
+  },
+  {
+    "name": "liff-release",
+    "path": "/liff/release",
+    "component": "/Users/kitchanut/Desktop/Nuxt/prasertpol-backend/pages/liff/release.vue",
+    "chunkName": "pages/liff/release",
+    "_name": "_7be6a715"
+  },
+  {
+    "name": "liff-shareImage",
+    "path": "/liff/shareImage",
+    "component": "/Users/kitchanut/Desktop/Nuxt/prasertpol-backend/pages/liff/shareImage.vue",
+    "chunkName": "pages/liff/shareImage",
+    "_name": "_da1e84c4"
+  },
+  {
+    "name": "liff-shareRequest",
+    "path": "/liff/shareRequest",
+    "component": "/Users/kitchanut/Desktop/Nuxt/prasertpol-backend/pages/liff/shareRequest.vue",
+    "chunkName": "pages/liff/shareRequest",
+    "_name": "_c8dfa3dc"
+  },
+  {
+    "name": "liff-sign",
+    "path": "/liff/sign",
+    "component": "/Users/kitchanut/Desktop/Nuxt/prasertpol-backend/pages/liff/sign.vue",
+    "chunkName": "pages/liff/sign",
+    "_name": "_4d01359f"
+  },
+  {
+    "name": "liff-signDeposit",
+    "path": "/liff/signDeposit",
+    "component": "/Users/kitchanut/Desktop/Nuxt/prasertpol-backend/pages/liff/signDeposit.vue",
+    "chunkName": "pages/liff/signDeposit",
+    "_name": "_c7596da2"
+  },
+  {
+    "name": "liff-update",
+    "path": "/liff/update",
+    "component": "/Users/kitchanut/Desktop/Nuxt/prasertpol-backend/pages/liff/update.vue",
+    "chunkName": "pages/liff/update",
+    "_name": "_d1e93faa"
+  },
+  {
+    "name": "mobile-customerDetails",
+    "path": "/mobile/customerDetails",
+    "component": "/Users/kitchanut/Desktop/Nuxt/prasertpol-backend/pages/mobile/customerDetails.vue",
+    "chunkName": "pages/mobile/customerDetails",
+    "_name": "_453e7237"
+  },
+  {
+    "name": "mobile-customers",
+    "path": "/mobile/customers",
+    "component": "/Users/kitchanut/Desktop/Nuxt/prasertpol-backend/pages/mobile/customers.vue",
+    "chunkName": "pages/mobile/customers",
+    "_name": "_70158c70"
+  },
+  {
+    "name": "mobile-customerVisits",
+    "path": "/mobile/customerVisits",
+    "component": "/Users/kitchanut/Desktop/Nuxt/prasertpol-backend/pages/mobile/customerVisits.vue",
+    "chunkName": "pages/mobile/customerVisits",
+    "_name": "_6fb90d23"
+  },
+  {
+    "name": "mobile-stock",
+    "path": "/mobile/stock",
+    "component": "/Users/kitchanut/Desktop/Nuxt/prasertpol-backend/pages/mobile/stock.vue",
+    "chunkName": "pages/mobile/stock",
+    "_name": "_68975189"
+  },
+  {
+    "name": "mobile-work",
+    "path": "/mobile/work",
+    "component": "/Users/kitchanut/Desktop/Nuxt/prasertpol-backend/pages/mobile/work.vue",
+    "chunkName": "pages/mobile/work",
+    "_name": "_7e3bc224"
+  },
+  {
+    "name": "prints-print_article_car",
+    "path": "/prints/print_article_car",
+    "component": "/Users/kitchanut/Desktop/Nuxt/prasertpol-backend/pages/prints/print_article_car.vue",
+    "chunkName": "pages/prints/print_article_car",
+    "_name": "_0145eeb0"
+  },
+  {
+    "name": "prints-print_booking",
+    "path": "/prints/print_booking",
+    "component": "/Users/kitchanut/Desktop/Nuxt/prasertpol-backend/pages/prints/print_booking.vue",
+    "chunkName": "pages/prints/print_booking",
+    "_name": "_2aeadd7e"
+  },
+  {
+    "name": "prints-print_commi",
+    "path": "/prints/print_commi",
+    "component": "/Users/kitchanut/Desktop/Nuxt/prasertpol-backend/pages/prints/print_commi.vue",
+    "chunkName": "pages/prints/print_commi",
+    "_name": "_05528542"
+  },
+  {
+    "name": "prints-print_contract",
+    "path": "/prints/print_contract",
+    "component": "/Users/kitchanut/Desktop/Nuxt/prasertpol-backend/pages/prints/print_contract.vue",
+    "chunkName": "pages/prints/print_contract",
+    "_name": "_7060d53d"
+  },
+  {
+    "name": "prints-print_financial",
+    "path": "/prints/print_financial",
+    "component": "/Users/kitchanut/Desktop/Nuxt/prasertpol-backend/pages/prints/print_financial.vue",
+    "chunkName": "pages/prints/print_financial",
+    "_name": "_92ceeb24"
+  },
+  {
+    "name": "prints-print_purchasepart",
+    "path": "/prints/print_purchasepart",
+    "component": "/Users/kitchanut/Desktop/Nuxt/prasertpol-backend/pages/prints/print_purchasepart.vue",
+    "chunkName": "pages/prints/print_purchasepart",
+    "_name": "_1b967bc2"
+  },
+  {
+    "name": "prints-print_vax",
+    "path": "/prints/print_vax",
+    "component": "/Users/kitchanut/Desktop/Nuxt/prasertpol-backend/pages/prints/print_vax.vue",
+    "chunkName": "pages/prints/print_vax",
+    "_name": "_2b94be5c"
+  },
+  {
+    "name": "prints-print_warranty",
+    "path": "/prints/print_warranty",
+    "component": "/Users/kitchanut/Desktop/Nuxt/prasertpol-backend/pages/prints/print_warranty.vue",
+    "chunkName": "pages/prints/print_warranty",
+    "_name": "_7562c027"
+  },
+  {
+    "name": "purchases-purchase_cars",
+    "path": "/purchases/purchase_cars",
+    "component": "/Users/kitchanut/Desktop/Nuxt/prasertpol-backend/pages/purchases/purchase_cars.vue",
+    "chunkName": "pages/purchases/purchase_cars",
+    "_name": "_12525d70"
+  },
+  {
+    "name": "purchases-purchase_parts",
+    "path": "/purchases/purchase_parts",
+    "component": "/Users/kitchanut/Desktop/Nuxt/prasertpol-backend/pages/purchases/purchase_parts.vue",
+    "chunkName": "pages/purchases/purchase_parts",
+    "_name": "_76592542"
+  },
+  {
+    "name": "record-price_record",
+    "path": "/record/price_record",
+    "component": "/Users/kitchanut/Desktop/Nuxt/prasertpol-backend/pages/record/price_record.vue",
+    "chunkName": "pages/record/price_record",
+    "_name": "_208dd415"
+  },
+  {
+    "name": "reports-report_add_moneys",
+    "path": "/reports/report_add_moneys",
+    "component": "/Users/kitchanut/Desktop/Nuxt/prasertpol-backend/pages/reports/report_add_moneys.vue",
+    "chunkName": "pages/reports/report_add_moneys",
+    "_name": "_55f86b88"
+  },
+  {
+    "name": "reports-report_booking",
+    "path": "/reports/report_booking",
+    "component": "/Users/kitchanut/Desktop/Nuxt/prasertpol-backend/pages/reports/report_booking.vue",
+    "chunkName": "pages/reports/report_booking",
+    "_name": "_0bc0a43e"
+  },
+  {
+    "name": "reports-report_booking_duplicate",
+    "path": "/reports/report_booking_duplicate",
+    "component": "/Users/kitchanut/Desktop/Nuxt/prasertpol-backend/pages/reports/report_booking_duplicate.vue",
+    "chunkName": "pages/reports/report_booking_duplicate",
+    "_name": "_a8a4236c"
+  },
+  {
+    "name": "reports-report_cancel_workings",
+    "path": "/reports/report_cancel_workings",
+    "component": "/Users/kitchanut/Desktop/Nuxt/prasertpol-backend/pages/reports/report_cancel_workings.vue",
+    "chunkName": "pages/reports/report_cancel_workings",
+    "_name": "_357bc128"
+  },
+  {
+    "name": "reports-report_cars",
+    "path": "/reports/report_cars",
+    "component": "/Users/kitchanut/Desktop/Nuxt/prasertpol-backend/pages/reports/report_cars.vue",
+    "chunkName": "pages/reports/report_cars",
+    "_name": "_a25738ec"
+  },
+  {
+    "name": "reports-report_commission",
+    "path": "/reports/report_commission",
+    "component": "/Users/kitchanut/Desktop/Nuxt/prasertpol-backend/pages/reports/report_commission.vue",
+    "chunkName": "pages/reports/report_commission",
+    "_name": "_e895d5d4"
+  },
+  {
+    "name": "reports-report_income",
+    "path": "/reports/report_income",
+    "component": "/Users/kitchanut/Desktop/Nuxt/prasertpol-backend/pages/reports/report_income.vue",
+    "chunkName": "pages/reports/report_income",
+    "_name": "_0d232c54"
+  },
+  {
+    "name": "reports-report_part_cars",
+    "path": "/reports/report_part_cars",
+    "component": "/Users/kitchanut/Desktop/Nuxt/prasertpol-backend/pages/reports/report_part_cars.vue",
+    "chunkName": "pages/reports/report_part_cars",
+    "_name": "_07df9390"
+  },
+  {
+    "name": "reports-report_profit",
+    "path": "/reports/report_profit",
+    "component": "/Users/kitchanut/Desktop/Nuxt/prasertpol-backend/pages/reports/report_profit.vue",
+    "chunkName": "pages/reports/report_profit",
+    "_name": "_08ad036f"
+  },
+  {
+    "name": "reports-report_purchase_car",
+    "path": "/reports/report_purchase_car",
+    "component": "/Users/kitchanut/Desktop/Nuxt/prasertpol-backend/pages/reports/report_purchase_car.vue",
+    "chunkName": "pages/reports/report_purchase_car",
+    "_name": "_4731c4fe"
+  },
+  {
+    "name": "reports-report_purchase_POparts",
+    "path": "/reports/report_purchase_POparts",
+    "component": "/Users/kitchanut/Desktop/Nuxt/prasertpol-backend/pages/reports/report_purchase_POparts.vue",
+    "chunkName": "pages/reports/report_purchase_POparts",
+    "_name": "_6b6884ee"
+  },
+  {
+    "name": "reports-report_repairs",
+    "path": "/reports/report_repairs",
+    "component": "/Users/kitchanut/Desktop/Nuxt/prasertpol-backend/pages/reports/report_repairs.vue",
+    "chunkName": "pages/reports/report_repairs",
+    "_name": "_5c228feb"
+  },
+  {
+    "name": "reports-report_repairs_out",
+    "path": "/reports/report_repairs_out",
+    "component": "/Users/kitchanut/Desktop/Nuxt/prasertpol-backend/pages/reports/report_repairs_out.vue",
+    "chunkName": "pages/reports/report_repairs_out",
+    "_name": "_502aa50c"
+  },
+  {
+    "name": "reports-report_sale_car",
+    "path": "/reports/report_sale_car",
+    "component": "/Users/kitchanut/Desktop/Nuxt/prasertpol-backend/pages/reports/report_sale_car.vue",
+    "chunkName": "pages/reports/report_sale_car",
+    "_name": "_18d75447"
+  },
+  {
+    "name": "reports-report_stock_parts",
+    "path": "/reports/report_stock_parts",
+    "component": "/Users/kitchanut/Desktop/Nuxt/prasertpol-backend/pages/reports/report_stock_parts.vue",
+    "chunkName": "pages/reports/report_stock_parts",
+    "_name": "_46dffadc"
+  },
+  {
+    "name": "reports-report_withdraw_money",
+    "path": "/reports/report_withdraw_money",
+    "component": "/Users/kitchanut/Desktop/Nuxt/prasertpol-backend/pages/reports/report_withdraw_money.vue",
+    "chunkName": "pages/reports/report_withdraw_money",
+    "_name": "_88b57414"
+  },
+  {
+    "name": "reports-report_work_cancle",
+    "path": "/reports/report_work_cancle",
+    "component": "/Users/kitchanut/Desktop/Nuxt/prasertpol-backend/pages/reports/report_work_cancle.vue",
+    "chunkName": "pages/reports/report_work_cancle",
+    "_name": "_da00d5c2"
+  },
+  {
+    "name": "reports-report_workings",
+    "path": "/reports/report_workings",
+    "component": "/Users/kitchanut/Desktop/Nuxt/prasertpol-backend/pages/reports/report_workings.vue",
+    "chunkName": "pages/reports/report_workings",
+    "_name": "_23232e66"
+  },
+  {
+    "name": "request-appointment",
+    "path": "/request/appointment",
+    "component": "/Users/kitchanut/Desktop/Nuxt/prasertpol-backend/pages/request/appointment.vue",
+    "chunkName": "pages/request/appointment",
+    "_name": "_10188e2f"
+  },
+  {
+    "name": "request-bankApprove",
+    "path": "/request/bankApprove",
+    "component": "/Users/kitchanut/Desktop/Nuxt/prasertpol-backend/pages/request/bankApprove.vue",
+    "chunkName": "pages/request/bankApprove",
+    "_name": "_a9b559fe"
+  },
+  {
+    "name": "request-booking",
+    "path": "/request/booking",
+    "component": "/Users/kitchanut/Desktop/Nuxt/prasertpol-backend/pages/request/booking.vue",
+    "chunkName": "pages/request/booking",
+    "_name": "_75186c2e"
+  },
+  {
+    "name": "request-cancle",
+    "path": "/request/cancle",
+    "component": "/Users/kitchanut/Desktop/Nuxt/prasertpol-backend/pages/request/cancle.vue",
+    "chunkName": "pages/request/cancle",
+    "_name": "_05ea296c"
+  },
+  {
+    "name": "request-changeCar",
+    "path": "/request/changeCar",
+    "component": "/Users/kitchanut/Desktop/Nuxt/prasertpol-backend/pages/request/changeCar.vue",
+    "chunkName": "pages/request/changeCar",
+    "_name": "_80f3e7d8"
+  },
+  {
+    "name": "request-changeCustomer",
+    "path": "/request/changeCustomer",
+    "component": "/Users/kitchanut/Desktop/Nuxt/prasertpol-backend/pages/request/changeCustomer.vue",
+    "chunkName": "pages/request/changeCustomer",
+    "_name": "_496338ce"
+  },
+  {
+    "name": "request-log",
+    "path": "/request/log",
+    "component": "/Users/kitchanut/Desktop/Nuxt/prasertpol-backend/pages/request/log.vue",
+    "chunkName": "pages/request/log",
+    "_name": "_6a597354"
+  },
+  {
+    "name": "request-money",
+    "path": "/request/money",
+    "component": "/Users/kitchanut/Desktop/Nuxt/prasertpol-backend/pages/request/money.vue",
+    "chunkName": "pages/request/money",
+    "_name": "_c3825660"
+  },
+  {
+    "name": "request-moneyWithdraw",
+    "path": "/request/moneyWithdraw",
+    "component": "/Users/kitchanut/Desktop/Nuxt/prasertpol-backend/pages/request/moneyWithdraw.vue",
+    "chunkName": "pages/request/moneyWithdraw",
+    "_name": "_3276320c"
+  },
+  {
+    "name": "request-release",
+    "path": "/request/release",
+    "component": "/Users/kitchanut/Desktop/Nuxt/prasertpol-backend/pages/request/release.vue",
+    "chunkName": "pages/request/release",
+    "_name": "_83f33ad2"
+  },
+  {
+    "name": "request-sign",
+    "path": "/request/sign",
+    "component": "/Users/kitchanut/Desktop/Nuxt/prasertpol-backend/pages/request/sign.vue",
+    "chunkName": "pages/request/sign",
+    "_name": "_7dfcf95d"
+  },
+  {
+    "name": "request-update",
+    "path": "/request/update",
+    "component": "/Users/kitchanut/Desktop/Nuxt/prasertpol-backend/pages/request/update.vue",
+    "chunkName": "pages/request/update",
+    "_name": "_78252c69"
+  },
+  {
+    "name": "settings-amount_down",
+    "path": "/settings/amount_down",
+    "component": "/Users/kitchanut/Desktop/Nuxt/prasertpol-backend/pages/settings/amount_down.vue",
+    "chunkName": "pages/settings/amount_down",
+    "_name": "_bfed1746"
+  },
+  {
+    "name": "settings-amount_slacken",
+    "path": "/settings/amount_slacken",
+    "component": "/Users/kitchanut/Desktop/Nuxt/prasertpol-backend/pages/settings/amount_slacken.vue",
+    "chunkName": "pages/settings/amount_slacken",
+    "_name": "_5cd03d64"
+  },
+  {
+    "name": "settings-amphures",
+    "path": "/settings/amphures",
+    "component": "/Users/kitchanut/Desktop/Nuxt/prasertpol-backend/pages/settings/amphures.vue",
+    "chunkName": "pages/settings/amphures",
+    "_name": "_7720d8aa"
+  },
+  {
+    "name": "settings-branch_teams",
+    "path": "/settings/branch_teams",
+    "component": "/Users/kitchanut/Desktop/Nuxt/prasertpol-backend/pages/settings/branch_teams.vue",
+    "chunkName": "pages/settings/branch_teams",
+    "_name": "_fecf8f56"
+  },
+  {
+    "name": "settings-branches",
+    "path": "/settings/branches",
+    "component": "/Users/kitchanut/Desktop/Nuxt/prasertpol-backend/pages/settings/branches.vue",
+    "chunkName": "pages/settings/branches",
+    "_name": "_7f1237cc"
+  },
+  {
+    "name": "settings-car_lift",
+    "path": "/settings/car_lift",
+    "component": "/Users/kitchanut/Desktop/Nuxt/prasertpol-backend/pages/settings/car_lift.vue",
+    "chunkName": "pages/settings/car_lift",
+    "_name": "_0a05bf92"
+  },
+  {
+    "name": "settings-car_models",
+    "path": "/settings/car_models",
+    "component": "/Users/kitchanut/Desktop/Nuxt/prasertpol-backend/pages/settings/car_models.vue",
+    "chunkName": "pages/settings/car_models",
+    "_name": "_e48ad89e"
+  },
+  {
+    "name": "settings-car_part_types",
+    "path": "/settings/car_part_types",
+    "component": "/Users/kitchanut/Desktop/Nuxt/prasertpol-backend/pages/settings/car_part_types.vue",
+    "chunkName": "pages/settings/car_part_types",
+    "_name": "_452ebd74"
+  },
+  {
+    "name": "settings-car_parts",
+    "path": "/settings/car_parts",
+    "component": "/Users/kitchanut/Desktop/Nuxt/prasertpol-backend/pages/settings/car_parts.vue",
+    "chunkName": "pages/settings/car_parts",
+    "_name": "_719e202e"
+  },
+  {
+    "name": "settings-car_serie_subs",
+    "path": "/settings/car_serie_subs",
+    "component": "/Users/kitchanut/Desktop/Nuxt/prasertpol-backend/pages/settings/car_serie_subs.vue",
+    "chunkName": "pages/settings/car_serie_subs",
+    "_name": "_6335a2dd"
+  },
+  {
+    "name": "settings-car_series",
+    "path": "/settings/car_series",
+    "component": "/Users/kitchanut/Desktop/Nuxt/prasertpol-backend/pages/settings/car_series.vue",
+    "chunkName": "pages/settings/car_series",
+    "_name": "_1a834d84"
+  },
+  {
+    "name": "settings-car_types",
+    "path": "/settings/car_types",
+    "component": "/Users/kitchanut/Desktop/Nuxt/prasertpol-backend/pages/settings/car_types.vue",
+    "chunkName": "pages/settings/car_types",
+    "_name": "_51f9b902"
+  },
+  {
+    "name": "settings-colors",
+    "path": "/settings/colors",
+    "component": "/Users/kitchanut/Desktop/Nuxt/prasertpol-backend/pages/settings/colors.vue",
+    "chunkName": "pages/settings/colors",
+    "_name": "_1fed5c6c"
+  },
+  {
+    "name": "settings-districts",
+    "path": "/settings/districts",
+    "component": "/Users/kitchanut/Desktop/Nuxt/prasertpol-backend/pages/settings/districts.vue",
+    "chunkName": "pages/settings/districts",
+    "_name": "_3f7e304e"
+  },
+  {
+    "name": "settings-fuels",
+    "path": "/settings/fuels",
+    "component": "/Users/kitchanut/Desktop/Nuxt/prasertpol-backend/pages/settings/fuels.vue",
+    "chunkName": "pages/settings/fuels",
+    "_name": "_b5c4fe9e"
+  },
+  {
+    "name": "settings-geographies",
+    "path": "/settings/geographies",
+    "component": "/Users/kitchanut/Desktop/Nuxt/prasertpol-backend/pages/settings/geographies.vue",
+    "chunkName": "pages/settings/geographies",
+    "_name": "_e23c2e64"
+  },
+  {
+    "name": "settings-low_cars",
+    "path": "/settings/low_cars",
+    "component": "/Users/kitchanut/Desktop/Nuxt/prasertpol-backend/pages/settings/low_cars.vue",
+    "chunkName": "pages/settings/low_cars",
+    "_name": "_00f5a3b4"
+  },
+  {
+    "name": "settings-middle_price",
+    "path": "/settings/middle_price",
+    "component": "/Users/kitchanut/Desktop/Nuxt/prasertpol-backend/pages/settings/middle_price.vue",
+    "chunkName": "pages/settings/middle_price",
+    "_name": "_6eeb7e9b"
+  },
+  {
+    "name": "settings-partner_bank",
+    "path": "/settings/partner_bank",
+    "component": "/Users/kitchanut/Desktop/Nuxt/prasertpol-backend/pages/settings/partner_bank.vue",
+    "chunkName": "pages/settings/partner_bank",
+    "_name": "_65908c62"
+  },
+  {
+    "name": "settings-partner_bank_branch",
+    "path": "/settings/partner_bank_branch",
+    "component": "/Users/kitchanut/Desktop/Nuxt/prasertpol-backend/pages/settings/partner_bank_branch.vue",
+    "chunkName": "pages/settings/partner_bank_branch",
+    "_name": "_66ce49c2"
+  },
+  {
+    "name": "settings-partner_car",
+    "path": "/settings/partner_car",
+    "component": "/Users/kitchanut/Desktop/Nuxt/prasertpol-backend/pages/settings/partner_car.vue",
+    "chunkName": "pages/settings/partner_car",
+    "_name": "_1a9a5e11"
+  },
+  {
+    "name": "settings-partner_company",
+    "path": "/settings/partner_company",
+    "component": "/Users/kitchanut/Desktop/Nuxt/prasertpol-backend/pages/settings/partner_company.vue",
+    "chunkName": "pages/settings/partner_company",
+    "_name": "_484243ba"
+  },
+  {
+    "name": "settings-partner_technician",
+    "path": "/settings/partner_technician",
+    "component": "/Users/kitchanut/Desktop/Nuxt/prasertpol-backend/pages/settings/partner_technician.vue",
+    "chunkName": "pages/settings/partner_technician",
+    "_name": "_339840b7"
+  },
+  {
+    "name": "settings-promotion",
+    "path": "/settings/promotion",
+    "component": "/Users/kitchanut/Desktop/Nuxt/prasertpol-backend/pages/settings/promotion.vue",
+    "chunkName": "pages/settings/promotion",
+    "_name": "_408576d7"
+  },
+  {
+    "name": "settings-provinces",
+    "path": "/settings/provinces",
+    "component": "/Users/kitchanut/Desktop/Nuxt/prasertpol-backend/pages/settings/provinces.vue",
+    "chunkName": "pages/settings/provinces",
+    "_name": "_bfed3512"
+  },
+  {
+    "name": "settings-repair_lists",
+    "path": "/settings/repair_lists",
+    "component": "/Users/kitchanut/Desktop/Nuxt/prasertpol-backend/pages/settings/repair_lists.vue",
+    "chunkName": "pages/settings/repair_lists",
+    "_name": "_2cf54a42"
+  },
+  {
+    "name": "settings-repair_prices",
+    "path": "/settings/repair_prices",
+    "component": "/Users/kitchanut/Desktop/Nuxt/prasertpol-backend/pages/settings/repair_prices.vue",
+    "chunkName": "pages/settings/repair_prices",
+    "_name": "_af347620"
+  },
+  {
+    "name": "settings-repair_prices_outdoor",
+    "path": "/settings/repair_prices_outdoor",
+    "component": "/Users/kitchanut/Desktop/Nuxt/prasertpol-backend/pages/settings/repair_prices_outdoor.vue",
+    "chunkName": "pages/settings/repair_prices_outdoor",
+    "_name": "_36dc692d"
+  },
+  {
+    "name": "settings-search_term",
+    "path": "/settings/search_term",
+    "component": "/Users/kitchanut/Desktop/Nuxt/prasertpol-backend/pages/settings/search_term.vue",
+    "chunkName": "pages/settings/search_term",
+    "_name": "_4b8283d7"
+  },
+  {
+    "name": "settings-units",
+    "path": "/settings/units",
+    "component": "/Users/kitchanut/Desktop/Nuxt/prasertpol-backend/pages/settings/units.vue",
+    "chunkName": "pages/settings/units",
+    "_name": "_5f3779a3"
+  },
+  {
+    "name": "settings-user_groups",
+    "path": "/settings/user_groups",
+    "component": "/Users/kitchanut/Desktop/Nuxt/prasertpol-backend/pages/settings/user_groups.vue",
+    "chunkName": "pages/settings/user_groups",
+    "_name": "_1087297c"
+  },
+  {
+    "name": "settings-user_line",
+    "path": "/settings/user_line",
+    "component": "/Users/kitchanut/Desktop/Nuxt/prasertpol-backend/pages/settings/user_line.vue",
+    "chunkName": "pages/settings/user_line",
+    "_name": "_5fc2739c"
+  },
+  {
+    "name": "settings-user_teams",
+    "path": "/settings/user_teams",
+    "component": "/Users/kitchanut/Desktop/Nuxt/prasertpol-backend/pages/settings/user_teams.vue",
+    "chunkName": "pages/settings/user_teams",
+    "_name": "_0667af84"
+  },
+  {
+    "name": "settings-users",
+    "path": "/settings/users",
+    "component": "/Users/kitchanut/Desktop/Nuxt/prasertpol-backend/pages/settings/users.vue",
+    "chunkName": "pages/settings/users",
+    "_name": "_e0ca8888"
+  },
+  {
+    "name": "stock-imagecar",
+    "path": "/stock/imagecar",
+    "component": "/Users/kitchanut/Desktop/Nuxt/prasertpol-backend/pages/stock/imagecar.vue",
+    "chunkName": "pages/stock/imagecar",
+    "_name": "_19d7e1dc"
+  },
+  {
+    "name": "stock-stock_cars",
+    "path": "/stock/stock_cars",
+    "component": "/Users/kitchanut/Desktop/Nuxt/prasertpol-backend/pages/stock/stock_cars.vue",
+    "chunkName": "pages/stock/stock_cars",
+    "_name": "_178e8161"
+  },
+  {
+    "name": "stock-stock_parts",
+    "path": "/stock/stock_parts",
+    "component": "/Users/kitchanut/Desktop/Nuxt/prasertpol-backend/pages/stock/stock_parts.vue",
+    "chunkName": "pages/stock/stock_parts",
+    "_name": "_671bc78e"
+  },
+  {
+    "name": "withdraw-payment_car",
+    "path": "/withdraw/payment_car",
+    "component": "/Users/kitchanut/Desktop/Nuxt/prasertpol-backend/pages/withdraw/payment_car.vue",
+    "chunkName": "pages/withdraw/payment_car",
+    "_name": "_72759394"
+  },
+  {
+    "name": "withdraw-withdraw_money",
+    "path": "/withdraw/withdraw_money",
+    "component": "/Users/kitchanut/Desktop/Nuxt/prasertpol-backend/pages/withdraw/withdraw_money.vue",
+    "chunkName": "pages/withdraw/withdraw_money",
+    "_name": "_1e729680"
+  },
+  {
+    "name": "withdraw-withdraw_part",
+    "path": "/withdraw/withdraw_part",
+    "component": "/Users/kitchanut/Desktop/Nuxt/prasertpol-backend/pages/withdraw/withdraw_part.vue",
+    "chunkName": "pages/withdraw/withdraw_part",
+    "_name": "_00b6bce3"
+  },
+  {
+    "name": "work-follow",
+    "path": "/work/follow",
+    "component": "/Users/kitchanut/Desktop/Nuxt/prasertpol-backend/pages/work/follow.vue",
+    "chunkName": "pages/work/follow",
+    "_name": "_a7ccfb02"
+  },
+  {
+    "name": "work-followDown",
+    "path": "/work/followDown",
+    "component": "/Users/kitchanut/Desktop/Nuxt/prasertpol-backend/pages/work/followDown.vue",
+    "chunkName": "pages/work/followDown",
+    "_name": "_b4d8c27e"
+  },
+  {
+    "name": "work-work_Technician",
+    "path": "/work/work_Technician",
+    "component": "/Users/kitchanut/Desktop/Nuxt/prasertpol-backend/pages/work/work_Technician.vue",
+    "chunkName": "pages/work/work_Technician",
+    "_name": "_d672ddd8"
+  },
+  {
+    "name": "work-work_Technician_pathner",
+    "path": "/work/work_Technician_pathner",
+    "component": "/Users/kitchanut/Desktop/Nuxt/prasertpol-backend/pages/work/work_Technician_pathner.vue",
+    "chunkName": "pages/work/work_Technician_pathner",
+    "_name": "_03f2a0aa"
+  },
+  {
+    "name": "work-works",
+    "path": "/work/works",
+    "component": "/Users/kitchanut/Desktop/Nuxt/prasertpol-backend/pages/work/works.vue",
+    "chunkName": "pages/work/works",
+    "_name": "_2f560cb8"
+  },
+  {
+    "name": "work-works_cancle",
+    "path": "/work/works_cancle",
+    "component": "/Users/kitchanut/Desktop/Nuxt/prasertpol-backend/pages/work/works_cancle.vue",
+    "chunkName": "pages/work/works_cancle",
+    "_name": "_04f0a4f7"
+  },
+  {
+    "name": "work-works_close",
+    "path": "/work/works_close",
+    "component": "/Users/kitchanut/Desktop/Nuxt/prasertpol-backend/pages/work/works_close.vue",
+    "chunkName": "pages/work/works_close",
+    "_name": "_21659d1d"
+  },
+  {
+    "name": "index",
+    "path": "/",
+    "component": "/Users/kitchanut/Desktop/Nuxt/prasertpol-backend/pages/index.vue",
+    "chunkName": "pages/index",
+    "_name": "_1737eb62"
+  }
+]

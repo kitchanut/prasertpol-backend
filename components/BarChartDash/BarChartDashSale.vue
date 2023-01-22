@@ -1,0 +1,150 @@
+<template>
+  <div>
+    <h3>จำนวยรถที่ขายได้แต่ละเดือน</h3>
+    <v-card class="mt-5">
+      <v-row class="pa-2 mt-5">
+        <v-col>
+          <h5>
+            รวมทั้งหมด:
+            {{
+              Number(sumCarSale).toLocaleString("th-TH", {
+                maximumFractionDigits: 0,
+                minimumFractionDigits: 0,
+              })
+            }}
+            คัน
+          </h5>
+        </v-col>
+        <v-col cols="3">
+          <v-autocomplete
+            v-model="years_id"
+            :items="yearSelect"
+            no-data-text="ไม่มีข้อมูล"
+            item-text="title"
+            item-value="value"
+            label="เลือกปี:"
+            @change="changeSelectYear"
+            outlined
+            dense
+            hide-details
+          >
+          </v-autocomplete>
+        </v-col>
+      </v-row>
+      <v-row>
+        <v-col>
+          <BarChartSale class="mt-5" :chart-data="dataChart" />
+        </v-col>
+      </v-row>
+    </v-card>
+  </div>
+</template>
+<script>
+import * as apiDashboard from "@/Api/apiDashboard";
+import moment from "moment";
+// Bar chart
+import BarChartSale from "@/components/BarChart/BarChartSale";
+const reducer = (accumulator, currentValue) => accumulator + currentValue;
+
+export default {
+  components: {
+    // Bar
+    BarChartSale,
+  },
+  props: ["user_id"],
+  data() {
+    return {
+      years_id: 1,
+      yearStart: moment().startOf("year").format("YYYY-MM-DD HH:mm"),
+      yearEnd: moment().endOf("year").format("YYYY-MM-DD HH:mm"),
+      yearSelect: this.$store.state.yearSelect,
+      // Bar
+      dataChart: null,
+      sumCarSale: 0,
+    };
+  },
+  async mounted() {
+    await this.getDataBarSale();
+  },
+  computed: {},
+  methods: {
+    async getDataBarSale() {
+      const dataBar = new FormData();
+      dataBar.append("sale_id", this.user_id);
+      dataBar.append("timeStart", this.yearStart);
+      dataBar.append("timeEnd", this.yearEnd);
+      const responseBar = await apiDashboard.dashboardSaleBar(dataBar);
+      // console.log(responseBar);
+      const newData = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+      for (let index = 0; index < responseBar.data.length; index++) {
+        newData[responseBar.data[index].month - 1] =
+          responseBar.data[index].data;
+      }
+
+      this.dataChart = {
+        labels: this.$store.state.months_th,
+        datasets: [
+          {
+            backgroundColor: this.$store.state.code_color,
+            data: newData,
+          },
+        ],
+
+          // datasets: [
+          //   {
+          //     label: "จำนวนผู้เยี่ยมชม",
+          //     data: newData,
+          //     fill: false,
+          //     borderColor: "#2554FF",
+          //     backgroundColor: "#2554FF",
+          //     borderWidth: 1,
+          //   },
+          // ],
+      };
+      this.sumCarSale = newData.reduce(reducer);
+    },
+
+    async changeSelectYear(value) {
+      if (value == 1) {
+        this.yearStart = moment().startOf("years").format("YYYY-MM-DD HH:mm");
+        this.yearEnd = moment().endOf("years").format("YYYY-MM-DD HH:mm");
+      } else if (value == 2) {
+        this.yearStart = moment()
+          .add(-1, "years")
+          .startOf("years")
+          .format("YYYY-MM-DD HH:mm");
+        this.yearEnd = moment()
+          .add(-1, "years")
+          .endOf("years")
+          .format("YYYY-MM-DD HH:mm");
+      } else if (value == 3) {
+        this.yearStart = moment()
+          .add(-2, "years")
+          .startOf("years")
+          .format("YYYY-MM-DD HH:mm");
+        this.yearEnd = moment()
+          .add(-2, "years")
+          .endOf("years")
+          .format("YYYY-MM-DD HH:mm");
+      } else if (value == 4) {
+        this.yearStart = moment()
+          .add(-3, "years")
+          .startOf("years")
+          .format("YYYY-MM-DD HH:mm");
+        this.yearEnd = moment()
+          .add(-3, "years")
+          .endOf("years")
+          .format("YYYY-MM-DD HH:mm");
+      }
+      await this.getDataBarSale();
+    },
+  },
+  watch: {
+    user_id() {
+      this.getDataBarSale();
+    },
+  },
+};
+</script>
+
+<style></style>

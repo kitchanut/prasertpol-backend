@@ -1,0 +1,11 @@
+-1 kraison@gmail.com
+ 2 manager@gmail.com
+ 3 sale@gmai.com
+ 4 tech@gmail.com
+ 5 build@gmail.com
+ 6 buy@gmail.com
+ 7 stock_part@gmail.com
+ 8 stock_car@gmail.com
+ 9 boss@gmail.com
+ 10 reg@gmail.com
+ 11 money@gmail.com

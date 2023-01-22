@@ -1,0 +1,362 @@
+{
+  "Logo": {
+    "description": "Auto imported from components/Logo.vue"
+  },
+  "VuetifyLogo": {
+    "description": "Auto imported from components/VuetifyLogo.vue"
+  },
+  "DialogLoader": {
+    "description": "Auto imported from components/dialog-loader.vue"
+  },
+  "FebButton": {
+    "description": "Auto imported from components/febButton.vue"
+  },
+  "FebButtonWork": {
+    "description": "Auto imported from components/febButtonWork.vue"
+  },
+  "DateSelect": {
+    "description": "Auto imported from components/DateSelect/dateSelect.vue"
+  },
+  "DateSelect2": {
+    "description": "Auto imported from components/DateSelect/dateSelect2.vue"
+  },
+  "DateSelectMonth": {
+    "description": "Auto imported from components/DateSelect/dateSelectMonth.vue"
+  },
+  "DateSelectMonthAll": {
+    "description": "Auto imported from components/DateSelect/dateSelectMonthAll.vue"
+  },
+  "DoughnutChartCarType": {
+    "description": "Auto imported from components/DoughnutChartDash/DoughnutChartCarType.vue"
+  },
+  "DoughnutChartDashBranchCar": {
+    "description": "Auto imported from components/DoughnutChartDash/DoughnutChartDashBranchCar.vue"
+  },
+  "DoughnutChartDashSale": {
+    "description": "Auto imported from components/DoughnutChartDash/DoughnutChartDashSale.vue"
+  },
+  "BarChartBranch": {
+    "description": "Auto imported from components/BarChart/BarChartBranch.vue"
+  },
+  "BarChartCar": {
+    "description": "Auto imported from components/BarChart/BarChartCar.vue"
+  },
+  "BarChartPriceCar": {
+    "description": "Auto imported from components/BarChart/BarChartPriceCar.vue"
+  },
+  "BarChartSale": {
+    "description": "Auto imported from components/BarChart/BarChartSale.vue"
+  },
+  "BarChartSaleCarByBranch": {
+    "description": "Auto imported from components/BarChart/BarChartSaleCarByBranch.vue"
+  },
+  "BarChartTopCars": {
+    "description": "Auto imported from components/BarChart/BarChartTopCars.vue"
+  },
+  "BarChartVisit": {
+    "description": "Auto imported from components/BarChart/BarChartVisit.vue"
+  },
+  "BarChartVisitCar": {
+    "description": "Auto imported from components/BarChart/BarChartVisitCar.vue"
+  },
+  "BarChartVisitLine": {
+    "description": "Auto imported from components/BarChart/BarChartVisitLine.vue"
+  },
+  "BarChartDashBranch": {
+    "description": "Auto imported from components/BarChartDash/BarChartDashBranch.vue"
+  },
+  "BarChartDashCar": {
+    "description": "Auto imported from components/BarChartDash/BarChartDashCar.vue"
+  },
+  "BarChartDashSale": {
+    "description": "Auto imported from components/BarChartDash/BarChartDashSale.vue"
+  },
+  "BarChartDashSaleByBranch": {
+    "description": "Auto imported from components/BarChartDash/BarChartDashSaleByBranch.vue"
+  },
+  "BarChartDashTopCarSerie": {
+    "description": "Auto imported from components/BarChartDash/BarChartDashTopCarSerie.vue"
+  },
+  "BarChartDashVisit": {
+    "description": "Auto imported from components/BarChartDash/BarChartDashVisit.vue"
+  },
+  "BarChartDashVisitCarDown": {
+    "description": "Auto imported from components/BarChartDash/BarChartDashVisitCarDown.vue"
+  },
+  "BarChartDashVisitCarModel": {
+    "description": "Auto imported from components/BarChartDash/BarChartDashVisitCarModel.vue"
+  },
+  "BarChartDashVisitCarSerie": {
+    "description": "Auto imported from components/BarChartDash/BarChartDashVisitCarSerie.vue"
+  },
+  "BarChartDashVisitCarSlacken": {
+    "description": "Auto imported from components/BarChartDash/BarChartDashVisitCarSlacken.vue"
+  },
+  "BarChartDashVisitCarType": {
+    "description": "Auto imported from components/BarChartDash/BarChartDashVisitCarType.vue"
+  },
+  "DoughnutChartBranch": {
+    "description": "Auto imported from components/DoughnutChart/DoughnutChartBranch.vue"
+  },
+  "DoughnutChartCar": {
+    "description": "Auto imported from components/DoughnutChart/DoughnutChartCar.vue"
+  },
+  "DoughnutChartUser": {
+    "description": "Auto imported from components/DoughnutChart/DoughnutChartUser.vue"
+  },
+  "MobileDialogBooking": {
+    "description": "Auto imported from components/mobile/dialogBooking.vue"
+  },
+  "MobileDialogContract": {
+    "description": "Auto imported from components/mobile/dialogContract.vue"
+  },
+  "MobileDialogFinancial": {
+    "description": "Auto imported from components/mobile/dialogFinancial.vue"
+  },
+  "MobileDialogInsurCertificate": {
+    "description": "Auto imported from components/mobile/dialogInsurCertificate.vue"
+  },
+  "MobileDialogReceiveDown": {
+    "description": "Auto imported from components/mobile/dialogReceiveDown.vue"
+  },
+  "DialogAddIncome": {
+    "description": "Auto imported from components/dialog/dialogAdd_income.vue"
+  },
+  "DialogAddLowCars": {
+    "description": "Auto imported from components/dialog/dialogAdd_lowCars.vue"
+  },
+  "DialogAddMoney": {
+    "description": "Auto imported from components/dialog/dialogAdd_money.vue"
+  },
+  "DialogAddOutlay": {
+    "description": "Auto imported from components/dialog/dialogAdd_outlay.vue"
+  },
+  "DialogAddOutlaySmall": {
+    "description": "Auto imported from components/dialog/dialogAdd_outlay_small.vue"
+  },
+  "DialogAmountDown": {
+    "description": "Auto imported from components/dialog/dialogAmount_down.vue"
+  },
+  "DialogAmountSlacken": {
+    "description": "Auto imported from components/dialog/dialogAmount_slacken.vue"
+  },
+  "DialogAmphure": {
+    "description": "Auto imported from components/dialog/dialogAmphure.vue"
+  },
+  "DialogAppointment": {
+    "description": "Auto imported from components/dialog/dialogAppointment.vue"
+  },
+  "DialogAppointmentBank": {
+    "description": "Auto imported from components/dialog/dialogAppointmentBank.vue"
+  },
+  "DialogBank": {
+    "description": "Auto imported from components/dialog/dialogBank.vue"
+  },
+  "DialogBankBranch": {
+    "description": "Auto imported from components/dialog/dialogBank_branch.vue"
+  },
+  "DialogBooking": {
+    "description": "Auto imported from components/dialog/dialogBooking.vue"
+  },
+  "DialogBranch": {
+    "description": "Auto imported from components/dialog/dialogBranch.vue"
+  },
+  "DialogBranchTeam": {
+    "description": "Auto imported from components/dialog/dialogBranchTeam.vue"
+  },
+  "DialogCarLift": {
+    "description": "Auto imported from components/dialog/dialogCarLift.vue"
+  },
+  "DialogCarModel": {
+    "description": "Auto imported from components/dialog/dialogCarModel.vue"
+  },
+  "DialogCarPart": {
+    "description": "Auto imported from components/dialog/dialogCarPart.vue"
+  },
+  "DialogCarPartType": {
+    "description": "Auto imported from components/dialog/dialogCarPartType.vue"
+  },
+  "DialogCarSerieSub": {
+    "description": "Auto imported from components/dialog/dialogCarSerieSub.vue"
+  },
+  "DialogCarSeries": {
+    "description": "Auto imported from components/dialog/dialogCarSeries.vue"
+  },
+  "DialogCarType": {
+    "description": "Auto imported from components/dialog/dialogCarType.vue"
+  },
+  "DialogColor": {
+    "description": "Auto imported from components/dialog/dialogColor.vue"
+  },
+  "DialogCommission": {
+    "description": "Auto imported from components/dialog/dialogCommission.vue"
+  },
+  "DialogContract": {
+    "description": "Auto imported from components/dialog/dialogContract.vue"
+  },
+  "DialogCustomer": {
+    "description": "Auto imported from components/dialog/dialogCustomer.vue"
+  },
+  "DialogCustomerDetail": {
+    "description": "Auto imported from components/dialog/dialogCustomer_detail.vue"
+  },
+  "DialogCustomerVisit": {
+    "description": "Auto imported from components/dialog/dialogCustomer_visit.vue"
+  },
+  "DialogDistricts": {
+    "description": "Auto imported from components/dialog/dialogDistricts.vue"
+  },
+  "DialogFileCar": {
+    "description": "Auto imported from components/dialog/dialogFileCar.vue"
+  },
+  "DialogFinancial": {
+    "description": "Auto imported from components/dialog/dialogFinancial.vue"
+  },
+  "DialogFuel": {
+    "description": "Auto imported from components/dialog/dialogFuel.vue"
+  },
+  "DialogGeographie": {
+    "description": "Auto imported from components/dialog/dialogGeographie.vue"
+  },
+  "DialogImage": {
+    "description": "Auto imported from components/dialog/dialogImage.vue"
+  },
+  "DialogImageCar": {
+    "description": "Auto imported from components/dialog/dialogImage_car.vue"
+  },
+  "DialogInsurCertificate": {
+    "description": "Auto imported from components/dialog/dialogInsurCertificate.vue"
+  },
+  "DialogJobDetail": {
+    "description": "Auto imported from components/dialog/dialogJobDetail.vue"
+  },
+  "DialogJobTechnician": {
+    "description": "Auto imported from components/dialog/dialogJobTechnician.vue"
+  },
+  "DialogLowCars": {
+    "description": "Auto imported from components/dialog/dialogLowCars.vue"
+  },
+  "DialogMiddlePrice": {
+    "description": "Auto imported from components/dialog/dialogMiddle_price.vue"
+  },
+  "DialogMiniCar": {
+    "description": "Auto imported from components/dialog/dialogMini_car.vue"
+  },
+  "DialogMiniUser": {
+    "description": "Auto imported from components/dialog/dialogMini_user.vue"
+  },
+  "DialogNote": {
+    "description": "Auto imported from components/dialog/dialogNote.vue"
+  },
+  "DialogPartnerCar": {
+    "description": "Auto imported from components/dialog/dialogPartnerCar.vue"
+  },
+  "DialogPartnerCompany": {
+    "description": "Auto imported from components/dialog/dialogPartnerCompany.vue"
+  },
+  "DialogPartnerTechnician": {
+    "description": "Auto imported from components/dialog/dialogPartner_technician.vue"
+  },
+  "DialogPathnerJobTechnician": {
+    "description": "Auto imported from components/dialog/dialogPathnerJobTechnician.vue"
+  },
+  "DialogPriceRecord": {
+    "description": "Auto imported from components/dialog/dialogPriceRecord.vue"
+  },
+  "DialogPromotion": {
+    "description": "Auto imported from components/dialog/dialogPromotion.vue"
+  },
+  "DialogProvince": {
+    "description": "Auto imported from components/dialog/dialogProvince.vue"
+  },
+  "DialogPurchaseCar": {
+    "description": "Auto imported from components/dialog/dialogPurchaseCar.vue"
+  },
+  "DialogPurchasePart": {
+    "description": "Auto imported from components/dialog/dialogPurchasePart.vue"
+  },
+  "DialogReceiveDown": {
+    "description": "Auto imported from components/dialog/dialogReceiveDown.vue"
+  },
+  "DialogReceivingMoney": {
+    "description": "Auto imported from components/dialog/dialogReceivingMoney.vue"
+  },
+  "DialogRepairList": {
+    "description": "Auto imported from components/dialog/dialogRepairList.vue"
+  },
+  "DialogRepairPrice": {
+    "description": "Auto imported from components/dialog/dialogRepairPrice.vue"
+  },
+  "DialogRequestLog": {
+    "description": "Auto imported from components/dialog/dialogRequestLog.vue"
+  },
+  "DialogSearchTerm": {
+    "description": "Auto imported from components/dialog/dialogSearch_term.vue"
+  },
+  "DialogStockCar": {
+    "description": "Auto imported from components/dialog/dialogStockCar.vue"
+  },
+  "DialogStockPart": {
+    "description": "Auto imported from components/dialog/dialogStockPart.vue"
+  },
+  "DialogUnit": {
+    "description": "Auto imported from components/dialog/dialogUnit.vue"
+  },
+  "DialogUser": {
+    "description": "Auto imported from components/dialog/dialogUser.vue"
+  },
+  "DialogUserGroup": {
+    "description": "Auto imported from components/dialog/dialogUserGroup.vue"
+  },
+  "DialogUserLine": {
+    "description": "Auto imported from components/dialog/dialogUserLine.vue"
+  },
+  "DialogUserTeam": {
+    "description": "Auto imported from components/dialog/dialogUserTeam.vue"
+  },
+  "DialogWithdrawPart": {
+    "description": "Auto imported from components/dialog/dialogWithdrawPart.vue"
+  },
+  "DialogWork": {
+    "description": "Auto imported from components/dialog/dialogWork.vue"
+  },
+  "DialogDrawerRequestLog": {
+    "description": "Auto imported from components/dialog/drawerRequestLog.vue"
+  },
+  "SelectDropDownAmphure": {
+    "description": "Auto imported from components/selectDropDown/selectDropDownAmphure.vue"
+  },
+  "SelectAddCarModel": {
+    "description": "Auto imported from components/selectAdd/selectAddCarModel.vue"
+  },
+  "SelectAddCarPart": {
+    "description": "Auto imported from components/selectAdd/selectAddCarPart.vue"
+  },
+  "SelectAddCarPartType": {
+    "description": "Auto imported from components/selectAdd/selectAddCarPartType.vue"
+  },
+  "SelectAddCarSerie": {
+    "description": "Auto imported from components/selectAdd/selectAddCarSerie.vue"
+  },
+  "SelectAddCarSerieSub": {
+    "description": "Auto imported from components/selectAdd/selectAddCarSerieSub.vue"
+  },
+  "SelectAddCarType": {
+    "description": "Auto imported from components/selectAdd/selectAddCarType.vue"
+  },
+  "SelectAddCustomer": {
+    "description": "Auto imported from components/selectAdd/selectAddCustomer.vue"
+  },
+  "SelectAddPartnerCar": {
+    "description": "Auto imported from components/selectAdd/selectAddPartnerCar.vue"
+  },
+  "SelectAddPartnerTechnician": {
+    "description": "Auto imported from components/selectAdd/selectAddPartner_technician.vue"
+  },
+  "SelectAddSearchTerm": {
+    "description": "Auto imported from components/selectAdd/selectAddSearch_term.vue"
+  },
+  "SelectAddUnit": {
+    "description": "Auto imported from components/selectAdd/selectAddUnit.vue"
+  }
+}
