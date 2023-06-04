@@ -38,6 +38,28 @@
         >
         </v-text-field>
 
+        <v-text-field
+          class="mt-3"
+          label="ชื่อลูกค้า*"
+          v-model="formData.customer_name"
+          outlined
+          dense
+          hide-details
+          :rules="rule"
+        >
+        </v-text-field>
+
+        <v-text-field
+          class="mt-3"
+          label="เบอร์โทรลูกค้า*"
+          v-model="formData.customer_tel"
+          outlined
+          dense
+          hide-details
+          :rules="rule"
+        >
+        </v-text-field>
+
         <v-autocomplete
           class="mt-3"
           v-model="formData.car_no"
@@ -382,6 +404,50 @@ export default {
                             {
                               type: "text",
                               text: response.data.branch_name,
+                              wrap: true,
+                              color: "#666666",
+                              size: "sm",
+                              flex: 5,
+                            },
+                          ],
+                        },
+                        {
+                          type: "box",
+                          layout: "baseline",
+                          spacing: "sm",
+                          contents: [
+                            {
+                              type: "text",
+                              text: "ชื่อลูกค้า:",
+                              color: "#aaaaaa",
+                              size: "sm",
+                              flex: 2,
+                            },
+                            {
+                              type: "text",
+                              text: response.data.customer_name,
+                              wrap: true,
+                              color: "#666666",
+                              size: "sm",
+                              flex: 5,
+                            },
+                          ],
+                        },
+                        {
+                          type: "box",
+                          layout: "baseline",
+                          spacing: "sm",
+                          contents: [
+                            {
+                              type: "text",
+                              text: "เบอร์โทร:",
+                              color: "#aaaaaa",
+                              size: "sm",
+                              flex: 2,
+                            },
+                            {
+                              type: "text",
+                              text: response.data.customer_tel,
                               wrap: true,
                               color: "#666666",
                               size: "sm",

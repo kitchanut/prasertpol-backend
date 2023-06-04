@@ -15,99 +15,206 @@
     <v-card>
       <v-card-text>
         <v-row>
-          <v-col sm="6" xs="6" md="1" lg="1" cols="6">
-            <v-text-field
-              dense
-              hide-details
-              outlined
-              v-model="interest"
-              type="number"
-              label="ภาษี (%)"
-            >
-            </v-text-field>
-          </v-col>
-          <v-col sm="6" xs="6" md="3" lg="3" cols="6">
-            <v-autocomplete
-              v-model="branch_id"
-              :items="branches"
-              item-text="branch_name"
-              item-value="id"
-              label="สาขา"
-              no-data-text="ไม่มีข้อมูล"
-              @change="getData"
-              outlined
-              dense
-              hide-details
-            >
-            </v-autocomplete>
-          </v-col>
+          <v-btn
+            :color="toggleView == 'small' ? 'lime' : ''"
+            :dark="toggleView == 'small' ? true : false"
+            v-blur
+            class="ml-2 my-1"
+            style="min-width: 0px; padding: 0 8px"
+            @click="toggleView = 'small'"
+          >
+            <v-icon>mdi-view-grid</v-icon>
+          </v-btn>
 
-          <v-col sm="12" xs="12" md="2" lg="2" cols="12">
-            <v-autocomplete
-              v-model="car_stock"
-              :items="data_car_stock"
-              item-text="label"
-              item-value="car_stock"
-              label="สถานะ"
-              no-data-text="ไม่มีข้อมูล"
-              @change="getData"
-              outlined
-              dense
-              hide-details
-            >
-            </v-autocomplete>
-          </v-col>
+          <v-btn
+            :color="toggleView == 'large' ? 'lime' : ''"
+            :dark="toggleView == 'large' ? true : false"
+            v-blur
+            class="ml-1 my-1"
+            style="min-width: 0px; padding: 0 8px"
+            @click="toggleView = 'large'"
+          >
+            <v-icon>mdi-apps</v-icon>
+          </v-btn>
 
-          <v-col sm="12" xs="12" md="2" lg="2" cols="12">
-            <v-autocomplete
-              v-model="car_status"
-              :items="data_car_status"
-              item-text="label"
-              item-value="car_status"
-              label="รถที่ถูกลบ"
-              no-data-text="ไม่มีข้อมูล"
-              @change="getData"
-              outlined
-              dense
-              hide-details
-            >
-            </v-autocomplete>
-          </v-col>
+          <v-dialog v-model="dialogFilter" width="550">
+            <template v-slot:activator="{ on, attrs }">
+              <v-btn
+                :color="
+                  branch_id != 0 ||
+                  car_types_id != 0 ||
+                  car_status != 1 ||
+                  car_stock != 2
+                    ? 'warning'
+                    : ''
+                "
+                v-blur
+                class="ml-2 my-1"
+                style="min-width: 0px; padding: 0 8px"
+                v-bind="attrs"
+                v-on="on"
+              >
+                <v-icon>mdi-filter-variant</v-icon>
+              </v-btn>
+            </template>
 
-          <v-col sm="12" xs="12" md="3" lg="3" cols="12">
-            <v-autocomplete
-              v-model="car_types_id"
-              :items="carType"
-              no-data-text="ไม่มีข้อมูล"
-              @change="getData"
-              item-text="car_type_name"
-              item-value="id"
-              label="ประเภทรถ"
-              outlined
-              dense
-              hide-details
-            >
-              <template slot="selection" slot-scope="{ item }">
-                {{ item.car_type_name }} ({{ item.car_type_name_en }})
-              </template>
+            <v-card>
+              <v-toolbar
+                color="warning"
+                dark
+                flat
+                dense
+                style="font-size: 20px"
+                height="6"
+              >
+              </v-toolbar>
 
-              <template slot="item" slot-scope="{ item }">
-                {{ item.car_type_name }} ({{ item.car_type_name_en }})
-              </template>
-            </v-autocomplete>
-          </v-col>
-        </v-row>
+              <v-fab-transition>
+                <v-btn
+                  icon
+                  absolute
+                  style="top: 10px; right: 10px"
+                  fab
+                  small
+                  @click="dialogFilter = false"
+                >
+                  <v-icon>mdi-close</v-icon>
+                </v-btn>
+              </v-fab-transition>
 
-        <br />
+              <h3 class="text-center" style="font-size: 22px; margin: 10px">
+                กรองข้อมูล
+              </h3>
 
-        <v-row>
-          <v-col
-            cols="6"
-            xs="6"
-            sm="6"
-            md="2"
-            lg="2"
-            xl="2"
+              <v-divider></v-divider>
+              <v-card-text class="mt-5">
+                <v-row no-gutters class="d-flex align-center mt-2">
+                  <v-col cols="4">สถานที่ตั้งรถ:</v-col>
+                  <v-col cols="8">
+                    <v-autocomplete
+                      v-model="branch_id"
+                      :items="branches"
+                      item-text="branch_name"
+                      item-value="id"
+                      no-data-text="ไม่มีข้อมูล"
+                      outlined
+                      dense
+                      hide-details
+                    >
+                    </v-autocomplete>
+                  </v-col>
+                </v-row>
+
+                <v-row no-gutters class="d-flex align-center mt-2">
+                  <v-col cols="4">ประเภทรถ:</v-col>
+                  <v-col cols="8">
+                    <v-autocomplete
+                      v-model="car_types_id"
+                      :items="carType"
+                      no-data-text="ไม่มีข้อมูล"
+                      item-text="car_type_name"
+                      item-value="id"
+                      outlined
+                      dense
+                      hide-details
+                    >
+                      <template slot="selection" slot-scope="{ item }">
+                        {{ item.car_type_name }} ({{ item.car_type_name_en }})
+                      </template>
+
+                      <template slot="item" slot-scope="{ item }">
+                        {{ item.car_type_name }} ({{ item.car_type_name_en }})
+                      </template>
+                    </v-autocomplete>
+                  </v-col>
+                </v-row>
+
+                <v-row no-gutters class="d-flex align-center mt-2">
+                  <v-col cols="4">รถที่ถูกลบ:</v-col>
+                  <v-col cols="8">
+                    <v-autocomplete
+                      v-model="car_status"
+                      :items="data_car_status"
+                      item-text="label"
+                      item-value="car_status"
+                      no-data-text="ไม่มีข้อมูล"
+                      outlined
+                      dense
+                      hide-details
+                    >
+                    </v-autocomplete>
+                  </v-col>
+                </v-row>
+
+                <v-row no-gutters class="d-flex align-center mt-2">
+                  <v-col cols="4">สถานะ :</v-col>
+                  <v-col cols="8">
+                    <v-autocomplete
+                      v-model="car_stock"
+                      :items="data_car_stock"
+                      item-text="label"
+                      item-value="car_stock"
+                      no-data-text="ไม่มีข้อมูล"
+                      outlined
+                      dense
+                      hide-details
+                      @change="serch_text = ''"
+                    >
+                    </v-autocomplete>
+                  </v-col>
+                  <v-col cols="4" v-if="car_stock == 3"></v-col>
+                  <v-col cols="8" v-if="car_stock == 3">
+                    <v-text-field
+                      class="mt-1"
+                      label="กรุณากรอก ลำดับรถหรือทะเบียน"
+                      single-line
+                      v-model="serch_text"
+                      outlined
+                      dense
+                      hide-details=""
+                    ></v-text-field>
+                  </v-col>
+                </v-row>
+              </v-card-text>
+              <v-divider></v-divider>
+              <v-card-actions>
+                <v-btn
+                  color="warning"
+                  text
+                  @click="
+                    branch_id = 0;
+                    car_stock = 2;
+                    car_status = 1;
+                    car_types_id = 0;
+                    serch_text = '';
+                  "
+                >
+                  <v-icon left>mdi-replay</v-icon>ล้างข้อมูล
+                </v-btn>
+                <v-spacer></v-spacer>
+                <v-btn color="primary" text @click="getData">
+                  <v-icon left>mdi-magnify</v-icon>ค้นหา
+                </v-btn>
+              </v-card-actions>
+            </v-card>
+          </v-dialog>
+
+          <v-btn
+            @click="handleDownload()"
+            color="success"
+            class="ml-2 my-1"
+            style="min-width: 0px; padding: 0 8px"
+          >
+            <v-icon>mdi-microsoft-excel</v-icon>
+          </v-btn>
+
+          <v-btn color="primary" class="ml-2 my-1" dark @click.stop="AddItem()">
+            <v-icon left>mdi-plus</v-icon>
+            เพิ่มรถใหม่
+          </v-btn>
+
+          <v-btn
+            class="ml-2 my-1"
             v-if="
               user_group_permission == -1 ||
               user_group_permission == 8 ||
@@ -115,81 +222,48 @@
               user_group_permission == 11 ||
               user_group_permission == 12
             "
+            color="blue-grey"
+            dark
+            @click="AddOutlay()"
           >
-            <v-btn @click="handleDownload()" color="success" class="ml-2">
-              <v-icon left>mdi-microsoft-excel</v-icon>
-              Excel
-            </v-btn>
-          </v-col>
-          <v-col
-            cols="6"
-            xs="6"
-            sm="6"
-            md="2"
-            lg="2"
-            xl="2"
-            v-if="user_group_permission == -1 || user_group_permission == 8"
+            <v-icon left>mdi-plus</v-icon>
+            เพิ่มค่าใช้จ่าย
+          </v-btn>
+
+          <v-btn
+            class="ml-2 my-1"
+            v-if="
+              user_group_permission == -1 ||
+              user_group_permission == 8 ||
+              user_group_permission == 10 ||
+              user_group_permission == 11 ||
+              user_group_permission == 12
+            "
+            color="blue-grey"
+            dark
+            @click="AddIncome()"
           >
-            <v-btn color="primary" dark @click.stop="AddItem()">
-              <v-icon left>mdi-plus</v-icon>
-              เพิ่มรถใหม่
-            </v-btn>
-          </v-col>
-          <v-col cols="6" xs="6" sm="6" md="2" lg="2" xl="2">
-            <v-btn
-              class="ml-1"
-              v-if="
-                user_group_permission == -1 ||
-                user_group_permission == 8 ||
-                user_group_permission == 10 ||
-                user_group_permission == 11 ||
-                user_group_permission == 12
-              "
-              color="blue-grey"
-              dark
-              @click="AddOutlay()"
-            >
-              <v-icon left>mdi-plus</v-icon>
-              เพิ่มค่าใช้จ่าย
-            </v-btn>
-          </v-col>
-          <v-col cols="6" xs="6" sm="6" md="2" lg="2" xl="2">
-            <v-btn
-              class="ml-1"
-              v-if="
-                user_group_permission == -1 ||
-                user_group_permission == 8 ||
-                user_group_permission == 10 ||
-                user_group_permission == 11 ||
-                user_group_permission == 12
-              "
-              color="blue-grey"
-              dark
-              @click="AddIncome()"
-            >
-              <v-icon left>mdi-plus</v-icon>
-              เพิ่มรายรับ
-            </v-btn>
-          </v-col>
+            <v-icon left>mdi-plus</v-icon>
+            เพิ่มรายรับ
+          </v-btn>
 
           <v-spacer></v-spacer>
-          <v-col cols="12" xs="12" sm="" md="4" lg="4" xl="4">
-            <v-text-field
-              v-model="search"
-              id="search"
-              name="search"
-              append-icon="mdi-magnify"
-              label="ค้นหา"
-              single-line
-              hide-details
-            >
-            </v-text-field>
-          </v-col>
+          <v-text-field
+            class="mx-2 my-1"
+            v-model="search"
+            id="search"
+            name="search"
+            append-icon="mdi-magnify"
+            label="ค้นหา"
+            single-line
+            hide-details
+            outlined
+            dense
+          >
+          </v-text-field>
         </v-row>
 
-        <br />
-
-        <v-row>
+        <v-row v-if="toggleView == 'large'">
           <v-col>
             <v-select
               v-model="selectedHeaders"
@@ -198,14 +272,13 @@
               multiple
               outlined
               return-object
+              hide-details=""
             >
             </v-select>
           </v-col>
         </v-row>
 
-        <br />
-
-        <div id="mycontainer">
+        <div id="mycontainer" class="mt-3">
           <div id="outer">
             <v-data-table
               :headers="showHeaders"
@@ -610,6 +683,9 @@ export default {
       ),
       serverUrl: process.env.serverUrl,
       serverUrlShop: process.env.serverUrlShop,
+      toggleView: "small",
+      dialogFilter: false,
+      serch_text: "",
       loading: true,
       search: "",
       id: "",
@@ -673,11 +749,11 @@ export default {
       data_car_status: [
         {
           car_status: 1,
-          label: "แสดง",
+          label: "ไม่แสดง",
         },
         {
           car_status: 0,
-          label: "ลบ",
+          label: "แสดง",
         },
       ],
       headers: [],
@@ -1345,7 +1421,9 @@ export default {
       this.car_types_id = 0;
       this.loading = false;
     },
-
+    changeStatus() {
+      console.log(this.car_stock);
+    },
     async getData() {
       // this.data = [];
       this.loading = true;
@@ -1355,6 +1433,7 @@ export default {
       data.append("car_stock", this.car_stock);
       data.append("car_status", this.car_status);
       data.append("car_types_id", this.car_types_id);
+      data.append("serch_text", this.serch_text);
 
       const response = await apiCars.stockCar(data);
       console.log(response.data);

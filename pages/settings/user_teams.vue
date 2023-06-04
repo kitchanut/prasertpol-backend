@@ -3,11 +3,7 @@
     <v-card>
       <v-card-title>
         <template>
-          <v-btn
-            color="primary"
-            dark
-            @click.stop="AddItem()"
-          >
+          <v-btn color="primary" dark @click.stop="AddItem()">
             <v-icon left>mdi-plus</v-icon>
             เพิ่มรายการใหม่
           </v-btn>
@@ -40,29 +36,15 @@
       >
         <!-- <template v-slot:item.team_active="{ item }"> -->
         <template v-slot:[`item.team_active`]="{ item }">
-          <v-btn
-            v-if="item.team_active == '1'"
-            x-small
-            color="success"
-            dark
-          >เปิดใช้งาน</v-btn>
-          <v-btn
-            v-else
-            x-small
-            color="red"
-            dark
-          >ปิดการใช้งาน</v-btn>
+          <v-btn v-if="item.team_active == '1'" x-small color="success" dark
+            >เปิดใช้งาน</v-btn
+          >
+          <v-btn v-else x-small color="red" dark>ปิดการใช้งาน</v-btn>
         </template>
 
         <!-- <template v-slot:item.actions="{ item }"> -->
         <template v-slot:[`item.actions`]="{ item }">
-          <v-btn
-            color="primary"
-            fab
-            x-small
-            dark
-            @click="editItem(item.id)"
-          >
+          <v-btn color="primary" fab x-small dark @click="editItem(item.id)">
             <v-icon> mdi-pencil </v-icon>
           </v-btn>
           <!-- <v-btn color="red" fab x-small dark @click="deleteItem(item.id)">

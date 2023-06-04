@@ -1,26 +1,10 @@
 <template>
   <v-container>
-    <v-dialog
-      v-model="dialogDeleteComponent"
-      content-class="v-dialog--custom"
-      fullscreen
-    >
+    <v-dialog v-model="dialogDeleteComponent" content-class="v-dialog--custom" fullscreen>
       <v-card>
-        <v-form
-          autocomplete="true"
-          ref="form"
-          :disabled="formDisabled"
-          @submit.prevent="onAction(formData.id)"
-        >
-          <v-toolbar
-            color="primary"
-            dark
-            flat
-          >
-            <v-btn
-              text
-              @click="$emit('cancleItem')"
-            >
+        <v-form autocomplete="true" ref="form" :disabled="formDisabled" @submit.prevent="onAction(formData.id)">
+          <v-toolbar color="primary" dark flat>
+            <v-btn text @click="$emit('cancleItem')">
               <v-icon>mdi-close</v-icon>
             </v-btn>
             <v-toolbar-title> {{ formTitleReceivingMoney }} </v-toolbar-title>
@@ -38,24 +22,13 @@
                 ปริ้น
               </v-btn>
 
-              <v-btn
-                type="submit"
-                :loading="btnloading"
-                dark
-                text
-                style="font-size: 18px"
-              >
+              <v-btn type="submit" :loading="btnloading" dark text style="font-size: 18px">
                 {{ this.formData.action == "add" ? "บันทึก" : "แก้ไข" }}
               </v-btn>
             </v-toolbar-items>
           </v-toolbar>
 
-          <v-progress-linear
-            v-if="formDataLoading"
-            indeterminate
-            color="yellow darken-2"
-          >
-          </v-progress-linear>
+          <v-progress-linear v-if="formDataLoading" indeterminate color="yellow darken-2"> </v-progress-linear>
 
           <v-card-text>
             <v-container>
@@ -364,7 +337,7 @@
                   >
                   </v-text-field>
                   <v-text-field
-                    :disabled="formData.receivingMoney_type == 3? false:true"
+                    :disabled="formData.receivingMoney_type == 3 ? false : true"
                     class="mt-1"
                     autocomplete="true"
                     label="ประเภท"
@@ -566,10 +539,7 @@
                 </v-col>
               </v-row>
               <div class="mt-2">
-                <div
-                  v-if="addFile == true"
-                  class="d-flex flex-column justify-center"
-                >
+                <div v-if="addFile == true" class="d-flex flex-column justify-center">
                   <v-file-input
                     accept=".pdf"
                     show-size
@@ -577,21 +547,11 @@
                     @change="selectFile"
                   ></v-file-input>
                 </div>
-                <div
-                  v-if="formData.receiving_money_file != null"
-                  class="d-flex flex-column justify-center"
-                >
+                <div v-if="formData.receiving_money_file != null" class="d-flex flex-column justify-center">
                   <a
-                    v-if="
-                      formData.receiving_money_file != null && addFile == false
-                    "
+                    v-if="formData.receiving_money_file != null && addFile == false"
                     target="_blank"
-                    :href="
-                      serverUrl +
-                      formData.id +
-                      '/' +
-                      formData.receiving_money_file
-                    "
+                    :href="serverUrl + formData.id + '/' + formData.receiving_money_file"
                   >
                     <h2 class="blue--text">คลิกเพื่อดูไฟล์</h2>
                   </a>
@@ -627,6 +587,7 @@ export default {
     "idCustomer",
     "idCar",
     "receivingMoney_type",
+    "car_no",
   ],
   data() {
     return {
@@ -652,22 +613,18 @@ export default {
       if (value != null) {
         this.formData.receiving_money_sum = Number(value);
 
-        this.formData.receiving_money_sum_vat =
-          Number(value) * (Number(this.formData.receiving_money_vat) / 100);
+        this.formData.receiving_money_sum_vat = Number(value) * (Number(this.formData.receiving_money_vat) / 100);
 
         this.formData.receiving_money_all =
-          Number(this.formData.receiving_money_sum) +
-          Number(this.formData.receiving_money_sum_vat);
+          Number(this.formData.receiving_money_sum) + Number(this.formData.receiving_money_sum_vat);
       }
     },
     async vatCal(value) {
       if (value != null) {
-        this.formData.receiving_money_sum_vat =
-          Number(this.formData.car_price) * (Number(value) / 100);
+        this.formData.receiving_money_sum_vat = Number(this.formData.car_price) * (Number(value) / 100);
 
         this.formData.receiving_money_all =
-          Number(this.formData.car_price) +
-          Number(this.formData.receiving_money_sum_vat);
+          Number(this.formData.car_price) + Number(this.formData.receiving_money_sum_vat);
       }
     },
 
@@ -704,10 +661,7 @@ export default {
           }
         } else if (this.formData.action == "edit") {
           data.append("_method", "PATCH");
-          const response = await apiReceiving_money.update(
-            this.formData.id,
-            data
-          );
+          const response = await apiReceiving_money.update(this.formData.id, data);
           this.$refs.form.reset();
 
           if (response.status == 200) {
@@ -727,26 +681,6 @@ export default {
         query: { id: this.formData.id },
       });
       window.open(routeData.href, "_blank");
-
-      // const response = await apiBookings.update(
-      //   this.formData.id,
-      //   this.formData
-      // );
-      // // console.log(response);
-      // this.$refs.form.reset();
-
-      // if (response.status == 200) {
-      //   this.$emit("success", "Booking");
-      //   this.$nextTick(() => {
-      //     let routeData = this.$router.resolve({
-      //       name: "prints-print_booking",
-      //       query: { idBooking: this.formData.id },
-      //     });
-      //     window.open(routeData.href, "_blank");
-      //   });
-      // } else {
-      //   this.$emit("error", "Booking");
-      // }
     },
   },
   watch: {
@@ -760,53 +694,37 @@ export default {
         if (this.actionReceivingMoney == "check") {
           const response = await apiReceiving_money.checkReceivingMoney(
             this.idWork,
+            this.car_no,
             this.receivingMoney_type
           );
           await this.$refs.form.reset();
-          // console.log("checkReceivingMoney", response.data);
-          // console.log(this.receivingMoney_type)
           this.$nextTick(() => {
             const self = this;
             this.formData = response.data;
 
             if (this.formData.action == "add") {
-              this.formData.company_name =
-                "ประเสริฐผลรุ่งเรืองนครพนม จำกัด (สำนักงานใหญ่)";
-              this.formData.company_address =
-                "216/111 ถนน.นิตโย ตำบล.ในเมือง อำเภอ.เมืองนครพนม จ.นครพนม 48000";
+              this.formData.company_name = "ประเสริฐผลรุ่งเรืองนครพนม จำกัด (สำนักงานใหญ่)";
+              this.formData.company_address = "216/111 ถนน.นิตโย ตำบล.ในเมือง อำเภอ.เมืองนครพนม จ.นครพนม 48000";
               this.formData.company_tel = "042-513332";
               this.formData.company_fax = "042-513588";
               this.formData.company_idvat = "0485548000108";
               this.formData.receiving_money_status = 1;
-              this.formData.branch_id =
-                this.$auth.$storage.getLocalStorage("userData-branch_id");
-              this.formData.user_id =
-                this.$auth.$storage.getLocalStorage("userData-id");
+              this.formData.branch_id = this.$auth.$storage.getLocalStorage("userData-branch_id");
+              this.formData.user_id = this.$auth.$storage.getLocalStorage("userData-id");
               this.formData.receivingMoney_type = this.receivingMoney_type;
               this.formData.bank_name = response.data.bank_name;
 
               this.formData.receiving_money_sum = response.data.car_price;
-              this.cvToString(
-                Number(this.formData.receiving_money_sum),
-                "receiving_money_sum_str"
-              );
+              this.cvToString(Number(this.formData.receiving_money_sum), "receiving_money_sum_str");
               this.formData.receiving_money_vat = 7;
-              this.formData.receiving_money_sum_vat =
-                Number(this.formData.car_price) * (Number(7) / 100);
+              this.formData.receiving_money_sum_vat = Number(this.formData.car_price) * (Number(7) / 100);
 
-              this.cvToString(
-                Number(this.formData.receiving_money_sum_vat),
-                "receiving_money_sum_vat_str"
-              );
+              this.cvToString(Number(this.formData.receiving_money_sum_vat), "receiving_money_sum_vat_str");
 
               this.formData.receiving_money_all =
-                Number(this.formData.car_price) +
-                Number(this.formData.receiving_money_sum_vat);
+                Number(this.formData.car_price) + Number(this.formData.receiving_money_sum_vat);
 
-              this.cvToString(
-                Number(this.formData.receiving_money_all),
-                "receiving_money_all_str"
-              );
+              this.cvToString(Number(this.formData.receiving_money_all), "receiving_money_all_str");
             }
           });
         }
@@ -829,20 +747,11 @@ export default {
       handler() {
         // console.log(this.formData.receiving_money_sum_vat);
 
-        this.cvToString(
-          Number(this.formData.receiving_money_sum),
-          "receiving_money_sum_str"
-        );
+        this.cvToString(Number(this.formData.receiving_money_sum), "receiving_money_sum_str");
 
-        this.cvToString(
-          Number(this.formData.receiving_money_sum_vat),
-          "receiving_money_sum_vat_str"
-        );
+        this.cvToString(Number(this.formData.receiving_money_sum_vat), "receiving_money_sum_vat_str");
 
-        this.cvToString(
-          Number(this.formData.receiving_money_all),
-          "receiving_money_all_str"
-        );
+        this.cvToString(Number(this.formData.receiving_money_all), "receiving_money_all_str");
       },
     },
   },

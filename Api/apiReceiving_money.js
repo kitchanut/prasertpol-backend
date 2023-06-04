@@ -26,9 +26,13 @@ export function show(id) {
   return request("get", url, {});
 }
 
-export function checkReceivingMoney(idWork, receivingMoney_type) {
-  const url =
-    HOSTNAME + "/api/checkReceivingMoney/" + idWork + "/" + receivingMoney_type;
+export function checkReceivingMoney(idWork, car_no, receivingMoney_type) {
+  const url = HOSTNAME + "/api/checkReceivingMoney/" + idWork + "/" + car_no + "/" + receivingMoney_type;
+  return request("post", url, {});
+}
+
+export function addReceivingMoneyWithCarNo(CarNo, receivingMoney_type) {
+  const url = HOSTNAME + "/api/addReceivingMoneyWithCarNo/" + CarNo + "/" + receivingMoney_type;
   return request("post", url, {});
 }
 
@@ -49,5 +53,10 @@ export function printCommi(user_id) {
 
 export function getWithWorkID(working_id) {
   const url = HOSTNAME + "/api/receiving_money/getWithWorkID/" + working_id;
+  return request("get", url, {});
+}
+
+export function getDataWithCarNo(car_no) {
+  const url = HOSTNAME + "/api/receiving_money/getDataWithCarNo/" + car_no;
   return request("get", url, {});
 }

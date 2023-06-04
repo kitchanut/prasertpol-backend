@@ -143,6 +143,7 @@ import drawerRequestLog from "@/components/dialog/drawerRequestLog";
 
 import * as apiRequestBook from "@/Api/apiRequestBook";
 import * as apiRequestAppointment from "@/Api/apiRequestAppointment";
+import * as apiRequestSignDeposit from "@/Api/apiRequestSignDeposit";
 import * as apiRequestSign from "@/Api/apiRequestSign";
 import * as apiRequestBankApprove from "@/Api/apiRequestBankApprove";
 import * as apiRequestRelease from "@/Api/apiRequestRelease";
@@ -228,6 +229,8 @@ export default {
         const respone = await apiRequestBook.update(id);
       } else if (type == "นัดทำสัญญา") {
         const respone = await apiRequestAppointment.update(id);
+      } else if (type == "ฝากเซนต์") {
+        const respone = await apiRequestSignDeposit.update(id);
       } else if (type == "การทำสัญญา") {
         const respone = await apiRequestSign.update(id);
       } else if (type == "แบงค์อนุมัติ") {

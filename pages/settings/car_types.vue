@@ -14,8 +14,8 @@
         <v-col cols="3">
           <v-text-field
             v-model="search"
-id="search"
-name="search"
+            id="search"
+            name="search"
             append-icon="mdi-magnify"
             label="ค้นหา"
             single-line
@@ -38,6 +38,12 @@ name="search"
          -->
         <template v-slot:[`item.car_type_icon`]="{ item }">
           <v-icon> {{ item.car_type_icon }} </v-icon>
+        </template>
+
+        <template v-slot:[`item.car_type_main`]="{ item }">
+          <span v-if="item.car_type_main == 1">เก๋ง</span>
+          <span v-else-if="item.car_type_main == 2">กระบะ</span>
+          <span v-else>N/A</span>
         </template>
 
         <template v-slot:[`item.car_type_code_color`]="{ item }">
@@ -102,8 +108,9 @@ export default {
       headers: [
         { text: "ลำดับ", value: "no", width: "7%", align: "center" },
 
-        { text: "รหัสสี", value: "car_type_code_color", width: "10%" },
-        { text: "ไอคอน", value: "car_type_icon", width: "10%" },
+        { text: "รหัสสี", value: "car_type_code_color", width: "8%" },
+        { text: "ไอคอน", value: "car_type_icon", width: "8%" },
+        { text: "ประเภทหลัก", value: "car_type_main", width: "10%" },
         { text: "ประเภทรถไทย", value: "car_type_name", width: "10%" },
         { text: "ประเภทรถอังกฤษ", value: "car_type_name_en", width: "10%" },
         { text: "สถานะ", value: "car_type_active", width: "5%" },

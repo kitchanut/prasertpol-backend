@@ -14,27 +14,6 @@
   "FebButtonWork": {
     "description": "Auto imported from components/febButtonWork.vue"
   },
-  "DateSelect": {
-    "description": "Auto imported from components/DateSelect/dateSelect.vue"
-  },
-  "DateSelect2": {
-    "description": "Auto imported from components/DateSelect/dateSelect2.vue"
-  },
-  "DateSelectMonth": {
-    "description": "Auto imported from components/DateSelect/dateSelectMonth.vue"
-  },
-  "DateSelectMonthAll": {
-    "description": "Auto imported from components/DateSelect/dateSelectMonthAll.vue"
-  },
-  "DoughnutChartCarType": {
-    "description": "Auto imported from components/DoughnutChartDash/DoughnutChartCarType.vue"
-  },
-  "DoughnutChartDashBranchCar": {
-    "description": "Auto imported from components/DoughnutChartDash/DoughnutChartDashBranchCar.vue"
-  },
-  "DoughnutChartDashSale": {
-    "description": "Auto imported from components/DoughnutChartDash/DoughnutChartDashSale.vue"
-  },
   "BarChartBranch": {
     "description": "Auto imported from components/BarChart/BarChartBranch.vue"
   },
@@ -104,20 +83,32 @@
   "DoughnutChartUser": {
     "description": "Auto imported from components/DoughnutChart/DoughnutChartUser.vue"
   },
-  "MobileDialogBooking": {
-    "description": "Auto imported from components/mobile/dialogBooking.vue"
+  "DoughnutChartCarType": {
+    "description": "Auto imported from components/DoughnutChartDash/DoughnutChartCarType.vue"
   },
-  "MobileDialogContract": {
-    "description": "Auto imported from components/mobile/dialogContract.vue"
+  "DoughnutChartDashBranchCar": {
+    "description": "Auto imported from components/DoughnutChartDash/DoughnutChartDashBranchCar.vue"
   },
-  "MobileDialogFinancial": {
-    "description": "Auto imported from components/mobile/dialogFinancial.vue"
+  "DoughnutChartDashSale": {
+    "description": "Auto imported from components/DoughnutChartDash/DoughnutChartDashSale.vue"
   },
-  "MobileDialogInsurCertificate": {
-    "description": "Auto imported from components/mobile/dialogInsurCertificate.vue"
+  "DateSelect": {
+    "description": "Auto imported from components/DateSelect/dateSelect.vue"
   },
-  "MobileDialogReceiveDown": {
-    "description": "Auto imported from components/mobile/dialogReceiveDown.vue"
+  "DateSelect2": {
+    "description": "Auto imported from components/DateSelect/dateSelect2.vue"
+  },
+  "DateSelectMonth": {
+    "description": "Auto imported from components/DateSelect/dateSelectMonth.vue"
+  },
+  "DateSelectMonthAll": {
+    "description": "Auto imported from components/DateSelect/dateSelectMonthAll.vue"
+  },
+  "DashboardComInventoryCar": {
+    "description": "Auto imported from components/Dashboard/ComInventoryCar.vue"
+  },
+  "DashboardComWorkStatus": {
+    "description": "Auto imported from components/Dashboard/ComWorkStatus.vue"
   },
   "DialogAddIncome": {
     "description": "Auto imported from components/dialog/dialogAdd_income.vue"
@@ -323,8 +314,20 @@
   "DialogDrawerRequestLog": {
     "description": "Auto imported from components/dialog/drawerRequestLog.vue"
   },
-  "SelectDropDownAmphure": {
-    "description": "Auto imported from components/selectDropDown/selectDropDownAmphure.vue"
+  "MobileDialogBooking": {
+    "description": "Auto imported from components/mobile/dialogBooking.vue"
+  },
+  "MobileDialogContract": {
+    "description": "Auto imported from components/mobile/dialogContract.vue"
+  },
+  "MobileDialogFinancial": {
+    "description": "Auto imported from components/mobile/dialogFinancial.vue"
+  },
+  "MobileDialogInsurCertificate": {
+    "description": "Auto imported from components/mobile/dialogInsurCertificate.vue"
+  },
+  "MobileDialogReceiveDown": {
+    "description": "Auto imported from components/mobile/dialogReceiveDown.vue"
   },
   "SelectAddCarModel": {
     "description": "Auto imported from components/selectAdd/selectAddCarModel.vue"
@@ -358,5 +361,8 @@
   },
   "SelectAddUnit": {
     "description": "Auto imported from components/selectAdd/selectAddUnit.vue"
+  },
+  "SelectDropDownAmphure": {
+    "description": "Auto imported from components/selectDropDown/selectDropDownAmphure.vue"
   }
 }

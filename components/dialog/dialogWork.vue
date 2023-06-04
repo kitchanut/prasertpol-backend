@@ -5,31 +5,19 @@
       id="dialogDeleteComponent"
       name="dialogDeleteComponent"
       width="500px"
-      :fullscreen="$vuetify.breakpoint.name == 'xs' || $vuetify.breakpoint.name == 'sm'? true: false"
+      :fullscreen="$vuetify.breakpoint.name == 'xs' || $vuetify.breakpoint.name == 'sm' ? true : false"
     >
       <v-card>
-        <v-form
-          autocomplete="true"
-          ref="form"
-          @submit.prevent="onAction(formData.id)"
-        >
-          <v-toolbar
-            color="primary"
-            dark
-            flat
-          >
+        <v-form autocomplete="true" ref="form" @submit.prevent="onAction(formData.id)">
+          <v-toolbar color="primary" dark flat>
             {{ formTitleWork }}
           </v-toolbar>
 
-          <v-progress-linear
-            v-if="formDataLoading"
-            indeterminate
-            color="yellow darken-2"
-          >
-          </v-progress-linear>
+          <!-- {{ formData }} -->
+
+          <v-progress-linear v-if="formDataLoading" indeterminate color="yellow darken-2"> </v-progress-linear>
 
           <v-card-text>
-
             <div v-if="actionWork != 'cancel'">
               <v-row>
                 <v-col cols="12">
@@ -48,33 +36,17 @@
                     hide-details
                     :rules="rule"
                   >
-                    <template
-                      slot="selection"
-                      slot-scope="{ item }"
-                    >
+                    <template slot="selection" slot-scope="{ item }">
                       {{ item.car_no }} ({{ item.car_regis }})
                     </template>
 
-                    <template
-                      slot="item"
-                      slot-scope="{ item }"
-                    >
-                      {{ item.car_no }} ({{ item.car_regis }})
-                    </template>
+                    <template slot="item" slot-scope="{ item }"> {{ item.car_no }} ({{ item.car_regis }}) </template>
                   </v-autocomplete>
                 </v-col>
               </v-row>
 
               <v-row>
-                <v-col
-                  cols="12"
-                  xs="12"
-                  sm="12"
-                  md="12"
-                  lg="12"
-                  xl="12"
-                  class="pt-0"
-                >
+                <v-col cols="12" xs="12" sm="12" md="12" lg="12" xl="12" class="pt-0">
                   <v-autocomplete
                     v-model="formData.customer_id"
                     id="formData.customer_id"
@@ -89,29 +61,19 @@
                     hide-details
                     :rules="rule"
                   >
-                    <template
-                      slot="selection"
-                      slot-scope="{ item }"
-                    >
+                    <template slot="selection" slot-scope="{ item }">
                       {{ item.customer_name }} ({{ item.customer_nickname }})
                     </template>
 
-                    <template
-                      slot="item"
-                      slot-scope="{ item }"
-                    >
+                    <template slot="item" slot-scope="{ item }">
                       {{ item.customer_name }} ({{ item.customer_nickname }})
                     </template>
 
                     <template v-slot:append-item>
-                      <selectAddCustomer
-                        @success="addSuccess"
-                        @error="addError"
-                      />
+                      <selectAddCustomer @success="addSuccess" @error="addError" />
                     </template>
                   </v-autocomplete>
                 </v-col>
-
               </v-row>
 
               <!-- <v-row v-if="actionWork == 'add'">
@@ -133,12 +95,13 @@
               </v-row> -->
 
               <v-row>
-                <v-col
-                  cols="12"
-                  class="pt-0"
-                >
+                <v-col cols="12" class="pt-0">
                   <v-autocomplete
-                    :readonly="user_group_permission == -1 || user_group_permission == 2 || formData.sale_id == null ?false:true"
+                    :readonly="
+                      user_group_permission == -1 || user_group_permission == 2 || formData.sale_id == null
+                        ? false
+                        : true
+                    "
                     v-model="formData.sale_id"
                     :items="datauserSale"
                     item-text="name"
@@ -154,22 +117,8 @@
                 </v-col>
               </v-row>
 
-              <v-row
-                class="rounded ma-auto mt-3"
-                style="
-                  border-style: solid;
-                  border-width: 1px;
-                  border-color: gray;
-                "
-              >
-                <v-col
-                  cols="12"
-                  xs="12"
-                  sm="12"
-                  md="12"
-                  lg="12"
-                  xl="12"
-                >
+              <v-row class="rounded ma-auto mt-3" style="border-style: solid; border-width: 1px; border-color: gray">
+                <v-col cols="12" xs="12" sm="12" md="12" lg="12" xl="12">
                   <v-radio-group
                     v-model="formData.hear_from_type"
                     id="formData.hear_from_type"
@@ -180,43 +129,19 @@
                     <template>
                       <div>ทราบข่าวมาจาก:</div>
                     </template>
-                    <v-radio
-                      value="1"
-                      label="หน้าร้าน"
-                    ></v-radio>
-                    <v-radio
-                      value="2"
-                      label="เพจบริษัท"
-                    ></v-radio>
-                    <v-radio
-                      value="3"
-                      label="ลูกค้าเก่าแนะนำ"
-                    ></v-radio>
-                    <v-radio
-                      value="4"
-                      label="นายหน้า"
-                    ></v-radio>
-                    <v-radio
-                      value="5"
-                      label="ใบปลิว"
-                    ></v-radio>
-                    <v-radio
-                      value="6"
-                      label="Marketplace/ไลน์/เพจส่วนตัว"
-                    ></v-radio>
-                    <v-radio
-                      value="7"
-                      label="เว็บไซต์"
-                    ></v-radio>
+                    <v-radio value="1" label="หน้าร้าน"></v-radio>
+                    <v-radio value="2" label="เพจบริษัท"></v-radio>
+                    <v-radio value="3" label="ลูกค้าเก่าแนะนำ"></v-radio>
+                    <v-radio value="4" label="นายหน้า"></v-radio>
+                    <v-radio value="5" label="ใบปลิว"></v-radio>
+                    <v-radio value="6" label="Marketplace/ไลน์/เพจส่วนตัว"></v-radio>
+                    <v-radio value="7" label="เว็บไซต์"></v-radio>
                   </v-radio-group>
                 </v-col>
               </v-row>
 
               <v-row>
-                <v-col
-                  cols="12"
-                  class="pt-0"
-                >
+                <v-col cols="12" class="pt-0">
                   <v-textarea
                     rows="2"
                     label="สิ่งที่ลูกค้าต้องการ"
@@ -231,7 +156,6 @@
                   </v-textarea>
                 </v-col>
               </v-row>
-
             </div>
 
             <v-row v-if="actionWork == 'cancel'">
@@ -253,21 +177,11 @@
             </v-row>
 
             <!-- {{formData}} -->
-
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn
-              color="red darken-1"
-              text
-              @click="$emit('cancleItem')"
-            >ยกเลิก</v-btn>
-            <v-btn
-              type="submit"
-              color="success darken-1"
-              text
-              :loading="btnloading"
-            >บันทึก</v-btn>
+            <v-btn color="red darken-1" text @click="$emit('cancleItem')">ยกเลิก</v-btn>
+            <v-btn type="submit" color="success darken-1" text :loading="btnloading">บันทึก</v-btn>
           </v-card-actions>
         </v-form>
       </v-card>
@@ -298,20 +212,15 @@ export default {
       customer: [],
       cancel_rule: [],
       dialogDeleteComponent: false,
-      user_group_permission: this.$auth.$storage.getLocalStorage(
-        "userData-user_group_permission"
-      ),
+      user_group_permission: this.$auth.$storage.getLocalStorage("userData-user_group_permission"),
     };
   },
   mounted() {},
   methods: {
     filterObject(item, queryText, itemText) {
       return (
-        item.car_no.toLocaleLowerCase().indexOf(queryText.toLocaleLowerCase()) >
-          -1 ||
-        item.car_regis
-          .toLocaleLowerCase()
-          .indexOf(queryText.toLocaleLowerCase()) > -1
+        item.car_no.toLocaleLowerCase().indexOf(queryText.toLocaleLowerCase()) > -1 ||
+        item.car_regis.toLocaleLowerCase().indexOf(queryText.toLocaleLowerCase()) > -1
       );
     },
     async getCustomer() {
@@ -332,8 +241,7 @@ export default {
       this.datauserSale = response.data.map(function (item) {
         var newItem = {};
         newItem.id = item.id;
-        newItem.name =
-          item.first_name + " " + item.last_name + " (" + item.user_code + ")";
+        newItem.name = item.first_name + " " + item.last_name + " (" + item.user_code + ")";
         return newItem;
       });
 
@@ -410,8 +318,7 @@ export default {
                 work_status: 1,
                 hear_from_type: "1",
                 sale_id: self.$auth.$storage.getLocalStorage("userData-id"),
-                sale_code:
-                  self.$auth.$storage.getLocalStorage("userData-user_code"),
+                sale_code: self.$auth.$storage.getLocalStorage("userData-user_code"),
               };
             });
           });

@@ -397,10 +397,7 @@
         </v-tabs> -->
         <div id="mycontainer">
           <div id="outer">
-            <div
-              class="wrapper1"
-              style="overflow-x: scroll; overflow-y: hidden"
-            >
+            <div class="wrapper1" style="overflow-x: scroll; overflow-y: hidden">
               <div :style="'width:' + tableWidth + 'px; height: 20px;'"></div>
             </div>
 
@@ -431,37 +428,21 @@
                 <h5 v-if="item.hear_from_type == 3">ลูกค้าเก่าแนะนำ</h5>
                 <h5 v-if="item.hear_from_type == 4">นายหน้า</h5>
                 <h5 v-if="item.hear_from_type == 5">ใบปลิว</h5>
-                <h5 v-if="item.hear_from_type == 6">
-                  Marketplace/ไลน์/เพจส่วนตัว
-                </h5>
+                <h5 v-if="item.hear_from_type == 6">Marketplace/ไลน์/เพจส่วนตัว</h5>
                 <h5 v-if="item.hear_from_type == 7">ออนไลน์</h5>
               </template>
 
               <template v-slot:[`item.sale`]="{ item }">
-                <h5
-                  v-if="item.sale_id == null || item.sale_id == 0"
-                  class="red--text"
-                >
-                  ยังไม่เลือก
-                </h5>
+                <h5 v-if="item.sale_id == null || item.sale_id == 0" class="red--text">ยังไม่เลือก</h5>
                 <h5 v-else>
-                  <v-btn
-                    dark
-                    x-small
-                    class="mx-1"
-                    color="green"
-                    @click="getSale(item.sale_id)"
-                  >
+                  <v-btn dark x-small class="mx-1" color="green" @click="getSale(item.sale_id)">
                     {{ item.sale == null ? "" : item.sale.first_name }}
                   </v-btn>
                 </h5>
               </template>
 
               <template v-slot:[`item.branch.branch_name`]="{ item }">
-                <h5
-                  v-if="item.sale_id == null || item.sale_id == 0"
-                  class="red--text"
-                >
+                <h5 v-if="item.sale_id == null || item.sale_id == 0" class="red--text">
                   {{ item.branch.branch_name }}
                 </h5>
                 <h5 v-else>
@@ -470,117 +451,33 @@
               </template>
 
               <template v-slot:[`item.appointment_bank_type`]="{ item }">
-                <v-btn
-                  v-if="item.appointment_bank_type == 1"
-                  class="mt-1"
-                  x-small
-                  color="green"
-                  dark
-                  >ครบ</v-btn
-                >
-                <v-btn
-                  v-if="item.appointment_bank_type == 2"
-                  class="mt-1"
-                  x-small
-                  color="red"
-                  dark
-                  >ไม่ครบ</v-btn
-                >
+                <v-btn v-if="item.appointment_bank_type == 1" class="mt-1" x-small color="green" dark>ครบ</v-btn>
+                <v-btn v-if="item.appointment_bank_type == 2" class="mt-1" x-small color="red" dark>ไม่ครบ</v-btn>
               </template>
 
               <template v-slot:[`item.work_status`]="{ item }">
                 <div>
-                  <v-btn
-                    v-if="item.work_status == '1'"
-                    x-small
-                    color="primary"
-                    dark
-                    >ลูกค้าสนใจ</v-btn
-                  >
-                  <v-btn
-                    v-if="item.work_status == '2'"
-                    x-small
-                    color="primary"
-                    dark
-                    >ยืนยันการจอง</v-btn
-                  >
-                  <v-btn
-                    v-if="item.work_status == '3'"
-                    x-small
-                    color="primary"
-                    dark
-                    >วางมัดจำแล้ว</v-btn
-                  >
-                  <v-btn
-                    v-if="item.work_status == '4'"
-                    x-small
-                    color="primary"
-                    dark
-                    >นัดทำสัญญาแล้ว</v-btn
-                  >
-                  <v-btn
-                    v-if="item.work_status == '5'"
-                    x-small
-                    color="primary"
-                    dark
-                    >รอแบงค์อนุมัติ</v-btn
-                  >
-                  <v-btn v-if="item.work_status == '6'" x-small color="red" dark
-                    >แบงค์ไม่อนุมัติ</v-btn
-                  >
-                  <v-btn
-                    v-if="item.work_status == '7'"
-                    x-small
-                    color="primary"
-                    dark
-                    >แบงค์อนุมัติแล้ว</v-btn
-                  >
-                  <v-btn
-                    v-if="item.work_status == '8'"
-                    x-small
-                    color="primary"
-                    dark
-                    >รอชุดโอน</v-btn
-                  >
-                  <v-btn
-                    v-if="item.work_status == '9'"
-                    x-small
-                    color="warning"
-                    dark
-                    >รอตรวจสอบ</v-btn
-                  >
-                  <v-btn
-                    v-if="item.work_status == '10'"
-                    x-small
-                    color="warning"
-                    dark
-                    >รอปิดงาน</v-btn
-                  >
-                  <v-btn
-                    v-if="item.work_status == '11'"
-                    x-small
-                    color="success"
-                    dark
-                    >ปิดงาน</v-btn
-                  >
+                  <v-btn v-if="item.work_status == '1'" x-small color="primary" dark>ลูกค้าสนใจ</v-btn>
+                  <v-btn v-if="item.work_status == '2'" x-small color="primary" dark>ยืนยันการจอง</v-btn>
+                  <v-btn v-if="item.work_status == '3'" x-small color="primary" dark>วางมัดจำแล้ว</v-btn>
+                  <v-btn v-if="item.work_status == '4'" x-small color="primary" dark>นัดทำสัญญาแล้ว</v-btn>
+                  <v-btn v-if="item.work_status == '5'" x-small color="primary" dark>รอแบงค์อนุมัติ</v-btn>
+                  <v-btn v-if="item.work_status == '6'" x-small color="red" dark>แบงค์ไม่อนุมัติ</v-btn>
+                  <v-btn v-if="item.work_status == '7'" x-small color="primary" dark>แบงค์อนุมัติแล้ว</v-btn>
+                  <v-btn v-if="item.work_status == '8'" x-small color="primary" dark>รอชุดโอน</v-btn>
+                  <v-btn v-if="item.work_status == '9'" x-small color="warning" dark>รอตรวจสอบ</v-btn>
+                  <v-btn v-if="item.work_status == '10'" x-small color="warning" dark>รอปิดงาน</v-btn>
+                  <v-btn v-if="item.work_status == '11'" x-small color="success" dark>ปิดงาน</v-btn>
                 </div>
 
-                <v-btn
-                  v-if="item.pathner_job_technician == 1"
-                  class="mt-1"
-                  x-small
-                  color="red"
-                  dark
+                <v-btn v-if="item.pathner_job_technician == 1" class="mt-1" x-small color="red" dark
                   >มีงานซ่อมนอก</v-btn
                 >
 
                 <span v-if="item.contract == null"></span>
                 <span v-else>
                   <v-btn
-                    v-if="
-                      item.contract.contract_bath_hold != 0 &&
-                      item.contract.contract_bath_hold != null
-                    "
+                    v-if="item.contract.contract_bath_hold != 0 && item.contract.contract_bath_hold != null"
                     class="mt-1"
                     x-small
                     color="red"
@@ -613,13 +510,7 @@
               </template>
 
               <template v-slot:[`item.created_at`]="{ item }">
-                <span
-                  style="color: red"
-                  v-if="
-                    $moment().unix() >
-                    Number($moment(item.created_at).unix()) + 25200
-                  "
-                >
+                <span style="color: red" v-if="$moment().unix() > Number($moment(item.created_at).unix()) + 25200">
                   {{ $moment(item.created_at).fromNow(true) }}
                 </span>
                 <span style="color: blue" v-else>
@@ -633,9 +524,7 @@
 
               <template v-slot:[`item.contract.contract_date`]="{ item }">
                 <span v-if="item.contract != null">
-                  {{
-                    $moment(item.contract.contract_date).format("DD/MM/YYYY")
-                  }}
+                  {{ $moment(item.contract.contract_date).format("DD/MM/YYYY") }}
                 </span>
               </template>
 
@@ -647,9 +536,7 @@
 
               <template v-slot:[`item.appointment_money_date`]="{ item }">
                 <span v-if="item.appointment_money_date != null">
-                  {{
-                    $moment(item.appointment_money_date).format("DD/MM/YYYY")
-                  }}
+                  {{ $moment(item.appointment_money_date).format("DD/MM/YYYY") }}
                 </span>
               </template>
 
@@ -661,24 +548,14 @@
 
               <template v-slot:[`item.appointment_transfer_date`]="{ item }">
                 <span v-if="item.appointment_transfer_date != null">
-                  {{
-                    $moment(item.appointment_transfer_date).format("DD/MM/YYYY")
-                  }}
+                  {{ $moment(item.appointment_transfer_date).format("DD/MM/YYYY") }}
                 </span>
               </template>
 
-              <template
-                v-slot:[`item.appointment_banks.appointment_sentbook_date`]="{
-                  item,
-                }"
-              >
+              <template v-slot:[`item.appointment_banks.appointment_sentbook_date`]="{ item }">
                 <span v-if="item.appointment_banks != null">
                   <div v-if="item.appointment_banks.appointment_sentbook_date">
-                    {{
-                      $moment(
-                        item.appointment_banks.appointment_sentbook_date
-                      ).format("DD/MM/YYYY")
-                    }}
+                    {{ $moment(item.appointment_banks.appointment_sentbook_date).format("DD/MM/YYYY") }}
                   </div>
                 </span>
               </template>
@@ -692,13 +569,10 @@
               <template v-slot:[`item.appointment_banks.car_price`]="{ item }">
                 <span v-if="item.appointment_banks != null">
                   {{
-                    Number(item.appointment_banks.car_price).toLocaleString(
-                      "th-TH",
-                      {
-                        maximumFractionDigits: 2,
-                        minimumFractionDigits: 2,
-                      }
-                    )
+                    Number(item.appointment_banks.car_price).toLocaleString("th-TH", {
+                      maximumFractionDigits: 2,
+                      minimumFractionDigits: 2,
+                    })
                   }}</span
                 >
                 <span v-else>0</span>
@@ -707,27 +581,18 @@
               <template v-slot:[`item.bookings.amount_slacken`]="{ item }">
                 <span v-if="item.bookings != null">
                   {{
-                    Number(item.bookings.amount_slacken).toLocaleString(
-                      "th-TH",
-                      {
-                        maximumFractionDigits: 2,
-                        minimumFractionDigits: 2,
-                      }
-                    )
+                    Number(item.bookings.amount_slacken).toLocaleString("th-TH", {
+                      maximumFractionDigits: 2,
+                      minimumFractionDigits: 2,
+                    })
                   }}</span
                 >
                 <span v-else>0</span>
               </template>
-              <template
-                v-slot:[`item.appointment_banks.appointment_money_price`]="{
-                  item,
-                }"
-              >
+              <template v-slot:[`item.appointment_banks.appointment_money_price`]="{ item }">
                 <span v-if="item.appointment_banks != null">
                   {{
-                    Number(
-                      item.appointment_banks.appointment_money_price
-                    ).toLocaleString("th-TH", {
+                    Number(item.appointment_banks.appointment_money_price).toLocaleString("th-TH", {
                       maximumFractionDigits: 2,
                       minimumFractionDigits: 2,
                     })
@@ -764,30 +629,18 @@
                         user_group_permission == 9 ||
                         user_group_permission == 10
                       "
-                      @click="
-                        Booking(
-                          item.cars.car_no,
-                          item.id,
-                          item.car_id,
-                          item.customer_id,
-                          item.sale_id
-                        )
-                      "
+                      @click="Booking(item.cars.car_no, item.id, item.car_id, item.customer_id, item.sale_id)"
                     >
-                      <v-list-item-title>{{
-                        item.work_status > 1 ? "ดูข้อมูลการจอง" : "จอง"
-                      }}</v-list-item-title>
+                      <v-list-item-title>{{ item.work_status > 1 ? "ดูข้อมูลการจอง" : "จอง" }}</v-list-item-title>
                     </v-list-item>
 
                     <v-list-item
                       v-if="
-                        (item.work_status >= 2 &&
-                          user_group_permission == -1) ||
+                        (item.work_status >= 2 && user_group_permission == -1) ||
                         (item.work_status >= 2 && user_group_permission == 2) ||
                         (item.work_status >= 2 && user_group_permission == 3) ||
                         (item.work_status >= 2 && user_group_permission == 9) ||
-                        (item.work_status >= 2 &&
-                          user_group_permission == 11) ||
+                        (item.work_status >= 2 && user_group_permission == 11) ||
                         (item.work_status >= 2 && user_group_permission == 10)
                       "
                       @click="Financial(item.cars.car_no, item.id, '1')"
@@ -799,59 +652,39 @@
 
                     <v-list-item
                       v-if="
-                        (item.work_status >= 3 &&
-                          user_group_permission == -1) ||
+                        (item.work_status >= 3 && user_group_permission == -1) ||
                         (item.work_status >= 3 && user_group_permission == 2) ||
                         (item.work_status >= 3 && user_group_permission == 3) ||
                         (item.work_status >= 3 && user_group_permission == 9) ||
-                        (item.work_status >= 3 &&
-                          user_group_permission == 10) ||
+                        (item.work_status >= 3 && user_group_permission == 10) ||
                         (item.work_status >= 3 && user_group_permission == 11)
                       "
                       @click="ReceiveDown(item.car_no, item.id)"
                     >
                       <v-list-item-title style="color: green">{{
-                        item.work_status > 3
-                          ? "ใบสำคัญรับเงิน"
-                          : "ใบสำคัญรับเงิน"
+                        item.work_status > 3 ? "ใบสำคัญรับเงิน" : "ใบสำคัญรับเงิน"
                       }}</v-list-item-title>
                     </v-list-item>
 
                     <v-list-item
-                      v-if="
-                        item.work_status >= 3 && user_group_permission == -1
-                      "
-                      @click="
-                        JobTechnician(item.cars.car_no, item.id, item.car_id)
-                      "
+                      v-if="item.work_status >= 3 && user_group_permission == -1"
+                      @click="JobTechnician(item.cars.car_no, item.id, item.car_id)"
                     >
                       <v-list-item-title>{{
-                        item.work_status > 3
-                          ? "ดูข้อมูลซ่อม (อู่ใน)"
-                          : "แจ้งซ่อม (อู่ใน)"
+                        item.work_status > 3 ? "ดูข้อมูลซ่อม (อู่ใน)" : "แจ้งซ่อม (อู่ใน)"
                       }}</v-list-item-title>
                     </v-list-item>
 
                     <v-list-item
-                      v-if="
-                        item.work_status >= 3 && user_group_permission == -1
-                      "
-                      @click="
-                        PathnerJobTechnician(
-                          item.cars.car_no,
-                          item.id,
-                          item.car_id,
-                          item.car_stock
-                        )
-                      "
+                      v-if="item.work_status >= 3 && user_group_permission == -1"
+                      @click="PathnerJobTechnician(item.cars.car_no, item.id, item.car_id, item.car_stock)"
                     >
                       <v-list-item-title>แจ้งซ่อม (อู่นอก)</v-list-item-title>
                     </v-list-item>
 
                     <v-list-item
                       v-if="
-                        (item.work_status >= 3 &&
-                          user_group_permission == -1) ||
+                        (item.work_status >= 3 && user_group_permission == -1) ||
                         (item.work_status >= 3 && user_group_permission == 2) ||
                         (item.work_status >= 3 && user_group_permission == 3) ||
                         (item.work_status >= 3 && user_group_permission == 10)
@@ -859,52 +692,42 @@
                       @click="Appointment(item.cars.car_no, item.id)"
                     >
                       <v-list-item-title>{{
-                        item.work_status > 3
-                          ? "ดูวันนัดทำสัญญากับแบงค์"
-                          : "วันนัดทำสัญญากับแบงค์"
+                        item.work_status > 3 ? "ดูวันนัดทำสัญญากับแบงค์" : "วันนัดทำสัญญากับแบงค์"
                       }}</v-list-item-title>
                     </v-list-item>
 
                     <v-list-item
                       v-if="
-                        (item.work_status >= 4 &&
-                          user_group_permission == -1) ||
+                        (item.work_status >= 4 && user_group_permission == -1) ||
                         (item.work_status >= 4 && user_group_permission == 2) ||
                         (item.work_status >= 4 && user_group_permission == 3) ||
                         (item.work_status >= 4 && user_group_permission == 9) ||
-                        (item.work_status >= 4 &&
-                          user_group_permission == 10) ||
+                        (item.work_status >= 4 && user_group_permission == 10) ||
                         (item.work_status >= 4 && user_group_permission == 11)
                       "
                       @click="AppointmentBank(item.cars.car_no, item.id)"
                     >
                       <v-list-item-title>{{
-                        item.work_status > 4
-                          ? "ดูวันที่ทำสัญญากับแบงค์"
-                          : "วันที่ทำสัญญากับแบงค์"
+                        item.work_status > 4 ? "ดูวันที่ทำสัญญากับแบงค์" : "วันที่ทำสัญญากับแบงค์"
                       }}</v-list-item-title>
                     </v-list-item>
 
                     <v-list-item
                       v-if="
-                        (item.work_status >= 5 &&
-                          user_group_permission == -1) ||
+                        (item.work_status >= 5 && user_group_permission == -1) ||
                         (item.work_status >= 5 && user_group_permission == 9) ||
                         (item.work_status >= 5 && user_group_permission == 10)
                       "
                       @click="BankApproved(item.cars.car_no, item.id)"
                     >
                       <v-list-item-title>{{
-                        item.work_status > 5
-                          ? "ดูข้อมูลแบงค์อนุมัติ"
-                          : "แบงค์อนุมัติ"
+                        item.work_status > 5 ? "ดูข้อมูลแบงค์อนุมัติ" : "แบงค์อนุมัติ"
                       }}</v-list-item-title>
                     </v-list-item>
 
                     <v-list-item
                       v-if="
-                        (item.work_status >= 5 &&
-                          user_group_permission == -1) ||
+                        (item.work_status >= 5 && user_group_permission == -1) ||
                         (item.work_status >= 5 && user_group_permission == 9) ||
                         (item.work_status >= 5 && user_group_permission == 10)
                       "
@@ -951,27 +774,16 @@
 
                     <v-list-item
                       v-if="
-                        (item.work_status >= 7 &&
-                          user_group_permission == -1) ||
+                        (item.work_status >= 7 && user_group_permission == -1) ||
                         (item.work_status >= 7 && user_group_permission == 2) ||
                         (item.work_status >= 7 && user_group_permission == 3) ||
                         (item.work_status >= 7 && user_group_permission == 9) ||
-                        (item.work_status >= 7 &&
-                          user_group_permission == 10) ||
+                        (item.work_status >= 7 && user_group_permission == 10) ||
                         (item.work_status >= 7 && user_group_permission == 11)
                       "
-                      @click="
-                        Contract(
-                          item.cars.car_no,
-                          item.id,
-                          item.car_id,
-                          item.customer_id
-                        )
-                      "
+                      @click="Contract(item.cars.car_no, item.id, item.car_id, item.customer_id)"
                     >
-                      <v-list-item-title>{{
-                        item.work_status > 7 ? "ดูข้อมูลปล่อยรถ" : "ปล่อยรถ"
-                      }}</v-list-item-title>
+                      <v-list-item-title>{{ item.work_status > 7 ? "ดูข้อมูลปล่อยรถ" : "ปล่อยรถ" }}</v-list-item-title>
                     </v-list-item>
 
                     <!-- <v-list-item
@@ -996,29 +808,19 @@
 
                     <v-list-item
                       v-if="
-                        (item.work_status >= 7 &&
-                          user_group_permission == -1) ||
+                        (item.work_status >= 7 && user_group_permission == -1) ||
                         (item.work_status >= 7 && user_group_permission == 2) ||
                         (item.work_status >= 7 && user_group_permission == 3) ||
                         (item.work_status >= 7 && user_group_permission == 9)
                       "
-                      @click="
-                        InsurCertificate(
-                          item.cars.car_no,
-                          item.id,
-                          item.car_id,
-                          item.customer_id
-                        )
-                      "
+                      @click="InsurCertificate(item.cars.car_no, item.id, item.car_id, item.customer_id)"
                     >
                       <v-list-item-title>{{
-                        item.work_status > 7
-                          ? "ดูข้อมูลใบประกันรถยนต์"
-                          : "ใบประกันรถยนต์"
+                        item.work_status > 7 ? "ดูข้อมูลใบประกันรถยนต์" : "ใบประกันรถยนต์"
                       }}</v-list-item-title>
                     </v-list-item>
 
-                    <v-list-item
+                    <!-- <v-list-item
                       v-if="
                         (item.work_status >= 7 &&
                           user_group_permission == -1) ||
@@ -1034,9 +836,9 @@
                             : "บันทึกการรับเงิน (ค่าตัวรถ)"
                         }}
                       </v-list-item-title>
-                    </v-list-item>
+                    </v-list-item> -->
 
-                    <v-list-item
+                    <!-- <v-list-item
                       v-if="
                         (item.work_status >= 7 &&
                           user_group_permission == -1) ||
@@ -1052,7 +854,7 @@
                             : "บันทึกการรับเงิน (ค่าคอม)"
                         }}
                       </v-list-item-title>
-                    </v-list-item>
+                    </v-list-item> -->
 
                     <!-- <v-list-item
                       v-if="
@@ -1067,41 +869,31 @@
 
                     <v-list-item
                       v-if="
-                        (item.work_status >= 8 &&
-                          user_group_permission == -1) ||
+                        (item.work_status >= 8 && user_group_permission == -1) ||
                         (item.work_status >= 8 && user_group_permission == 9) ||
-                        (item.work_status >= 8 &&
-                          user_group_permission == 10) ||
+                        (item.work_status >= 8 && user_group_permission == 10) ||
                         (item.work_status >= 5 && user_group_permission == 11)
                       "
                       @click="CarTransferred(item.cars.car_no, item.id)"
                     >
-                      <v-list-item-title>{{
-                        item.work_status > 8 ? "ดูข้อมูลชุดโอน" : "ชุดโอน"
-                      }}</v-list-item-title>
+                      <v-list-item-title>{{ item.work_status > 8 ? "ดูข้อมูลชุดโอน" : "ชุดโอน" }}</v-list-item-title>
                     </v-list-item>
 
                     <v-list-item
                       v-if="
-                        (item.work_status == 9 &&
-                          user_group_permission == -1) ||
-                        (item.work_status == 9 &&
-                          user_group_permission == 10) ||
+                        (item.work_status == 9 && user_group_permission == -1) ||
+                        (item.work_status == 9 && user_group_permission == 10) ||
                         (item.work_status == 9 && user_group_permission == 11)
                       "
                       @click="update_status(item.id, item.work_status)"
                     >
-                      <v-list-item-title
-                        >ยืนยันการบันทึกเอกสารครบถ้วน</v-list-item-title
-                      >
+                      <v-list-item-title>ยืนยันการบันทึกเอกสารครบถ้วน</v-list-item-title>
                     </v-list-item>
 
                     <v-list-item
                       v-if="
-                        (item.work_status >= 10 &&
-                          user_group_permission == -1) ||
-                        (item.work_status >= 10 &&
-                          user_group_permission == 10) ||
+                        (item.work_status >= 10 && user_group_permission == -1) ||
+                        (item.work_status >= 10 && user_group_permission == 10) ||
                         (item.work_status >= 10 && user_group_permission == 11)
                       "
                       @click="
@@ -1134,10 +926,7 @@
                     </v-list-item>
 
                     <v-list-item
-                      v-if="
-                        user_group_permission == -1 ||
-                        user_group_permission == 9
-                      "
+                      v-if="user_group_permission == -1 || user_group_permission == 9"
                       @click="AllInfoCar(item.car_id, item.car_no)"
                     >
                       <v-list-item-title>ภาพรวมของรถ</v-list-item-title>
@@ -1145,32 +934,21 @@
 
                     <v-list-item
                       @click="deleteItem(item.id)"
-                      v-if="
-                        user_group_permission == -1 ||
-                        user_group_permission == 10 ||
-                        item.work_status <= 7
-                      "
+                      v-if="user_group_permission == -1 || user_group_permission == 10 || item.work_status <= 7"
                     >
                       <v-list-item-title>ยกเลิก</v-list-item-title>
                     </v-list-item>
 
                     <v-list-item
                       @click="update_status(item.id, item.work_status)"
-                      v-if="
-                        user_group_permission == -1 ||
-                        user_group_permission == 10
-                      "
+                      v-if="user_group_permission == -1 || user_group_permission == 10"
                     >
                       <v-list-item-title>อัพเดตสถานะ</v-list-item-title>
                     </v-list-item>
 
                     <v-list-item
                       @click="rollback_status(item.id, item.work_status)"
-                      v-if="
-                        (user_group_permission == -1 ||
-                          user_group_permission == 10) &&
-                        item.work_status > 2
-                      "
+                      v-if="(user_group_permission == -1 || user_group_permission == 10) && item.work_status > 2"
                     >
                       <v-list-item-title>ถอยสถานะ</v-list-item-title>
                     </v-list-item>
@@ -1300,11 +1078,7 @@
       @error="addError"
     />
 
-    <dialogMiniUser
-      :dialog="dialogMiniUser"
-      :id="sale_id"
-      @cancleItem="dialogMiniUser = false"
-    />
+    <dialogMiniUser :dialog="dialogMiniUser" :id="sale_id" @cancleItem="dialogMiniUser = false" />
 
     <dialogReceivingMoney
       :dialogReceivingMoney="dialogReceivingMoney"
@@ -1450,9 +1224,7 @@ export default {
       selectedHeaders: [],
       status_bank: 5,
       headers: [],
-      user_group_permission: this.$auth.$storage.getLocalStorage(
-        "userData-user_group_permission"
-      ),
+      user_group_permission: this.$auth.$storage.getLocalStorage("userData-user_group_permission"),
       branch_team_name: "ทั้งหมด",
       headersMap: [],
       data: [],
@@ -1481,8 +1253,7 @@ export default {
   },
   beforeMount() {
     if (this.user_group_permission == 2 || this.user_group_permission == 3) {
-      this.branch_id =
-        this.$auth.$storage.getLocalStorage("userData-branch_id");
+      this.branch_id = this.$auth.$storage.getLocalStorage("userData-branch_id");
     } else {
       this.branch_id = 0;
     }
@@ -1698,6 +1469,12 @@ export default {
           class: "textOneLine sticky-header",
         },
         {
+          text: "งวดแรก",
+          value: "customer_payment_due",
+          class: "textOneLine sticky-header",
+          width: "120px",
+        },
+        {
           text: "สถานะ",
           value: "work_status",
           class: "textOneLine sticky-header",
@@ -1816,14 +1593,9 @@ export default {
             newBranch.push(this.branches_all[index]);
           }
         }
-        for (
-          let index = 0;
-          index < this.dataSelectBranch_teams.length;
-          index++
-        ) {
+        for (let index = 0; index < this.dataSelectBranch_teams.length; index++) {
           if (this.dataSelectBranch_teams[index].id == branch_team_id) {
-            this.branch_team_name =
-              this.dataSelectBranch_teams[index].branch_team_name;
+            this.branch_team_name = this.dataSelectBranch_teams[index].branch_team_name;
           }
         }
       }
@@ -1841,9 +1613,7 @@ export default {
     async getUser_teams() {
       const response = await apiUser_teams.select();
       if (this.user_group_permission == 3 || this.user_group_permission == 2) {
-        let user_team_id = this.$auth.$storage.getLocalStorage(
-          "userData-user_team_id"
-        );
+        let user_team_id = this.$auth.$storage.getLocalStorage("userData-user_team_id");
         if (user_team_id == null) {
           this.user_team_id = 0;
         } else {
@@ -1866,8 +1636,7 @@ export default {
           this.new_teams = this.user_teams_all;
         } else {
           for (let index = 0; index < this.user_teams_all.length; index++) {
-            if (this.user_teams_all[index].branch_id == this.branch_id)
-              new_teams.push(this.user_teams_all[index]);
+            if (this.user_teams_all[index].branch_id == this.branch_id) new_teams.push(this.user_teams_all[index]);
           }
         }
 
@@ -2339,10 +2108,7 @@ export default {
       );
     },
     async ReceivingMoney(work_id, receivingMoney_type) {
-      this.formTitleReceivingMoney =
-        receivingMoney_type == 1
-          ? "เอกสารรับเงิน (ค่าตัวรถ)"
-          : "เอกสารรับเงิน (ค่าคอม)";
+      this.formTitleReceivingMoney = receivingMoney_type == 1 ? "เอกสารรับเงิน (ค่าตัวรถ)" : "เอกสารรับเงิน (ค่าคอม)";
       this.idWork = work_id;
       this.receivingMoney_type = receivingMoney_type;
       this.dialogReceivingMoney = true;

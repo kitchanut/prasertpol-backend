@@ -584,6 +584,47 @@
                 <v-divider class="mt-3"></v-divider>
 
                 <v-row no-gutters class="d-flex align-end">
+                  <v-col cols="4">
+                    <div class="mr-1">ค่างวดเดือนแรก:</div>
+                  </v-col>
+                  <v-col cols="8">
+                    <v-dialog
+                      ref="menuDateCustomerPaymentDue"
+                      v-model="menuDateCustomerPaymentDue"
+                      id="menuDateCustomerPaymentDue"
+                      name="menuDateCustomerPaymentDue"
+                      width="290px"
+                    >
+                      <template v-slot:activator="{ on, attrs }">
+                        <v-text-field
+                          autocomplete="true"
+                          v-model="formData.customer_payment_due"
+                          id="formData.customer_payment_due"
+                          name="formData.customer_payment_due"
+                          readonly
+                          v-bind="attrs"
+                          v-on="on"
+                          persistent-hint
+                          clearable
+                          prepend-icon=""
+                          dense
+                          hide-details
+                          flathide-details
+                        ></v-text-field>
+                      </template>
+                      <v-date-picker
+                        v-model="formData.customer_payment_due"
+                        id="formData.customer_payment_due"
+                        name="formData.customer_payment_due"
+                        locale="th-TH"
+                        picker-date
+                        @input="menuDateCustomerPaymentDue = false"
+                      ></v-date-picker>
+                    </v-dialog>
+                  </v-col>
+                </v-row>
+
+                <v-row no-gutters class="d-flex align-end">
                   <v-col cols="4"> ค่างวด : </v-col>
                   <v-col cols="8">
                     <v-text-field
@@ -713,6 +754,7 @@ export default {
       menuDateAppointment_mkt_date: false,
       menuDateAppointment_sentbook_date: false,
       menuCommission_mount: false,
+      menuDateCustomerPaymentDue: false,
 
       dataBank: [],
       dataBank_branch_all: [],

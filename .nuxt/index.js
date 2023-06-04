@@ -23,6 +23,7 @@ import nuxt_plugin_axios_6c4b23fc from 'nuxt_plugin_axios_6c4b23fc' // Source: .
 import nuxt_plugin_moment_2bc4ed1c from 'nuxt_plugin_moment_2bc4ed1c' // Source: ./moment.js (mode: 'all')
 import nuxt_plugin_vuegalleryclient_76ec8f1a from 'nuxt_plugin_vuegalleryclient_76ec8f1a' // Source: ../plugins/vue-gallery.client.js (mode: 'client')
 import nuxt_plugin_vviewer_14000650 from 'nuxt_plugin_vviewer_14000650' // Source: ../plugins/v-viewer.js (mode: 'all')
+import nuxt_plugin_vuedirectives_558ee0b6 from 'nuxt_plugin_vuedirectives_558ee0b6' // Source: ../plugins/vue-directives.js (mode: 'all')
 import nuxt_plugin_plugin_110e4438 from 'nuxt_plugin_plugin_110e4438' // Source: ./auth/plugin.js (mode: 'all')
 
 // Component: <ClientOnly>
@@ -255,6 +256,10 @@ async function createApp(ssrContext, config = {}) {
 
   if (typeof nuxt_plugin_vviewer_14000650 === 'function') {
     await nuxt_plugin_vviewer_14000650(app.context, inject)
+  }
+
+  if (typeof nuxt_plugin_vuedirectives_558ee0b6 === 'function') {
+    await nuxt_plugin_vuedirectives_558ee0b6(app.context, inject)
   }
 
   if (typeof nuxt_plugin_plugin_110e4438 === 'function') {

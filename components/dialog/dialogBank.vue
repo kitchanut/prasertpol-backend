@@ -21,7 +21,7 @@
           <v-card-text>
             <v-container>
               <v-row>
-                <v-col cols="4">
+                <v-col cols="12">
                   <v-text-field
                     autocomplete="true"
                     label="ชื่อธนาคาร"
@@ -36,7 +36,20 @@
                   >
                   </v-text-field>
                 </v-col>
-                <v-col cols="4">
+                <v-col cols="12">
+                  <v-text-field
+                    autocomplete="true"
+                    label="ชื่อย่อ"
+                    append-icon=""
+                    v-model="formData.bank_nick_name"
+                    outlined
+                    dense
+                    hide-details
+                    :rules="rule"
+                  >
+                  </v-text-field>
+                </v-col>
+                <v-col cols="12">
                   <v-text-field
                     autocomplete="true"
                     label="เลขผู้เสียภาษี"
@@ -51,7 +64,7 @@
                   </v-text-field>
                 </v-col>
 
-                <v-col cols="4">
+                <v-col cols="12">
                   <v-text-field
                     autocomplete="true"
                     label="เบอร์ติดต่อ"

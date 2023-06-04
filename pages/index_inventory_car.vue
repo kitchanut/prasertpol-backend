@@ -1,72 +1,68 @@
 <template>
-  <div>
-    <v-simple-table dense fixed-header :height="windowHeight - 115">
+  <v-card outlined>
+    <v-simple-table dense fixed-header :height="windowHeight - 115" class="table-border">
       <template v-slot:default>
         <thead>
           <tr id="first_header">
-            <th>รุ่นรถ</th>
+            <th>ยี่ห้อ</th>
+            <th><div style="width: 200px">รุ่นรถ</div></th>
             <th>ทั้งหมด</th>
+            <th>ขั้นต่ำ</th>
             <th>รอรับรถ</th>
             <th v-for="(branch, key) in branches" :key="key" align="center">
               {{ branch.branch_name }}
             </th>
           </tr>
-          <tr
-            class="sticky-header"
-            :style="'top: ' + (rect.top + 29) + 'px'"
-            id="second_header"
-          >
-            <th class="sticky-header">ทั้งหมด</th>
+          <tr class="sticky-header" :style="'top: ' + (rect.top + 29) + 'px'" id="second_header">
+            <th></th>
+            <th class="sticky-header"></th>
             <th class="text-center" style="color: blue">
               <b>{{ countFieldSeparate("all", "all", "all") }}</b>
             </th>
+            <th></th>
             <th class="text-center" style="color: orange">
               <b>{{ countFieldSeparate("all", "all", 1) }}</b>
             </th>
-            <th
-              v-for="(branch, key) in branches"
-              :key="key"
-              class="text-center"
-            >
-              <b v-if="countFieldSeparate(branch.id, 'all', 2) > 0">{{
-                countFieldSeparate(branch.id, "all", 2)
-              }}</b>
+            <th v-for="(branch, key) in branches" :key="key" class="text-center">
+              <b v-if="countFieldSeparate(branch.id, 'all', 2) > 0">{{ countFieldSeparate(branch.id, "all", 2) }}</b>
             </th>
           </tr>
         </thead>
         <tbody>
           <tr v-for="(car_sery, key) in car_series" :key="key">
+            <td>{{ car_sery.car_model_name }}</td>
             <td>{{ car_sery.label }}</td>
-            <td align="center" style="color: blue">
-              <b>{{
-                countFieldSeparate("all", car_sery.car_serie_id, "all")
-              }}</b>
-            </td>
             <td align="center">
-              <b
-                v-if="countFieldSeparate('all', car_sery.car_serie_id, 1) > 0"
-                style="color: orange"
-                >{{ countFieldSeparate("all", car_sery.car_serie_id, 1) }}</b
+              <span
+                :style="
+                  countFieldSeparate('all', car_sery.car_serie_id, 'all') > car_sery.car_series_minimum
+                    ? 'color: blue'
+                    : 'color: red'
+                "
               >
+                <b>
+                  {{ countFieldSeparate("all", car_sery.car_serie_id, "all") }}
+                </b>
+              </span>
+            </td>
+            <td align="center">{{ car_sery.car_series_minimum }}</td>
+            <td align="center">
+              <b v-if="countFieldSeparate('all', car_sery.car_serie_id, 1) > 0" style="color: orange">{{
+                countFieldSeparate("all", car_sery.car_serie_id, 1)
+              }}</b>
               <!-- <span v-else>0</span> -->
             </td>
             <td v-for="(branch, key) in branches" :key="key" align="center">
-              <b
-                v-if="
-                  countFieldSeparate(branch.id, car_sery.car_serie_id, 2) > 0
-                "
-                style="color: green"
-                >{{
-                  countFieldSeparate(branch.id, car_sery.car_serie_id, 2)
-                }}</b
-              >
+              <b v-if="countFieldSeparate(branch.id, car_sery.car_serie_id, 2) > 0" style="color: green">{{
+                countFieldSeparate(branch.id, car_sery.car_serie_id, 2)
+              }}</b>
               <!-- <span v-else>0</span> -->
             </td>
           </tr>
         </tbody>
       </template>
     </v-simple-table>
-  </div>
+  </v-card>
 </template>
 
 <script>

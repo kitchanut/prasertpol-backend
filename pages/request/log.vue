@@ -5,22 +5,63 @@
         <dateSelect2 @timeSelect="selectTimeStart" />
 
         <v-row class="d-flex align-center">
-          <v-col>
-            <v-text-field
-              @keyup.enter="getData()"
-              @click:clear="setSearchCarNo()"
-              v-model="searchCarNo"
-              append-icon="mdi-magnify"
-              label="ค้นหาลำดับรถ"
-              single-line
-              hide-details=""
-              clearable
-              outlined
-              dense
+          <v-col cols="7" class="d-flex align-center">
+            <v-menu
+              v-model="menuSearch"
+              :close-on-content-click="false"
+              :nudge-width="300"
             >
-            </v-text-field>
-          </v-col>
-          <v-col>
+              <template v-slot:activator="{ on, attrs }">
+                <v-btn
+                  v-blur
+                  :color="searchCarNo != null ? 'warning' : 'grey lighten-4'"
+                  :dark="searchCarNo != null ? true : false"
+                  v-bind="attrs"
+                  v-on="on"
+                  class="mr-2"
+                  style="min-width: 0px; padding: 0 8px"
+                  height="42"
+                  width="42"
+                  elevation="0"
+                >
+                  <v-icon>mdi-magnify</v-icon>
+                </v-btn>
+              </template>
+
+              <v-card>
+                <v-card-text>
+                  <v-text-field
+                    @keyup.enter="getData()"
+                    @click:clear="setSearchCarNo()"
+                    v-model="searchCarNo"
+                    append-icon="mdi-magnify"
+                    label="ค้นหาลำดับรถ"
+                    single-line
+                    hide-details=""
+                    clearable
+                    outlined
+                    dense
+                  >
+                  </v-text-field>
+                </v-card-text>
+
+                <v-card-actions>
+                  <v-spacer></v-spacer>
+
+                  <!-- <v-btn text @click="menuSearch = false"> ปิด </v-btn> -->
+                  <v-btn
+                    color="primary"
+                    text
+                    @click="
+                      getData();
+                      menuSearch = false;
+                    "
+                  >
+                    ค้นหา
+                  </v-btn>
+                </v-card-actions>
+              </v-card>
+            </v-menu>
             <v-btn-toggle
               mandatory
               v-model="toggle"
@@ -41,7 +82,7 @@
           </v-col>
 
           <v-spacer></v-spacer>
-          <v-col>
+          <v-col cols="4">
             <v-text-field
               @keyup.enter="getData()"
               v-model="search"
@@ -61,8 +102,9 @@
       </v-card-text>
 
       <v-data-table
+        class="table-border table-border-top"
         :headers="headers"
-        :items="data"
+        :items="filteredData"
         :items-per-page="10"
         :search="search"
         :loading="loading"
@@ -71,6 +113,93 @@
         loading-text="กำลังโหลดข้อมูลกรุณารอสักครู่"
         no-data-text="ยังไม่มีการเพิ่มข้อมูล"
       >
+        <template
+          v-for="(col, i) in filters"
+          v-slot:[`header.${i}`]="{ header }"
+        >
+          <div style="display: inline-block; padding: 16px 0" :key="col.id">
+            {{ header.text }}
+          </div>
+          <div style="float: right; margin-top: 8px" :key="col.id">
+            <v-menu
+              :close-on-content-click="false"
+              :nudge-width="200"
+              offset-y
+              transition="slide-y-transition"
+              left
+              fixed
+              style="position: absolute; right: 0"
+            >
+              <template v-slot:activator="{ on, attrs }">
+                <v-btn color="grey" icon v-bind="attrs" v-on="on">
+                  <v-icon
+                    small
+                    :color="
+                      activeFilters[header.value] &&
+                      activeFilters[header.value].length <
+                        filters[header.value].length
+                        ? 'red'
+                        : 'default'
+                    "
+                  >
+                    mdi-filter-variant
+                  </v-icon>
+                </v-btn>
+              </template>
+
+              <v-list flat dense class="pa-0">
+                <v-row no-gutters>
+                  <v-col cols="6">
+                    <v-btn
+                      text
+                      block
+                      @click="toggleAll(header.value)"
+                      color="success"
+                      >เลือกทั้งหมด</v-btn
+                    >
+                  </v-col>
+                  <v-col cols="6">
+                    <v-btn
+                      text
+                      block
+                      @click="clearAll(header.value)"
+                      color="warning"
+                      >ล้างข้อมูล</v-btn
+                    >
+                  </v-col>
+                </v-row>
+                <v-divider></v-divider>
+
+                <v-list-item-group
+                  multiple
+                  v-model="activeFilters[header.value]"
+                  class="py-2"
+                >
+                  <v-list-item
+                    v-for="item in filters[header.value]"
+                    :key="`${item}`"
+                    :value="item"
+                  >
+                    <template v-slot:default="{ active }">
+                      <v-list-item-action>
+                        <v-checkbox
+                          :input-value="active"
+                          :true-value="item"
+                          color="primary"
+                          dense
+                        ></v-checkbox>
+                      </v-list-item-action>
+                      <v-list-item-content>
+                        <v-list-item-title>{{ item }}</v-list-item-title>
+                      </v-list-item-content>
+                    </template>
+                  </v-list-item>
+                </v-list-item-group>
+              </v-list>
+            </v-menu>
+          </div>
+        </template>
+
         <template v-slot:[`item.pictureUrl`]="{ item }">
           <v-btn icon>
             <v-avatar size="40" @click="showImg(item.pictureUrl)">
@@ -195,322 +324,6 @@
       :imgUrl="imgUrl"
       @cancleItem="dialogImg = false"
     />
-
-    <!-- <v-navigation-drawer v-model="drawer" fixed right width="400">
-      <v-list-item>
-        <v-list-item-action style="margin-right: 5px" @click="drawer = false">
-          <v-btn icon>
-            <v-icon color="grey lighten-1">mdi-close</v-icon>
-          </v-btn>
-        </v-list-item-action>
-
-        <v-list-item-title>{{ type }}</v-list-item-title>
-      </v-list-item>
-
-      <v-divider></v-divider>
-      <v-progress-linear
-        v-if="loadingSideBar"
-        indeterminate
-        rounded
-        height="4"
-      ></v-progress-linear>
-      <v-list-item-content>
-        <v-card-text class="px-5">
-          <v-row no-gutters>
-            <v-col :cols="colWidth">ชื่อเซล:</v-col>
-            <v-col :cols="12 - colWidth">{{ item.sale_name }}</v-col>
-          </v-row>
-          <v-row no-gutters>
-            <v-col :cols="colWidth">สาขา:</v-col>
-            <v-col :cols="12 - colWidth">{{ item.branch_name }}</v-col>
-          </v-row>
-          <v-row no-gutters>
-            <v-col :cols="colWidth">ลำดับรถ:</v-col>
-            <v-col :cols="12 - colWidth">{{ item.car_no }}</v-col>
-          </v-row>
-
-          <template v-if="type == 'เปลี่ยนจอง'">
-            <v-row no-gutters>
-              <v-col :cols="colWidth">ลำดับรถเก่า:</v-col>
-              <v-col :cols="12 - colWidth">{{ item.car_no_old }}</v-col>
-            </v-row>
-            <v-row no-gutters>
-              <v-col :cols="colWidth">การทำสัญญา:</v-col>
-              <v-col :cols="12 - colWidth">{{ item.sign_type }}</v-col>
-            </v-row>
-          </template>
-
-          <template v-if="type == 'การจอง'">
-            <v-row no-gutters>
-              <v-col :cols="colWidth">เงินจอง:</v-col>
-              <v-col :cols="12 - colWidth">{{ item.booking_fee }}</v-col>
-            </v-row>
-            <v-row no-gutters>
-              <v-col :cols="colWidth">อาชีพ:</v-col>
-              <v-col :cols="12 - colWidth">{{ item.customer_job }}</v-col>
-            </v-row>
-            <v-row no-gutters>
-              <v-col :cols="colWidth">ทราบข่าว:</v-col>
-              <v-col :cols="12 - colWidth">{{ item.hear_from_type }}</v-col>
-            </v-row>
-          </template>
-
-          <template
-            v-if="
-              type == 'นัดทำสัญญา' ||
-              type == 'การทำสัญญา' ||
-              (type == 'เปลี่ยนจอง' && item.sign_type == 'เซนต์ใหม่')
-            "
-          >
-            <v-row no-gutters v-if="type == 'นัดทำสัญญา'">
-              <v-col :cols="colWidth">วันที่นัดเซนต์:</v-col>
-              <v-col :cols="12 - colWidth">{{ item.appointment_date }}</v-col>
-            </v-row>
-
-            <v-row
-              no-gutters
-              v-if="type == 'การทำสัญญา' || type == 'เปลี่ยนจอง'"
-            >
-              <v-col :cols="colWidth">วันที่นัดเซนต์:</v-col>
-              <v-col :cols="12 - colWidth">{{ item.sign_date }}</v-col>
-            </v-row>
-
-            <v-row no-gutters>
-              <v-col :cols="colWidth">ธนาคาร:</v-col>
-              <v-col :cols="12 - colWidth">{{ item.bank_name }}</v-col>
-            </v-row>
-            <v-row no-gutters>
-              <v-col :cols="colWidth">สาขา:</v-col>
-              <v-col :cols="12 - colWidth">{{ item.bank_branch_name }}</v-col>
-            </v-row>
-            <v-row no-gutters>
-              <v-col :cols="colWidth">MTK:</v-col>
-              <v-col :cols="12 - colWidth">{{ item.mtk_name }}</v-col>
-            </v-row>
-            <v-row no-gutters>
-              <v-col :cols="colWidth">เบอร์โทร:</v-col>
-              <v-col :cols="12 - colWidth">{{ item.mtk_tel }}</v-col>
-            </v-row>
-          </template>
-
-          <template
-            v-if="
-              type == 'การทำสัญญา' ||
-              (type == 'เปลี่ยนจอง' && item.sign_type == 'เซนต์ใหม่')
-            "
-          >
-            <v-row no-gutters>
-              <v-col :cols="colWidth">ผลเครดิต:</v-col>
-              <v-col :cols="12 - colWidth">{{ item.credit }}</v-col>
-            </v-row>
-            <v-row no-gutters>
-              <v-col :cols="colWidth">เอกสาร:</v-col>
-              <v-col :cols="12 - colWidth">{{ item.document }}</v-col>
-            </v-row>
-            <v-row no-gutters v-if="item.document == 'ไม่ครบ'">
-              <v-col :cols="colWidth"></v-col>
-              <v-col :cols="12 - colWidth">
-                <span style="white-space: pre">{{ item.document_list }}</span>
-              </v-col>
-            </v-row>
-          </template>
-
-          <template v-if="type == 'แบงค์อนุมัติ'">
-            <v-row no-gutters>
-              <v-col :cols="colWidth">วันที่อนุมัติ:</v-col>
-              <v-col :cols="12 - colWidth">{{ item.approve_date }}</v-col>
-            </v-row>
-            <v-row no-gutters>
-              <v-col :cols="colWidth">ราคากลาง:</v-col>
-              <v-col :cols="12 - colWidth"
-                >{{ item.middle_price }} X {{ item.percent }}</v-col
-              >
-            </v-row>
-            <v-row no-gutters>
-              <v-col :cols="colWidth">ยอดจัด:</v-col>
-              <v-col :cols="12 - colWidth">{{ item.finance_price }}</v-col>
-            </v-row>
-            <v-row no-gutters>
-              <v-col :cols="colWidth">เงินดาวน์:</v-col>
-              <v-col :cols="12 - colWidth">{{ item.down }}</v-col>
-            </v-row>
-            <v-row no-gutters>
-              <v-col :cols="colWidth">ราคาขายรถ:</v-col>
-              <v-col :cols="12 - colWidth">{{ item.car_price }}</v-col>
-            </v-row>
-          </template>
-
-          <template v-if="type == 'ปล่อยรถ'">
-            <v-row no-gutters>
-              <v-col :cols="colWidth">วันที่ปล่อยรถ:</v-col>
-              <v-col :cols="12 - colWidth">{{ item.release_date }}</v-col>
-            </v-row>
-            <v-row no-gutters>
-              <v-col :cols="colWidth">เงินที่ได้รับ:</v-col>
-              <v-col :cols="12 - colWidth">{{ item.dow }}</v-col>
-            </v-row>
-          </template>
-
-          <template v-if="type == 'เปลี่ยนคนจอง'">
-            <v-row no-gutters>
-              <v-col :cols="colWidth">ลูกค้าเดิม:</v-col>
-              <v-col :cols="12 - colWidth">{{ item.customer_old }}</v-col>
-            </v-row>
-            <v-row no-gutters>
-              <v-col :cols="colWidth">ลูกค้าใหม่:</v-col>
-              <v-col :cols="12 - colWidth">{{ item.customer_new }}</v-col>
-            </v-row>
-            <v-row no-gutters>
-              <v-col :cols="colWidth">อาชีพ:</v-col>
-              <v-col :cols="12 - colWidth">{{ item.customer_job }}</v-col>
-            </v-row>
-          </template>
-
-          <template v-if="type == 'การรับเงิน'">
-            <v-row no-gutters>
-              <v-col :cols="colWidth">ประเภท:</v-col>
-              <v-col :cols="12 - colWidth">{{ item.type }}</v-col>
-            </v-row>
-            <v-row no-gutters>
-              <v-col :cols="colWidth">จำนวนเงิน:</v-col>
-              <v-col :cols="12 - colWidth">{{ item.amount }}</v-col>
-            </v-row>
-          </template>
-
-          <template v-if="type == 'เบิกเงิน'">
-            <v-row no-gutters>
-              <v-col :cols="colWidth">ชื่อลูกค้าที่ซื้อ:</v-col>
-              <v-col :cols="12 - colWidth">{{ item.customer_name }}</v-col>
-            </v-row>
-            <v-row no-gutters>
-              <v-col :cols="colWidth">ชื่อที่เบิก:</v-col>
-              <v-col :cols="12 - colWidth">{{ item.customer_withdraw }}</v-col>
-            </v-row>
-            <v-row no-gutters>
-              <v-col :cols="colWidth">ประเภท:</v-col>
-              <v-col :cols="12 - colWidth">{{ item.type }}</v-col>
-            </v-row>
-            <v-row no-gutters>
-              <v-col :cols="colWidth">จำนวนเงิน:</v-col>
-              <v-col :cols="12 - colWidth">{{ item.amount }}</v-col>
-            </v-row>
-            <v-row no-gutters>
-              <v-col :cols="colWidth">ธนาคาร:</v-col>
-              <v-col :cols="12 - colWidth">{{ item.bank_name }}</v-col>
-            </v-row>
-            <v-row no-gutters>
-              <v-col :cols="colWidth">หมายเลขบัญชี:</v-col>
-              <v-col :cols="12 - colWidth">{{ item.account }}</v-col>
-            </v-row>
-          </template>
-
-          <v-row no-gutters>
-            <v-col :cols="colWidth">หมายเหตุ:</v-col>
-            <v-col :cols="12 - colWidth">
-              <span v-html="item.note"></span>
-            </v-col>
-          </v-row>
-
-          <div class="d-flex flex-wrap">
-            <v-card class="mr-2 mt-3" v-if="item.id_card" outlined>
-              <v-card-text>
-                <div class="text-center">บัตรประชาชน</div>
-                <div class="images" v-viewer>
-                  <img width="80px" :src="serverUrl + item.id_card" />
-                </div>
-              </v-card-text>
-            </v-card>
-
-            <v-card class="mr-2 mt-3" v-if="item.booking_sheet" outlined>
-              <v-card-text>
-                <div class="text-center">ใบจอง</div>
-                <div class="images" v-viewer>
-                  <img width="80px" :src="serverUrl + item.booking_sheet" />
-                </div>
-              </v-card-text>
-            </v-card>
-
-            <v-card class="mr-2 mt-3" v-if="item.sale_sheet" outlined>
-              <v-card-text>
-                <div class="text-center">ใบจอง</div>
-                <div class="images" v-viewer>
-                  <img width="80px" :src="serverUrl + item.sale_sheet" />
-                </div>
-              </v-card-text>
-            </v-card>
-
-            <v-card class="mr-2 mt-3" v-if="item.sign_sheet" outlined>
-              <v-card-text>
-                <div class="text-center">ใบงานเซนต์</div>
-                <div class="images" v-viewer>
-                  <img width="80px" :src="serverUrl + item.sign_sheet" />
-                </div>
-              </v-card-text>
-            </v-card>
-
-            <v-card class="mr-2 mt-3" v-if="item.release_img" outlined>
-              <v-card-text>
-                <div class="text-center">ปล่อยรถ</div>
-                <div class="images" v-viewer>
-                  <img width="80px" :src="serverUrl + item.release_img" />
-                </div>
-              </v-card-text>
-            </v-card>
-
-            <v-card class="mr-2 mt-3" v-if="item.insurance_font_sheet" outlined>
-              <v-card-text>
-                <div class="text-center">ใบประกันหน้า</div>
-                <div class="images" v-viewer>
-                  <img
-                    width="80px"
-                    :src="serverUrl + item.insurance_font_sheet"
-                  />
-                </div>
-              </v-card-text>
-            </v-card>
-
-            <v-card class="mr-2 mt-3" v-if="item.insurance_back_sheet" outlined>
-              <v-card-text>
-                <div class="text-center">ใบประกันหลัง</div>
-                <div class="images" v-viewer>
-                  <img
-                    width="80px"
-                    :src="serverUrl + item.insurance_back_sheet"
-                  />
-                </div>
-              </v-card-text>
-            </v-card>
-
-            <v-card class="mr-2 mt-3" v-if="item.receipt" outlined>
-              <v-card-text>
-                <div class="text-center">ใบเสร็จรับเงิน</div>
-                <div class="images" v-viewer>
-                  <img width="80px" :src="serverUrl + item.receipt" />
-                </div>
-              </v-card-text>
-            </v-card>
-
-            <v-card class="mr-2 mt-3" v-if="item.booking_slip" outlined>
-              <v-card-text>
-                <div class="text-center">สลิป</div>
-                <div class="images" v-viewer>
-                  <img width="80px" :src="serverUrl + item.booking_slip" />
-                </div>
-              </v-card-text>
-            </v-card>
-
-            <v-card class="mr-2 mt-3" v-if="item.slip" outlined>
-              <v-card-text>
-                <div class="text-center">สลิป</div>
-                <div class="images" v-viewer>
-                  <img width="80px" :src="serverUrl + item.slip" />
-                </div>
-              </v-card-text>
-            </v-card>
-          </div>
-        </v-card-text>
-      </v-list-item-content>
-    </v-navigation-drawer> -->
   </div>
 </template>
 
@@ -551,6 +364,7 @@ export default {
       timeEnd: moment().endOf("day").format("YYYY-MM-DD HH:mm"),
       toggle: "all",
       loading: true,
+      menuSearch: false,
       // loadingSideBar: false,
       drawerRequestLog: false,
       // colWidth: 4,
@@ -570,7 +384,7 @@ export default {
       user_group_permission: this.$auth.$storage.getLocalStorage(
         "userData-user_group_permission"
       ),
-      searchCarNo: "",
+      searchCarNo: null,
       search: "",
       headers: [
         {
@@ -581,9 +395,9 @@ export default {
         },
         { text: "เวลา", value: "created_at", width: "11%" },
 
-        { text: "Line", value: "pictureUrl", align: "center", width: "12%" },
-        { text: "เซล/สาขา", value: "sale_name", width: "12%" },
-        { text: "ประเภท", value: "type", width: "12%" },
+        { text: "Line", value: "pictureUrl", align: "center", width: "20%" },
+        { text: "เซล/สาขา", value: "sale_name", width: "22%" },
+        { text: "ประเภท", value: "type", width: "15%" },
         { text: "ลำดับรถ", value: "car_no_all" },
         {
           text: "รายละเอียด",
@@ -594,8 +408,13 @@ export default {
         },
       ],
       data: [],
+      filteredData: [],
       count: [],
       item: {},
+      filters: {
+        type: [],
+      },
+      activeFilters: {},
     };
   },
   mounted() {
@@ -616,9 +435,9 @@ export default {
     },
     async getData() {
       this.loading = true;
-
-      if (this.searchCarNo == null) {
-        this.searchCarNo = "";
+      var search = "";
+      if (this.searchCarNo != null) {
+        search = this.searchCarNo;
       }
       // console.log(this.searchCarNo);
       this.countData();
@@ -626,26 +445,33 @@ export default {
       data.append("timeStart", this.timeStart);
       data.append("timeEnd", this.timeEnd);
       data.append("toggle", this.toggle);
-      data.append("search", this.searchCarNo);
+      data.append("search", search);
 
       const response = await apiRequestLog.indexCustom(data);
 
       // console.log(response.data);
       this.data = response.data;
+      this.filteredData = this.data;
+      this.initFilters();
       this.loading = false;
     },
     async countData() {
+      var search = "";
+      if (this.searchCarNo != null) {
+        search = this.searchCarNo;
+      }
+
       const data = new FormData();
       data.append("timeStart", this.timeStart);
       data.append("timeEnd", this.timeEnd);
-      data.append("search", this.searchCarNo);
+      data.append("search", search);
 
       const response = await apiRequestLog.countData(data);
       this.count = response.data;
       // console.log(response.data);
     },
     setSearchCarNo() {
-      this.searchCarNo = "";
+      this.searchCarNo = null;
       this.$nextTick(async () => {
         this.getData();
       });
@@ -663,7 +489,31 @@ export default {
       this.dialogImg = true;
       this.imgUrl = url;
     },
-
+    toggleAll(col) {
+      this.activeFilters[col] = this.data
+        .map((d) => {
+          return d[col];
+        })
+        .filter((value, index, self) => {
+          return self.indexOf(value) === index;
+        });
+    },
+    clearAll(col) {
+      this.activeFilters[col] = [];
+    },
+    initFilters() {
+      for (const [key, value] of Object.entries(this.filters)) {
+        this.filters[key] = this.data
+          .map((d) => {
+            return d[key];
+          })
+          .filter((value, index, self) => {
+            return self.indexOf(value) === index;
+          });
+        this.filters[key].sort();
+      }
+      this.activeFilters = Object.assign({}, this.filters);
+    },
     async editItem(type, id) {
       if (type == "การจอง") {
         const respone = await apiRequestBook.update(id);
@@ -784,6 +634,16 @@ export default {
           }
         });
       }
+    },
+    activeFilters: {
+      deep: true,
+      handler: function (after, before) {
+        this.filteredData = this.data.filter((d) => {
+          return Object.keys(this.activeFilters).every((key) => {
+            return this.activeFilters[key].includes(d[key]);
+          });
+        });
+      },
     },
     // searchCarNo() {
     //   if (!this.searchCarNo) {

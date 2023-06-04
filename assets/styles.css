@@ -1,17 +1,85 @@
+@font-face {
+  font-family: 'SF Thonburi';
+  src: url('../assets/fonts/SFThonburi-Regular.eot');
+  src: url('../assets/fonts/SFThonburi-Regular.eot?#iefix') format('embedded-opentype'),
+      url('../assets/fonts/SFThonburi-Regular.woff2') format('woff2'),
+      url('../assets/fonts/SFThonburi-Regular.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'SF Thonburi';
+  src: url('../assets/fonts/SFThonburi-Bold.eot');
+  src: url('../assets/fonts/SFThonburi-Bold.eot?#iefix') format('embedded-opentype'),
+      url('../assets/fonts/SFThonburi-Bold.woff2') format('woff2'),
+      url('../assets/fonts/SFThonburi-Bold.woff') format('woff');
+  font-weight: bold;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'SF Thonburi';
+  src: url('../assets/fonts/SFThonburi-Semibold.eot');
+  src: url('../assets/fonts/SFThonburi-Semibold.eot?#iefix') format('embedded-opentype'),
+      url('../assets/fonts/SFThonburi-Semibold.woff2') format('woff2'),
+      url('../assets/fonts/SFThonburi-Semibold.woff') format('woff');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+
+
+
 .v-application {
-  /* font-family: 'Kanit', sans-serif !important; */
-  /* font-family: 'Sarabun', sans-serif !important; */
+  font-family: 'SF Thonburi', sans-serif !important;
+}
+
+.v-application .headline {
+  font-family: 'SF Thonburi', sans-serif !important;
+}
+
+/* .v-application {
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .v-application .headline {
-  /* font-family: 'Kanit', sans-serif !important; */
-  /* font-family: 'Sarabun', sans-serif !important; */
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-}
+} */
 
 .v-data-table > .v-data-table__wrapper > table > thead > tr > th {
   font-size: 0.8rem !important;
+  padding: 0 8px !important;
+}
+
+.table-border-top >.v-data-table__wrapper>table>thead>tr>th+th {
+  border-top: 1px solid #ddd;
+}
+
+.table-border-top >.v-data-table__wrapper>table>thead>tr>th {
+  border-top: 1px solid #ddd;
+}
+
+.table-border >.v-data-table__wrapper>table>thead>tr>th+th {
+  border-left: 1px solid #EEEEEE;
+}
+
+.table-border > .v-data-table__wrapper > table > tbody > tr > th+th{
+  border-left: 1px solid #ddd;
+}
+
+.table-border >.v-data-table__wrapper > table > tbody > tr > td+td{
+  border-left: 1px solid #ddd;
+}
+/* .table-border > th {
+  border-left: 1px solid #ddd;
+} */
+
+.theme--light.v-data-table tbody tr.v-data-table__selected {
+  background: #ddd;
 }
 
 .v-dialog--custom {

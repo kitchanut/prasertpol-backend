@@ -7,8 +7,6 @@ import NuxtLoading from './components/nuxt-loading.vue'
 
 import '../assets/styles.css'
 
-import '../assets/fonts/Tavira.css'
-
 import _6f6c098b from '../layouts/default.vue'
 import _2d23c385 from '../layouts/full.vue'
 import _2d264ff3 from '../layouts/liff.vue'

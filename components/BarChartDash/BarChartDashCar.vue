@@ -1,30 +1,29 @@
 <template>
   <div>
-    <h3>ยอดซื้อ/ขาย</h3>
-    <v-card class="mt-5">
-      <v-row class="pa-2">
-        <v-col>
-          <h5>
-            ยอดซื้อรวม:
-            {{
-              Number(sumCar_buy).toLocaleString("th-TH", {
-                maximumFractionDigits: 2,
-                minimumFractionDigits: 2,
-              })
-            }}
-            บ.
-          </h5>
-          <h5>
-            ยอดขายรวม:
-            {{
-              Number(sumCar_sale).toLocaleString("th-TH", {
-                maximumFractionDigits: 2,
-                minimumFractionDigits: 2,
-              })
-            }}
-            บ.
-          </h5>
-          <!-- <h5>
+    <!-- <v-card class="mt-5"> -->
+    <v-row class="pa-2">
+      <v-col>
+        <h5>
+          ยอดซื้อรวม:
+          {{
+            Number(sumCar_buy).toLocaleString("th-TH", {
+              maximumFractionDigits: 2,
+              minimumFractionDigits: 2,
+            })
+          }}
+          บ.
+        </h5>
+        <h5>
+          ยอดขายรวม:
+          {{
+            Number(sumCar_sale).toLocaleString("th-TH", {
+              maximumFractionDigits: 2,
+              minimumFractionDigits: 2,
+            })
+          }}
+          บ.
+        </h5>
+        <!-- <h5>
             กำไร:
             {{
               Number(sumCar_buy - sumCar_sale).toLocaleString("th-TH", {
@@ -34,36 +33,36 @@
             }}
             บ.
           </h5> -->
-        </v-col>
-        <v-col cols="3">
-          <v-autocomplete
-            v-model="years_id"
-            :items="yearSelect"
-            no-data-text="ไม่มีข้อมูล"
-            item-text="title"
-            item-value="value"
-            label="เลือกปี:"
-            @change="changeSelectYear"
-            outlined
-            dense
-            hide-details
-          >
-          </v-autocomplete>
-        </v-col>
-      </v-row>
+      </v-col>
+      <v-col cols="3">
+        <v-autocomplete
+          v-model="years_id"
+          :items="yearSelect"
+          no-data-text="ไม่มีข้อมูล"
+          item-text="title"
+          item-value="value"
+          label="เลือกปี:"
+          @change="changeSelectYear"
+          outlined
+          dense
+          hide-details
+        >
+        </v-autocomplete>
+      </v-col>
+    </v-row>
 
-      <v-row>
-        <v-col>
-          <BarChartCarCount class="mt-5" :chart-data="dataChartCount" />
-        </v-col>
-      </v-row>
+    <v-row>
+      <v-col>
+        <BarChartCarCount class="mt-5" :chart-data="dataChartCount" />
+      </v-col>
+    </v-row>
 
-      <v-row>
-        <v-col>
-          <BarChartCar class="mt-5" :chart-data="dataChart" />
-        </v-col>
-      </v-row>
-    </v-card>
+    <v-row>
+      <v-col>
+        <BarChartCar class="mt-5" :chart-data="dataChart" />
+      </v-col>
+    </v-row>
+    <!-- </v-card> -->
   </div>
 </template>
 <script>
@@ -148,32 +147,14 @@ export default {
         this.yearStart = moment().startOf("years").format("YYYY-MM-DD");
         this.yearEnd = moment().endOf("years").format("YYYY-MM-DD");
       } else if (value == 2) {
-        this.yearStart = moment()
-          .add(-1, "years")
-          .startOf("years")
-          .format("YYYY-MM-DD");
-        this.yearEnd = moment()
-          .add(-1, "years")
-          .endOf("years")
-          .format("YYYY-MM-DD");
+        this.yearStart = moment().add(-1, "years").startOf("years").format("YYYY-MM-DD");
+        this.yearEnd = moment().add(-1, "years").endOf("years").format("YYYY-MM-DD");
       } else if (value == 3) {
-        this.yearStart = moment()
-          .add(-2, "years")
-          .startOf("years")
-          .format("YYYY-MM-DD");
-        this.yearEnd = moment()
-          .add(-2, "years")
-          .endOf("years")
-          .format("YYYY-MM-DD");
+        this.yearStart = moment().add(-2, "years").startOf("years").format("YYYY-MM-DD");
+        this.yearEnd = moment().add(-2, "years").endOf("years").format("YYYY-MM-DD");
       } else if (value == 4) {
-        this.yearStart = moment()
-          .add(-3, "years")
-          .startOf("years")
-          .format("YYYY-MM-DD");
-        this.yearEnd = moment()
-          .add(-3, "years")
-          .endOf("years")
-          .format("YYYY-MM-DD");
+        this.yearStart = moment().add(-3, "years").startOf("years").format("YYYY-MM-DD");
+        this.yearEnd = moment().add(-3, "years").endOf("years").format("YYYY-MM-DD");
       }
       await this.selectYear();
     },

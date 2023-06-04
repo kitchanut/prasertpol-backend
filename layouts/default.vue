@@ -10,115 +10,9 @@
       :expand-on-hover="miniVariant"
     >
       <v-list>
-        <v-list-item class="px-2">
-          <!-- <v-badge
-            bordered
-            bottom
-            :color="$nuxt.isOnline ? 'success' : 'red'"
-            dot
-            offset-x="23"
-            offset-y="46"
-          >
-            <v-list-item-avatar style="margin-left: 0px">
-
-              <v-img :src="imagePreviewURL" contain> </v-img>
-            </v-list-item-avatar>
-          </v-badge> -->
-
-          <v-list-item-content style="padding: 6px 0">
-            <v-list-item-title>
-              ชื่อ: {{ userData.first_name }} {{ userData.last_name }}
-            </v-list-item-title>
-
-            <v-list-item-title>
-              ตำแหน่ง: {{ userData.user_group_name }}
-            </v-list-item-title>
-
-            <v-list-item-subtitle>
-              รหัส: {{ userData.user_code }}
-            </v-list-item-subtitle>
-            <v-list-item-subtitle>
-              สาขา: {{ userData.branch_name }}
-            </v-list-item-subtitle>
-            <v-list-item-subtitle>
-              ทีม: {{ userData.user_team }}
-            </v-list-item-subtitle>
-            <br />
-
-            <v-list-item-subtitle v-if="sub_groups.length > 0">
-              <v-row>
-                <v-col cols="12" class="pb-0">
-                  <v-select
-                    v-model="sub_id"
-                    :items="sub_groups"
-                    item-value="id"
-                    label="เปลื่ยนตำแหน่ง"
-                    outlined
-                    dense
-                    no-data-text="ไม่มีข้อมูล"
-                    hide-details
-                    @change="change_sub"
-                  >
-                    <template slot="selection" slot-scope="{ item }">
-                      {{ item.branches.branch_name }} ({{
-                        item.user_groups.user_group_name
-                      }})
-                    </template>
-
-                    <template slot="item" slot-scope="{ item }">
-                      {{ item.branches.branch_name }} ({{
-                        item.user_groups.user_group_name
-                      }})
-                    </template>
-                  </v-select>
-                </v-col>
-                <v-col cols="12" class="pt-1">
-                  <v-btn
-                    block
-                    small
-                    outlined
-                    color="primary"
-                    class="pt-5 pb-5"
-                    @click="groupOrg"
-                    >กลับตำแหน่งหลัก</v-btn
-                  >
-                </v-col>
-              </v-row>
-            </v-list-item-subtitle>
-
-            <v-row
-              v-if="
-                userData.user_group_permission == 2 ||
-                userData.user_group_permission == 3
-              "
-            >
-              <v-col>
-                <v-btn
-                  block
-                  small
-                  color="primary"
-                  class="pt-5 pb-5"
-                  to="/mobile/work"
-                  >ใช้งานบนมือถือ</v-btn
-                >
-              </v-col>
-            </v-row>
-          </v-list-item-content>
-        </v-list-item>
-        <v-divider></v-divider>
         <div v-for="(item, i) in items" :key="i">
-          <div
-            v-if="
-              item.level == 'all' ||
-              item.level.includes(userData.user_group_permission)
-            "
-          >
-            <!-- <div> -->
-            <v-list-item
-              v-if="!item.children"
-              :to="item.to"
-              :color="colorChange"
-            >
+          <div v-if="item.level == 'all' || item.level.includes(userData.user_group_permission)">
+            <v-list-item v-if="!item.children" :to="item.to" :color="colorChange">
               <v-list-item-action>
                 <v-icon>{{ item.icon }}</v-icon>
               </v-list-item-action>
@@ -127,25 +21,14 @@
               </v-list-item-content>
             </v-list-item>
 
-            <v-list-group
-              v-else
-              v-model="item.active"
-              :prepend-icon="item.icon"
-              no-action
-              color="primary"
-            >
+            <v-list-group v-else v-model="item.active" :prepend-icon="item.icon" no-action color="primary">
               <template v-slot:activator>
                 <v-list-item-content>
                   <v-list-item-title v-text="item.title"></v-list-item-title>
                 </v-list-item-content>
               </template>
 
-              <v-list-item
-                v-for="subItem in item.children"
-                :key="subItem.title"
-                :to="subItem.to"
-                color="primary"
-              >
+              <v-list-item v-for="subItem in item.children" :key="subItem.title" :to="subItem.to" color="primary">
                 <v-list-item-content>
                   <v-list-item-title v-text="subItem.title"></v-list-item-title>
                 </v-list-item-content>
@@ -155,14 +38,7 @@
         </div>
       </v-list>
     </v-navigation-drawer>
-    <v-app-bar
-      :clipped-left="clipped"
-      fixed
-      app
-      color="primary"
-      dark
-      height="55"
-    >
+    <v-app-bar :clipped-left="clipped" fixed app color="primary" dark height="55">
       <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
       <v-btn icon @click.stop="miniVariant = !miniVariant">
         <v-icon>mdi-{{ `chevron-${miniVariant ? "right" : "left"}` }}</v-icon>
@@ -170,37 +46,83 @@
 
       <v-toolbar-title v-text="title" />
       <v-spacer />
-      <!-- <v-btn text @click.stop="changeTheme">
-        <v-icon v-if="this.$vuetify.theme.dark == true" center
-          >mdi-white-balance-sunny</v-icon
-        >
-        <v-icon v-else center>mdi-moon-full</v-icon>
-      </v-btn> -->
-      <v-btn text @click="logout()">
+
+      <v-btn icon @click="logout()">
         <v-icon center>mdi-logout</v-icon>
       </v-btn>
+
+      <v-menu left bottom :close-on-content-click="false" offset-y>
+        <template v-slot:activator="{ on, attrs }">
+          <v-btn icon v-bind="attrs" v-on="on">
+            <v-icon>mdi-dots-vertical</v-icon>
+          </v-btn>
+        </template>
+
+        <v-list width="250px">
+          <v-list-item>
+            <v-list-item-content style="padding: 6px 0">
+              <v-list-item-title> ชื่อ: {{ userData.first_name }} {{ userData.last_name }} </v-list-item-title>
+
+              <v-list-item-title> ตำแหน่ง: {{ userData.user_group_name }} </v-list-item-title>
+
+              <v-list-item-subtitle> รหัส: {{ userData.user_code }} </v-list-item-subtitle>
+              <v-list-item-subtitle> สาขา: {{ userData.branch_name }} </v-list-item-subtitle>
+              <v-list-item-subtitle v-if="userData.user_team"> ทีม: {{ userData.user_team }} </v-list-item-subtitle>
+              <br />
+
+              <v-list-item-subtitle v-if="sub_groups.length > 0">
+                <v-row class="mt-1">
+                  <v-col cols="12" class="pb-0">
+                    <v-select
+                      v-model="sub_id"
+                      :items="sub_groups"
+                      item-value="id"
+                      label="เปลื่ยนตำแหน่ง"
+                      single-line
+                      outlined
+                      dense
+                      no-data-text="ไม่มีข้อมูล"
+                      hide-details
+                      @change="change_sub"
+                    >
+                      <template slot="selection" slot-scope="{ item }">
+                        {{ item.branches.branch_name }} ({{ item.user_groups.user_group_name }})
+                      </template>
+
+                      <template slot="item" slot-scope="{ item }">
+                        {{ item.branches.branch_name }} ({{ item.user_groups.user_group_name }})
+                      </template>
+                    </v-select>
+                  </v-col>
+                  <v-col cols="12" class="pt-1">
+                    <v-btn block small outlined color="primary" class="pt-5 pb-5" @click="groupOrg"
+                      >กลับตำแหน่งหลัก</v-btn
+                    >
+                  </v-col>
+                </v-row>
+              </v-list-item-subtitle>
+
+              <v-row v-if="userData.user_group_permission == 2 || userData.user_group_permission == 3">
+                <v-col>
+                  <v-btn block small color="primary" class="pt-5 pb-5" to="/mobile/work">ใช้งานบนมือถือ</v-btn>
+                </v-col>
+              </v-row>
+            </v-list-item-content>
+          </v-list-item>
+        </v-list>
+      </v-menu>
     </v-app-bar>
     <v-main>
-      <!-- <v-container> -->
       <div class="pa-3">
         <nuxt />
       </div>
-      <!-- </v-container> -->
     </v-main>
-
-    <v-footer :absolute="!fixed" app>
-      <span>&copy; {{ new Date().getFullYear() }}</span>
-    </v-footer>
 
     <v-dialog v-model="$nuxt.isOffline" persistent width="300">
       <v-card color="primary" dark>
         <v-card-text class="pt-2">
           กรุณาตรวจสอบการเชื่อมต่ออินเตอร์เน็ต
-          <v-progress-linear
-            indeterminate
-            color="white"
-            class="mb-0"
-          ></v-progress-linear>
+          <v-progress-linear indeterminate color="white" class="mb-0"></v-progress-linear>
         </v-card-text>
       </v-card>
     </v-dialog>
@@ -223,133 +145,30 @@ export default {
         {
           icon: "mdi-chart-areaspline",
           title: "ภาพรวม",
-          to: "",
-          level: [-1, 9],
+          to: "/index_sale",
+          level: [-1, 9, 2, 10, 11],
           listActive: "",
           active: false,
           classActive: "",
-          children: [
-            {
-              title: "การจอง",
-              to: "/index_status",
-            },
-            {
-              title: "การขาย",
-              to: "/index_sale",
-            },
-            // {
-            //   title: "การขายรายบุคคล",
-            //   to: "/index_sale_team",
-            // },
-            {
-              title: "คลังรถยนต์",
-              to: "/index_inventory_car",
-            },
-          ],
         },
-
-        {
-          icon: "mdi-chart-areaspline",
-          title: "ภาพรวม",
-          to: "",
-          level: [2, 10, 11],
-          listActive: "",
-          active: false,
-          classActive: "",
-          children: [
-            {
-              title: "การจอง",
-              to: "/index_status",
-            },
-          ],
-        },
-
         {
           icon: "mdi-book-plus",
           title: "แจ้งลงงาน",
-          to: "",
+          to: "/request/log",
           level: [-1, 9, 11],
           listActive: "",
           active: false,
           classActive: "",
-          children: [
-            {
-              title: "การจอง",
-              to: "/request/booking",
-            },
-            {
-              title: "นัดทำสัญญา",
-              to: "/request/appointment",
-            },
-            {
-              title: "การทำสัญญา",
-              to: "/request/sign",
-            },
-            {
-              title: "อนุมัติ",
-              to: "/request/bankApprove",
-            },
-            {
-              title: "ปล่อยรถ",
-              to: "/request/release",
-            },
-            {
-              title: "เปลี่ยนจองรถ",
-              to: "/request/changeCar",
-            },
-            {
-              title: "เปลี่ยนจองลูกค้า",
-              to: "/request/changeCustomer",
-            },
-            {
-              title: "อัพเดทข้อมูล",
-              to: "/request/update",
-            },
-            {
-              title: "การรับเงิน",
-              to: "/request/money",
-            },
-            {
-              title: "เบิกเงิน",
-              to: "/request/moneyWithdraw",
-            },
-            {
-              title: "ยกเลิกการจอง",
-              to: "/request/cancle",
-            },
-            {
-              title: "ทั้งหมด",
-              to: "/request/log",
-            },
-          ],
         },
 
         {
           icon: "mdi-book-edit",
           title: "รวมงาน",
-          to: "",
+          to: "/work/works",
           level: [-1, 9, 10, 11],
           listActive: "",
           active: false,
           classActive: "",
-          children: [
-            {
-              title: "รวมงาน",
-              to: "/work/works",
-            },
-            {
-              title: "ตามเงินดาวน์",
-              to: "/work/followDown",
-            },
-            {
-              title: "งานที่ปิดแล้ว",
-              to: "/work/works_close",
-            },
-            {
-              title: "งานที่ยกเลิก",
-              to: "/work/works_cancle",
-            },
-          ],
         },
 
         {
@@ -489,29 +308,29 @@ export default {
           classActive: "",
           active: false,
         },
-        {
-          icon: "mdi-car-door",
-          title: "อะไหล่",
-          to: "",
-          level: [-1, 6, 7, 11],
-          listActive: "",
-          classActive: "",
-          active: false,
-          children: [
-            {
-              title: "คลังอะไหล่",
-              to: "/stock/stock_parts",
-            },
-            {
-              title: "ใบสั่งซื้ออะไหล่",
-              to: "/purchases/purchase_parts",
-            },
-            {
-              title: "รอเบิกอะไหล่",
-              to: "/withdraw/withdraw_part",
-            },
-          ],
-        },
+        // {
+        //   icon: "mdi-car-door",
+        //   title: "อะไหล่",
+        //   to: "",
+        //   level: [-1, 6, 7, 11],
+        //   listActive: "",
+        //   classActive: "",
+        //   active: false,
+        //   children: [
+        //     {
+        //       title: "คลังอะไหล่",
+        //       to: "/stock/stock_parts",
+        //     },
+        //     {
+        //       title: "ใบสั่งซื้ออะไหล่",
+        //       to: "/purchases/purchase_parts",
+        //     },
+        //     {
+        //       title: "รอเบิกอะไหล่",
+        //       to: "/withdraw/withdraw_part",
+        //     },
+        //   ],
+        // },
         {
           icon: "mdi-text-to-speech",
           title: "โปรโมชั่น",
@@ -523,40 +342,40 @@ export default {
           to: "/settings/promotion",
         },
 
-        {
-          icon: "mdi-car-cog",
-          title: "งานซ่อม",
-          to: "",
-          level: [-1, 8],
-          listActive: "",
-          classActive: "",
-          active: false,
-          children: [
-            {
-              title: "งานของช่าง/บิ้ว",
-              to: "/work/work_Technician",
-            },
-            {
-              title: "งานซ่อมภายนอก",
-              to: "/work/work_Technician_pathner",
-            },
-          ],
-        },
-        {
-          icon: "mdi-car-cog",
-          title: "งานซ่อม",
-          to: "",
-          level: [4, 5],
-          listActive: "",
-          classActive: "",
-          active: false,
-          children: [
-            {
-              title: "งานของช่าง/บิ้ว",
-              to: "/work/work_Technician",
-            },
-          ],
-        },
+        // {
+        //   icon: "mdi-car-cog",
+        //   title: "งานซ่อม",
+        //   to: "",
+        //   level: [-1, 8],
+        //   listActive: "",
+        //   classActive: "",
+        //   active: false,
+        //   children: [
+        //     {
+        //       title: "งานของช่าง/บิ้ว",
+        //       to: "/work/work_Technician",
+        //     },
+        //     {
+        //       title: "งานซ่อมภายนอก",
+        //       to: "/work/work_Technician_pathner",
+        //     },
+        //   ],
+        // },
+        // {
+        //   icon: "mdi-car-cog",
+        //   title: "งานซ่อม",
+        //   to: "",
+        //   level: [4, 5],
+        //   listActive: "",
+        //   classActive: "",
+        //   active: false,
+        //   children: [
+        //     {
+        //       title: "งานของช่าง/บิ้ว",
+        //       to: "/work/work_Technician",
+        //     },
+        //   ],
+        // },
 
         {
           icon: "mdi-account",
@@ -655,20 +474,6 @@ export default {
           children: [
             { title: "จอง", to: "/reports/report_booking" },
             { title: "ขายรถ", to: "/reports/report_sale_car" },
-
-            // { title: "งานซื้อขายรถ", to: "/reports/report_workings" },
-            // {
-            //   title: "การเพิ่มเงิน",
-            //   to: "/reports/report_add_moneys",
-            // },
-            // {
-            //   title: "ค่าใช้จ่ายของสาขา",
-            //   to: "/reports/report_withdraw_money",
-            // },
-            // {
-            //   title: "รายรับตัวรถ",
-            //   to: "/reports/report_income",
-            // },
           ],
         },
 
@@ -683,16 +488,6 @@ export default {
           children: [
             { title: "การซื้อรถ", to: "/reports/report_purchase_car" },
             { title: "การขายรถ", to: "/reports/report_sale_car" },
-            // { title: "รถยนต์", to: "/reports/report_cars" },
-            // {
-            //   title: "ค่าใช้จ่ายของสาขา",
-            //   to: "/reports/report_withdraw_money",
-            // },
-            // {
-            //   title: "รายรับตัวรถ",
-            //   to: "/reports/report_income",
-            // },
-            // { title: "ซ่อม (อู่ใน)", to: "/reports/report_repairs" },
           ],
         },
         {
@@ -703,17 +498,7 @@ export default {
           listActive: "",
           classActive: "",
           active: false,
-          children: [
-            // { title: "ยกเลิกการจอง", to: "/reports/report_cancel_workings" },
-            // {
-            //   title: "ค่าใช้จ่ายของสาขา",
-            //   to: "/reports/report_withdraw_money",
-            // },
-            // {
-            //   title: "รายรับตัวรถ",
-            //   to: "/reports/report_income",
-            // },
-          ],
+          children: [],
         },
         {
           icon: "mdi-file-outline",
@@ -724,15 +509,6 @@ export default {
           classActive: "",
           active: false,
           children: [
-            // {
-            //   title: "สั่งซื้ออะไหล่",
-            //   to: "/reports/report_purchase_POparts",
-            // },
-            // { title: "อะไหล่", to: "/reports/report_stock_parts" },
-            // {
-            //   title: "เพิ่มเงินให้สาขา",
-            //   to: "/reports/report_add_moneys",
-            // },
             {
               title: "ค่าใช้จ่ายของสาขา",
               to: "/reports/report_withdraw_money",
@@ -744,28 +520,6 @@ export default {
             // { title: "ซ่อม (อู่ใน)", to: "/reports/report_repairs" },
           ],
         },
-        {
-          icon: "mdi-history",
-          title: "ประวัติ",
-          to: "",
-          level: [-1, 9],
-          listActive: "",
-          classActive: "",
-          active: false,
-          children: [
-            { title: "งานซื้อขายรถ", to: "/historys/history_workings" },
-            {
-              title: "สั่งซื้ออะไหล่",
-              to: "/historys/history_purchase_POparts",
-            },
-            { title: "อะไหล่", to: "/historys/history_stock_parts" },
-            { title: "เบิก/คืน อะไหล่", to: "/historys/history_parts" },
-            { title: "การใช้อะไหล่ของรถ", to: "/historys/history_part_cars" },
-            { title: "รถยนต์", to: "/historys/history_cars" },
-            { title: "ซ่อม (อู่ใน)", to: "/historys/history_repairs" },
-          ],
-        },
-
         {
           icon: "mdi-cog",
           title: "ตั้งค่า",
@@ -821,12 +575,10 @@ export default {
           ],
         },
       ],
-      miniVariant: false,
+      miniVariant: true,
       right: true,
       rightDrawer: false,
-      title:
-        "ประเสริฐผลยูสด์คาร์" +
-        this.$auth.$storage.getLocalStorage("userData-branch_name"),
+      title: "ประเสริฐผลยูสด์คาร์" + this.$auth.$storage.getLocalStorage("userData-branch_name"),
       userData: {
         first_name: "",
         last_name: "",
@@ -879,9 +631,7 @@ export default {
         this.$auth.$storage.getLocalStorage("userDataOrg-user_team")
       );
 
-      await this.goToRoute(
-        this.$auth.$storage.getLocalStorage("userDataOrg-user_group_permission")
-      );
+      await this.goToRoute(this.$auth.$storage.getLocalStorage("userDataOrg-user_group_permission"));
     },
     async change_sub(id) {
       for (let index = 0; index < this.sub_groups.length; index++) {
@@ -890,10 +640,7 @@ export default {
           this.$nextTick(async () => {
             // this.$auth.$storage.getLocalStorage("userData-sub_id"),
             await this.$auth.$storage.setLocalStorage("userData-sub_id", id);
-            await this.$auth.$storage.setLocalStorage(
-              "userData-user_team_id",
-              this.sub_groups[index].user_team_id
-            );
+            await this.$auth.$storage.setLocalStorage("userData-user_team_id", this.sub_groups[index].user_team_id);
             await this.$auth.$storage.setLocalStorage(
               "userData-user_group_permission",
               this.sub_groups[index].user_groups.user_group_permission
@@ -902,10 +649,7 @@ export default {
               "userData-user_group_name",
               this.sub_groups[index].user_groups.user_group_name
             );
-            await this.$auth.$storage.setLocalStorage(
-              "userData-branch_id",
-              this.sub_groups[index].branch_id
-            );
+            await this.$auth.$storage.setLocalStorage("userData-branch_id", this.sub_groups[index].branch_id);
             await this.$auth.$storage.setLocalStorage(
               "userData-branch_name",
               this.sub_groups[index].branches.branch_name
@@ -917,9 +661,7 @@ export default {
               );
             }
 
-            await this.goToRoute(
-              this.sub_groups[index].user_groups.user_group_permission
-            );
+            await this.goToRoute(this.sub_groups[index].user_groups.user_group_permission);
           });
         }
       }
@@ -1019,28 +761,13 @@ export default {
       });
     },
     async getlocalUser() {
-      this.userData.first_name = await this.$auth.$storage.getLocalStorage(
-        "userData-first_name"
-      );
-      this.userData.user_code = await this.$auth.$storage.getLocalStorage(
-        "userData-user_code"
-      );
-      this.userData.last_name = await this.$auth.$storage.getLocalStorage(
-        "userData-last_name"
-      );
-      this.userData.user_group_name = await this.$auth.$storage.getLocalStorage(
-        "userData-user_group_name"
-      );
-      this.userData.branch_name = await this.$auth.$storage.getLocalStorage(
-        "userData-branch_name"
-      );
-      this.userData.user_team = await this.$auth.$storage.getLocalStorage(
-        "userData-user_team"
-      );
-      this.userData.user_group_permission =
-        await this.$auth.$storage.getLocalStorage(
-          "userData-user_group_permission"
-        );
+      this.userData.first_name = await this.$auth.$storage.getLocalStorage("userData-first_name");
+      this.userData.user_code = await this.$auth.$storage.getLocalStorage("userData-user_code");
+      this.userData.last_name = await this.$auth.$storage.getLocalStorage("userData-last_name");
+      this.userData.user_group_name = await this.$auth.$storage.getLocalStorage("userData-user_group_name");
+      this.userData.branch_name = await this.$auth.$storage.getLocalStorage("userData-branch_name");
+      this.userData.user_team = await this.$auth.$storage.getLocalStorage("userData-user_team");
+      this.userData.user_group_permission = await this.$auth.$storage.getLocalStorage("userData-user_group_permission");
     },
     onMutate() {
       let height = 0;

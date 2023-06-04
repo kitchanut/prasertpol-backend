@@ -46,22 +46,18 @@
           </template>
 
           <template v-slot:[`item.car_types`]="{ item }">
-            <span>
-              {{ item.car_types.car_type_name }} ({{
-                item.car_types.car_type_name_en
-              }})</span
-            >
+            <span> {{ item.car_types.car_type_name }} ({{ item.car_types.car_type_name_en }})</span>
           </template>
-          <template v-slot:[`item.amount_down`]="{ item }">
+          <!-- <template v-slot:[`item.amount_down`]="{ item }">
             {{
               Number(item.amount_down).toLocaleString("th-TH", {
                 maximumFractionDigits: 2,
                 minimumFractionDigits: 2,
               })
             }}
-          </template>
+          </template> -->
 
-          <template v-slot:[`item.amount_price`]="{ item }">
+          <!-- <template v-slot:[`item.amount_price`]="{ item }">
             {{
               Number(item.amount_price).toLocaleString("th-TH", {
                 maximumFractionDigits: 2,
@@ -85,11 +81,25 @@
                 minimumFractionDigits: 2,
               })
             }}
+          </template> -->
+
+          <template v-slot:[`item.car_regis`]="{ item }">
+            <div>{{ item.car_regis }}</div>
+            <div>{{ item.province.name_th }}</div>
+          </template>
+
+          <template v-slot:[`item.car_regis_current`]="{ item }">
+            <div v-if="item.car_regis_current">{{ item.car_regis_current }}</div>
+            <div v-if="item.province_current">{{ item.province_current.name_th }}</div>
           </template>
 
           <template v-slot:[`item.car_gear`]="{ item }">
             <h5 v-if="item.car_gear == '1'" class="green--text">AT</h5>
             <h5 v-if="item.car_gear == '2'" class="orange--text">MT</h5>
+          </template>
+
+          <template v-slot:[`item.vat`]="{ item }">
+            <div>{{ (Number(item.car_buy_vat) * 0.07).toFixed(2) }}</div>
           </template>
         </v-data-table>
       </v-card-text>
@@ -176,41 +186,59 @@ export default {
           value: "car_regis",
           class: "textOneLine",
         },
-        {
-          text: "จังหวัด",
-          value: "province.name_th",
-          class: "textOneLine",
-        },
+        // {
+        //   text: "จังหวัด",
+        //   value: "province.name_th",
+        //   class: "textOneLine",
+        // },
 
-        {
-          text: "จัด",
-          value: "amount_price",
-          class: "textOneLine",
-        },
-        {
-          text: "ดาวน์",
-          value: "amount_down",
-          class: "textOneLine",
-        },
-        {
-          text: "ขาย",
-          value: "car_price_vat",
-          class: "textOneLine",
-        },
-        {
-          text: "ราคาสุทธิ",
-          value: "net_price",
-          class: "textOneLine",
-        },
+        // {
+        //   text: "จัด",
+        //   value: "amount_price",
+        //   class: "textOneLine",
+        // },
+        // {
+        //   text: "ดาวน์",
+        //   value: "amount_down",
+        //   class: "textOneLine",
+        // },
+        // {
+        //   text: "ขาย",
+        //   value: "car_price_vat",
+        //   class: "textOneLine",
+        // },
+        // {
+        //   text: "ราคาสุทธิ",
+        //   value: "net_price",
+        //   class: "textOneLine",
+        // },
         {
           text: "ทะเบียน (ใหม่)",
           value: "car_regis_current",
           class: "textOneLine",
         },
+        // {
+        //   text: "จังหวัด",
+        //   value: "province_current.name_th",
+        //   class: "textOneLine",
+        // },
         {
-          text: "จังหวัด",
-          value: "province_current.name_th",
+          text: "ราคาซื้อก่อน vat",
+          value: "car_buy_vat",
           class: "textOneLine",
+          align: "right",
+        },
+        {
+          text: "vat",
+          value: "vat",
+          class: "textOneLine",
+          align: "right",
+        },
+        {
+          text: "ราคาซื้อรวม vat",
+          value: "car_buy",
+          class: "textOneLine",
+          align: "right",
         },
       ],
     };
@@ -237,7 +265,7 @@ export default {
       data.append("timeStart", this.timeStart);
       data.append("timeEnd", this.timeEnd);
       const response = await apiReport.report_purchase_car(data);
-      // console.log(response.data);
+      console.log(response.data);
       this.data = response.data;
       this.loading = false;
     },
@@ -254,10 +282,7 @@ export default {
           excel.export_json_to_excel({
             header: tHeader,
             data,
-            filename:
-              "รายงานการซื้อรถ (" +
-              moment().format("DD/MM/YYYY ( HH:mm น.)") +
-              ")",
+            filename: "รายงานการซื้อรถ (" + moment().format("DD/MM/YYYY ( HH:mm น.)") + ")",
             autoWidth: true,
             bookType: "xlsx",
           });
@@ -270,7 +295,7 @@ export default {
         filterVal.map((j) => {
           if (j == "car_models.car_model_name") {
             // console.log(v)
-            return v.car_models.car_model_name;
+            return v.car_models == null ? "" : v.car_models.car_model_name;
           } else if (j == "car_serie_sub.car_serie_sub_name") {
             if (v.car_serie_sub == null) {
               return "ไม่ระบุ";
@@ -278,55 +303,53 @@ export default {
               return v.car_serie_sub.car_serie_sub_name;
             }
           } else if (j == "color.color_name") {
-            return v.color.color_name;
+            return v.color == null ? "" : v.color.color_name;
           } else if (j == "branch.branch_name") {
-            return v.branch.branch_name;
+            return v.branch == null ? "" : v.branch.branch_name;
           } else if (j == "car_series.car_series_name") {
-            return v.car_series.car_series_name;
+            return v.car_series == null ? "" : v.car_series.car_series_name;
           } else if (j == "car_types") {
-            return (
-              v.car_types.car_type_name +
-              "(" +
-              v.car_types.car_type_name_en +
-              ")"
-            );
+            return v.car_types.car_type_name + "(" + v.car_types.car_type_name_en + ")";
           } else if (j == "car_gear") {
             if (v.car_gear == 1) {
               return "AT";
             } else {
               return "MT";
             }
-          } else if (j == "car_price_vat") {
-            return Number(v.car_price_vat).toLocaleString("th-TH", {
-              maximumFractionDigits: 2,
-              minimumFractionDigits: 2,
-            });
-          } else if (j == "net_price") {
-            return Number(v.net_price).toLocaleString("th-TH", {
-              maximumFractionDigits: 2,
-              minimumFractionDigits: 2,
-            });
+            // } else if (j == "car_price_vat") {
+            //   return Number(v.car_price_vat).toLocaleString("th-TH", {
+            //     maximumFractionDigits: 2,
+            //     minimumFractionDigits: 2,
+            //   });
+            // } else if (j == "net_price") {
+            //   return Number(v.net_price).toLocaleString("th-TH", {
+            //     maximumFractionDigits: 2,
+            //     minimumFractionDigits: 2,
+            //   });
           } else if (j == "car_date_buy") {
-            // return moment(v.car_date_buy).format("DD/MM/YYYY ( HH:mm น.)");
             return moment(v.car_date_buy).format("DD/MM/YYYY");
-          } else if (j == "amount_down") {
-            return Number(v.amount_down).toLocaleString("th-TH", {
-              maximumFractionDigits: 2,
-              minimumFractionDigits: 2,
-            });
-          } else if (j == "amount_price") {
-            return Number(v.amount_price).toLocaleString("th-TH", {
-              maximumFractionDigits: 2,
-              minimumFractionDigits: 2,
-            });
+            // } else if (j == "amount_down") {
+            //   return Number(v.amount_down).toLocaleString("th-TH", {
+            //     maximumFractionDigits: 2,
+            //     minimumFractionDigits: 2,
+            //   });
+            // } else if (j == "amount_price") {
+            //   return Number(v.amount_price).toLocaleString("th-TH", {
+            //     maximumFractionDigits: 2,
+            //     minimumFractionDigits: 2,
+            //   });
           } else if (j == "province.name_th") {
             return v.province == null ? "" : v.province.name_th;
           } else if (j == "car_regis") {
-            return v.car_regis == null ? "" : v.car_regis;
-          } else if (j == "province_current.name_th") {
-            return v.province_current == null ? "" : v.province_current.name_th;
+            return v.car_regis == null || v.province == null ? "" : v.car_regis + " " + v.province.name_th;
+            // } else if (j == "province_current.name_th") {
+            //   return v.province_current == null ? "" : v.province_current.name_th;
           } else if (j == "car_regis_current") {
-            return v.car_regis_current == null ? "" : v.car_regis_current;
+            return v.car_regis_current == null || v.province_current == null
+              ? ""
+              : v.car_regis_current + " " + v.province_current.name_th;
+          } else if (j == "vat") {
+            return (Number(v.car_buy_vat) * 0.07).toFixed(2);
           } else if (j == "created_at") {
             // return moment(v.created_at).format("DD/MM/YYYY ( HH:mm น.)");
             return moment(v.created_at).format("DD/MM/YYYY ( HH:mm น.)");
@@ -340,5 +363,4 @@ export default {
 };
 </script>
 
-<style>
-</style>
+<style></style>

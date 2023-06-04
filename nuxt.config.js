@@ -3,9 +3,7 @@ import colors from "vuetify/es5/util/colors";
 // const serverUrl = "http://localhost/server";
 // Laravel
 const serverUrl =
-  process.env.NODE_ENV !== "production"
-    ? "https://localhost/psnkp-server"
-    : "https://www.psnkp.co.th/server";
+  process.env.NODE_ENV !== "production" ? "http://localhost/psnkp-server" : "https://www.psnkp.co.th/server";
 
 const serverUrlShop = "https://www.psnkp.co.th/";
 const serverKey = "base64:qVDh/JchcJ9ZyjLO58QW0pszBCTo5lfozWG/g0bxynQ=";
@@ -92,13 +90,14 @@ export default {
    ** Global CSS
    */
   // css: ["~/assets/styles.css", "~/assets/fonts/Kanit.css"],
-  css: ["~/assets/styles.css", "~/assets/fonts/Tavira.css"],
+  // css: ["~/assets/styles.css", "~/assets/fonts/Tavira.css"],
+  css: ["~/assets/styles.css"],
 
   /*
    ** Plugins to load before mounting the App
    ** https://nuxtjs.org/guide/plugins
    */
-  plugins: ["~/plugins/vue-gallery.client.js", "~/plugins/v-viewer.js"],
+  plugins: ["~/plugins/vue-gallery.client.js", "~/plugins/v-viewer.js", "~/plugins/vue-directives.js"],
   /*
    ** Auto import components
    ** See https://nuxtjs.org/api/configuration-components
@@ -192,66 +191,21 @@ export default {
     serverKey: serverKey,
     PrasertpolName: "ประเสริฐผลยูสด์คาร์",
     liff: {
-      booking:
-        process.env.NODE_ENV !== "production"
-          ? "1657384096-GWgpdE3a"
-          : "1657381597-P5naXw27",
-      appointment:
-        process.env.NODE_ENV !== "production"
-          ? "1657384096-gxbqpRnv"
-          : "1657381597-nXbA63Ko",
-      signDeposit:
-        process.env.NODE_ENV !== "production"
-          ? "1657384096-MdR4XK3r"
-          : "1657381597-y2JZRxAN",
-      sign:
-        process.env.NODE_ENV !== "production"
-          ? "1657384096-qYDbnZkM"
-          : "1657381597-2WGVzXPY",
-      bankApprove:
-        process.env.NODE_ENV !== "production"
-          ? "1657384096-2lkL6Vge"
-          : "1657381597-Mb2n0J3x",
-      release:
-        process.env.NODE_ENV !== "production"
-          ? "1657384096-WKnNgq34"
-          : "1657381597-lye41MpW",
-      changeCar:
-        process.env.NODE_ENV !== "production"
-          ? "1657384096-lGJaNowL"
-          : "1657381597-V9ezjWZ8",
-      changeCustomer:
-        process.env.NODE_ENV !== "production"
-          ? "1657384096-REEbzOj3"
-          : "1657381597-4mPBbdwv",
-      update:
-        process.env.NODE_ENV !== "production"
-          ? "1657384096-rW1Mq06g"
-          : "1657381597-POvX0Vk7",
-      cancle:
-        process.env.NODE_ENV !== "production"
-          ? "1657384096-Krrqg0yR"
-          : "1657381597-naP8jylD",
-      money:
-        process.env.NODE_ENV !== "production"
-          ? "1657384096-pgzxEX4P"
-          : "1657381597-k9PoxeG6",
-      moneyWithdraw:
-        process.env.NODE_ENV !== "production"
-          ? "1657384096-o8ZPOVaL"
-          : "1657381597-qaA3WErN",
-      shareRequest:
-        process.env.NODE_ENV !== "production"
-          ? "1657384096-wdnbjaQk"
-          : "1657381597-Kla8617N",
-      shareImage:
-        process.env.NODE_ENV !== "production"
-          ? "1657384096-eEmk7wZ5"
-          : "1657381597-rgo89b63",
-      login:
-        process.env.NODE_ENV !== "production"
-          ? "1657384096-p9exyzYM"
-          : "1657381597-y0ebAoMG",
+      booking: process.env.NODE_ENV !== "production" ? "1657384096-GWgpdE3a" : "1657381597-P5naXw27",
+      appointment: process.env.NODE_ENV !== "production" ? "1657384096-gxbqpRnv" : "1657381597-nXbA63Ko",
+      signDeposit: process.env.NODE_ENV !== "production" ? "1657384096-MdR4XK3r" : "1657381597-y2JZRxAN",
+      sign: process.env.NODE_ENV !== "production" ? "1657384096-qYDbnZkM" : "1657381597-2WGVzXPY",
+      bankApprove: process.env.NODE_ENV !== "production" ? "1657384096-2lkL6Vge" : "1657381597-Mb2n0J3x",
+      release: process.env.NODE_ENV !== "production" ? "1657384096-WKnNgq34" : "1657381597-lye41MpW",
+      changeCar: process.env.NODE_ENV !== "production" ? "1657384096-lGJaNowL" : "1657381597-V9ezjWZ8",
+      changeCustomer: process.env.NODE_ENV !== "production" ? "1657384096-REEbzOj3" : "1657381597-4mPBbdwv",
+      update: process.env.NODE_ENV !== "production" ? "1657384096-rW1Mq06g" : "1657381597-POvX0Vk7",
+      cancle: process.env.NODE_ENV !== "production" ? "1657384096-Krrqg0yR" : "1657381597-naP8jylD",
+      money: process.env.NODE_ENV !== "production" ? "1657384096-pgzxEX4P" : "1657381597-k9PoxeG6",
+      moneyWithdraw: process.env.NODE_ENV !== "production" ? "1657384096-o8ZPOVaL" : "1657381597-qaA3WErN",
+      shareRequest: process.env.NODE_ENV !== "production" ? "1657384096-wdnbjaQk" : "1657381597-Kla8617N",
+      shareImage: process.env.NODE_ENV !== "production" ? "1657384096-eEmk7wZ5" : "1657381597-rgo89b63",
+      login: process.env.NODE_ENV !== "production" ? "1657384096-p9exyzYM" : "1657381597-y0ebAoMG",
     },
   },
 };

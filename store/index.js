@@ -1,3 +1,12 @@
+import createPersistedState from "vuex-persistedstate";
+// export const plugins = [createPersistedState()]
+
+export const plugins = [
+  createPersistedState({
+    paths: ["selectedHeaders", "selectedHeaderIndexs"],
+  }),
+];
+
 export const state = () => ({
   linkFacebook: "https://th-th.facebook.com/prasertpolrungruang/",
   status_working: [
@@ -53,20 +62,7 @@ export const state = () => ({
     "พฤศจิกายน",
     "ธันวาคม",
   ],
-  months_th_mini: [
-    "ม.ค.",
-    "ก.พ.",
-    "มี.ค.",
-    "เม.ย.",
-    "พ.ค.",
-    "มิ.ย.",
-    "ก.ค.",
-    "ส.ค.",
-    "ก.ย.",
-    "ต.ค.",
-    "พ.ย.",
-    "ธ.ค.",
-  ],
+  months_th_mini: ["ม.ค.", "ก.พ.", "มี.ค.", "เม.ย.", "พ.ค.", "มิ.ย.", "ก.ค.", "ส.ค.", "ก.ย.", "ต.ค.", "พ.ย.", "ธ.ค."],
   code_color: [
     "#007BC5",
     "#DE2119",
@@ -109,4 +105,31 @@ export const state = () => ({
     { value: 9, title: "ปีนี้" },
     { value: 10, title: "3 ปีที่แล้ว" },
   ],
+  selectedHeaders: [],
+  selectedHeaderIndexs: [],
 });
+
+export const mutations = {
+  setSelectedHeaders(state, value) {
+    state.selectedHeaders = value;
+  },
+  setSelectedHeaderIndexs(state, value) {
+    state.selectedHeaderIndexs = value;
+  },
+  setHeaderWidth(state, value) {
+    state.selectedHeaders[value.index].width = value.width;
+  },
+  rearrangeHeader(state, value) {
+    // state.selectedHeaders[value.index].width = value.width;
+
+    const oldIndex = value.oldIndex;
+    const newIndex = value.newIndex;
+    if (newIndex >= state.selectedHeaders.length) {
+      let k = newIndex - state.selectedHeaders.length + 1;
+      while (k--) {
+        state.selectedHeaders.push(undefined);
+      }
+    }
+    state.selectedHeaders.splice(newIndex, 0, state.selectedHeaders.splice(oldIndex, 1)[0]);
+  },
+};

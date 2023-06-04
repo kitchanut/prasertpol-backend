@@ -14,8 +14,8 @@
         <v-col cols="3">
           <v-text-field
             v-model="search"
-id="search"
-name="search"
+            id="search"
+            name="search"
             append-icon="mdi-magnify"
             label="ค้นหา"
             single-line
@@ -103,7 +103,8 @@ export default {
         { text: "ประเภทรถ", value: "car_type.car_type_name" },
         { text: "ยี่ห้อ", value: "car_model.car_model_name" },
         { text: "รุ่น", value: "car_series_name" },
-        { text: "สถานะ", value: "car_series_active", width: "5%" },
+        { text: "ขั้นต่ำ", value: "car_series_minimum" },
+        { text: "สถานะ", value: "car_series_active", width: "10%" },
         { text: "จัดการ", value: "actions", sortable: false, width: "10%" },
       ],
       data: [],

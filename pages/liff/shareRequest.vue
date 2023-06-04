@@ -198,6 +198,50 @@ export default {
                       contents: [
                         {
                           type: "text",
+                          text: "ชื่อลูกค้า:",
+                          color: "#aaaaaa",
+                          size: "sm",
+                          flex: 2,
+                        },
+                        {
+                          type: "text",
+                          text: data.customer_name,
+                          wrap: true,
+                          color: "#666666",
+                          size: "sm",
+                          flex: 5,
+                        },
+                      ],
+                    },
+                    {
+                      type: "box",
+                      layout: "baseline",
+                      spacing: "sm",
+                      contents: [
+                        {
+                          type: "text",
+                          text: "เบอร์โทร:",
+                          color: "#aaaaaa",
+                          size: "sm",
+                          flex: 2,
+                        },
+                        {
+                          type: "text",
+                          text: data.customer_tel,
+                          wrap: true,
+                          color: "#666666",
+                          size: "sm",
+                          flex: 5,
+                        },
+                      ],
+                    },
+                    {
+                      type: "box",
+                      layout: "baseline",
+                      spacing: "sm",
+                      contents: [
+                        {
+                          type: "text",
                           text: "อาชีพ:",
                           color: "#aaaaaa",
                           size: "sm",

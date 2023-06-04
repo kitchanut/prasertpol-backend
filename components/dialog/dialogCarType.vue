@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <v-dialog v-model="dialogDeleteComponent" max-width="50%">
+    <v-dialog v-model="dialogDeleteComponent" width="500px">
       <v-card>
         <v-form
           ref="form"
@@ -20,69 +20,86 @@
 
           <v-card-text>
             <v-container>
-              <v-row>
-                <v-col cols="6">
-                  <v-text-field
-                    autocomplete="true"
-                    label="ไอคอน"
-                    append-icon=""
-                    v-model="formData.car_type_icon"
-                    id="formData.car_type_icon"
-                    name="formData.car_type_icon"
-                    outlined
-                    dense
-                    hide-details
-                  >
-                  </v-text-field>
-                </v-col>
-                <v-col cols="6">
-                  <v-text-field
-                    autocomplete="true"
-                    label="รหัสสี"
-                    append-icon=""
-                    v-model="formData.car_type_code_color"
-                    id="formData.car_type_code_color"
-                    name="formData.car_type_code_color"
-                    outlined
-                    dense
-                    hide-details
-                  >
-                  </v-text-field>
-                </v-col>
-              </v-row>
-              <v-row>
-                <v-col cols="6">
-                  <v-text-field
-                    autocomplete="true"
-                    label="ประเภทรถไทย"
-                    append-icon=""
-                    v-model="formData.car_type_name"
-                    id="formData.car_type_name"
-                    name="formData.car_type_name"
-                    outlined
-                    dense
-                    hide-details
-                    :rules="rule"
-                  >
-                  </v-text-field>
-                </v-col>
-                <v-col cols="6">
-                  <v-text-field
-                    autocomplete="true"
-                    label="ประเภทรถอังกฤษ"
-                    append-icon=""
-                    v-model="formData.car_type_name_en"
-                    id="formData.car_type_name_en"
-                    name="formData.car_type_name_en"
-                    outlined
-                    dense
-                    hide-details
-                    :rules="rule"
-                  >
-                  </v-text-field>
-                </v-col>
-              </v-row>
+              <v-text-field
+                autocomplete="true"
+                label="ไอคอน"
+                append-icon=""
+                v-model="formData.car_type_icon"
+                id="formData.car_type_icon"
+                name="formData.car_type_icon"
+                outlined
+                dense
+                hide-details
+              >
+              </v-text-field>
+
+              <v-text-field
+                class="mt-3"
+                autocomplete="true"
+                label="รหัสสี"
+                append-icon=""
+                v-model="formData.car_type_code_color"
+                id="formData.car_type_code_color"
+                name="formData.car_type_code_color"
+                outlined
+                dense
+                hide-details
+              >
+              </v-text-field>
+
+              <v-select
+                class="mt-3"
+                :items="[
+                  {
+                    value: 1,
+                    text: 'เก๋ง',
+                  },
+                  {
+                    value: 2,
+                    text: 'กระบะ',
+                  },
+                ]"
+                item-value="value"
+                item-text="text"
+                v-model="formData.car_type_main"
+                label="ประเภทหลัก"
+                outlined
+                dense
+                hide-details=""
+              ></v-select>
+
+              <v-text-field
+                class="mt-3"
+                autocomplete="true"
+                label="ประเภทรถไทย"
+                append-icon=""
+                v-model="formData.car_type_name"
+                id="formData.car_type_name"
+                name="formData.car_type_name"
+                outlined
+                dense
+                hide-details
+                :rules="rule"
+              >
+              </v-text-field>
+
+              <v-text-field
+                class="mt-3"
+                autocomplete="true"
+                label="ประเภทรถอังกฤษ"
+                append-icon=""
+                v-model="formData.car_type_name_en"
+                id="formData.car_type_name_en"
+                name="formData.car_type_name_en"
+                outlined
+                dense
+                hide-details
+                :rules="rule"
+              >
+              </v-text-field>
+
               <v-radio-group
+                class="mt-3"
                 v-model="formData.car_type_active"
                 id="formData.car_type_active"
                 name="formData.car_type_active"

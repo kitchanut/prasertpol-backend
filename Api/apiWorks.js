@@ -81,6 +81,11 @@ export function followDown(params) {
   return request("get", url, params);
 }
 
+export function commission_month_by_team_branch(params) {
+  const url = HOSTNAME + "/api/commission_month_by_team_branch";
+  return request("post", url, params);
+}
+
 export function updateNote(workingID, params) {
   const url = HOSTNAME + "/api/updateNote/" + workingID;
   return request("post", url, params);

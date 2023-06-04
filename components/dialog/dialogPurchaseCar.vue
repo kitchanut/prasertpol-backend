@@ -222,18 +222,6 @@
               </v-row>
               <v-row>
                 <v-col cols="4">
-                  <!-- <v-text-field autocomplete="true"
-                  label="ปีผลิต (ค.ศ)"
-                  append-icon=""
-                  v-model="formData.car_year"
-                  id="formData.car_year"
-                  name="formData.car_year"
-                  outlined
-                  dense
-                  hide-details
-                  :rules="rule"
-                >
-                </v-text-field> -->
                   <v-autocomplete
                     v-model="formData.car_models_id"
                     id="formData.car_models_id"

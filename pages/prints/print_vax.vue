@@ -20,10 +20,7 @@
           </v-row>
           <v-row>
             <v-col>
-              <span>
-                216/111 ถนนนิตโย ต.ในเมือง อ.เมือง จ.นครพนม 48000 โทร.042-513332
-                แฟกซ์ 042-513588
-              </span>
+              <span> 216/111 ถนนนิตโย ต.ในเมือง อ.เมือง จ.นครพนม 48000 โทร.042-513332 แฟกซ์ 042-513588 </span>
             </v-col>
           </v-row>
           <v-row>
@@ -31,9 +28,7 @@
               <span> เลขประจำตัวผู้เสียภาษีอากร 0485548000108 </span>
             </v-col>
             <v-col align="right">
-              <span class="b-solid">
-                อัตราภาษีมูลค่าเพิ่ม {{ formData.receiving_money_vat }} (%)
-              </span>
+              <span class="b-solid"> อัตราภาษีมูลค่าเพิ่ม {{ formData.receiving_money_vat }} (%) </span>
             </v-col>
           </v-row>
           <v-row class="d-flex flex-row">
@@ -53,9 +48,7 @@
                 {{
                   formData.receiving_money_date == null
                     ? ""
-                    : $moment(formData.receiving_money_date)
-                        .add(543, "year")
-                        .format("DD MMMM YYYY")
+                    : $moment(formData.receiving_money_date).add(543, "year").format("DD MMMM YYYY")
                 }}</span
               >
             </v-col>
@@ -79,46 +72,26 @@
               </tr>
               <tr>
                 <td align="center" style="padding: 5px 0">
-                  <span>{{
-                    formData.car_model_name == undefined
-                      ? ""
-                      : formData.car_model_name
-                  }}</span>
+                  <span>{{ formData.car_model_name == undefined ? "" : formData.car_model_name }}</span>
                   <div>{{ formData.car.car_series.car_series_name }}</div>
                 </td>
                 <td align="center" style="padding: 5px 0">
-                  <span style="font-size: 16px">{{
-                    formData.car_regis == undefined ? "" : formData.car_regis
-                  }}</span>
+                  <span style="font-size: 16px">{{ formData.car_regis == undefined ? "" : formData.car_regis }}</span>
                 </td>
                 <td align="center" style="padding: 5px 0">
-                  <span style="font-size: 16px">{{
-                    formData.name_th == undefined ? "" : formData.name_th
-                  }}</span>
+                  <span style="font-size: 16px">{{ formData.name_th == undefined ? "" : formData.name_th }}</span>
                 </td>
                 <td align="center" style="padding: 5px 0">
                   <div>
-                    {{
-                      formData.car_no_engine == undefined
-                        ? ""
-                        : formData.car_no_engine
-                    }}
+                    {{ formData.car_no_engine == undefined ? "" : formData.car_no_engine }}
                   </div>
-                  <div style="font-size: 16px">
-                    ({{ formData.receivingMoney_type_str }})
-                  </div>
+                  <div style="font-size: 16px">({{ formData.receivingMoney_type_str }})</div>
                 </td>
                 <td align="center" style="padding: 5px 0">
                   <div>
-                    {{
-                      formData.car_no_body == undefined
-                        ? ""
-                        : formData.car_no_body
-                    }}
+                    {{ formData.car_no_body == undefined ? "" : formData.car_no_body }}
                   </div>
-                  <div style="font-size: 16px">
-                    ({{ formData.customer_name }})
-                  </div>
+                  <div style="font-size: 16px">({{ formData.customer_name }})</div>
                 </td>
                 <td align="right" style="padding-right: 5px">
                   <div style="font-size: 0.875rem">
@@ -143,13 +116,10 @@
                   {{
                     formData.receiving_money_sum == undefined
                       ? 0
-                      : Number(formData.receiving_money_sum).toLocaleString(
-                          "th-TH",
-                          {
-                            maximumFractionDigits: 2,
-                            minimumFractionDigits: 2,
-                          }
-                        )
+                      : Number(formData.receiving_money_sum).toLocaleString("th-TH", {
+                          maximumFractionDigits: 2,
+                          minimumFractionDigits: 2,
+                        })
                   }}
                 </td>
               </tr>
@@ -157,46 +127,32 @@
               <tr>
                 <td colspan="4"></td>
 
-                <td align="center" style="padding: 5px 0">
-                  จำนวนภาษีมูลค่าเพิ่ม
-                </td>
+                <td align="center" style="padding: 5px 0">จำนวนภาษีมูลค่าเพิ่ม</td>
                 <td align="right" style="padding-right: 5px">
                   {{
                     formData.receiving_money_sum_vat == undefined
                       ? 0
-                      : Number(formData.receiving_money_sum_vat).toLocaleString(
-                          "th-TH",
-                          {
-                            maximumFractionDigits: 2,
-                            minimumFractionDigits: 2,
-                          }
-                        )
+                      : Number(formData.receiving_money_sum_vat).toLocaleString("th-TH", {
+                          maximumFractionDigits: 2,
+                          minimumFractionDigits: 2,
+                        })
                   }}
                 </td>
               </tr>
 
               <tr>
                 <td colspan="4" align="center" style="padding: 5px 0">
-                  {{
-                    formData.receiving_money_all_str == undefined
-                      ? 0
-                      : formData.receiving_money_all_str
-                  }}
+                  {{ formData.receiving_money_all_str == undefined ? 0 : formData.receiving_money_all_str }}
                 </td>
-                <td align="center" style="padding: 5px 0">
-                  จำนวนเงินรวมทั้งสิ้น
-                </td>
+                <td align="center" style="padding: 5px 0">จำนวนเงินรวมทั้งสิ้น</td>
                 <td align="right" style="padding-right: 5px">
                   {{
                     formData.receiving_money_all == undefined
                       ? 0
-                      : Number(formData.receiving_money_all).toLocaleString(
-                          "th-TH",
-                          {
-                            maximumFractionDigits: 2,
-                            minimumFractionDigits: 2,
-                          }
-                        )
+                      : Number(formData.receiving_money_all).toLocaleString("th-TH", {
+                          maximumFractionDigits: 2,
+                          minimumFractionDigits: 2,
+                        })
                   }}
                 </td>
               </tr>
@@ -210,9 +166,7 @@
                 {{
                   formData.receiving_money_date == null
                     ? ""
-                    : $moment(formData.receiving_money_date)
-                        .add(543, "year")
-                        .format("DD MMMM YYYY")
+                    : $moment(formData.receiving_money_date).add(543, "year").format("DD MMMM YYYY")
                 }}</span
               >
             </v-col>
@@ -266,9 +220,7 @@ export default {
   methods: {
     async print() {
       // console.log(this.idBooking);
-      const response = await apiReceiving_money.printReceivingMoney(
-        this.$route.query.id
-      );
+      const response = await apiReceiving_money.printReceivingMoney(this.$route.query.id);
       this.$refs.form.reset();
       const self = this;
       this.$nextTick(() => {

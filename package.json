@@ -21,6 +21,7 @@
     "jwt-decode": "^3.1.2",
     "moment": "^2.29.1",
     "nuxt": "^2.15.8",
+    "sortablejs": "^1.15.0",
     "thai-baht-text": "^1.0.8",
     "v-viewer": "^1.6.4",
     "vue-chartjs": "^3.5.1",
@@ -30,6 +31,8 @@
     "vue-upload-multiple-image": "^1.1.6",
     "vue2-datepicker": "^3.10.3",
     "vue2-perfect-scrollbar": "^1.5.2",
+    "vuedraggable": "^2.24.3",
+    "vuex-persistedstate": "^4.1.0",
     "xlsx": "^0.17.4"
   },
   "devDependencies": {

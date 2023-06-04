@@ -11,232 +11,242 @@
   >
     <v-card>
       <v-card-text>
-        <v-row
-          v-if="
-            $vuetify.breakpoint.name == 'xs' || $vuetify.breakpoint.name == 'sm'
-          "
-        >
-          <v-col
-            cols="12"
+        <v-row>
+          <v-btn
+            :color="toggleView == 'small' ? 'lime' : ''"
+            :dark="toggleView == 'small' ? true : false"
+            v-blur
+            class="ml-2 my-1"
+            style="min-width: 0px; padding: 0 8px"
+            @click="toggleView = 'small'"
+          >
+            <v-icon>mdi-view-grid</v-icon>
+          </v-btn>
+
+          <v-btn
+            :color="toggleView == 'large' ? 'lime' : ''"
+            :dark="toggleView == 'large' ? true : false"
+            v-blur
+            class="ml-1 my-1"
+            style="min-width: 0px; padding: 0 8px"
+            @click="toggleView = 'large'"
+          >
+            <v-icon>mdi-apps</v-icon>
+          </v-btn>
+
+          <v-dialog v-model="dialogFilter" width="550">
+            <template v-slot:activator="{ on, attrs }">
+              <v-btn
+                :color="
+                  branch_team_id != 0 || branch_id != 0 || user_team_id != 0 || searchInServer != '' ? 'warning' : ''
+                "
+                v-blur
+                class="ml-2 my-1"
+                style="min-width: 0px; padding: 0 8px"
+                v-bind="attrs"
+                v-on="on"
+              >
+                <v-icon>mdi-filter-variant</v-icon>
+              </v-btn>
+            </template>
+
+            <v-card>
+              <v-toolbar color="warning" dark flat dense style="font-size: 20px" height="6"> </v-toolbar>
+
+              <v-fab-transition>
+                <v-btn icon absolute style="top: 10px; right: 10px" fab small @click="dialogFilter = false">
+                  <v-icon>mdi-close</v-icon>
+                </v-btn>
+              </v-fab-transition>
+
+              <h3 class="text-center" style="font-size: 22px; margin: 10px">กรองข้อมูล</h3>
+
+              <v-divider></v-divider>
+              <v-card-text class="mt-5">
+                <v-row no-gutters class="d-flex align-center mt-2">
+                  <v-col cols="4">ค้นหางาน:</v-col>
+                  <v-col cols="7">
+                    <v-text-field
+                      v-model="searchInServer"
+                      label="ลำดับรถ ชื่อลูกค้า ทะเบียนรถ"
+                      outlined
+                      single-line
+                      hide-details=""
+                      dense
+                    ></v-text-field>
+                  </v-col>
+                  <v-col cols="1">
+                    <v-btn color="primary" v-blur class="ml-2" style="min-width: 0px; padding: 0 8px" @click="getData">
+                      <v-icon>mdi-magnify</v-icon>
+                    </v-btn>
+                  </v-col>
+                </v-row>
+                <v-row
+                  v-if="
+                    user_group_permission == -1 ||
+                    user_group_permission == 9 ||
+                    user_group_permission == 10 ||
+                    user_group_permission == 11
+                  "
+                  no-gutters
+                  class="d-flex align-center mt-2"
+                >
+                  <v-col cols="4">ทีมสาขา:</v-col>
+                  <v-col cols="8">
+                    <v-autocomplete
+                      v-model="branch_team_id"
+                      :items="dataSelectBranch_teams"
+                      item-text="branch_team_name"
+                      item-value="id"
+                      no-data-text="ไม่มีข้อมูล"
+                      outlined
+                      dense
+                      hide-details
+                      @change="changeBranch_team"
+                    >
+                    </v-autocomplete>
+                  </v-col>
+                </v-row>
+
+                <v-row
+                  v-if="
+                    user_group_permission == -1 ||
+                    user_group_permission == 9 ||
+                    user_group_permission == 10 ||
+                    user_group_permission == 11
+                  "
+                  no-gutters
+                  class="d-flex align-center mt-2"
+                >
+                  <v-col cols="4">สาขาย่อย:</v-col>
+                  <v-col cols="8">
+                    <v-autocomplete
+                      v-model="branch_id"
+                      :items="branches"
+                      item-text="branch_name"
+                      item-value="id"
+                      no-data-text="ไม่มีข้อมูล"
+                      outlined
+                      dense
+                      hide-details
+                      @change="selectBranch"
+                    >
+                    </v-autocomplete>
+                  </v-col>
+                </v-row>
+
+                <v-row
+                  v-if="
+                    user_group_permission == -1 ||
+                    user_group_permission == 9 ||
+                    user_group_permission == 10 ||
+                    user_group_permission == 11
+                  "
+                  no-gutters
+                  class="d-flex align-center mt-2"
+                >
+                  <v-col cols="4">ทีมเซล:</v-col>
+                  <v-col cols="8">
+                    <v-autocomplete
+                      v-model="user_team_id"
+                      :items="user_teams"
+                      no-data-text="ไม่มีข้อมูล"
+                      item-text="team_name"
+                      item-value="id"
+                      outlined
+                      dense
+                      hide-details
+                      @change="select_user_team"
+                    >
+                    </v-autocomplete>
+                  </v-col>
+                </v-row>
+              </v-card-text>
+              <v-divider></v-divider>
+              <v-card-actions>
+                <v-btn
+                  color="warning"
+                  text
+                  @click="
+                    branch_team_id = 0;
+                    branch_id = 0;
+                    user_team_id = 0;
+                    searchInServer = '';
+                    getData();
+                  "
+                >
+                  <v-icon left>mdi-replay</v-icon>ล้างข้อมูล
+                </v-btn>
+                <v-spacer></v-spacer>
+                <!-- <v-btn
+                color="primary"
+                text
+                
+                @click="getData"
+              >
+                <v-icon left>mdi-magnify</v-icon>ค้นหา
+              </v-btn> -->
+              </v-card-actions>
+            </v-card>
+          </v-dialog>
+
+          <v-btn
             v-if="
               (user_group_permission == -1 && data.length > 0) ||
               (user_group_permission == 8 && data.length > 0) ||
               (user_group_permission == 10 && data.length > 0) ||
               (user_group_permission == 11 && data.length > 0)
             "
+            @click="handleDownload()"
+            color="success"
+            class="ml-2 my-1"
           >
-            <v-btn
-              v-if="data.length > 0"
-              @click="handleDownload()"
-              color="success"
-              class="ml-2"
-            >
-              <v-icon left>mdi-microsoft-excel</v-icon>
-              Excel
-            </v-btn>
-          </v-col>
+            <v-icon>mdi-microsoft-excel</v-icon>
+          </v-btn>
 
-          <v-col cols="12">
-            <v-btn
-              v-if="
-                user_group_permission == -1 ||
-                user_group_permission == 2 ||
-                user_group_permission == 3 ||
-                user_group_permission == 10
-              "
-              color="primary"
-              dark
-              @click.stop="AddItem()"
-            >
-              <v-icon left>mdi-plus</v-icon>
-              เพิ่มรายการใหม่
-            </v-btn>
-          </v-col>
-
-          <v-col
-            cols="12"
+          <v-btn
             v-if="
               user_group_permission == -1 ||
-              user_group_permission == 9 ||
-              user_group_permission == 10 ||
-              user_group_permission == 11
+              user_group_permission == 2 ||
+              user_group_permission == 3 ||
+              user_group_permission == 10
             "
+            class="ml-2 my-1"
+            color="primary"
+            dark
+            @click.stop="AddItem()"
           >
-            <v-autocomplete
-              v-model="branch_team_id"
-              :items="dataSelectBranch_teams"
-              item-text="branch_team_name"
-              item-value="id"
-              label="ทีมสาขา"
-              no-data-text="ไม่มีข้อมูล"
-              outlined
-              dense
-              hide-details
-              @change="changeBranch_team"
-            >
-            </v-autocomplete>
-          </v-col>
+            <v-icon left>mdi-plus</v-icon>
+            เพิ่มรายการ
+          </v-btn>
 
-          <v-col
-            cols="12"
-            v-if="
-              user_group_permission == -1 ||
-              user_group_permission == 9 ||
-              user_group_permission == 10 ||
-              user_group_permission == 11
-            "
+          <v-spacer></v-spacer>
+
+          <v-text-field
+            v-if="data.length > 0"
+            class="mx-2 my-1"
+            v-model="search"
+            id="search"
+            name="search"
+            append-icon="mdi-magnify"
+            label="ค้นหา"
+            single-line
+            outlined
+            dense
+            hide-details
           >
-            <v-autocomplete
-              v-model="branch_id"
-              :items="branches"
-              item-text="branch_name"
-              item-value="id"
-              label="สาขาย่อย"
-              no-data-text="ไม่มีข้อมูล"
-              outlined
-              dense
-              hide-details
-              @change="selectBranch"
-            >
-            </v-autocomplete>
-          </v-col>
-          <v-col
-            cols="12"
-            v-if="
-              user_group_permission == -1 ||
-              user_group_permission == 9 ||
-              user_group_permission == 10 ||
-              user_group_permission == 11
-            "
-          >
-            <v-autocomplete
-              v-model="user_team_id"
-              :items="user_teams"
-              no-data-text="ไม่มีข้อมูล"
-              item-text="team_name"
-              item-value="id"
-              label="ทีมเซล"
-              outlined
-              dense
-              hide-details
-              @change="select_user_team"
-            >
-            </v-autocomplete>
-          </v-col>
+          </v-text-field>
         </v-row>
-        <v-row v-else>
-          <v-col
-            cols="2"
-            v-if="
-              (user_group_permission == -1 && data.length > 0) ||
-              (user_group_permission == 8 && data.length > 0) ||
-              (user_group_permission == 10 && data.length > 0) ||
-              (user_group_permission == 11 && data.length > 0)
-            "
-          >
-            <v-btn @click="handleDownload()" color="success" class="ml-2" block>
-              <v-icon left>mdi-microsoft-excel</v-icon>
-              Excel
-            </v-btn>
-          </v-col>
 
-          <v-col cols="2">
-            <v-btn
-              v-if="
-                user_group_permission == -1 ||
-                user_group_permission == 2 ||
-                user_group_permission == 3 ||
-                user_group_permission == 10
-              "
-              color="primary"
-              dark
-              @click.stop="AddItem()"
-              block
-            >
-              <v-icon left>mdi-plus</v-icon>
-              เพิ่มรายการใหม่
-            </v-btn>
-          </v-col>
-
-          <v-col
-            cols="3"
-            v-if="
-              user_group_permission == -1 ||
-              user_group_permission == 9 ||
-              user_group_permission == 10 ||
-              user_group_permission == 11
-            "
-          >
-            <v-autocomplete
-              v-model="branch_team_id"
-              :items="dataSelectBranch_teams"
-              item-text="branch_team_name"
-              item-value="id"
-              label="ทีมสาขา"
-              no-data-text="ไม่มีข้อมูล"
-              outlined
-              dense
-              hide-details
-              @change="changeBranch_team"
-            >
-            </v-autocomplete>
-          </v-col>
-
-          <v-col
-            cols="3"
-            v-if="
-              user_group_permission == -1 ||
-              user_group_permission == 9 ||
-              user_group_permission == 10 ||
-              user_group_permission == 11
-            "
-          >
-            <v-autocomplete
-              v-model="branch_id"
-              :items="branches"
-              item-text="branch_name"
-              item-value="id"
-              label="สาขาย่อย"
-              no-data-text="ไม่มีข้อมูล"
-              outlined
-              dense
-              hide-details
-              @change="selectBranch"
-            >
-            </v-autocomplete>
-          </v-col>
-          <v-col
-            cols="2"
-            v-if="
-              user_group_permission == -1 ||
-              user_group_permission == 9 ||
-              user_group_permission == 10 ||
-              user_group_permission == 11
-            "
-          >
-            <v-autocomplete
-              v-model="user_team_id"
-              :items="user_teams"
-              no-data-text="ไม่มีข้อมูล"
-              item-text="team_name"
-              item-value="id"
-              label="ทีมเซล"
-              outlined
-              dense
-              hide-details
-              @change="select_user_team"
-            >
-            </v-autocomplete>
-          </v-col>
-        </v-row>
         <br />
 
         <v-row
           v-if="
-            user_group_permission == -1 ||
-            user_group_permission == 9 ||
-            user_group_permission == 10 ||
-            user_group_permission == 11
+            toggleView == 'large' &&
+            (user_group_permission == -1 ||
+              user_group_permission == 9 ||
+              user_group_permission == 10 ||
+              user_group_permission == 11)
           "
         >
           <v-col>
@@ -254,43 +264,6 @@
         </v-row>
         <br />
 
-        <v-row class="d-flex align-end">
-          <!-- <v-col>
-            <v-text-field
-              v-model="searchIDCar"
-              label="ค้นหาลำดับรถ"
-              single-line
-              hide-details
-            >
-            </v-text-field>
-
-          </v-col>
-          <v-col>
-            <v-btn
-              small
-              color="primary"
-              :loading="loading"
-              @click="getData()"
-            >
-              <v-icon>mdi-magnify</v-icon>
-            </v-btn>
-          </v-col> -->
-          <v-spacer></v-spacer>
-          <v-col xs="12" sm="12" md="6" lg="4" xl="4">
-            <v-text-field
-              v-if="data.length > 0"
-              v-model="search"
-              id="search"
-              name="search"
-              append-icon="mdi-magnify"
-              label="ค้นหา"
-              single-line
-              hide-details
-            >
-            </v-text-field>
-          </v-col>
-        </v-row>
-        <br />
         <v-tabs grow v-model="selectTab" @change="getData">
           <v-tab>
             <v-badge color="green" :content="content_all"> ทั้งหมด </v-badge>
@@ -313,9 +286,7 @@
           </v-tab>
 
           <v-tab>
-            <v-badge color="green" :content="content_5">
-              รอแบงค์อนุมัติ
-            </v-badge>
+            <v-badge color="green" :content="content_5"> รอแบงค์อนุมัติ </v-badge>
           </v-tab>
 
           <v-tab>
@@ -352,38 +323,38 @@
             </v-badge>
           </v-tab> -->
         </v-tabs>
-        <div id="mycontainer">
-          <div id="outer">
-            <div
-              class="wrapper1"
-              style="overflow-x: scroll; overflow-y: hidden"
-            >
-              <div :style="'width:' + tableWidth + 'px; height: 20px;'"></div>
-            </div>
+      </v-card-text>
 
-            <v-data-table
-              :headers="showHeaders"
-              :items="data"
-              :items-per-page="item_per_page"
-              :footer-props="{
-                'items-per-page-options': [5, 10, 20, 50, 100, -1],
-              }"
-              :search="search"
-              :loading="loading"
-              :multi-sort="true"
-              no-data-text="ไม่มีข้อมูล"
-              loading-text="กำลังโหลดข้อมูลกรุณารอสักครู่"
-              :mobile-breakpoint="0"
-              dense
-            >
-              <template v-slot:[`item.customer`]="{ item }">
-                <h5 v-if="item.customer_id == null" class="red--text">
-                  {{ item.customer_name }}
-                </h5>
-                <h5 v-else class="green--text">{{ item.customer_name }}</h5>
-              </template>
+      <div id="mycontainer">
+        <div id="outer">
+          <div class="wrapper1" style="overflow-x: scroll; overflow-y: hidden">
+            <div :style="'width:' + tableWidth + 'px; height: 20px;'"></div>
+          </div>
 
-              <!-- <template v-slot:[`item.hear_from_type`]="{ item }">
+          <v-data-table
+            class="table-border table-border-top"
+            :headers="showHeaders"
+            :items="data"
+            :items-per-page="item_per_page"
+            :footer-props="{
+              'items-per-page-options': [5, 10, 20, 50, 100, -1],
+            }"
+            :search="search"
+            :loading="loading"
+            :multi-sort="true"
+            no-data-text="ไม่มีข้อมูล"
+            loading-text="กำลังโหลดข้อมูลกรุณารอสักครู่"
+            :mobile-breakpoint="0"
+            dense
+          >
+            <template v-slot:[`item.customer`]="{ item }">
+              <h5 v-if="item.customer_id == null" class="red--text">
+                {{ item.customer_name }}
+              </h5>
+              <h5 v-else class="green--text">{{ item.customer_name }}</h5>
+            </template>
+
+            <!-- <template v-slot:[`item.hear_from_type`]="{ item }">
                 <h5 v-if="item.hear_from_type == 1">หน้าร้าน</h5>
                 <h5 v-if="item.hear_from_type == 2">เพจบริษัท</h5>
                 <h5 v-if="item.hear_from_type == 3">ลูกค้าเก่าแนะนำ</h5>
@@ -395,164 +366,69 @@
                 <h5 v-if="item.hear_from_type == 7">ออนไลน์</h5>
               </template> -->
 
-              <template v-slot:[`item.sale`]="{ item }">
-                <h5
-                  v-if="item.sale_id == null || item.sale_id == 0"
-                  class="red--text"
-                >
-                  ยังไม่เลือก
-                </h5>
-                <h5 v-else>
-                  <v-btn
-                    dark
-                    x-small
-                    class="mx-1"
-                    color="green"
-                    @click="getSale(item.sale_id)"
-                  >
-                    {{ item.sale == null ? "" : item.sale }}
-                  </v-btn>
-                </h5>
-              </template>
+            <template v-slot:[`item.sale`]="{ item }">
+              <h5 v-if="item.sale_id == null || item.sale_id == 0" class="red--text">ยังไม่เลือก</h5>
+              <h5 v-else>
+                <v-btn dark x-small class="mx-1" color="green" @click="getSale(item.sale_id)">
+                  {{ item.sale == null ? "" : item.sale }}
+                </v-btn>
+              </h5>
+            </template>
 
-              <template v-slot:[`item.branch_name`]="{ item }">
-                <h5
-                  v-if="item.sale_id == null || item.sale_id == 0"
-                  class="red--text"
-                >
-                  {{ item.branch_name }}
-                </h5>
-                <h5 v-else>
-                  {{ item.branch_name }}
-                </h5>
-              </template>
+            <template v-slot:[`item.branch_name`]="{ item }">
+              <h5 v-if="item.sale_id == null || item.sale_id == 0" class="red--text">
+                {{ item.branch_name }}
+              </h5>
+              <h5 v-else>
+                {{ item.branch_name }}
+              </h5>
+            </template>
 
-              <template v-slot:[`item.appointment_bank_type`]="{ item }">
-                <v-btn
-                  v-if="item.appointment_bank_type == 'ครบ'"
-                  class="mt-1"
-                  x-small
-                  color="green"
-                  dark
-                  >ครบ</v-btn
-                >
-                <v-btn
-                  v-if="item.appointment_bank_type == 'ไม่ครบ'"
-                  class="mt-1"
-                  x-small
-                  color="red"
-                  dark
-                  >ไม่ครบ</v-btn
-                >
-              </template>
+            <template v-slot:[`item.appointment_bank_type`]="{ item }">
+              <v-btn v-if="item.appointment_bank_type == 'ครบ'" class="mt-1" x-small color="green" dark>ครบ</v-btn>
+              <v-btn v-if="item.appointment_bank_type == 'ไม่ครบ'" class="mt-1" x-small color="red" dark>ไม่ครบ</v-btn>
+            </template>
 
-              <template v-slot:[`item.work_status`]="{ item }">
-                <div>
-                  <v-btn
-                    v-if="item.work_status == '1'"
-                    x-small
-                    color="primary"
-                    dark
-                    >ลูกค้าสนใจ</v-btn
-                  >
-                  <v-btn
-                    v-if="item.work_status == '2'"
-                    x-small
-                    color="primary"
-                    dark
-                    >ยืนยันการจอง</v-btn
-                  >
-                  <v-btn
-                    v-if="item.work_status == '3'"
-                    x-small
-                    color="primary"
-                    dark
-                    >วางมัดจำแล้ว</v-btn
-                  >
-                  <v-btn
-                    v-if="item.work_status == '4'"
-                    x-small
-                    color="primary"
-                    dark
-                    >นัดทำสัญญาแล้ว</v-btn
-                  >
-                  <v-btn
-                    v-if="item.work_status == '5'"
-                    x-small
-                    color="primary"
-                    dark
-                    >รอแบงค์อนุมัติ</v-btn
-                  >
-                  <v-btn v-if="item.work_status == '6'" x-small color="red" dark
-                    >แบงค์ไม่อนุมัติ</v-btn
-                  >
-                  <v-btn
-                    v-if="item.work_status == '7'"
-                    x-small
-                    color="primary"
-                    dark
-                    >แบงค์อนุมัติแล้ว</v-btn
-                  >
-                  <v-btn
-                    v-if="item.work_status == '8'"
-                    x-small
-                    color="primary"
-                    dark
-                    >รอชุดโอน</v-btn
-                  >
-                  <v-btn
-                    v-if="item.work_status == '9'"
-                    x-small
-                    color="warning"
-                    dark
-                  >
-                    รอตรวจสอบ
-                  </v-btn>
-                  <v-btn
-                    v-if="item.work_status == '10'"
-                    x-small
-                    color="warning"
-                    dark
-                    >รอปิดงาน</v-btn
-                  >
-                  <v-btn
-                    v-if="item.work_status == '11'"
-                    x-small
-                    color="success"
-                    dark
-                    >ปิดงาน</v-btn
-                  >
-                </div>
+            <template v-slot:[`item.work_status`]="{ item }">
+              <div v-if="item.status_del == 0">
+                <v-btn class="mt-1" x-small color="red" dark>ยกเลิก</v-btn>
+              </div>
+              <div v-else>
+                <v-btn v-if="item.work_status == '1'" x-small color="primary" dark>ลูกค้าสนใจ</v-btn>
+                <v-btn v-if="item.work_status == '2'" x-small color="primary" dark>ยืนยันการจอง</v-btn>
+                <v-btn v-if="item.work_status == '3'" x-small color="primary" dark>วางมัดจำแล้ว</v-btn>
+                <v-btn v-if="item.work_status == '4'" x-small color="primary" dark>นัดทำสัญญาแล้ว</v-btn>
+                <v-btn v-if="item.work_status == '5'" x-small color="primary" dark>รอแบงค์อนุมัติ</v-btn>
+                <v-btn v-if="item.work_status == '6'" x-small color="red" dark>แบงค์ไม่อนุมัติ</v-btn>
+                <v-btn v-if="item.work_status == '7'" x-small color="primary" dark>แบงค์อนุมัติแล้ว</v-btn>
+                <v-btn v-if="item.work_status == '8'" x-small color="primary" dark>รอชุดโอน</v-btn>
+                <v-btn v-if="item.work_status == '9'" x-small color="warning" dark> รอตรวจสอบ </v-btn>
+                <v-btn v-if="item.work_status == '10'" x-small color="warning" dark>รอปิดงาน</v-btn>
+                <v-btn v-if="item.work_status == '11'" x-small color="success" dark>ปิดงาน</v-btn>
+              </div>
 
-                <v-btn
-                  v-if="item.pathner_job_technician == 1"
-                  class="mt-1"
-                  x-small
-                  color="red"
-                  dark
-                  >มีงานซ่อมนอก</v-btn
-                >
-                <span v-if="item.job_fix != 0">
-                  <v-btn class="mt-1" x-small color="red" dark>มีงานซ่อม</v-btn>
+              <v-btn v-if="item.pathner_job_technician == 1" class="mt-1" x-small color="red" dark>มีงานซ่อมนอก</v-btn>
+              <span v-if="item.job_fix != 0">
+                <v-btn class="mt-1" x-small color="red" dark>มีงานซ่อม</v-btn>
+              </span>
+
+              <div v-if="item.contract != null">
+                <span v-if="item.appointment_book_date == ' '">
+                  <v-btn class="mt-1" x-small color="red" dark>ชุดโอน</v-btn>
                 </span>
 
-                <div v-if="item.contract != null">
-                  <span v-if="item.appointment_book_date == ' '">
-                    <v-btn class="mt-1" x-small color="red" dark>ชุดโอน</v-btn>
-                  </span>
+                <span v-if="item.appointment_transfer_date == ' '">
+                  <v-btn class="mt-1" x-small color="red" dark>โอนรถ</v-btn>
+                </span>
 
-                  <span v-if="item.appointment_transfer_date == ' '">
-                    <v-btn class="mt-1" x-small color="red" dark>โอนรถ</v-btn>
-                  </span>
+                <span v-if="item.appointment_money_date == ' '">
+                  <v-btn class="mt-1" x-small color="red" dark>ได้เงิน</v-btn>
+                </span>
 
-                  <span v-if="item.appointment_money_date == ' '">
-                    <v-btn class="mt-1" x-small color="red" dark>ได้เงิน</v-btn>
-                  </span>
-
-                  <span v-if="item.appointment_mkt_date == null">
-                    <v-btn class="mt-1" x-small color="red" dark>MRT</v-btn>
-                  </span>
-                  <!-- <span
+                <span v-if="item.appointment_mkt_date == null">
+                  <v-btn class="mt-1" x-small color="red" dark>MRT</v-btn>
+                </span>
+                <!-- <span
                     v-if="
                       item.financials_sum_bath != item.down &&
                       item.work_status >= 8 &&
@@ -616,11 +492,11 @@
                       </v-card>
                     </v-menu>
                   </span> -->
-                </div>
-              </template>
+              </div>
+            </template>
 
-              <template v-slot:[`item.booking_date`]="{ item }">
-                <!-- <span
+            <template v-slot:[`item.booking_date`]="{ item }">
+              <!-- <span
                   style="color: red"
                   v-if="
                     $moment().unix() >
@@ -630,253 +506,215 @@
                   {{ $moment(item.booking_date).fromNow(true) }}
                 </span> -->
 
-                <span
-                  style="color: red"
-                  v-if="
-                    $moment().unix() >
-                      Number($moment(item.booking_date).unix()) + 604800 &&
-                    item.booking_date != ' '
-                  "
-                >
-                  {{ $moment().diff($moment(item.booking_date), "days") }} วัน
-                </span>
-
-                <span
-                  style="color: blue"
-                  v-else-if="
-                    $moment().unix() >
-                      Number($moment(item.booking_date).unix()) + 86400 &&
-                    item.booking_date != ' '
-                  "
-                >
-                  {{ $moment().diff($moment(item.booking_date), "days") }} วัน
-                </span>
-
-                <span style="color: blue" v-else-if="item.booking_date != ' '">
-                  {{ $moment(item.booking_date).fromNow(true) }}
-                </span>
-              </template>
-
-              <template v-slot:[`item.updated_at`]="{ item }">
-                {{ $moment(item.updated_at).fromNow(true) }}
-              </template>
-
-              <template v-slot:[`item.appointment_banks.car_price`]="{ item }">
-                <span v-if="item.appointment_banks != null">
-                  {{
-                    Number(item.appointment_banks.car_price).toLocaleString(
-                      "th-TH",
-                      {
-                        maximumFractionDigits: 2,
-                        minimumFractionDigits: 2,
-                      }
-                    )
-                  }}</span
-                >
-                <span v-else>0</span>
-              </template>
-
-              <template v-slot:[`item.bookings.amount_slacken`]="{ item }">
-                <span v-if="item.bookings != null">
-                  {{
-                    Number(item.bookings.amount_slacken).toLocaleString(
-                      "th-TH",
-                      {
-                        maximumFractionDigits: 2,
-                        minimumFractionDigits: 2,
-                      }
-                    )
-                  }}</span
-                >
-                <span v-else>0</span>
-              </template>
-              <template
-                v-slot:[`item.appointment_banks.appointment_money_price`]="{
-                  item,
-                }"
+              <span
+                style="color: red"
+                v-if="$moment().unix() > Number($moment(item.booking_date).unix()) + 604800 && item.booking_date != ' '"
               >
-                <span v-if="item.appointment_banks != null">
-                  {{
-                    Number(
-                      item.appointment_banks.appointment_money_price
-                    ).toLocaleString("th-TH", {
-                      maximumFractionDigits: 2,
-                      minimumFractionDigits: 2,
-                    })
-                  }}</span
-                >
-                <span v-else>0</span>
-              </template>
+                {{ $moment().diff($moment(item.booking_date), "days") }} วัน
+              </span>
 
-              <template v-slot:[`item.user`]="{ item }">
-                <span style="font-size: 12px">{{ item.user }}</span>
-              </template>
+              <span
+                style="color: blue"
+                v-else-if="
+                  $moment().unix() > Number($moment(item.booking_date).unix()) + 86400 && item.booking_date != ' '
+                "
+              >
+                {{ $moment().diff($moment(item.booking_date), "days") }} วัน
+              </span>
 
-              <!-- <template v-slot:item.actions="{ item }"> -->
-              <template v-slot:[`item.actions`]="{ item }">
-                <v-menu offset-y>
-                  <template v-slot:activator="{ on, attrs }">
-                    <v-btn icon v-bind="attrs" v-on="on">
-                      <v-icon>mdi-dots-horizontal</v-icon>
-                    </v-btn>
-                  </template>
-                  <v-list>
-                    <v-list-item
-                      @click="editItem(item.id)"
-                      v-if="
-                        (item.work_status < 7 && user_group_permission == 3) ||
-                        (item.work_status < 7 && user_group_permission == 2) ||
-                        user_group_permission == -1
-                      "
+              <span style="color: blue" v-else-if="item.booking_date != ' '">
+                {{ $moment(item.booking_date).fromNow(true) }}
+              </span>
+            </template>
+
+            <template v-slot:[`item.updated_at`]="{ item }">
+              {{ $moment(item.updated_at).fromNow(true) }}
+            </template>
+
+            <template v-slot:[`item.appointment_banks.car_price`]="{ item }">
+              <span v-if="item.appointment_banks != null">
+                {{
+                  Number(item.appointment_banks.car_price).toLocaleString("th-TH", {
+                    maximumFractionDigits: 2,
+                    minimumFractionDigits: 2,
+                  })
+                }}</span
+              >
+              <span v-else>0</span>
+            </template>
+
+            <template v-slot:[`item.bookings.amount_slacken`]="{ item }">
+              <span v-if="item.bookings != null">
+                {{
+                  Number(item.bookings.amount_slacken).toLocaleString("th-TH", {
+                    maximumFractionDigits: 2,
+                    minimumFractionDigits: 2,
+                  })
+                }}</span
+              >
+              <span v-else>0</span>
+            </template>
+            <template v-slot:[`item.appointment_banks.appointment_money_price`]="{ item }">
+              <span v-if="item.appointment_banks != null">
+                {{
+                  Number(item.appointment_banks.appointment_money_price).toLocaleString("th-TH", {
+                    maximumFractionDigits: 2,
+                    minimumFractionDigits: 2,
+                  })
+                }}</span
+              >
+              <span v-else>0</span>
+            </template>
+
+            <template v-slot:[`item.commission_mount`]="{ item }">
+              <a
+                v-if="item.commission_mount != ' '"
+                style="cursor: pointer"
+                @click="CarTransferred(item.car_no, item.id)"
+              >
+                {{ item.commission_mount }}
+              </a>
+              <div
+                v-else
+                x-small
+                class="white--text"
+                rounded
+                dark
+                @click="CarTransferred(item.car_no, item.id)"
+                style="cursor: pointer"
+              >
+                + เพิ่ม
+              </div>
+            </template>
+
+            <template v-slot:[`item.user`]="{ item }">
+              <span style="font-size: 12px">{{ item.user }}</span>
+            </template>
+
+            <!-- <template v-slot:item.actions="{ item }"> -->
+            <template v-slot:[`item.actions`]="{ item }">
+              <v-menu offset-y>
+                <template v-slot:activator="{ on, attrs }">
+                  <v-btn icon v-bind="attrs" v-on="on">
+                    <v-icon>mdi-dots-horizontal</v-icon>
+                  </v-btn>
+                </template>
+                <v-list>
+                  <v-list-item
+                    @click="editItem(item.id)"
+                    v-if="
+                      (item.work_status < 7 && user_group_permission == 3) ||
+                      (item.work_status < 7 && user_group_permission == 2) ||
+                      user_group_permission == -1
+                    "
+                  >
+                    <v-list-item-title>ดูข้อมูลลูกค้าสนใจ</v-list-item-title>
+                  </v-list-item>
+
+                  <v-list-item
+                    v-if="
+                      user_group_permission == -1 ||
+                      user_group_permission == 2 ||
+                      user_group_permission == 3 ||
+                      user_group_permission == 9 ||
+                      user_group_permission == 10
+                    "
+                    @click="Booking(item.car_no, item.id, item.car_id, item.customer_id, item.sale_id)"
+                  >
+                    <v-list-item-title :style="item.work_status == 1 ? 'color:blue' : ''">{{
+                      item.work_status > 1 ? "ดูข้อมูลการจอง" : "จอง"
+                    }}</v-list-item-title>
+                  </v-list-item>
+
+                  <v-list-item
+                    v-if="
+                      (item.work_status >= 2 && user_group_permission == -1) ||
+                      (item.work_status >= 2 && user_group_permission == 2) ||
+                      (item.work_status >= 2 && user_group_permission == 3) ||
+                      (item.work_status >= 2 && user_group_permission == 9) ||
+                      (item.work_status >= 2 && user_group_permission == 11) ||
+                      (item.work_status >= 2 && user_group_permission == 10)
+                    "
+                    @click="Financial(item.car_no, item.id, '1')"
+                  >
+                    <v-list-item-title :style="item.work_status == 2 ? 'color:blue' : ''">{{
+                      item.work_status > 2 ? "ดูข้อมูลวางมัดจำ" : "วางมัดจำ"
+                    }}</v-list-item-title>
+                  </v-list-item>
+
+                  <v-list-item
+                    v-if="
+                      (item.work_status >= 3 && user_group_permission == -1) ||
+                      (item.work_status >= 3 && user_group_permission == 2) ||
+                      (item.work_status >= 3 && user_group_permission == 3) ||
+                      (item.work_status >= 3 && user_group_permission == 9) ||
+                      (item.work_status >= 3 && user_group_permission == 10) ||
+                      (item.work_status >= 3 && user_group_permission == 11)
+                    "
+                    @click="ReceiveDown(item.car_no, item.id)"
+                  >
+                    <v-list-item-title style="color: green">{{
+                      item.work_status > 3 ? "ใบสำคัญรับเงิน" : "ใบสำคัญรับเงิน"
+                    }}</v-list-item-title>
+                  </v-list-item>
+
+                  <v-list-item
+                    v-if="
+                      (item.work_status >= 3 && user_group_permission == -1) ||
+                      (item.work_status >= 3 && user_group_permission == 2) ||
+                      (item.work_status >= 3 && user_group_permission == 3) ||
+                      (item.work_status >= 3 && user_group_permission == 10)
+                    "
+                    @click="Appointment(item.car_no, item.id)"
+                  >
+                    <v-list-item-title :style="item.work_status == 3 ? 'color:blue' : ''">{{
+                      item.work_status > 3 ? "ดูข้อมูลการนัดทำสัญญากับแบงค์" : "นัดทำสัญญากับแบงค์"
+                    }}</v-list-item-title>
+                  </v-list-item>
+
+                  <v-list-item
+                    v-if="
+                      (item.work_status >= 4 && user_group_permission == -1) ||
+                      (item.work_status >= 4 && user_group_permission == 2) ||
+                      (item.work_status >= 4 && user_group_permission == 3) ||
+                      (item.work_status >= 4 && user_group_permission == 9) ||
+                      (item.work_status >= 4 && user_group_permission == 10) ||
+                      (item.work_status >= 4 && user_group_permission == 11)
+                    "
+                    @click="AppointmentBank(item.car_no, item.id)"
+                  >
+                    <v-list-item-title :style="item.work_status == 4 ? 'color:blue' : ''">{{
+                      item.work_status > 4 ? "ดูข้อมูลการทำสัญญา" : "ทำสัญญา"
+                    }}</v-list-item-title>
+                  </v-list-item>
+
+                  <v-list-item
+                    v-if="
+                      (item.work_status >= 5 && user_group_permission == -1) ||
+                      (item.work_status >= 5 && user_group_permission == 9) ||
+                      (item.work_status >= 5 && user_group_permission == 10)
+                    "
+                    @click="BankApproved(item.car_no, item.id)"
+                  >
+                    <v-list-item-title :style="item.work_status == 5 ? 'color:blue' : ''">{{
+                      item.work_status > 5 ? "ดูข้อมูลแบงค์อนุมัติ" : "แบงค์อนุมัติ"
+                    }}</v-list-item-title>
+                  </v-list-item>
+
+                  <v-list-item
+                    v-if="
+                      (item.work_status == 5 && user_group_permission == -1) ||
+                      (item.work_status == 5 && user_group_permission == 9) ||
+                      (item.work_status == 5 && user_group_permission == 10)
+                    "
+                    @click="BankUnApproved(item.car_no, item.id)"
+                  >
+                    <v-list-item-title :style="item.work_status == 5 ? 'color:red' : ''"
+                      >แบงค์ไม่อนุมัติ</v-list-item-title
                     >
-                      <v-list-item-title>ดูข้อมูลลูกค้าสนใจ</v-list-item-title>
-                    </v-list-item>
+                  </v-list-item>
 
-                    <v-list-item
-                      v-if="
-                        user_group_permission == -1 ||
-                        user_group_permission == 2 ||
-                        user_group_permission == 3 ||
-                        user_group_permission == 9 ||
-                        user_group_permission == 10
-                      "
-                      @click="
-                        Booking(
-                          item.car_no,
-                          item.id,
-                          item.car_id,
-                          item.customer_id,
-                          item.sale_id
-                        )
-                      "
-                    >
-                      <v-list-item-title
-                        :style="item.work_status == 1 ? 'color:blue' : ''"
-                        >{{
-                          item.work_status > 1 ? "ดูข้อมูลการจอง" : "จอง"
-                        }}</v-list-item-title
-                      >
-                    </v-list-item>
-
-                    <v-list-item
-                      v-if="
-                        (item.work_status >= 2 &&
-                          user_group_permission == -1) ||
-                        (item.work_status >= 2 && user_group_permission == 2) ||
-                        (item.work_status >= 2 && user_group_permission == 3) ||
-                        (item.work_status >= 2 && user_group_permission == 9) ||
-                        (item.work_status >= 2 &&
-                          user_group_permission == 11) ||
-                        (item.work_status >= 2 && user_group_permission == 10)
-                      "
-                      @click="Financial(item.car_no, item.id, '1')"
-                    >
-                      <v-list-item-title
-                        :style="item.work_status == 2 ? 'color:blue' : ''"
-                        >{{
-                          item.work_status > 2 ? "ดูข้อมูลวางมัดจำ" : "วางมัดจำ"
-                        }}</v-list-item-title
-                      >
-                    </v-list-item>
-
-                    <v-list-item
-                      v-if="
-                        (item.work_status >= 3 &&
-                          user_group_permission == -1) ||
-                        (item.work_status >= 3 && user_group_permission == 2) ||
-                        (item.work_status >= 3 && user_group_permission == 3) ||
-                        (item.work_status >= 3 && user_group_permission == 9) ||
-                        (item.work_status >= 3 &&
-                          user_group_permission == 10) ||
-                        (item.work_status >= 3 && user_group_permission == 11)
-                      "
-                      @click="ReceiveDown(item.car_no, item.id)"
-                    >
-                      <v-list-item-title style="color: green">{{
-                        item.work_status > 3
-                          ? "ใบสำคัญรับเงิน"
-                          : "ใบสำคัญรับเงิน"
-                      }}</v-list-item-title>
-                    </v-list-item>
-
-                    <v-list-item
-                      v-if="
-                        (item.work_status >= 3 &&
-                          user_group_permission == -1) ||
-                        (item.work_status >= 3 && user_group_permission == 2) ||
-                        (item.work_status >= 3 && user_group_permission == 3) ||
-                        (item.work_status >= 3 && user_group_permission == 10)
-                      "
-                      @click="Appointment(item.car_no, item.id)"
-                    >
-                      <v-list-item-title
-                        :style="item.work_status == 3 ? 'color:blue' : ''"
-                        >{{
-                          item.work_status > 3
-                            ? "ดูข้อมูลการนัดทำสัญญากับแบงค์"
-                            : "นัดทำสัญญากับแบงค์"
-                        }}</v-list-item-title
-                      >
-                    </v-list-item>
-
-                    <v-list-item
-                      v-if="
-                        (item.work_status >= 4 &&
-                          user_group_permission == -1) ||
-                        (item.work_status >= 4 && user_group_permission == 2) ||
-                        (item.work_status >= 4 && user_group_permission == 3) ||
-                        (item.work_status >= 4 && user_group_permission == 9) ||
-                        (item.work_status >= 4 &&
-                          user_group_permission == 10) ||
-                        (item.work_status >= 4 && user_group_permission == 11)
-                      "
-                      @click="AppointmentBank(item.car_no, item.id)"
-                    >
-                      <v-list-item-title
-                        :style="item.work_status == 4 ? 'color:blue' : ''"
-                        >{{
-                          item.work_status > 4
-                            ? "ดูข้อมูลการทำสัญญา"
-                            : "ทำสัญญา"
-                        }}</v-list-item-title
-                      >
-                    </v-list-item>
-
-                    <v-list-item
-                      v-if="
-                        (item.work_status >= 5 &&
-                          user_group_permission == -1) ||
-                        (item.work_status >= 5 && user_group_permission == 9) ||
-                        (item.work_status >= 5 && user_group_permission == 10)
-                      "
-                      @click="BankApproved(item.car_no, item.id)"
-                    >
-                      <v-list-item-title
-                        :style="item.work_status == 5 ? 'color:blue' : ''"
-                        >{{
-                          item.work_status > 5
-                            ? "ดูข้อมูลแบงค์อนุมัติ"
-                            : "แบงค์อนุมัติ"
-                        }}</v-list-item-title
-                      >
-                    </v-list-item>
-
-                    <v-list-item
-                      v-if="
-                        (item.work_status == 5 &&
-                          user_group_permission == -1) ||
-                        (item.work_status == 5 && user_group_permission == 9) ||
-                        (item.work_status == 5 && user_group_permission == 10)
-                      "
-                      @click="BankUnApproved(item.car_no, item.id)"
-                    >
-                      <v-list-item-title
-                        :style="item.work_status == 5 ? 'color:red' : ''"
-                        >แบงค์ไม่อนุมัติ</v-list-item-title
-                      >
-                    </v-list-item>
-
-                    <!-- <v-list-item
+                  <!-- <v-list-item
                       v-if="
                         (item.work_status >= 7 && user_group_permission == -1) ||
                         (item.work_status >= 7 && user_group_permission == 2) ||
@@ -894,7 +732,7 @@
                       }}</v-list-item-title>
                     </v-list-item> -->
 
-                    <!-- <v-list-item
+                  <!-- <v-list-item
                       v-if="
                         (item.work_status >= 7 && user_group_permission == -1) ||
                         (item.work_status >= 7 && user_group_permission == 2) ||
@@ -912,121 +750,77 @@
                       }}</v-list-item-title>
                     </v-list-item> -->
 
-                    <v-list-item
-                      v-if="
-                        (item.work_status >= 7 &&
-                          user_group_permission == -1) ||
-                        (item.work_status >= 7 && user_group_permission == 2) ||
-                        (item.work_status >= 7 && user_group_permission == 3) ||
-                        (item.work_status >= 7 && user_group_permission == 9) ||
-                        (item.work_status >= 7 &&
-                          user_group_permission == 10) ||
-                        (item.work_status >= 7 && user_group_permission == 11)
-                      "
-                      @click="
-                        Contract(
-                          item.car_no,
-                          item.id,
-                          item.car_id,
-                          item.customer_id
-                        )
-                      "
-                    >
-                      <v-list-item-title
-                        :style="item.work_status == 7 ? 'color:blue' : ''"
-                        >{{
-                          item.work_status > 7 ? "ดูข้อมูลปล่อยรถ" : "ปล่อยรถ"
-                        }}</v-list-item-title
-                      >
-                    </v-list-item>
+                  <v-list-item
+                    v-if="
+                      (item.work_status >= 7 && user_group_permission == -1) ||
+                      (item.work_status >= 7 && user_group_permission == 2) ||
+                      (item.work_status >= 7 && user_group_permission == 3) ||
+                      (item.work_status >= 7 && user_group_permission == 9) ||
+                      (item.work_status >= 7 && user_group_permission == 10) ||
+                      (item.work_status >= 7 && user_group_permission == 11)
+                    "
+                    @click="Contract(item.car_no, item.id, item.car_id, item.customer_id)"
+                  >
+                    <v-list-item-title :style="item.work_status == 7 ? 'color:blue' : ''">{{
+                      item.work_status > 7 ? "ดูข้อมูลปล่อยรถ" : "ปล่อยรถ"
+                    }}</v-list-item-title>
+                  </v-list-item>
 
-                    <v-list-item
-                      v-if="
-                        (item.work_status >= 7 &&
-                          user_group_permission == -1) ||
-                        (item.work_status >= 7 && user_group_permission == 2) ||
-                        (item.work_status >= 7 && user_group_permission == 3) ||
-                        (item.work_status >= 7 && user_group_permission == 9)
-                      "
-                      @click="
-                        InsurCertificate(
-                          item.car_no,
-                          item.id,
-                          item.car_id,
-                          item.customer_id
-                        )
-                      "
-                    >
-                      <v-list-item-title
-                        :style="item.work_status == 7 ? 'color:blue' : ''"
-                        >{{
-                          item.work_status > 7
-                            ? "ดูข้อมูลใบประกันรถยนต์"
-                            : "ใบประกันรถยนต์"
-                        }}</v-list-item-title
-                      >
-                    </v-list-item>
+                  <v-list-item
+                    v-if="
+                      (item.work_status >= 7 && user_group_permission == -1) ||
+                      (item.work_status >= 7 && user_group_permission == 2) ||
+                      (item.work_status >= 7 && user_group_permission == 3) ||
+                      (item.work_status >= 7 && user_group_permission == 9)
+                    "
+                    @click="InsurCertificate(item.car_no, item.id, item.car_id, item.customer_id)"
+                  >
+                    <v-list-item-title :style="item.work_status == 7 ? 'color:blue' : ''">{{
+                      item.work_status > 7 ? "ดูข้อมูลใบประกันรถยนต์" : "ใบประกันรถยนต์"
+                    }}</v-list-item-title>
+                  </v-list-item>
 
-                    <v-list-item
-                      v-if="
-                        (item.work_status >= 7 &&
-                          user_group_permission == -1) ||
-                        (item.work_status >= 7 && user_group_permission == 9) ||
-                        (item.work_status >= 7 &&
-                          user_group_permission == 10) ||
-                        (item.work_status >= 5 && user_group_permission == 11)
-                      "
-                      @click="CarTransferred(item.car_no, item.id)"
-                    >
-                      <v-list-item-title
-                        :style="item.work_status == 7 ? 'color:brown' : ''"
-                        >{{
-                          item.work_status > 7 ? "ดูข้อมูลชุดโอน" : "ชุดโอน"
-                        }}</v-list-item-title
-                      >
-                    </v-list-item>
+                  <v-list-item
+                    v-if="
+                      (item.work_status >= 7 && user_group_permission == -1) ||
+                      (item.work_status >= 7 && user_group_permission == 9) ||
+                      (item.work_status >= 7 && user_group_permission == 10) ||
+                      (item.work_status >= 5 && user_group_permission == 11)
+                    "
+                    @click="CarTransferred(item.car_no, item.id)"
+                  >
+                    <v-list-item-title :style="item.work_status == 7 ? 'color:brown' : ''">{{
+                      item.work_status > 7 ? "ดูข้อมูลชุดโอน" : "ชุดโอน"
+                    }}</v-list-item-title>
+                  </v-list-item>
 
-                    <v-list-item
-                      v-if="
-                        (item.work_status >= 7 &&
-                          user_group_permission == -1) ||
-                        (item.work_status >= 7 && user_group_permission == 9) ||
-                        (item.work_status >= 7 && user_group_permission == 10)
-                      "
-                      @click="ReceivingMoney(item.id, 1)"
-                    >
-                      <v-list-item-title
-                        :style="item.work_status == 7 ? 'color:green' : ''"
-                      >
-                        {{
-                          item.work_status > 7
-                            ? "ดูข้อมูลบันทึกการรับเงิน (ค่าตัวรถ)"
-                            : "บันทึกการรับเงิน (ค่าตัวรถ)"
-                        }}
-                      </v-list-item-title>
-                    </v-list-item>
+                  <v-list-item
+                    v-if="
+                      (item.work_status >= 7 && user_group_permission == -1) ||
+                      (item.work_status >= 7 && user_group_permission == 9) ||
+                      (item.work_status >= 7 && user_group_permission == 10)
+                    "
+                    @click="ReceivingMoney(item.id, item.car_no, 1)"
+                  >
+                    <v-list-item-title :style="item.work_status == 7 ? 'color:green' : ''">
+                      {{ item.work_status > 7 ? "ดูข้อมูลบันทึกการรับเงิน (ค่าตัวรถ)" : "บันทึกการรับเงิน (ค่าตัวรถ)" }}
+                    </v-list-item-title>
+                  </v-list-item>
 
-                    <v-list-item
-                      v-if="
-                        (item.work_status >= 7 &&
-                          user_group_permission == -1) ||
-                        (item.work_status >= 7 && user_group_permission == 9) ||
-                        (item.work_status >= 7 && user_group_permission == 10)
-                      "
-                      @click="ReceivingMoney(item.id, 2)"
-                    >
-                      <v-list-item-title
-                        :style="item.work_status == 7 ? 'color:green' : ''"
-                      >
-                        {{
-                          item.work_status > 7
-                            ? "ดูข้อมูลบันทึกการรับเงิน (ค่าคอม)"
-                            : "บันทึกการรับเงิน (ค่าคอม)"
-                        }}
-                      </v-list-item-title>
-                    </v-list-item>
+                  <v-list-item
+                    v-if="
+                      (item.work_status >= 7 && user_group_permission == -1) ||
+                      (item.work_status >= 7 && user_group_permission == 9) ||
+                      (item.work_status >= 7 && user_group_permission == 10)
+                    "
+                    @click="ReceivingMoney(item.id, item.car_no, 2)"
+                  >
+                    <v-list-item-title :style="item.work_status == 7 ? 'color:green' : ''">
+                      {{ item.work_status > 7 ? "ดูข้อมูลบันทึกการรับเงิน (ค่าคอม)" : "บันทึกการรับเงิน (ค่าคอม)" }}
+                    </v-list-item-title>
+                  </v-list-item>
 
-                    <!-- <v-list-item
+                  <!-- <v-list-item
                       v-if="
                         (item.work_status == 8 &&
                           user_group_permission == -1) ||
@@ -1037,136 +831,100 @@
                       <v-list-item-title>โอนสำเร็จ</v-list-item-title>
                     </v-list-item> -->
 
-                    <v-list-item
-                      v-if="
-                        (item.work_status == 9 &&
-                          user_group_permission == -1) ||
-                        (item.work_status == 9 &&
-                          user_group_permission == 10) ||
-                        (item.work_status == 9 && user_group_permission == 11)
-                      "
-                      @click="update_status(item.id, item.work_status)"
+                  <v-list-item
+                    v-if="
+                      (item.work_status == 9 && user_group_permission == -1) ||
+                      (item.work_status == 9 && user_group_permission == 10) ||
+                      (item.work_status == 9 && user_group_permission == 11)
+                    "
+                    @click="update_status(item.id, item.work_status)"
+                  >
+                    <v-list-item-title :style="item.work_status == 9 ? 'color:green' : ''"
+                      >ยืนยันการบันทึกเอกสารครบถ้วน</v-list-item-title
                     >
-                      <v-list-item-title
-                        :style="item.work_status == 9 ? 'color:green' : ''"
-                        >ยืนยันการบันทึกเอกสารครบถ้วน</v-list-item-title
-                      >
-                    </v-list-item>
+                  </v-list-item>
 
-                    <v-list-item
-                      v-if="
-                        (item.work_status >= 10 &&
-                          user_group_permission == -1) ||
-                        (item.work_status >= 10 &&
-                          user_group_permission == 10) ||
-                        (item.work_status >= 10 && user_group_permission == 11)
-                      "
-                      @click="
-                        CarEndJob(
-                          item.id,
-                          item.appointment_book_date,
-                          item.appointment_transfer_date,
-                          item.appointment_sentbook_date,
-                          item.appointment_money_date
-                        )
-                      "
-                    >
-                      <v-list-item-title
-                        :style="item.work_status == 10 ? 'color:green' : ''"
-                        >ปิดงาน</v-list-item-title
-                      >
-                    </v-list-item>
+                  <v-list-item
+                    v-if="
+                      (item.work_status >= 10 && user_group_permission == -1) ||
+                      (item.work_status >= 10 && user_group_permission == 10) ||
+                      (item.work_status >= 10 && user_group_permission == 11)
+                    "
+                    @click="
+                      CarEndJob(
+                        item.id,
+                        item.appointment_book_date,
+                        item.appointment_transfer_date,
+                        item.appointment_sentbook_date,
+                        item.appointment_money_date
+                      )
+                    "
+                  >
+                    <v-list-item-title :style="item.work_status == 10 ? 'color:green' : ''">ปิดงาน</v-list-item-title>
+                  </v-list-item>
 
-                    <v-list-item
-                      v-if="
-                        item.work_status >= 3 && user_group_permission == -1
-                      "
-                      @click="JobTechnician(item.car_no, item.id, item.car_id)"
-                    >
-                      <v-list-item-title>{{
-                        item.work_status > 3
-                          ? "ดูข้อมูลซ่อม (อู่ใน)"
-                          : "แจ้งซ่อม (อู่ใน)"
-                      }}</v-list-item-title>
-                    </v-list-item>
+                  <v-list-item
+                    v-if="item.work_status >= 3 && user_group_permission == -1"
+                    @click="JobTechnician(item.car_no, item.id, item.car_id)"
+                  >
+                    <v-list-item-title>{{
+                      item.work_status > 3 ? "ดูข้อมูลซ่อม (อู่ใน)" : "แจ้งซ่อม (อู่ใน)"
+                    }}</v-list-item-title>
+                  </v-list-item>
 
-                    <v-list-item
-                      v-if="
-                        item.work_status >= 3 && user_group_permission == -1
-                      "
-                      @click="
-                        PathnerJobTechnician(
-                          item.car_no,
-                          item.id,
-                          item.car_id,
-                          item.car_stock
-                        )
-                      "
-                    >
-                      <v-list-item-title>แจ้งซ่อม (อู่นอก)</v-list-item-title>
-                    </v-list-item>
+                  <v-list-item
+                    v-if="item.work_status >= 3 && user_group_permission == -1"
+                    @click="PathnerJobTechnician(item.car_no, item.id, item.car_id, item.car_stock)"
+                  >
+                    <v-list-item-title>แจ้งซ่อม (อู่นอก)</v-list-item-title>
+                  </v-list-item>
 
-                    <v-list-item
-                      @click="note(item.id)"
-                      v-if="
-                        user_group_permission == -1 ||
-                        user_group_permission == 2 ||
-                        user_group_permission == 3 ||
-                        user_group_permission == 9 ||
-                        user_group_permission == 10
-                      "
-                    >
-                      <v-list-item-title>หมายเหตุ</v-list-item-title>
-                    </v-list-item>
+                  <v-list-item
+                    @click="note(item.id)"
+                    v-if="
+                      user_group_permission == -1 ||
+                      user_group_permission == 2 ||
+                      user_group_permission == 3 ||
+                      user_group_permission == 9 ||
+                      user_group_permission == 10
+                    "
+                  >
+                    <v-list-item-title>หมายเหตุ</v-list-item-title>
+                  </v-list-item>
 
-                    <v-list-item
-                      v-if="
-                        user_group_permission == -1 ||
-                        user_group_permission == 9
-                      "
-                      @click="AllInfoCar(item.car_id, item.car_no)"
-                    >
-                      <v-list-item-title>ภาพรวมของรถ</v-list-item-title>
-                    </v-list-item>
+                  <v-list-item
+                    v-if="user_group_permission == -1 || user_group_permission == 9"
+                    @click="AllInfoCar(item.car_id, item.car_no)"
+                  >
+                    <v-list-item-title>ภาพรวมของรถ</v-list-item-title>
+                  </v-list-item>
 
-                    <v-list-item
-                      @click="deleteItem(item.id)"
-                      v-if="
-                        user_group_permission == -1 ||
-                        user_group_permission == 10 ||
-                        item.work_status <= 7
-                      "
-                    >
-                      <v-list-item-title>ยกเลิก</v-list-item-title>
-                    </v-list-item>
+                  <v-list-item
+                    @click="deleteItem(item.id)"
+                    v-if="user_group_permission == -1 || user_group_permission == 10 || item.work_status <= 7"
+                  >
+                    <v-list-item-title>ยกเลิก</v-list-item-title>
+                  </v-list-item>
 
-                    <v-list-item
-                      @click="update_status(item.id, item.work_status)"
-                      v-if="
-                        user_group_permission == -1 ||
-                        user_group_permission == 10
-                      "
-                    >
-                      <v-list-item-title>อัพเดตสถานะ</v-list-item-title>
-                    </v-list-item>
+                  <v-list-item
+                    @click="update_status(item.id, item.work_status)"
+                    v-if="user_group_permission == -1 || user_group_permission == 10"
+                  >
+                    <v-list-item-title>อัพเดตสถานะ</v-list-item-title>
+                  </v-list-item>
 
-                    <v-list-item
-                      @click="rollback_status(item.id, item.work_status)"
-                      v-if="
-                        (user_group_permission == -1 ||
-                          user_group_permission == 10) &&
-                        item.work_status > 2
-                      "
-                    >
-                      <v-list-item-title>ถอยสถานะ</v-list-item-title>
-                    </v-list-item>
-                  </v-list>
-                </v-menu>
-              </template>
-            </v-data-table>
-          </div>
+                  <v-list-item
+                    @click="rollback_status(item.id, item.work_status)"
+                    v-if="(user_group_permission == -1 || user_group_permission == 10) && item.work_status > 2"
+                  >
+                    <v-list-item-title>ถอยสถานะ</v-list-item-title>
+                  </v-list-item>
+                </v-list>
+              </v-menu>
+            </template>
+          </v-data-table>
         </div>
-      </v-card-text>
+      </div>
     </v-card>
 
     <dialogWork
@@ -1286,11 +1044,7 @@
       @error="addError"
     />
 
-    <dialogMiniUser
-      :dialog="dialogMiniUser"
-      :id="sale_id"
-      @cancleItem="dialogMiniUser = false"
-    />
+    <dialogMiniUser :dialog="dialogMiniUser" :id="sale_id" @cancleItem="dialogMiniUser = false" />
 
     <dialogReceivingMoney
       :dialogReceivingMoney="dialogReceivingMoney"
@@ -1370,10 +1124,12 @@ export default {
     return {
       loading: false,
       btnUpdate: true,
+      toggleView: "small",
+      dialogFilter: false,
       item_per_page: 10,
       tableWidth: 0,
 
-      searchIDCar: "",
+      searchInServer: "",
 
       search: "",
       branch_team_id: 0,
@@ -1391,6 +1147,7 @@ export default {
       car_no: "",
       jobType: 1,
       branch_name: "",
+
       dialogWork: false,
       formTitleWork: "Add",
       actionWork: "add",
@@ -1403,6 +1160,7 @@ export default {
       formTitleFinancial: "Add",
       actionFinancial: "check",
       payment_type: "1",
+
       dialogContract: false,
       formTitleContract: "Add",
       actionContract: "check",
@@ -1440,9 +1198,7 @@ export default {
       selectedHeaders: [],
       status_bank: 5,
       headers: [],
-      user_group_permission: this.$auth.$storage.getLocalStorage(
-        "userData-user_group_permission"
-      ),
+      user_group_permission: this.$auth.$storage.getLocalStorage("userData-user_group_permission"),
       branch_team_name: "ทั้งหมด",
       headersMap: [],
       data: [],
@@ -1471,8 +1227,7 @@ export default {
   },
   beforeMount() {
     if (this.user_group_permission == 2 || this.user_group_permission == 3) {
-      this.branch_id =
-        this.$auth.$storage.getLocalStorage("userData-branch_id");
+      this.branch_id = this.$auth.$storage.getLocalStorage("userData-branch_id");
     } else {
       this.branch_id = 0;
     }
@@ -1562,6 +1317,7 @@ export default {
           text: "สี",
           value: "color_name",
           class: "textOneLine sticky-header",
+          width: "100px",
         },
         {
           text: "ดาวน์+F",
@@ -1624,9 +1380,9 @@ export default {
         },
         {
           text: "ธนาคาร",
-          value: "bank_name",
+          value: "bank_nick_name",
           class: "textOneLine sticky-header",
-          width: "200px",
+          width: "140px",
         },
         {
           text: "สาขาธนาคาร",
@@ -1698,6 +1454,18 @@ export default {
           text: "%",
           value: "car_price_persen",
           class: "textOneLine sticky-header",
+        },
+        {
+          text: "งวดแรก",
+          value: "customer_payment_due",
+          class: "textOneLine sticky-header",
+          width: "120px",
+        },
+        {
+          text: "เดือนคอม",
+          value: "commission_mount",
+          class: "textOneLine sticky-header",
+          width: "120px",
         },
         {
           text: "ผู้ลงข้อมูล",
@@ -1772,6 +1540,32 @@ export default {
           width: "160px",
         },
         {
+          text: "ชื่อ MKT",
+          value: "sale_name",
+          class: "textOneLine sticky-header",
+        },
+        {
+          text: "เบอร์ MKT",
+          value: "sale_tel",
+          class: "textOneLine sticky-header",
+        },
+        {
+          text: "ธนาคาร",
+          value: "bank_nick_name",
+          class: "textOneLine sticky-header",
+          width: "140px",
+        },
+        {
+          text: "สาขาธนาคาร",
+          value: "bank_branch_name",
+          class: "textOneLine sticky-header",
+        },
+        {
+          text: "เอกสาร",
+          value: "appointment_bank_type",
+          class: "textOneLine sticky-header",
+        },
+        {
           text: "ผลเครดิต",
           value: "credit",
           width: "140px",
@@ -1841,14 +1635,9 @@ export default {
             newBranch.push(this.branches_all[index]);
           }
         }
-        for (
-          let index = 0;
-          index < this.dataSelectBranch_teams.length;
-          index++
-        ) {
+        for (let index = 0; index < this.dataSelectBranch_teams.length; index++) {
           if (this.dataSelectBranch_teams[index].id == branch_team_id) {
-            this.branch_team_name =
-              this.dataSelectBranch_teams[index].branch_team_name;
+            this.branch_team_name = this.dataSelectBranch_teams[index].branch_team_name;
           }
         }
       }
@@ -1866,9 +1655,7 @@ export default {
     async getUser_teams() {
       const response = await apiUser_teams.select();
       if (this.user_group_permission == 3 || this.user_group_permission == 2) {
-        let user_team_id = this.$auth.$storage.getLocalStorage(
-          "userData-user_team_id"
-        );
+        let user_team_id = this.$auth.$storage.getLocalStorage("userData-user_team_id");
         if (user_team_id == null) {
           this.user_team_id = 0;
         } else {
@@ -1891,8 +1678,7 @@ export default {
           this.new_teams = this.user_teams_all;
         } else {
           for (let index = 0; index < this.user_teams_all.length; index++) {
-            if (this.user_teams_all[index].branch_id == this.branch_id)
-              new_teams.push(this.user_teams_all[index]);
+            if (this.user_teams_all[index].branch_id == this.branch_id) new_teams.push(this.user_teams_all[index]);
           }
         }
 
@@ -1923,7 +1709,7 @@ export default {
       this.content_11 = "0";
 
       const data = new FormData();
-      // data.append("car_no", this.searchIDCar);
+      data.append("search", this.searchInServer);
       data.append("branch_team_id", this.branch_team_id);
       data.append("user_team_id", this.user_team_id);
       data.append("branch_id", this.branch_id);
@@ -2169,12 +1955,7 @@ export default {
       appointment_sentbook_date,
       appointment_money_date
     ) {
-      if (
-        appointment_book_date != " " &&
-        appointment_transfer_date != " " &&
-        appointment_sentbook_date != " " &&
-        appointment_money_date != " "
-      ) {
+      if (appointment_money_date != " ") {
         var isConfirmed = customAlart.ConfirmedStatus();
         await isConfirmed.then(async (result) => {
           if (result == true) {
@@ -2291,11 +2072,11 @@ export default {
             } else {
               return v.appointment_banks.car_price_persen;
             }
-          } else if (j == "banks.bank_name") {
+          } else if (j == "banks.bank_nick_name") {
             if (v.banks == null) {
               return "ยังไม่ได้เลือก";
             } else {
-              return v.banks.bank_name;
+              return v.banks.bank_nick_name;
             }
           } else if (j == "bookings.amount_slacken") {
             if (v.bookings == null) {
@@ -2322,9 +2103,7 @@ export default {
               return "ไม่ครบ";
             }
           } else if (j == "booking_date") {
-            if (
-              moment().unix() > Number(moment(v.booking_date).unix() + 86400)
-            ) {
+            if (moment().unix() > Number(moment(v.booking_date).unix() + 86400)) {
               return moment().diff(moment(v.booking_date), "days") + " วัน";
             } else {
               return moment(v.booking_date).fromNow(true);
@@ -2375,12 +2154,10 @@ export default {
         })
       );
     },
-    async ReceivingMoney(work_id, receivingMoney_type) {
-      this.formTitleReceivingMoney =
-        receivingMoney_type == 1
-          ? "เอกสารรับเงิน (ค่าตัวรถ)"
-          : "เอกสารรับเงิน (ค่าคอม)";
+    async ReceivingMoney(work_id, car_no, receivingMoney_type) {
+      this.formTitleReceivingMoney = receivingMoney_type == 1 ? "เอกสารรับเงิน (ค่าตัวรถ)" : "เอกสารรับเงิน (ค่าคอม)";
       this.idWork = work_id;
+      this.car_no = car_no;
       this.receivingMoney_type = receivingMoney_type;
       this.dialogReceivingMoney = true;
       this.actionReceivingMoney = "check";

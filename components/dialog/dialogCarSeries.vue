@@ -20,87 +20,93 @@
 
           <v-card-text>
             <v-container>
-              <v-row>
-                <v-col cols="12">
-                  <v-autocomplete
-                    v-model="formData.car_type_id"
-                    id="formData.car_type_id"
-                    name="formData.car_type_id"
-                    :items="cartypes"
-                    item-text="car_type_name"
-                    item-value="id"
-                    no-data-text="ไม่มีข้อมูล"
-                    label="ประเภอรถ"
-                    outlined
-                    dense
-                    hide-details
-                    :rules="rule"
-                  >
-                    <template slot="selection" slot-scope="{ item }">
-                      {{ item.car_type_name }} ({{ item.car_type_name_en }})
-                    </template>
+              <v-autocomplete
+                v-model="formData.car_type_id"
+                id="formData.car_type_id"
+                name="formData.car_type_id"
+                :items="cartypes"
+                item-text="car_type_name"
+                item-value="id"
+                no-data-text="ไม่มีข้อมูล"
+                label="ประเภอรถ"
+                outlined
+                dense
+                hide-details
+                :rules="rule"
+              >
+                <template slot="selection" slot-scope="{ item }">
+                  {{ item.car_type_name }} ({{ item.car_type_name_en }})
+                </template>
 
-                    <template slot="item" slot-scope="{ item }">
-                      {{ item.car_type_name }} ({{ item.car_type_name_en }})
-                    </template>
-                  </v-autocomplete>
-                </v-col>
-              </v-row>
-              <v-row>
-                <v-col cols="12">
-                  <v-autocomplete
-                    v-model="formData.car_model_id"
-                    id="formData.car_model_id"
-                    name="formData.car_model_id"
-                    :items="carmodels"
-                    item-text="car_model_name"
-                    item-value="id"
-                    no-data-text="ไม่มีข้อมูล"
-                    label="ยี่ห้อรถ"
-                    outlined
-                    dense
-                    hide-details
-                    :rules="rule"
-                  ></v-autocomplete>
-                </v-col>
-              </v-row>
-              <v-row>
-                <v-col cols="6">
-                  <v-text-field
-                    autocomplete="true"
-                    label="รหัสสี"
-                    append-icon=""
-                    v-model="formData.car_serie_code_color"
-                    id="formData.car_serie_code_color"
-                    name="formData.car_serie_code_color"
-                    outlined
-                    dense
-                    hide-details
-                  >
-                  </v-text-field>
-                </v-col>
-                <v-col cols="6">
-                  <v-text-field
-                    autocomplete="true"
-                    label="ชื่อรุ่น"
-                    append-icon=""
-                    v-model="formData.car_series_name"
-                    id="formData.car_series_name"
-                    name="formData.car_series_name"
-                    outlined
-                    dense
-                    hide-details
-                    :rules="rule"
-                  >
-                  </v-text-field>
-                </v-col>
-              </v-row>
+                <template slot="item" slot-scope="{ item }">
+                  {{ item.car_type_name }} ({{ item.car_type_name_en }})
+                </template>
+              </v-autocomplete>
+
+              <v-autocomplete
+                class="mt-3"
+                v-model="formData.car_model_id"
+                id="formData.car_model_id"
+                name="formData.car_model_id"
+                :items="carmodels"
+                item-text="car_model_name"
+                item-value="id"
+                no-data-text="ไม่มีข้อมูล"
+                label="ยี่ห้อรถ"
+                outlined
+                dense
+                hide-details
+                :rules="rule"
+              ></v-autocomplete>
+
+              <v-text-field
+                class="mt-3"
+                autocomplete="true"
+                label="รหัสสี"
+                append-icon=""
+                v-model="formData.car_serie_code_color"
+                id="formData.car_serie_code_color"
+                name="formData.car_serie_code_color"
+                outlined
+                dense
+                hide-details
+              >
+              </v-text-field>
+
+              <v-text-field
+                class="mt-3"
+                autocomplete="true"
+                label="ชื่อรุ่น"
+                append-icon=""
+                v-model="formData.car_series_name"
+                id="formData.car_series_name"
+                name="formData.car_series_name"
+                outlined
+                dense
+                hide-details
+                :rules="rule"
+              >
+              </v-text-field>
+
+              <v-text-field
+                class="mt-3"
+                label="จำนวนขั้นต่ำ"
+                append-icon=""
+                v-model="formData.car_series_minimum"
+                outlined
+                dense
+                hide-details
+                :rules="rule"
+              >
+              </v-text-field>
 
               <v-radio-group
+                class="mt-3"
                 v-model="formData.car_series_active"
                 id="formData.car_series_active"
                 name="formData.car_series_active"
                 :rules="rule"
+                hide-details=""
                 row
               >
                 <template>

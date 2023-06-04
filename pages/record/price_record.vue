@@ -35,17 +35,27 @@
         loading-text="กำลังโหลดข้อมูลกรุณารอสักครู่"
         dense
       >
+        <!-- <template v-slot:expanded-item="{ headers, item }">
+          <td :colspan="headers.length">
+            ผู้ลงข้อมูล:
+            <span v-if="item.user">{{ item.user.first_name }} {{ item.user.last_name }}</span>
+            <span v-else>ไม่มีข้อมูล</span>
+          </td>
+        </template> -->
+
+        <template v-slot:[`item.user`]="{ item }">
+          <span v-if="item.user">{{ item.user.first_name }} {{ item.user.last_name }}</span>
+          <span v-else>ไม่มีข้อมูล</span>
+        </template>
+
         <template v-slot:[`item.image`]="{ item }">
-          <v-btn icon v-if="item.image != null">
-            <!-- <v-avatar size="40" @click="showImg(serverUrl + '/' + item.image)"> -->
-            <v-img
-              :src="serverUrl + '/' + item.image"
-              width="40px"
-              @click="showImg(serverUrl + '/' + item.image)"
-            >
+          <!-- <v-btn icon v-if="item.image != null">
+            <v-img :src="serverUrl + '/' + item.image" width="40px" @click="showImg(serverUrl + '/' + item.image)">
             </v-img>
-            <!-- </v-avatar> -->
-          </v-btn>
+          </v-btn> -->
+          <div v-if="item.image != null" class="images" v-viewer>
+            <img height="40px" :src="serverUrl + '/' + item.image" />
+          </div>
         </template>
 
         <template v-slot:[`item.date`]="{ item }">
@@ -54,11 +64,7 @@
 
         <template v-slot:[`item.car_model_code_color`]="{ item }">
           <span
-            :style="[
-              { 'background-color': item.car_model_code_color },
-              { padding: '2px' },
-              { 'border-radius': '3px' },
-            ]"
+            :style="[{ 'background-color': item.car_model_code_color }, { padding: '2px' }, { 'border-radius': '3px' }]"
           >
             {{ item.car_model_code_color }}
           </span>
@@ -84,16 +90,12 @@
         @success="addSuccess()"
         @error="addError()"
       />
-      <dialogImage
-        :dialog="dialogImg"
-        :imgUrl="imgUrl"
-        @cancleItem="dialogImg = false"
-      />
+      <dialogImage :dialog="dialogImg" :imgUrl="imgUrl" @cancleItem="dialogImg = false" />
     </v-card>
   </div>
 </template>
-  
-  <script>
+
+<script>
 import * as apiPriceRecord from "@/Api/apiPriceRecord";
 import * as customAlart from "@/customJS/customAlart";
 import dialogNew from "@/components/dialog/dialogPriceRecord";
@@ -116,6 +118,7 @@ export default {
       action: "add",
       id: "",
       headers: [
+        // { text: "", value: "data-table-expand" },
         {
           text: "รูปภาพ",
           value: "image",
@@ -133,12 +136,11 @@ export default {
         { text: "เกรด", value: "grade" },
         { text: "ชื่อลาน", value: "location" },
         { text: "ราคาจบ", value: "price" },
+        { text: "ผู้ลงข้อมูล", value: "user" },
         { text: "จัดการ", value: "actions", sortable: false, width: "10%" },
       ],
       data: [],
-      user_group_permission: this.$auth.$storage.getLocalStorage(
-        "userData-user_group_permission"
-      ),
+      user_group_permission: this.$auth.$storage.getLocalStorage("userData-user_group_permission"),
     };
   },
   mounted() {
@@ -211,6 +213,5 @@ export default {
   watch: {},
 };
 </script>
-  
-  <style></style>
-  
+
+<style></style>

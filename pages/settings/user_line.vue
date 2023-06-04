@@ -49,9 +49,14 @@
         </template>
 
         <template v-slot:[`item.user_name`]="{ item }">
-          <span v-if="item.user">
-            {{ item.user.first_name }} {{ item.user.last_name }}
-          </span>
+          <span v-if="item.user"> {{ item.user.first_name }} {{ item.user.last_name }} </span>
+        </template>
+
+        <template v-slot:[`item.user.user_active`]="{ item }">
+          <div v-if="item.user">
+            <v-btn v-if="item.user.user_active == 1" x-small color="success" dark>เปิดใช้งาน</v-btn>
+            <v-btn v-else x-small color="red" dark>ปิดการใช้งาน</v-btn>
+          </div>
         </template>
 
         <template v-slot:[`item.actions`]="{ item }">
@@ -75,11 +80,7 @@
       @error="addError()"
     />
 
-    <dialogImage
-      :dialog="dialogImg"
-      :imgUrl="imgUrl"
-      @cancleItem="dialogImg = false"
-    />
+    <dialogImage :dialog="dialogImg" :imgUrl="imgUrl" @cancleItem="dialogImg = false" />
   </div>
 </template>
 
@@ -113,12 +114,11 @@ export default {
           text: "สังกัดสาขา",
           value: "user.branch.branch_team.branch_team_name",
         },
+        { text: "สถานะ", value: "user.user_active", width: "10%" },
         { text: "จัดการ", value: "actions", sortable: false, width: "10%" },
       ],
       data: [],
-      user_group_permission: this.$auth.$storage.getLocalStorage(
-        "userData-user_group_permission"
-      ),
+      user_group_permission: this.$auth.$storage.getLocalStorage("userData-user_group_permission"),
     };
   },
   mounted() {
@@ -135,7 +135,7 @@ export default {
     async getData() {
       const response = await apiUserLine.index();
       this.data = response.data;
-      //   console.log(this.data);
+      console.log(this.data);
       this.loading = false;
     },
     async AddItem() {

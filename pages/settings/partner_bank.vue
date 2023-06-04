@@ -14,8 +14,8 @@
         <v-col cols="3">
           <v-text-field
             v-model="search"
-id="search"
-name="search"
+            id="search"
+            name="search"
             append-icon="mdi-magnify"
             label="ค้นหา"
             single-line
@@ -87,6 +87,7 @@ export default {
       ),
       headers: [
         { text: "ลำดับ", value: "no", width: "7%", align: "center" },
+        { text: "ชื่อย่อ", value: "bank_nick_name", width: "8%" },
         { text: "ชื่อแบงค์", value: "bank_name", width: "15%" },
         { text: "เลขเสียภาษี", value: "bank_idvat", width: "15%" },
         { text: "เบอร์ติดต่อ", value: "bank_tel", width: "10%" },

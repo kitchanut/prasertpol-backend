@@ -104,19 +104,11 @@
       </v-row>
       <v-row>
         <v-col cols="6" class="small">
-          <DoughnutChartBranch
-            v-if="middleTextCar != 0"
-            :middleText="middleTextCar"
-            :chart-data="dataChartCar"
-          />
+          <DoughnutChartBranch v-if="middleTextCar != 0" :middleText="middleTextCar" :chart-data="dataChartCar" />
           <h1 class="text-center red--text" v-else>ไม่มีข้อมูล</h1>
         </v-col>
         <v-col cols="6" class="small">
-          <DoughnutChartBranch
-            v-if="middleTextPrice != 0"
-            :middleText="middleTextPrice"
-            :chart-data="dataChartPrice"
-          />
+          <DoughnutChartBranch v-if="middleTextPrice != 0" :middleText="middleTextPrice" :chart-data="dataChartPrice" />
           <h1 class="text-center red--text" v-else>ไม่มีข้อมูล</h1>
         </v-col>
       </v-row>
@@ -165,9 +157,7 @@ export default {
       dataBar.append("branch_id", this.branch_id);
       dataBar.append("timeStart", this.timeStart);
       dataBar.append("timeEnd", this.timeEnd);
-      const responseBar = await apiDashboard.dashboardManagerDoughnutStock(
-        dataBar
-      );
+      const responseBar = await apiDashboard.dashboardManagerDoughnutStock(dataBar);
       // console.log(responseBar);
 
       // Car
@@ -177,11 +167,7 @@ export default {
         datasets: [
           {
             borderWidth: 1,
-            borderColor: [
-              "rgba(255, 206, 86, 1)",
-              "rgba(54, 162, 235, 1)",
-              "rgba(75, 192, 192, 1)",
-            ],
+            borderColor: ["rgba(255, 206, 86, 1)", "rgba(54, 162, 235, 1)", "rgba(75, 192, 192, 1)"],
             backgroundColor: responseBar.data.car_backgroundColor,
             data: responseBar.data.car_data,
           },
@@ -195,11 +181,7 @@ export default {
         datasets: [
           {
             borderWidth: 1,
-            borderColor: [
-              "rgba(255, 206, 86, 1)",
-              "rgba(54, 162, 235, 1)",
-              "rgba(75, 192, 192, 1)",
-            ],
+            borderColor: ["rgba(255, 206, 86, 1)", "rgba(54, 162, 235, 1)", "rgba(75, 192, 192, 1)"],
             backgroundColor: responseBar.data.car_backgroundColor,
             data: responseBar.data.car_price,
           },
@@ -211,58 +193,31 @@ export default {
         this.timeStart = moment().startOf("day").format("YYYY-MM-DD");
         this.timeEnd = moment().endOf("day").format("YYYY-MM-DD");
       } else if (value == 2) {
-        this.timeStart = moment()
-          .startOf("day")
-          .add(-1, "days")
-          .format("YYYY-MM-DD");
-        this.timeEnd = moment()
-          .endOf("day")
-          .add(-1, "days")
-          .format("YYYY-MM-DD");
+        this.timeStart = moment().startOf("day").add(-1, "days").format("YYYY-MM-DD");
+        this.timeEnd = moment().endOf("day").add(-1, "days").format("YYYY-MM-DD");
       } else if (value == 3) {
-        this.timeStart = moment()
-          .startOf("day")
-          .add(-7, "days")
-          .format("YYYY-MM-DD");
+        this.timeStart = moment().startOf("day").add(-7, "days").format("YYYY-MM-DD");
         this.timeEnd = moment().endOf("day").format("YYYY-MM-DD");
       } else if (value == 4) {
-        this.timeStart = moment()
-          .startOf("day")
-          .add(-30, "days")
-          .format("YYYY-MM-DD");
+        this.timeStart = moment().startOf("day").add(-30, "days").format("YYYY-MM-DD");
         this.timeEnd = moment().endOf("day").format("YYYY-MM-DD");
       } else if (value == 5) {
         this.timeStart = moment().startOf("months").format("YYYY-MM-DD");
         this.timeEnd = moment().endOf("months").format("YYYY-MM-DD");
       } else if (value == 6) {
-        this.timeStart = moment()
-          .add(-1, "months")
-          .startOf("months")
-          .format("YYYY-MM-DD");
-        this.timeEnd = moment()
-          .add(-1, "months")
-          .endOf("months")
-          .format("YYYY-MM-DD");
+        this.timeStart = moment().add(-1, "months").startOf("months").format("YYYY-MM-DD");
+        this.timeEnd = moment().add(-1, "months").endOf("months").format("YYYY-MM-DD");
       } else if (value == 7) {
-        this.timeStart = moment()
-          .add(-3, "months")
-          .startOf("months")
-          .format("YYYY-MM-DD");
+        this.timeStart = moment().add(-3, "months").startOf("months").format("YYYY-MM-DD");
         this.timeEnd = moment().endOf("day").format("YYYY-MM-DD");
       } else if (value == 8) {
-        this.timeStart = moment()
-          .add(-6, "months")
-          .startOf("months")
-          .format("YYYY-MM-DD");
+        this.timeStart = moment().add(-6, "months").startOf("months").format("YYYY-MM-DD");
         this.timeEnd = moment().endOf("day").format("YYYY-MM-DD");
       } else if (value == 9) {
         this.timeStart = moment().startOf("years").format("YYYY-MM-DD");
         this.timeEnd = moment().endOf("day").format("YYYY-MM-DD");
       } else if (value == 10) {
-        this.timeStart = moment()
-          .add(-3, "years")
-          .startOf("years")
-          .format("YYYY-MM-DD");
+        this.timeStart = moment().add(-3, "years").startOf("years").format("YYYY-MM-DD");
         this.timeEnd = moment().endOf("day").format("YYYY-MM-DD");
       }
       await this.getDataDoughnutBranch();

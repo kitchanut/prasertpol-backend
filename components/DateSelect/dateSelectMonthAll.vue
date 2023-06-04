@@ -7,6 +7,7 @@
         no-data-text="ไม่มีข้อมูล"
         item-text="title"
         item-value="value"
+        label="ช่วงเวลา"
         @change="changeSelectTime"
         outlined
         dense
@@ -59,7 +60,7 @@
           v-model="timeStart"
           locale="th-TH"
           picker-date
-          @change="changeSelectTime"
+          @change="returnDate"
           @input="menuTimeStart = false"
         ></v-date-picker>
       </v-menu>
@@ -93,7 +94,7 @@
           v-model="timeEnd"
           locale="th-TH"
           picker-date
-          @change="changeSelectTime"
+          @change="returnDate"
           @input="menuTimeEnd = false"
         ></v-date-picker>
       </v-menu>

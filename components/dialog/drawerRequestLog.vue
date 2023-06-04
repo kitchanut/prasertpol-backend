@@ -48,6 +48,14 @@
 
         <template v-if="type == 'การจอง'">
           <v-row no-gutters>
+            <v-col :cols="colWidth">ลูกค้า:</v-col>
+            <v-col :cols="12 - colWidth">{{ item.customer_name }}</v-col>
+          </v-row>
+          <v-row no-gutters>
+            <v-col :cols="colWidth">เบอร์โทร:</v-col>
+            <v-col :cols="12 - colWidth">{{ item.customer_tel }}</v-col>
+          </v-row>
+          <v-row no-gutters>
             <v-col :cols="colWidth">เงินจอง:</v-col>
             <v-col :cols="12 - colWidth">{{ item.booking_fee }}</v-col>
           </v-row>
