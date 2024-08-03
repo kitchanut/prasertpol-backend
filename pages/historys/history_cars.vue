@@ -16,19 +16,9 @@
             dense
             hide-details
           >
-            <template
-              slot="selection"
-              slot-scope="{ item }"
-            >
-              {{ item.car_no }} ({{ item.car_regis }})
-            </template>
+            <template slot="selection" slot-scope="{ item }"> {{ item.car_no }} ({{ item.car_regis }}) </template>
 
-            <template
-              slot="item"
-              slot-scope="{ item }"
-            >
-              {{ item.car_no }} ({{ item.car_regis }})
-            </template>
+            <template slot="item" slot-scope="{ item }"> {{ item.car_no }} ({{ item.car_regis }}) </template>
           </v-autocomplete>
         </v-col>
 
@@ -58,14 +48,8 @@
         loading-text="กำลังโหลดข้อมูลกรุณารอสักครู่"
       >
         <template v-slot:[`item.car_img`]="{ item }">
-          <v-btn
-            icon
-            v-if="item.img_id_first != 0"
-          >
-            <v-avatar
-              size="40"
-              @click="showImg(serverUrl + item.img_id_first)"
-            >
+          <v-btn icon v-if="item.img_id_first != 0">
+            <v-avatar size="40" @click="showImg(serverUrl + item.img_id_first)">
               <v-img :src="serverUrl + item.img_id_first"> </v-img>
             </v-avatar>
           </v-btn>
@@ -101,20 +85,9 @@
         </template>
 
         <template v-slot:[`item.car_stock`]="{ item }">
-          <h5
-            v-if="item.car_stock == '1'"
-            class="orange--text"
-          >
-            รอรับรถเข้าคลัง
-          </h5>
-          <h5
-            v-if="item.car_stock == '2'"
-            class="blue--text"
-          >อยู่ในคลัง</h5>
-          <h5
-            v-if="item.car_stock == '3'"
-            class="green--text"
-          >ขายออกแล้ว</h5>
+          <h5 v-if="item.car_stock == '1'" class="orange--text">รอรับรถเข้าคลัง</h5>
+          <h5 v-if="item.car_stock == '2'" class="blue--text">อยู่ในคลัง</h5>
+          <h5 v-if="item.car_stock == '3'" class="green--text">ขายออกแล้ว</h5>
         </template>
 
         <template v-slot:expanded-item="{ item }">
@@ -157,11 +130,7 @@
         </template>
       </v-data-table>
 
-      <dialogImage
-        :dialog="dialogImg"
-        :imgUrl="imgUrl"
-        @cancleItem="dialogImg = false"
-      />
+      <dialogImage :dialog="dialogImg" :imgUrl="imgUrl" @cancleItem="dialogImg = false" />
     </v-card>
   </div>
 </template>
@@ -175,9 +144,7 @@ export default {
   },
   data() {
     return {
-      user_group_permission: this.$auth.$storage.getLocalStorage(
-        "userData-user_group_permission"
-      ),
+      user_group_permission: this.$auth.$storage.getLocalStorage("userData-user_group_permission"),
       serverUrl: process.env.serverUrl,
 
       loading: false,
@@ -258,11 +225,8 @@ export default {
   methods: {
     filterObject(item, queryText, itemText) {
       return (
-        item.car_no.toLocaleLowerCase().indexOf(queryText.toLocaleLowerCase()) >
-          -1 ||
-        item.car_regis
-          .toLocaleLowerCase()
-          .indexOf(queryText.toLocaleLowerCase()) > -1
+        item.car_no.toLocaleLowerCase().indexOf(queryText.toLocaleLowerCase()) > -1 ||
+        item.car_regis.toLocaleLowerCase().indexOf(queryText.toLocaleLowerCase()) > -1
       );
     },
     async getDataCar() {

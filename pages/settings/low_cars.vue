@@ -23,9 +23,7 @@
         loading-text="กำลังโหลดข้อมูลกรุณารอสักครู่"
       >
         <template v-slot:[`item.active`]="{ item }">
-          <v-btn v-if="item.active == '1'" x-small color="success" dark
-            >แสดง</v-btn
-          >
+          <v-btn v-if="item.active == '1'" x-small color="success" dark>แสดง</v-btn>
           <v-btn v-else x-small color="red" dark>ไม่</v-btn>
         </template>
 
@@ -66,9 +64,7 @@ export default {
     return {
       loading: true,
       search: "",
-      user_group_permission: this.$auth.$storage.getLocalStorage(
-        "userData-user_group_permission"
-      ),
+      user_group_permission: this.$auth.$storage.getLocalStorage("userData-user_group_permission"),
       idDialogAddOutlay: "",
       formTitleDialogAddLowCars: "Add",
       actionDialogAddLowCars: "add",
@@ -136,7 +132,7 @@ export default {
       this.formTitleDialogAddLowCars = "แก้ไข";
       this.dialogDialogAddLowCars = true;
       this.idDialogAddOutlay = item;
-      this.actionDialogAddLowCars = 'edit';
+      this.actionDialogAddLowCars = "edit";
     },
 
     async addSuccess(value) {

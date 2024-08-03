@@ -14,8 +14,8 @@
         <v-col cols="3">
           <v-text-field
             v-model="search"
-id="search"
-name="search"
+            id="search"
+            name="search"
             append-icon="mdi-magnify"
             label="ค้นหา"
             single-line
@@ -36,10 +36,7 @@ name="search"
       >
         <template v-slot:[`item.car_part_image`]="{ item }">
           <v-btn icon v-if="item.car_part_image != null">
-            <v-avatar
-              size="40"
-              @click="showImg(serverUrl + '/' + item.car_part_image)"
-            >
+            <v-avatar size="40" @click="showImg(serverUrl + '/' + item.car_part_image)">
               <v-img :src="serverUrl + '/' + item.car_part_image"> </v-img>
             </v-avatar>
           </v-btn>
@@ -73,9 +70,7 @@ name="search"
         </template>
 
         <template v-slot:[`item.car_part_active`]="{ item }">
-          <v-btn v-if="item.car_part_active == '1'" x-small color="success" dark
-            >เปิดใช้งาน</v-btn
-          >
+          <v-btn v-if="item.car_part_active == '1'" x-small color="success" dark>เปิดใช้งาน</v-btn>
           <v-btn v-else x-small color="red" dark>ปิดการใช้งาน</v-btn>
         </template>
 
@@ -99,11 +94,7 @@ name="search"
         @error="addError()"
       />
 
-      <dialogImage
-        :dialog="dialogImg"
-        :imgUrl="imgUrl"
-        @cancleItem="dialogImg = false"
-      />
+      <dialogImage :dialog="dialogImg" :imgUrl="imgUrl" @cancleItem="dialogImg = false" />
     </v-card>
   </div>
 </template>
@@ -152,9 +143,7 @@ export default {
         { text: "จัดการ", value: "actions", sortable: false, width: "10%" },
       ],
       data: [],
-      user_group_permission: this.$auth.$storage.getLocalStorage(
-        "userData-user_group_permission"
-      ),
+      user_group_permission: this.$auth.$storage.getLocalStorage("userData-user_group_permission"),
     };
   },
   mounted() {

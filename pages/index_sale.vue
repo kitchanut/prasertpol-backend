@@ -4,17 +4,25 @@
       user_group_permission == -1 ||
       user_group_permission == 9 ||
       user_group_permission == 2 ||
+      user_group_permission == 3 ||
       user_group_permission == 10 ||
       user_group_permission == 11
     "
   >
     <v-card outlined>
-      <v-tabs v-model="tab" background-color="#eee" color="black">
+      <v-tabs
+        v-if="user_group_permission != 2 && user_group_permission != 3"
+        v-model="tab"
+        background-color="#eee"
+        color="black"
+      >
         <v-tab>สถานะงาน</v-tab>
         <v-tab>การจอง</v-tab>
         <v-tab>ยอดซื้อขาย</v-tab>
         <v-tab>รุ่นรถขายดี</v-tab>
         <v-tab>คลังรถยนต์</v-tab>
+        <v-tab>ภาษี</v-tab>
+        <v-tab>ประกัน</v-tab>
       </v-tabs>
 
       <v-tabs-items v-model="tab">
@@ -28,70 +36,19 @@
           <BarChartDashCar :branch_id="branch_id" />
         </v-tab-item>
         <v-tab-item>
-          <BarChartDashTopCarSerie :branch_id="branch_id" />
+          <BarChartDashTopCarSerie />
         </v-tab-item>
         <v-tab-item>
           <ComInventoryCar />
         </v-tab-item>
+        <v-tab-item>
+          <ComRegis />
+        </v-tab-item>
+        <v-tab-item>
+          <ComInsurances />
+        </v-tab-item>
       </v-tabs-items>
     </v-card>
-
-    <!-- <div v-if="selectSee == 0">
-      <v-row>
-        <v-col>
-          <DoughnutChartDashBranchCar :branch_id="branch_id" />
-        </v-col>
-      </v-row>
-      <v-row class="mt-5">
-        <v-col>
-          <BarChartDashCar :branch_id="branch_id" />
-        </v-col>
-      </v-row>
-
-      <v-row class="mt-5">
-        <v-col>
-          <BarChartDashTopCarSerie :branch_id="branch_id" />
-        </v-col>
-      </v-row>
-    </div> -->
-
-    <!-- <div v-else-if="selectSee == 1">
-      <v-row>
-        <v-col>
-          <BarChartDashVisit :branch_id="branch_id" />
-        </v-col>
-      </v-row>
-      <v-row class="mt-5">
-        <v-col>
-          <BarChartDashVisitCarType :branch_id="branch_id" />
-        </v-col>
-      </v-row>
-
-      <v-row class="mt-5">
-        <v-col>
-          <BarChartDashVisitCarModel :branch_id="branch_id" />
-        </v-col>
-      </v-row>
-
-      <v-row class="mt-5">
-        <v-col>
-          <BarChartDashVisitCarSerie :branch_id="branch_id" />
-        </v-col>
-      </v-row> -->
-
-    <!-- <v-row class="mt-5">
-        <v-col>
-          <BarChartDashVisitCarSlacken :branch_id="branch_id" />
-        </v-col>
-      </v-row>
-
-      <v-row class="mt-5">
-        <v-col>
-          <BarChartDashVisitCarDown :branch_id="branch_id" />
-        </v-col>
-      </v-row> -->
-    <!-- </div> -->
-
     <dialogNew />
   </div>
 </template>
@@ -103,6 +60,8 @@ import * as apiBranch_teams from "@/Api/apiBranch_teams";
 //
 import ComWorkStatus from "@/components/Dashboard/ComWorkStatus.vue";
 import ComInventoryCar from "@/components/Dashboard/ComInventoryCar.vue";
+import ComRegis from "@/components/Dashboard/ComRegis.vue";
+import ComInsurances from "@/components/Dashboard/ComInsurances.vue";
 
 // Bar chart
 import BarChartDashCar from "@/components/BarChartDash/BarChartDashCar";
@@ -125,6 +84,8 @@ export default {
     //Main
     ComWorkStatus,
     ComInventoryCar,
+    ComRegis,
+    ComInsurances,
     // Bar
     BarChartDashCar,
     BarChartDashBranch,
@@ -157,12 +118,11 @@ export default {
   async mounted() {
     this.$nextTick(async () => {
       if (this.user_group_permission == -1) {
-        // await this.$router.push("/");
         await this.getBranch_teams();
       } else if (this.user_group_permission == 2) {
         await this.$router.push("/index_sale");
       } else if (this.user_group_permission == 3) {
-        await this.$router.push("/work/works");
+        await this.$router.push("/index_sale");
       } else if (this.user_group_permission == 4) {
         await this.$router.push("/work/work_Technician");
       } else if (this.user_group_permission == 5) {
@@ -174,10 +134,9 @@ export default {
       } else if (this.user_group_permission == 8) {
         await this.$router.push("/stock/stock_cars");
       } else if (this.user_group_permission == 9) {
-        // await this.$router.push("/");
         await this.getBranch_teams();
       } else if (this.user_group_permission == 10) {
-        await this.$router.push("/work/works");
+        await this.$router.push("/index_sale");
       } else if (this.user_group_permission == 11) {
         await this.$router.push("/work/works");
       } else if (this.user_group_permission == 12) {
@@ -191,11 +150,6 @@ export default {
   },
   computed: {},
   methods: {
-    // async getBranches() {
-    //   const response = await apiBranches.select();
-    //   this.branches = response.data;
-    //   this.branches.push({ id: 0, branch_name: "ทั้งหมด" });
-    // },
     async getBranch_teams() {
       const response = await apiBranch_teams.select();
       this.branch_teams = response.data;

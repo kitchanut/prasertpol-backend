@@ -18,7 +18,7 @@ export function store(params) {
 
 export function update(id, params) {
   const url = HOSTNAME + path + "/" + id;
-  return request("put", url, params);
+  return request("post", url, params);
 }
 
 export function show(id) {
@@ -27,8 +27,7 @@ export function show(id) {
 }
 
 export function checkBooking(idWork, idCar, idCustomer) {
-  const url =
-    HOSTNAME + "/api/checkBooking/" + idWork + "/" + idCar + "/" + idCustomer;
+  const url = HOSTNAME + "/api/checkBooking/" + idWork + "/" + idCar + "/" + idCustomer;
   return request("post", url, {});
 }
 

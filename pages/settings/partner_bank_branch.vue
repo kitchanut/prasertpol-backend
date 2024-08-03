@@ -14,8 +14,8 @@
         <v-col cols="3">
           <v-text-field
             v-model="search"
-id="search"
-name="search"
+            id="search"
+            name="search"
             append-icon="mdi-magnify"
             label="ค้นหา"
             single-line
@@ -35,13 +35,7 @@ name="search"
         no-data-text="ยังไม่มีการเพิ่มข้อมูล"
       >
         <template v-slot:[`item.bank_branch_active`]="{ item }">
-          <v-btn
-            v-if="item.bank_branch_active == '1'"
-            x-small
-            color="success"
-            dark
-            >เปิดใช้งาน</v-btn
-          >
+          <v-btn v-if="item.bank_branch_active == '1'" x-small color="success" dark>เปิดใช้งาน</v-btn>
           <v-btn v-else x-small color="red" dark>ปิดการใช้งาน</v-btn>
         </template>
 
@@ -86,9 +80,7 @@ export default {
       id: "",
       formTitle: "Add",
       action: "add",
-      user_group_permission: this.$auth.$storage.getLocalStorage(
-        "userData-user_group_permission"
-      ),
+      user_group_permission: this.$auth.$storage.getLocalStorage("userData-user_group_permission"),
       headers: [
         { text: "ลำดับ", value: "no", width: "7%", align: "center" },
         { text: "ธนาคาร", value: "bank.bank_name", width: "15%" },

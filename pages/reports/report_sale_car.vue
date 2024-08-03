@@ -47,12 +47,19 @@
             </span>
           </template>
 
+          <template v-slot:[`item.car_price`]="{ item }">
+            <span v-if="item.working">
+              {{
+                Number(item.working.appointment_banks.car_price).toLocaleString("th-TH", {
+                  maximumFractionDigits: 0,
+                  minimumFractionDigits: 0,
+                })
+              }}
+            </span>
+          </template>
+
           <template v-slot:[`item.car_types`]="{ item }">
-            <span
-              >{{ item.car_types.car_type_name }} ({{
-                item.car_types.car_type_name_en
-              }})</span
-            >
+            <span>{{ item.car_types.car_type_name }} ({{ item.car_types.car_type_name_en }})</span>
           </template>
           <template v-slot:[`item.amount_down`]="{ item }">
             {{
@@ -128,6 +135,7 @@ export default {
           value: "contract.contract_date",
           width: "120px",
         },
+
         {
           text: "ลำดับ",
           value: "car_no",
@@ -201,7 +209,7 @@ export default {
           class: "textOneLine",
         },
         {
-          text: "ขาย",
+          text: "ตั้งขาย",
           value: "car_price_vat",
           class: "textOneLine",
         },
@@ -256,6 +264,39 @@ export default {
           class: "textOneLine",
           width: "110px",
         },
+        // {
+        //   text: "ราคาขายรถ",
+        //   align: "right",
+        //   value: "car_price",
+        // },
+        {
+          text: "ไฟแนนซ์",
+          value: "working.receiving_money.bank_name",
+          width: "200px",
+        },
+        {
+          text: "เล่มที่",
+          value: "working.receiving_money.book_no",
+        },
+        {
+          text: "เลขที่",
+          value: "working.receiving_money.number_no",
+        },
+        {
+          text: "ก่อน vat",
+          align: "right",
+          value: "working.receiving_money.receiving_money_sum",
+        },
+        {
+          text: "vat",
+          align: "right",
+          value: "working.receiving_money.receiving_money_sum_vat",
+        },
+        {
+          text: "รวม vat",
+          align: "right",
+          value: "working.receiving_money.receiving_money_all",
+        },
       ];
     } else {
       this.headers = [
@@ -264,6 +305,7 @@ export default {
           value: "contract.contract_date",
           width: "120px",
         },
+
         {
           text: "ลำดับ",
           value: "car_no",
@@ -348,6 +390,40 @@ export default {
           class: "textOneLine",
           width: "150px",
         },
+        // {
+        //   text: "ราคาขายรถ",
+        //   align: "right",
+        //   value: "car_price",
+        //   width: "120px",
+        // },
+        {
+          text: "ไฟแนนซ์",
+          value: "working.receiving_money.bank_name",
+          width: "200px",
+        },
+        {
+          text: "เล่มที่",
+          value: "working.receiving_money.book_no",
+        },
+        {
+          text: "เลขที่",
+          value: "working.receiving_money.number_no",
+        },
+        {
+          text: "ก่อน vat",
+          align: "right",
+          value: "working.receiving_money.receiving_money_sum",
+        },
+        {
+          text: "vat",
+          align: "right",
+          value: "working.receiving_money.receiving_money_sum_vat",
+        },
+        {
+          text: "รวม vat",
+          align: "right",
+          value: "working.receiving_money.receiving_money_all",
+        },
       ];
     }
   },
@@ -390,10 +466,7 @@ export default {
           excel.export_json_to_excel({
             header: tHeader,
             data,
-            filename:
-              "รายงานการขายรถ (" +
-              moment().format("DD/MM/YYYY ( HH:mm น.)") +
-              ")",
+            filename: "รายงานการขายรถ (" + moment().format("DD/MM/YYYY ( HH:mm น.)") + ")",
             autoWidth: true,
             bookType: "xlsx",
           });
@@ -401,11 +474,9 @@ export default {
       });
     },
     formatJson(filterVal, jsonData) {
-      // return jsonData.map((v) =>
       return jsonData.map((v) =>
         filterVal.map((j) => {
           if (j == "car_models.car_model_name") {
-            // console.log(v)
             return v.car_models.car_model_name;
           } else if (j == "car_serie_sub.car_serie_sub_name") {
             if (v.car_serie_sub == null) {
@@ -420,17 +491,23 @@ export default {
           } else if (j == "car_series.car_series_name") {
             return v.car_series.car_series_name;
           } else if (j == "car_types") {
-            return (
-              v.car_types.car_type_name +
-              "(" +
-              v.car_types.car_type_name_en +
-              ")"
-            );
+            return v.car_types.car_type_name + "(" + v.car_types.car_type_name_en + ")";
           } else if (j == "car_gear") {
             if (v.car_gear == 1) {
               return "AT";
             } else {
               return "MT";
+            }
+          } else if (j == "car_price") {
+            if (v.working) {
+              if (v.working.appointment_banks) {
+                return Number(v.working.appointment_banks.car_price).toLocaleString("th-TH", {
+                  maximumFractionDigits: 0,
+                  minimumFractionDigits: 0,
+                });
+              }
+            } else {
+              return 0;
             }
           } else if (j == "car_price_vat") {
             return Number(v.car_price_vat).toLocaleString("th-TH", {
@@ -472,8 +549,43 @@ export default {
             } else {
               return null;
             }
+          } else if (j == "working.receiving_money.bank_name") {
+            if (v.working) {
+              return v.working.receiving_money == null ? "" : v.working.receiving_money.bank_name;
+            } else {
+              return null;
+            }
+          } else if (j == "working.receiving_money.book_no") {
+            if (v.working) {
+              return v.working.receiving_money == null ? "" : v.working.receiving_money.book_no;
+            } else {
+              return null;
+            }
+          } else if (j == "working.receiving_money.number_no") {
+            if (v.working) {
+              return v.working.receiving_money == null ? "" : v.working.receiving_money.number_no;
+            } else {
+              return null;
+            }
+          } else if (j == "working.receiving_money.receiving_money_sum") {
+            if (v.working) {
+              return v.working.receiving_money == null ? "" : v.working.receiving_money.receiving_money_sum;
+            } else {
+              return null;
+            }
+          } else if (j == "working.receiving_money.receiving_money_sum_vat") {
+            if (v.working) {
+              return v.working.receiving_money == null ? "" : v.working.receiving_money.receiving_money_sum_vat;
+            } else {
+              return null;
+            }
+          } else if (j == "working.receiving_money.receiving_money_all") {
+            if (v.working) {
+              return v.working.receiving_money == null ? "" : v.working.receiving_money.receiving_money_all;
+            } else {
+              return null;
+            }
           } else if (j == "created_at") {
-            // return moment(v.created_at).format("DD/MM/YYYY ( HH:mm น.)");
             return moment(v.created_at).format("DD/MM/YYYY ( HH:mm น.)");
           } else {
             return v[j];
@@ -485,5 +597,4 @@ export default {
 };
 </script>
 
-<style>
-</style>
+<style></style>

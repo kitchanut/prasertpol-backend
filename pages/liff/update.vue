@@ -1,16 +1,7 @@
 <template>
   <v-card>
-    <v-form
-      autocomplete="true"
-      ref="form"
-      @submit.prevent="onAction(formData.id)"
-    >
-      <v-progress-linear
-        v-if="formDataLoading"
-        indeterminate
-        color="yellow darken-2"
-      >
-      </v-progress-linear>
+    <v-form autocomplete="true" ref="form" @submit.prevent="onAction(formData.id)">
+      <v-progress-linear v-if="formDataLoading" indeterminate color="yellow darken-2"> </v-progress-linear>
 
       <v-card-title primary-title> แจ้งอัพเดทข้อมูล</v-card-title>
 
@@ -40,6 +31,28 @@
 
         <v-autocomplete
           class="mt-3"
+          :filter="filterObject"
+          :items="dataWorking"
+          item-value="id"
+          label="ลำดับรถ*"
+          single-line
+          v-model="formData.working_id"
+          outlined
+          dense
+          hide-details
+          @change="formData.car_no = dataWorking.find((x) => x.id == formData.working_id).cars.car_no"
+        >
+          <template slot="selection" slot-scope="{ item }">
+            {{ item.cars.car_no }} | {{ item.customer ? item.customer.customer_name : "ยังไม่เลือกลูกค้า" }}
+          </template>
+          <template slot="item" slot-scope="{ item }">
+            W{{ item.id }} | {{ item.cars.car_no }} |
+            {{ item.customer ? item.customer.customer_name : "ยังไม่เลือกลูกค้า" }}</template
+          >
+        </v-autocomplete>
+
+        <!-- <v-autocomplete
+          class="mt-3"
           v-model="formData.car_no"
           :items="dataCar"
           item-text="car_no"
@@ -51,7 +64,7 @@
           hide-details
           :rules="rule"
         >
-        </v-autocomplete>
+        </v-autocomplete> -->
 
         <v-textarea
           class="mt-3"
@@ -80,19 +93,10 @@
       <v-card-actions>
         <v-row>
           <v-col>
-            <v-btn dark block color="warning" @click="closeWindow">
-              ยกเลิก
-            </v-btn>
+            <v-btn dark block color="warning" @click="closeWindow"> ยกเลิก </v-btn>
           </v-col>
           <v-col>
-            <v-btn
-              block
-              type="submit"
-              color="success darken-1"
-              :loading="loading"
-            >
-              บันทึก
-            </v-btn>
+            <v-btn block type="submit" color="success darken-1" :loading="loading"> บันทึก </v-btn>
           </v-col>
         </v-row>
       </v-card-actions>
@@ -102,7 +106,7 @@
 
 <script>
 import * as apiRequestUpdate from "@/Api/apiRequestUpdate";
-import * as apiCars from "@/Api/apiCars";
+import * as apiWorks from "@/Api/apiWorks";
 import * as apiLiff from "@/Api/apiLiff";
 import * as customAlart from "@/customJS/customAlart";
 
@@ -115,7 +119,8 @@ export default {
       loading: false,
       formDataLoading: false,
       isCombine: false,
-      dataCar: [],
+      // dataCar: [],
+      dataWorking: [],
       formData: {},
       id_card: null,
       rule: [(value) => !!value || "กรุณาใส่ข้อมูล"],
@@ -125,6 +130,14 @@ export default {
     this.initializeLiff(process.env.liff.update);
   },
   methods: {
+    async getDataWork() {
+      const response = await apiWorks.activeWorkingID();
+      this.dataWorking = response.data;
+      //   console.log(this.dataWorking);
+    },
+    filterObject(item, queryText, itemText) {
+      return item.cars.car_no.toLocaleLowerCase().indexOf(queryText.toLocaleLowerCase()) > -1;
+    },
     async checkUserLine() {
       let data = {
         lineUUID: this.formData.lineUUID,
@@ -141,16 +154,15 @@ export default {
           " (" +
           response.data.data.user_code +
           ")";
-        this.formData.branch_name =
-          response.data.data.branch.branch_team.branch_team_name;
+        this.formData.branch_name = response.data.data.branch.branch_team.branch_team_name;
       }
 
-      // console.log(response.data);
+      this.getDataWork();
     },
-    async getCars() {
-      const response = await apiCars.SelectCarNo();
-      this.dataCar = response.data;
-    },
+    // async getCars() {
+    //   const response = await apiCars.SelectCarNo();
+    //   this.dataCar = response.data;
+    // },
     async onAction(id) {
       if (this.$refs.form.validate()) {
         this.loading = true;
@@ -382,18 +394,9 @@ export default {
     runApp() {
       liff.getProfile().then(async (profile) => {
         // console.log(profile);
-        this.$auth.$storage.setLocalStorage(
-          "userData-lineUUID",
-          profile.userId
-        );
-        this.$auth.$storage.setLocalStorage(
-          "userData-linepictureUrl",
-          profile.pictureUrl
-        );
-        this.$auth.$storage.setLocalStorage(
-          "userData-linedisplayName",
-          profile.displayName
-        );
+        this.$auth.$storage.setLocalStorage("userData-lineUUID", profile.userId);
+        this.$auth.$storage.setLocalStorage("userData-linepictureUrl", profile.pictureUrl);
+        this.$auth.$storage.setLocalStorage("userData-linedisplayName", profile.displayName);
 
         this.formData.lineUUID = profile.userId;
         this.formData.displayName = profile.displayName;
@@ -401,7 +404,7 @@ export default {
         this.formData.request_status = "pedding";
 
         this.checkUserLine();
-        this.getCars();
+        // this.getCars();
       });
     },
     closeWindow() {
@@ -411,5 +414,4 @@ export default {
 };
 </script>
 
-<style>
-</style>
+<style></style>

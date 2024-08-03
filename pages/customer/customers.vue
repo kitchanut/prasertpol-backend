@@ -1,11 +1,5 @@
 <template>
-  <div
-    v-if="
-      user_group_permission == -1 ||
-      user_group_permission == 2 ||
-      user_group_permission == 3
-    "
-  >
+  <div v-if="user_group_permission == -1 || user_group_permission == 2 || user_group_permission == 3">
     <v-card>
       <v-card-title>
         <template>
@@ -42,37 +36,19 @@
       >
         <template v-slot:[`item.customer_job`]="{ item }">
           <h5 v-if="item.customer_job == '1'" class="brown--text">ข้าราชการ</h5>
-          <h5 v-else-if="item.customer_job == '2'" class="blue--text">
-            พนักงานเอกชน
-          </h5>
-          <h5 v-else-if="item.customer_job == '3'" class="green--text">
-            เกษตรกรกร
-          </h5>
-          <h5 v-else-if="item.customer_job == '4'" class="pink--text">
-            ค้าขาย
-          </h5>
-          <h5 v-else-if="item.customer_job == '5'" class="purple--text">
-            อื่น ๆ
-          </h5>
+          <h5 v-else-if="item.customer_job == '2'" class="blue--text">พนักงานเอกชน</h5>
+          <h5 v-else-if="item.customer_job == '3'" class="green--text">เกษตรกรกร</h5>
+          <h5 v-else-if="item.customer_job == '4'" class="pink--text">ค้าขาย</h5>
+          <h5 v-else-if="item.customer_job == '5'" class="purple--text">อื่น ๆ</h5>
           <h5 v-else class="red--text">ยังไม่เลือก</h5>
         </template>
 
         <template v-slot:[`item.customer_birthday_year`]="{ item }">
-          <h5
-            v-if="
-              item.customer_birthday_year == null ||
-              item.customer_birthday_year == ''
-            "
-            class="red--text"
-          >
+          <h5 v-if="item.customer_birthday_year == null || item.customer_birthday_year == ''" class="red--text">
             ยังไม่เลือก
           </h5>
           <div v-else>
-            {{
-              new Date().getFullYear() +
-              543 -
-              Number(item.customer_birthday_year)
-            }}
+            {{ new Date().getFullYear() + 543 - Number(item.customer_birthday_year) }}
           </div>
         </template>
 
@@ -110,9 +86,7 @@ export default {
   },
   data() {
     return {
-      user_group_permission: this.$auth.$storage.getLocalStorage(
-        "userData-user_group_permission"
-      ),
+      user_group_permission: this.$auth.$storage.getLocalStorage("userData-user_group_permission"),
       search: "",
       loading: true,
       id: "",

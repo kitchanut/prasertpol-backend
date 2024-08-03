@@ -25,11 +25,7 @@
         <v-card-title class="d-flex align-end">
           <v-row>
             <v-col cols="8">W{{ item.id }}</v-col>
-            <v-col
-              cols="4"
-              style="font-size: 1rem; font-weight: 300"
-              class="d-flex justify-end"
-            >
+            <v-col cols="4" style="font-size: 1rem; font-weight: 300" class="d-flex justify-end">
               <v-menu offset-y>
                 <template v-slot:activator="{ on, attrs }">
                   <v-btn icon v-bind="attrs" v-on="on">
@@ -55,19 +51,9 @@
                       user_group_permission == 3 ||
                       user_group_permission == 10
                     "
-                    @click="
-                      Booking(
-                        item.car_no,
-                        item.id,
-                        item.car_id,
-                        item.customer_id,
-                        item.sale_id
-                      )
-                    "
+                    @click="Booking(item.car_no, item.id, item.car_id, item.customer_id, item.sale_id)"
                   >
-                    <v-list-item-title>{{
-                      item.work_status > 1 ? "ดูข้อมูลการจอง" : "จอง"
-                    }}</v-list-item-title>
+                    <v-list-item-title>{{ item.work_status > 1 ? "ดูข้อมูลการจอง" : "จอง" }}</v-list-item-title>
                   </v-list-item>
 
                   <v-list-item
@@ -80,9 +66,7 @@
                     "
                     @click="Financial(item.car_no, item.id, '1', 'edit')"
                   >
-                    <v-list-item-title>{{
-                      item.work_status > 2 ? "ดูข้อมูลวางมัดจำ" : "วางมัดจำ"
-                    }}</v-list-item-title>
+                    <v-list-item-title>{{ item.work_status > 2 ? "ดูข้อมูลวางมัดจำ" : "วางมัดจำ" }}</v-list-item-title>
                   </v-list-item>
 
                   <v-list-item
@@ -95,9 +79,7 @@
                     @click="Appointment(item.car_no, item.id)"
                   >
                     <v-list-item-title>{{
-                      item.work_status > 3
-                        ? "ดูการนัดทำสัญญากับแบงค์"
-                        : "นัดทำสัญญากับแบงค์"
+                      item.work_status > 3 ? "ดูการนัดทำสัญญากับแบงค์" : "นัดทำสัญญากับแบงค์"
                     }}</v-list-item-title>
                   </v-list-item>
 
@@ -112,24 +94,22 @@
                     @click="AppointmentBank(item.car_no, item.id)"
                   >
                     <v-list-item-title>{{
-                      item.work_status > 4
-                        ? "ดูการทำสัญญากับแบงค์"
-                        : "ทำสัญญากับแบงค์"
+                      item.work_status > 4 ? "ดูการทำสัญญากับแบงค์" : "ทำสัญญากับแบงค์"
+                    }}</v-list-item-title>
+                  </v-list-item>
+
+                  <v-list-item v-if="item.work_status >= 5 && user_group_permission == -1" @click="PreApprove(item.id)">
+                    <v-list-item-title>{{
+                      item.work_status > 5 ? "ดูข้อมูลอนุมัติเบื้องต้น" : "อนุมัติเบื้องต้น"
                     }}</v-list-item-title>
                   </v-list-item>
 
                   <v-list-item
-                    v-if="
-                      (item.work_status >= 5 && user_group_permission == -1) ||
-                      (item.work_status >= 5 && user_group_permission == 2) ||
-                      (item.work_status >= 5 && user_group_permission == 3)
-                    "
+                    v-if="item.work_status >= 5 && user_group_permission == -1"
                     @click="BankApproved(item.car_no, item.id)"
                   >
                     <v-list-item-title>{{
-                      item.work_status > 5
-                        ? "ดูข้อมูลแบงค์อนุมัติ"
-                        : "แบงค์อนุมัติ"
+                      item.work_status > 5 ? "ดูข้อมูลแบงค์อนุมัติ" : "แบงค์อนุมัติ"
                     }}</v-list-item-title>
                   </v-list-item>
 
@@ -141,18 +121,9 @@
                       (item.work_status > 7 && user_group_permission == 10) ||
                       (item.work_status > 7 && user_group_permission == 11)
                     "
-                    @click="
-                      Contract(
-                        item.car_no,
-                        item.id,
-                        item.car_id,
-                        item.customer_id
-                      )
-                    "
+                    @click="Contract(item.car_no, item.id, item.car_id, item.customer_id)"
                   >
-                    <v-list-item-title>{{
-                      item.work_status > 7 ? "ดูข้อมูลปล่อยรถ" : "ปล่อยรถ"
-                    }}</v-list-item-title>
+                    <v-list-item-title>{{ item.work_status > 7 ? "ดูข้อมูลปล่อยรถ" : "ปล่อยรถ" }}</v-list-item-title>
                   </v-list-item>
 
                   <v-list-item
@@ -169,6 +140,19 @@
                     <v-list-item-title>{{
                       item.work_status > 7 ? "ใบสำคัญรับเงิน" : "ใบสำคัญรับเงิน"
                     }}</v-list-item-title>
+                  </v-list-item>
+
+                  <v-list-item
+                    @click="note(item.id)"
+                    v-if="
+                      user_group_permission == -1 ||
+                      user_group_permission == 2 ||
+                      user_group_permission == 3 ||
+                      user_group_permission == 9 ||
+                      user_group_permission == 10
+                    "
+                  >
+                    <v-list-item-title>หมายเหตุ</v-list-item-title>
                   </v-list-item>
 
                   <!-- <v-list-item
@@ -193,11 +177,7 @@
 
                   <v-list-item
                     @click="deleteItem(item.id)"
-                    v-if="
-                      user_group_permission == -1 ||
-                      user_group_permission == 10 ||
-                      item.work_status <= 5
-                    "
+                    v-if="user_group_permission == -1 || user_group_permission == 10 || item.work_status <= 5"
                   >
                     <v-list-item-title>ยกเลิก</v-list-item-title>
                   </v-list-item>
@@ -243,94 +223,17 @@
                 <b>สถานะ:</b>
               </div> -->
               <div>
-                <v-btn
-                  v-if="item.work_status == '1'"
-                  color="amber"
-                  dark
-                  text
-                  class="pa-0"
-                  >ลูกค้าสนใจ</v-btn
-                >
-                <v-btn
-                  v-if="item.work_status == '2'"
-                  text
-                  color="primary"
-                  dark
-                  class="pa-0"
-                  >ยืนยันการจอง</v-btn
-                >
-                <v-btn
-                  v-if="item.work_status == '3'"
-                  text
-                  color="primary"
-                  dark
-                  class="pa-0"
-                  >วางมัดจำแล้ว</v-btn
-                >
-                <v-btn
-                  v-if="item.work_status == '4'"
-                  text
-                  color="primary"
-                  dark
-                  class="pa-0"
-                  >นัดทำสัญญาแล้ว</v-btn
-                >
-                <v-btn
-                  v-if="item.work_status == '5'"
-                  text
-                  color="primary"
-                  dark
-                  class="pa-0"
-                  >รอแบงค์อนุมัติ</v-btn
-                >
-                <v-btn
-                  v-if="item.work_status == '6'"
-                  text
-                  color="red"
-                  dark
-                  class="pa-0"
-                  >แบงค์ไม่อนุมัติ</v-btn
-                >
-                <v-btn
-                  v-if="item.work_status == '7'"
-                  text
-                  color="primary"
-                  dark
-                  class="pa-0"
-                  >แบงค์อนุมัติแล้ว</v-btn
-                >
-                <v-btn
-                  v-if="item.work_status == '8'"
-                  text
-                  color="primary"
-                  dark
-                  class="pa-0"
-                  >ปล่อยรถแล้ว</v-btn
-                >
-                <v-btn
-                  v-if="item.work_status == '9'"
-                  text
-                  color="primary"
-                  dark
-                  class="pa-0"
-                  >ปล่อยรถแล้ว</v-btn
-                >
-                <v-btn
-                  v-if="item.work_status == '10'"
-                  text
-                  color="success"
-                  dark
-                  class="pa-0"
-                  >ปล่อยรถแล้ว</v-btn
-                >
-                <v-btn
-                  v-if="item.work_status == '11'"
-                  text
-                  color="success"
-                  dark
-                  class="pa-0"
-                  >ปิดงานแล้ว</v-btn
-                >
+                <v-btn v-if="item.work_status == '1'" color="amber" dark text class="pa-0">ลูกค้าสนใจ</v-btn>
+                <v-btn v-if="item.work_status == '2'" text color="primary" dark class="pa-0">ยืนยันการจอง</v-btn>
+                <v-btn v-if="item.work_status == '3'" text color="primary" dark class="pa-0">วางมัดจำแล้ว</v-btn>
+                <v-btn v-if="item.work_status == '4'" text color="primary" dark class="pa-0">นัดทำสัญญาแล้ว</v-btn>
+                <v-btn v-if="item.work_status == '5'" text color="primary" dark class="pa-0">รอแบงค์อนุมัติ</v-btn>
+                <v-btn v-if="item.work_status == '6'" text color="red" dark class="pa-0">แบงค์ไม่อนุมัติ</v-btn>
+                <v-btn v-if="item.work_status == '7'" text color="primary" dark class="pa-0">แบงค์อนุมัติแล้ว</v-btn>
+                <v-btn v-if="item.work_status == '8'" text color="primary" dark class="pa-0">ปล่อยรถแล้ว</v-btn>
+                <v-btn v-if="item.work_status == '9'" text color="primary" dark class="pa-0">ปล่อยรถแล้ว</v-btn>
+                <v-btn v-if="item.work_status == '10'" text color="success" dark class="pa-0">ปล่อยรถแล้ว</v-btn>
+                <v-btn v-if="item.work_status == '11'" text color="success" dark class="pa-0">ปิดงานแล้ว</v-btn>
               </div>
             </v-col>
           </v-row>
@@ -343,52 +246,27 @@
           <v-btn
             color="primary"
             v-if="item.work_status == '1'"
-            @click="
-              Booking(
-                item.car_no,
-                item.id,
-                item.car_id,
-                item.customer_id,
-                item.sale_id
-              )
-            "
+            @click="Booking(item.car_no, item.id, item.car_id, item.customer_id, item.sale_id)"
           >
             จอง
           </v-btn>
-          <v-btn
-            color="primary"
-            v-if="item.work_status == '2'"
-            @click="Financial(item.car_no, item.id, '1', 'add')"
-          >
+          <v-btn color="primary" v-if="item.work_status == '2'" @click="Financial(item.car_no, item.id, '1', 'add')">
             ใบสำคัญรับเงิน
           </v-btn>
-          <v-btn
-            color="primary"
-            v-if="item.work_status == '3'"
-            @click="Appointment(item.car_no, item.id)"
-          >
+          <v-btn color="primary" v-if="item.work_status == '3'" @click="Appointment(item.car_no, item.id)">
             นัดทำสัญญากับแบงค์
           </v-btn>
-          <v-btn
-            color="primary"
-            v-if="item.work_status == '4'"
-            @click="AppointmentBank(item.car_no, item.id)"
-          >
+          <v-btn color="primary" v-if="item.work_status == '4'" @click="AppointmentBank(item.car_no, item.id)">
             ทำสัญญา
           </v-btn>
-          <v-btn
-            color="primary"
-            v-if="item.work_status == '5'"
-            @click="BankApproved(item.car_no, item.id)"
-          >
+          <!-- <v-btn color="primary" v-if="item.work_status == '5'" @click="PreApprove(item.id)"> อนุมัติเบื้องต้น </v-btn>
+          <v-btn color="primary" v-if="item.work_status == '5'" @click="BankApproved(item.car_no, item.id)">
             แบงค์อนุมัติ
-          </v-btn>
+          </v-btn> -->
           <v-btn
             color="primary"
             v-if="item.work_status == '7'"
-            @click="
-              Contract(item.car_no, item.id, item.car_id, item.customer_id)
-            "
+            @click="Contract(item.car_no, item.id, item.car_id, item.customer_id)"
           >
             ปล่อยรถ
           </v-btn>
@@ -399,33 +277,14 @@
           >
             ใบสำคัญรับเงิน
           </v-btn>
-          <!-- <v-btn
-            color="primary"
-            v-if="item.work_status >= '7' && item.work_status <= '10'"
-            @click="
-              InsurCertificate(
-                item.car_no,
-                item.id,
-                item.car_id,
-                item.customer_id
-              )
-            "
-          >
-            ใบประกัน
-          </v-btn> -->
-          <v-menu
+
+          <!-- <v-menu
             offset-y
             :nudge-width="100"
-            v-if="
-              item.financials_sum_bath != item.down &&
-              item.work_status >= 8 &&
-              item.bank_id != 6
-            "
+            v-if="item.financials_sum_bath != item.down && item.work_status >= 8 && item.bank_id != 6"
           >
             <template v-slot:activator="{ on, attrs }">
-              <v-btn class="ml-1" color="red" dark v-bind="attrs" v-on="on">
-                ค้างดาวน์
-              </v-btn>
+              <v-btn class="ml-1" color="red" dark v-bind="attrs" v-on="on"> ค้างดาวน์ </v-btn>
             </template>
             <v-card>
               <v-card-text>
@@ -455,9 +314,7 @@
                   <v-col>ค้างจ่าย: </v-col>
                   <v-col align="right">
                     {{
-                      (
-                        Number(item.down) - Number(item.financials_sum_bath)
-                      ).toLocaleString("th-TH", {
+                      (Number(item.down) - Number(item.financials_sum_bath)).toLocaleString("th-TH", {
                         minimumFractionDigits: 2,
                         maximumFractionDigits: 2,
                       })
@@ -466,23 +323,13 @@
                 </v-row>
               </v-card-text>
             </v-card>
-          </v-menu>
+          </v-menu> -->
         </v-card-actions>
       </v-card>
     </v-container>
 
     <v-fab-transition>
-      <v-btn
-        color="primary"
-        fab
-        large
-        dark
-        fixed
-        bottom
-        right
-        style="bottom: 70px"
-        @click.stop="AddItem()"
-      >
+      <v-btn color="primary" fab large dark fixed bottom right style="bottom: 70px" @click.stop="AddItem()">
         <v-icon>mdi-plus</v-icon>
       </v-btn>
     </v-fab-transition>
@@ -541,6 +388,14 @@
       @error="addError"
     />
 
+    <dialogPreApprove
+      :dialog="dialogPreApprove"
+      :working_id="idWork"
+      @cancleItem="dialogPreApprove = false"
+      @success="addSuccess"
+      @error="addError"
+    />
+
     <dialogAppointmentBank
       :dialogAppointmentBank="dialogAppointmentBank"
       :idWork="idWork"
@@ -578,6 +433,14 @@
       @error="addError"
     />
 
+    <dialogNote
+      :dialogNote="dialogNote"
+      :idNote="idNote"
+      @cancleItem="dialogNote = false"
+      @success="addSuccess"
+      @error="addError"
+    />
+
     <dialogLoader :dialogLoader="dialogLoader" />
   </div>
 </template>
@@ -587,15 +450,19 @@ import * as apiWorks from "@/Api/apiWorks";
 
 import * as customAlart from "@/customJS/customAlart";
 
+import dialogBooking from "@/components/mobile/dialogBooking";
+import dialogReceiveDown from "@/components/mobile/dialogReceiveDown";
+import dialogInsurCertificate from "@/components/mobile/dialogInsurCertificate";
+
 import dialogLoader from "@/components/dialog-loader";
 import dialogWork from "@/components/dialog/dialogWork";
-import dialogBooking from "@/components/mobile/dialogBooking";
-import dialogFinancial from "@/components/mobile/dialogFinancial";
-import dialogReceiveDown from "@/components/mobile/dialogReceiveDown";
 import dialogAppointment from "@/components/dialog/dialogAppointment";
+import dialogPreApprove from "@/components/dialog/dialogPreApprove";
 import dialogAppointmentBank from "@/components/dialog/dialogAppointmentBank";
 import dialogContract from "@/components/dialog/dialogContract";
-import dialogInsurCertificate from "@/components/mobile/dialogInsurCertificate";
+import dialogFinancial from "@/components/dialog/dialogFinancial";
+
+import dialogNote from "@/components/dialog/dialogNote";
 
 export default {
   layout: "mobile",
@@ -606,9 +473,11 @@ export default {
     dialogFinancial,
     dialogReceiveDown,
     dialogAppointment,
+    dialogPreApprove,
     dialogAppointmentBank,
     dialogContract,
     dialogInsurCertificate,
+    dialogNote,
   },
   data() {
     return {
@@ -619,9 +488,7 @@ export default {
       status_bank: 5,
       jobType: 1,
       user_id: this.$auth.$storage.getLocalStorage("userData-id"),
-      user_group_permission: this.$auth.$storage.getLocalStorage(
-        "userData-user_group_permission"
-      ),
+      user_group_permission: this.$auth.$storage.getLocalStorage("userData-user_group_permission"),
       dataAll: [],
       data: [],
       items: [
@@ -698,6 +565,8 @@ export default {
       formTitleAppointment: "Add",
       actionAppointment: "check",
 
+      dialogPreApprove: false,
+
       dialogAppointmentBank: false,
       formTitleAppointmentBank: "Add",
       actionAppointmentBank: "check",
@@ -705,12 +574,14 @@ export default {
       dialogInsurCertificate: false,
       formTitleInsurCertificate: "Add",
       actionInsurCertificate: "check",
+
+      dialogNote: false,
+      idNote: "",
     };
   },
   beforeMount() {
     if (this.user_group_permission == 2 || this.user_group_permission == 3) {
-      this.branch_id =
-        this.$auth.$storage.getLocalStorage("userData-branch_id");
+      this.branch_id = this.$auth.$storage.getLocalStorage("userData-branch_id");
     } else {
       this.branch_id = 0;
     }
@@ -803,6 +674,10 @@ export default {
       this.status_bank = 5;
       this.actionAppointmentBank = "check";
     },
+    async PreApprove(working_id) {
+      this.dialogPreApprove = true;
+      this.idWork = working_id;
+    },
     async BankApproved(car_no, work_id) {
       this.car_no = car_no;
       this.formTitleAppointmentBank = "แบงค์อนุมัติ (" + car_no + ")";
@@ -831,6 +706,11 @@ export default {
       this.dialogInsurCertificate = true;
       this.actionInsurCertificate = "check";
     },
+
+    async note(id) {
+      this.dialogNote = true;
+      this.idNote = id;
+    },
     async addSuccess(value) {
       // console.log(value);
       if (value == "work") {
@@ -847,12 +727,16 @@ export default {
         this.dialogPathnerJobTechnician = false;
       } else if (value == "Appointment") {
         this.dialogAppointment = false;
+      } else if (value == "PreApprove") {
+        this.dialogPreApprove = false;
       } else if (value == "AppointmentBank") {
         this.dialogAppointmentBank = false;
       } else if (value == "InsurCertificate") {
         this.dialogInsurCertificate = false;
       } else if (value == "Receiving_money") {
         this.dialogReceivingMoney = false;
+      } else if (value == "note") {
+        this.dialogNote = false;
       }
 
       this.$nextTick(() => {
@@ -876,6 +760,8 @@ export default {
         this.dialogPathnerJobTechnician = false;
       } else if (value == "Appointment") {
         this.dialogAppointment = false;
+      } else if (value == "PreApprove") {
+        this.dialogPreApprove = false;
       } else if (value == "AppointmentBank") {
         this.dialogAppointmentBank = false;
       } else if (value == "InsurCertificate") {
@@ -905,10 +791,7 @@ export default {
   watch: {
     search() {
       this.data = this.dataAll.filter((item) => {
-        return (
-          item.car_no.includes(this.search) ||
-          item.customer_name.includes(this.search)
-        );
+        return item.car_no.includes(this.search) || item.customer_name.includes(this.search);
       });
     },
   },

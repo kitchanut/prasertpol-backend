@@ -1476,6 +1476,16 @@ export default {
                   },
                 },
                 {
+                  type: "button",
+                  style: "secondary",
+                  height: "sm",
+                  action: {
+                    type: "uri",
+                    label: "ใบ PO",
+                    uri: this.serverUrl + data.po,
+                  },
+                },
+                {
                   type: "box",
                   layout: "vertical",
                   contents: [],
@@ -1647,6 +1657,116 @@ export default {
                       contents: [
                         {
                           type: "text",
+                          text: "งวดล่วงหน้า:",
+                          color: "#aaaaaa",
+                          size: "sm",
+                          flex: 2,
+                        },
+                        {
+                          type: "text",
+                          text: data.advance_payment + " บาท",
+                          wrap: true,
+                          color: "#666666",
+                          size: "sm",
+                          flex: 5,
+                        },
+                      ],
+                    },
+                    {
+                      type: "box",
+                      layout: "baseline",
+                      spacing: "sm",
+                      contents: [
+                        {
+                          type: "text",
+                          text: "สมาร์ทชัว:",
+                          color: "#aaaaaa",
+                          size: "sm",
+                          flex: 2,
+                        },
+                        {
+                          type: "text",
+                          text: data.insurance + " บาท",
+                          wrap: true,
+                          color: "#666666",
+                          size: "sm",
+                          flex: 5,
+                        },
+                      ],
+                    },
+                    {
+                      type: "box",
+                      layout: "baseline",
+                      spacing: "sm",
+                      contents: [
+                        {
+                          type: "text",
+                          text: "ประกันอื่น:",
+                          color: "#aaaaaa",
+                          size: "sm",
+                          flex: 2,
+                        },
+                        {
+                          type: "text",
+                          text: data.insurance_other + " บาท",
+                          wrap: true,
+                          color: "#666666",
+                          size: "sm",
+                          flex: 5,
+                        },
+                      ],
+                    },
+                    {
+                      type: "box",
+                      layout: "baseline",
+                      spacing: "sm",
+                      contents: [
+                        {
+                          type: "text",
+                          text: "อื่นๆ:",
+                          color: "#aaaaaa",
+                          size: "sm",
+                          flex: 2,
+                        },
+                        {
+                          type: "text",
+                          text: data.other_receive + " บาท",
+                          wrap: true,
+                          color: "#666666",
+                          size: "sm",
+                          flex: 5,
+                        },
+                      ],
+                    },
+                    {
+                      type: "box",
+                      layout: "baseline",
+                      spacing: "sm",
+                      contents: [
+                        {
+                          type: "text",
+                          text: "รวมรับ:",
+                          color: "#aaaaaa",
+                          size: "sm",
+                          flex: 2,
+                        },
+                        {
+                          type: "text",
+                          text: data.total_receive + " บาท",
+                          wrap: true,
+                          color: "#666666",
+                          size: "sm",
+                          flex: 5,
+                        },
+                      ],
+                    },
+                    {
+                      type: "box",
+                      layout: "baseline",
+                      spacing: "sm",
+                      contents: [
+                        {
+                          type: "text",
                           text: "หมายเหตุ:",
                           color: "#aaaaaa",
                           size: "sm",
@@ -1755,13 +1875,11 @@ export default {
       return [
         {
           type: "text",
-          text:
-            "แจ้งเปลี่ยนจอง: " + data.car_no_old + " เป็น " + data.car_no_new,
+          text: "แจ้งเปลี่ยนจอง: " + data.car_no_old + " เป็น " + data.car_no_new,
         },
         {
           type: "flex",
-          altText:
-            "แจ้งเปลี่ยนจอง: " + data.car_no_old + " เป็น " + data.car_no_new,
+          altText: "แจ้งเปลี่ยนจอง: " + data.car_no_old + " เป็น " + data.car_no_new,
           contents: {
             type: "bubble",
             hero: {
@@ -1978,13 +2096,11 @@ export default {
       return [
         {
           type: "text",
-          text:
-            "แจ้งเปลี่ยนจอง: " + data.car_no_old + " เป็น " + data.car_no_new,
+          text: "แจ้งเปลี่ยนจอง: " + data.car_no_old + " เป็น " + data.car_no_new,
         },
         {
           type: "flex",
-          altText:
-            "แจ้งเปลี่ยนจอง: " + data.car_no_old + " เป็น " + data.car_no_new,
+          altText: "แจ้งเปลี่ยนจอง: " + data.car_no_old + " เป็น " + data.car_no_new,
           contents: {
             type: "bubble",
             hero: {
@@ -3451,5 +3567,4 @@ export default {
 };
 </script>
 
-<style>
-</style>
+<style></style>

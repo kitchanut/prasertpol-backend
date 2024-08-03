@@ -5,16 +5,10 @@
         <router-link to="/" style="text-decoration: none; color: inherit">
           <v-row align="center" justify="start" class="pa-2">
             <v-avatar size="80" class="my-logo mr-3" :color="color">
-              <img
-                :src="require('@/assets/images/prasertpol.png')"
-                alt="parsetpol"
-              />
+              <img :src="require('@/assets/images/prasertpol.png')" alt="parsetpol" />
             </v-avatar>
             <v-toolbar-title
-              v-if="
-                $vuetify.breakpoint.name == 'xs' ||
-                $vuetify.breakpoint.name == 'sm'
-              "
+              v-if="$vuetify.breakpoint.name == 'xs' || $vuetify.breakpoint.name == 'sm'"
               v-text="''"
             ></v-toolbar-title>
             <v-toolbar-title v-else v-text="title" />
@@ -40,22 +34,14 @@
         style="margin-top: -13px"
         dark
       >
-        <v-btn
-          style="height: 100px; background-color: transparent"
-          to="/mobile/work"
-        >
+        <v-btn style="height: 100px; background-color: transparent" to="/mobile/work">
           <span style="color: #ffffff">รวมงาน</span>
 
           <v-icon style="color: #ffffff">mdi-book-edit</v-icon>
         </v-btn>
       </v-avatar>
 
-      <v-btn
-        v-else
-        class="pa-0"
-        to="/mobile/work"
-        style="height: auto; background-color: transparent"
-      >
+      <v-btn v-else class="pa-0" to="/mobile/work" style="height: auto; background-color: transparent">
         <span>รวมงาน</span>
 
         <v-icon>mdi-book-edit</v-icon>
@@ -69,22 +55,14 @@
         style="margin-top: -13px"
         dark
       >
-        <v-btn
-          style="height: 100px; background-color: transparent"
-          to="/mobile/stock"
-        >
+        <v-btn style="height: 100px; background-color: transparent" to="/mobile/stock">
           <span style="color: #ffffff">คลังรถ</span>
 
           <v-icon style="color: #ffffff">mdi-car-multiple</v-icon>
         </v-btn>
       </v-avatar>
 
-      <v-btn
-        v-else
-        class="pa-0"
-        to="/mobile/stock"
-        style="height: auto; background-color: transparent"
-      >
+      <v-btn v-else class="pa-0" to="/mobile/stock" style="height: auto; background-color: transparent">
         <span>คลังรถ</span>
 
         <v-icon>mdi-car-multiple</v-icon>
@@ -98,32 +76,21 @@
         style="margin-top: -13px"
         dark
       >
-        <v-btn
-          style="height: 100px; background-color: transparent"
-          to="/mobile/customerVisits"
-        >
+        <v-btn style="height: 100px; background-color: transparent" to="/mobile/customerVisits">
           <span style="color: #ffffff">เยี่ยมชม</span>
 
           <v-icon style="color: #ffffff">mdi-store</v-icon>
         </v-btn>
       </v-avatar>
 
-      <v-btn
-        v-else
-        class="pa-0"
-        to="/mobile/customerVisits"
-        style="height: auto; background-color: transparent"
-      >
+      <v-btn v-else class="pa-0" to="/mobile/customerVisits" style="height: auto; background-color: transparent">
         <span>เยี่ยมชม</span>
 
         <v-icon>mdi-store</v-icon>
       </v-btn>
 
       <v-avatar
-        v-if="
-          $nuxt.$route.path == '/mobile/customers' ||
-          $nuxt.$route.path == '/mobile/customerDetails'
-        "
+        v-if="$nuxt.$route.path == '/mobile/customers' || $nuxt.$route.path == '/mobile/customerDetails'"
         size="80"
         class="my-mainmanu"
         :color="theme"
@@ -132,12 +99,7 @@
       >
         <v-menu top :offset-y="true">
           <template v-slot:activator="{ on, attrs }">
-            <v-btn
-              class="pa-0"
-              v-bind="attrs"
-              v-on="on"
-              style="background-color: transparent"
-            >
+            <v-btn class="pa-0" v-bind="attrs" v-on="on" style="background-color: transparent">
               <span style="color: #ffffff">ลูกค้า</span>
 
               <v-icon style="color: #ffffff">mdi-account-group</v-icon>
@@ -157,12 +119,7 @@
 
       <v-menu v-else top :offset-y="true">
         <template v-slot:activator="{ on, attrs }">
-          <v-btn
-            class="pa-0"
-            v-bind="attrs"
-            v-on="on"
-            style="height: auto; background-color: transparent"
-          >
+          <v-btn class="pa-0" v-bind="attrs" v-on="on" style="height: auto; background-color: transparent">
             <span>ลูกค้า</span>
 
             <v-icon>mdi-account-group</v-icon>
@@ -179,11 +136,7 @@
         </v-list>
       </v-menu>
 
-      <v-btn
-        class="pa-0"
-        to="/work/works"
-        style="height: auto; background-color: transparent"
-      >
+      <v-btn class="pa-0" to="/work/works" style="height: auto; background-color: transparent">
         <span>คอม</span>
 
         <v-icon>mdi-logout</v-icon>
@@ -269,8 +222,8 @@ html {
   /* border: 5px solid #f44336; */
   /* border-radius: 50px; */
   z-index: 1000;
-  box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.2),
-    0px 4px 5px 0px rgba(0, 0, 0, 0.14), 0px 1px 10px 0px rgba(0, 0, 0, 0.12);
+  box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.2), 0px 4px 5px 0px rgba(0, 0, 0, 0.14),
+    0px 1px 10px 0px rgba(0, 0, 0, 0.12);
 }
 </style>
 
@@ -286,7 +239,7 @@ html {
 .my-logo {
   border: 5px solid #f44336;
   z-index: -100;
-  box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.2),
-    0px 4px 5px 0px rgba(0, 0, 0, 0.14), 0px 1px 10px 0px rgba(0, 0, 0, 0.12);
+  box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.2), 0px 4px 5px 0px rgba(0, 0, 0, 0.14),
+    0px 1px 10px 0px rgba(0, 0, 0, 0.12);
 }
 </style>

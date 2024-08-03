@@ -5,9 +5,7 @@
         <v-card-text>
           <h3 class="text-center">บจก. ประเสริฐผลรุ่งเรืองนครพนม จำกัด</h3>
           <br />
-          <h3 class="text-center">
-            216/111 ถ. นิตโย ต. ในเมือง อ. เมืองนครพนม จ.นครพนม 48000
-          </h3>
+          <h3 class="text-center">216/111 ถ. นิตโย ต. ในเมือง อ. เมืองนครพนม จ.นครพนม 48000</h3>
           <br />
           <br />
 
@@ -21,11 +19,16 @@
                 <v-icon left> mdi-qrcode</v-icon>
                 ลำดับรถ:
                 <span>
-                  {{
-                    formDataBuy.queryCar == null
-                      ? "-"
-                      : formDataBuy.queryCar.car_no
-                  }}
+                  {{ formDataBuy.queryCar == null ? "-" : formDataBuy.queryCar.car_no }}
+                </span>
+              </h5>
+            </v-col>
+            <v-col cols="6">
+              <h5>
+                <v-icon left> mdi-home</v-icon>
+                ซื้อรถจาก:
+                <span>
+                  {{ formDataBuy.partner_car == null ? "-" : formDataBuy.partner_car.partner_car_name }}
                 </span>
               </h5>
             </v-col>
@@ -40,8 +43,7 @@
                   {{
                     formDataBuy.queryCar.car_types == null
                       ? "-"
-                      : formDataBuy.queryCar.car_types.car_type_name +
-                        formDataBuy.queryCar.car_types.car_type_name_en
+                      : formDataBuy.queryCar.car_types.car_type_name + formDataBuy.queryCar.car_types.car_type_name_en
                   }}</span
                 >
               </h5>
@@ -54,9 +56,7 @@
 
                 <span>
                   {{
-                    formDataBuy.queryCar.car_models == null
-                      ? "-"
-                      : formDataBuy.queryCar.car_models.car_model_name
+                    formDataBuy.queryCar.car_models == null ? "-" : formDataBuy.queryCar.car_models.car_model_name
                   }}</span
                 >
               </h5>
@@ -71,9 +71,7 @@
                 รุ่น:
                 <span>
                   {{
-                    formDataBuy.queryCar.car_series == null
-                      ? "-"
-                      : formDataBuy.queryCar.car_series.car_series_name
+                    formDataBuy.queryCar.car_series == null ? "-" : formDataBuy.queryCar.car_series.car_series_name
                   }}</span
                 >
               </h5>
@@ -103,9 +101,7 @@
                   {{
                     formDataBuy.queryCar.car_engine_amount == null
                       ? "-"
-                      : Number(
-                          formDataBuy.queryCar.car_engine_amount
-                        ).toLocaleString("th-TH", {
+                      : Number(formDataBuy.queryCar.car_engine_amount).toLocaleString("th-TH", {
                           maximumFractionDigits: 0,
                           minimumFractionDigits: 0,
                         })
@@ -119,11 +115,7 @@
                 <v-icon left> mdi-engine </v-icon>
                 เลขเครื่อง:
                 <span>
-                  {{
-                    formDataBuy.queryCar.car_no_engine == null
-                      ? "-"
-                      : formDataBuy.queryCar.car_no_engine
-                  }}
+                  {{ formDataBuy.queryCar.car_no_engine == null ? "-" : formDataBuy.queryCar.car_no_engine }}
                 </span>
               </h5>
             </v-col>
@@ -136,11 +128,7 @@
                 <v-icon left> mdi-engine </v-icon>
                 เลขตัวถัง:
                 <span>
-                  {{
-                    formDataBuy.queryCar.car_no_body == null
-                      ? "-"
-                      : formDataBuy.queryCar.car_no_body
-                  }}
+                  {{ formDataBuy.queryCar.car_no_body == null ? "-" : formDataBuy.queryCar.car_no_body }}
                 </span>
               </h5>
             </v-col>
@@ -169,11 +157,7 @@
                 ปีผลิต:
                 <span>
                   <span>
-                    {{
-                      formDataBuy.queryCar.car_year == null
-                        ? "-"
-                        : formDataBuy.queryCar.car_year
-                    }}
+                    {{ formDataBuy.queryCar.car_year == null ? "-" : formDataBuy.queryCar.car_year }}
                   </span>
                 </span>
               </h5>
@@ -188,9 +172,7 @@
                   {{
                     formDataBuy.queryCar.car_mark_year == null
                       ? "-"
-                      : $moment(formDataBuy.queryCar.car_mark_year)
-                          .add(543, "year")
-                          .format("DD MMMM YYYY")
+                      : $moment(formDataBuy.queryCar.car_mark_year).add(543, "year").format("DD MMMM YYYY")
                   }}
                 </span>
               </h5>
@@ -208,13 +190,10 @@
                   {{
                     formDataBuy.queryCar.car_mileage == null
                       ? "-"
-                      : Number(formDataBuy.queryCar.car_mileage).toLocaleString(
-                          "th-TH",
-                          {
-                            maximumFractionDigits: 0,
-                            minimumFractionDigits: 0,
-                          }
-                        )
+                      : Number(formDataBuy.queryCar.car_mileage).toLocaleString("th-TH", {
+                          maximumFractionDigits: 0,
+                          minimumFractionDigits: 0,
+                        })
                   }}
                 </span>
                 กม.
@@ -229,9 +208,7 @@
                   {{
                     formDataBuy.queryCar.car_mileage_balance == null
                       ? "-"
-                      : Number(
-                          formDataBuy.queryCar.car_mileage_balance
-                        ).toLocaleString("th-TH", {
+                      : Number(formDataBuy.queryCar.car_mileage_balance).toLocaleString("th-TH", {
                           maximumFractionDigits: 0,
                           minimumFractionDigits: 0,
                         })
@@ -271,11 +248,7 @@
                 ชนิดเชื้อเพลิง:
 
                 <span>
-                  {{
-                    formDataBuy.queryCar.fuels == null
-                      ? "-"
-                      : formDataBuy.queryCar.fuels.fuel_name
-                  }}
+                  {{ formDataBuy.queryCar.fuels == null ? "-" : formDataBuy.queryCar.fuels.fuel_name }}
                 </span>
               </h5>
             </v-col>
@@ -288,13 +261,7 @@
                 ABS:
 
                 <span>
-                  {{
-                    formDataBuy.queryCar == null
-                      ? "-"
-                      : formDataBuy.queryCar.abs == 1
-                      ? "มี"
-                      : "ไม่มี"
-                  }}
+                  {{ formDataBuy.queryCar == null ? "-" : formDataBuy.queryCar.abs == 1 ? "มี" : "ไม่มี" }}
                 </span>
               </h5>
             </v-col>
@@ -304,13 +271,7 @@
                 AIRBAG:
 
                 <span>
-                  {{
-                    formDataBuy.queryCar == null
-                      ? "-"
-                      : formDataBuy.queryCar.airbag == 1
-                      ? "มี"
-                      : "ไม่มี"
-                  }}
+                  {{ formDataBuy.queryCar == null ? "-" : formDataBuy.queryCar.airbag == 1 ? "มี" : "ไม่มี" }}
                 </span>
               </h5>
             </v-col>
@@ -321,13 +282,7 @@
                 CD:
 
                 <span>
-                  {{
-                    formDataBuy.queryCar == null
-                      ? "-"
-                      : formDataBuy.queryCar.cd == 1
-                      ? "มี"
-                      : "ไม่มี"
-                  }}
+                  {{ formDataBuy.queryCar == null ? "-" : formDataBuy.queryCar.cd == 1 ? "มี" : "ไม่มี" }}
                 </span>
               </h5>
             </v-col>
@@ -343,11 +298,7 @@
                 ทะเบียนเก่า:
 
                 <span>
-                  {{
-                    formDataBuy.queryCar.car_regis == null
-                      ? "-"
-                      : formDataBuy.queryCar.car_regis
-                  }}
+                  {{ formDataBuy.queryCar.car_regis == null ? "-" : formDataBuy.queryCar.car_regis }}
                 </span>
               </h5>
             </v-col>
@@ -357,11 +308,7 @@
                 ทะเบียนจังหวัด:
 
                 <span>
-                  {{
-                    formDataBuy.queryCar.province == null
-                      ? "-"
-                      : formDataBuy.queryCar.province.name_th
-                  }}
+                  {{ formDataBuy.queryCar.province == null ? "-" : formDataBuy.queryCar.province.name_th }}
                 </span>
               </h5>
             </v-col>
@@ -375,11 +322,7 @@
                 ทะเบียนใหม่:
 
                 <span>
-                  {{
-                    formDataBuy.queryCar.car_regis_current == null
-                      ? "-"
-                      : formDataBuy.queryCar.car_regis_current
-                  }}
+                  {{ formDataBuy.queryCar.car_regis_current == null ? "-" : formDataBuy.queryCar.car_regis_current }}
                 </span>
               </h5>
             </v-col>
@@ -390,9 +333,7 @@
 
                 <span>
                   {{
-                    formDataBuy.queryCar.province_current == null
-                      ? "-"
-                      : formDataBuy.queryCar.province_current.name_th
+                    formDataBuy.queryCar.province_current == null ? "-" : formDataBuy.queryCar.province_current.name_th
                   }}
                 </span>
               </h5>
@@ -407,11 +348,7 @@
                 <v-icon left> mdi-human</v-icon>
                 เจ้าของลำดับที่:
                 <span>
-                  {{
-                    formDataBuy.queryCar == null
-                      ? "-"
-                      : formDataBuy.queryCar.owner_no
-                  }}
+                  {{ formDataBuy.queryCar == null ? "-" : formDataBuy.queryCar.owner_no }}
                 </span>
               </h5>
             </v-col>
@@ -419,11 +356,7 @@
               <h5>
                 ชื่อ:
                 <span>
-                  {{
-                    formDataBuy.queryCar == null
-                      ? "-"
-                      : formDataBuy.queryCar.owner_name
-                  }}
+                  {{ formDataBuy.queryCar == null ? "-" : formDataBuy.queryCar.owner_name }}
                 </span>
               </h5>
             </v-col>
@@ -485,11 +418,7 @@
                 <v-icon left> mdi-map-marker</v-icon>
                 สาขา:
                 <span>
-                  {{
-                    formDataBuy.branch == null
-                      ? "-"
-                      : formDataBuy.branch.branch_name
-                  }}
+                  {{ formDataBuy.branch == null ? "-" : formDataBuy.branch.branch_name }}
                 </span>
               </h5>
             </v-col>
@@ -502,9 +431,7 @@
                   {{
                     formDataBuy.queryCar.car_price_vat == null
                       ? "-"
-                      : Number(
-                          formDataBuy.queryCar.car_price_vat
-                        ).toLocaleString("th-TH", {
+                      : Number(formDataBuy.queryCar.car_price_vat).toLocaleString("th-TH", {
                           maximumFractionDigits: 2,
                           minimumFractionDigits: 2,
                         })
@@ -542,9 +469,7 @@ export default {
   layout: "print",
   data() {
     return {
-      user_group_permission: this.$auth.$storage.getLocalStorage(
-        "userData-user_group_permission"
-      ),
+      user_group_permission: this.$auth.$storage.getLocalStorage("userData-user_group_permission"),
       formDataBuy: {
         customer: [
           {
@@ -602,16 +527,14 @@ export default {
   },
   methods: {
     async print() {
-      const response = await apiCars.getAllinfo(
-        this.$route.query.code,
-        this.user_group_permission
-      );
+      const response = await apiCars.getAllinfo(this.$route.query.code, this.user_group_permission);
       // console.log(response);
       this.$nextTick(() => {
         this.$refs.form.reset();
         const self = this;
         this.$nextTick(async () => {
           self.formDataBuy = await response.data;
+          console.log(response.data);
         });
       });
     },

@@ -8,7 +8,9 @@ const _03427558 = () => interopDefault(import('../pages/index_inventory_car.vue'
 const _d3624398 = () => interopDefault(import('../pages/index_sale.vue' /* webpackChunkName: "pages/index_sale" */))
 const _cd833490 = () => interopDefault(import('../pages/index_sale_team.vue' /* webpackChunkName: "pages/index_sale_team" */))
 const _5ad2bf1f = () => interopDefault(import('../pages/index_status.vue' /* webpackChunkName: "pages/index_status" */))
+const _13af7fba = () => interopDefault(import('../pages/installments.vue' /* webpackChunkName: "pages/installments" */))
 const _3e40e30e = () => interopDefault(import('../pages/login.vue' /* webpackChunkName: "pages/login" */))
+const _4043ba52 = () => interopDefault(import('../pages/negotiations.vue' /* webpackChunkName: "pages/negotiations" */))
 const _d94062a6 = () => interopDefault(import('../pages/check/receive_money.vue' /* webpackChunkName: "pages/check/receive_money" */))
 const _4cd9cc9f = () => interopDefault(import('../pages/commission/commission.vue' /* webpackChunkName: "pages/commission/commission" */))
 const _73e80973 = () => interopDefault(import('../pages/customer/customerDetails.vue' /* webpackChunkName: "pages/customer/customerDetails" */))
@@ -22,6 +24,7 @@ const _3b56df4b = () => interopDefault(import('../pages/historys/history_repairs
 const _323e5533 = () => interopDefault(import('../pages/historys/history_repairsOut.vue' /* webpackChunkName: "pages/historys/history_repairsOut" */))
 const _6ac4cb88 = () => interopDefault(import('../pages/historys/history_stock_parts.vue' /* webpackChunkName: "pages/historys/history_stock_parts" */))
 const _1477f526 = () => interopDefault(import('../pages/historys/history_workings.vue' /* webpackChunkName: "pages/historys/history_workings" */))
+const _feb6a398 = () => interopDefault(import('../pages/incomes/financial.vue' /* webpackChunkName: "pages/incomes/financial" */))
 const _768aa5e4 = () => interopDefault(import('../pages/incomes/income.vue' /* webpackChunkName: "pages/incomes/income" */))
 const _74a55ecd = () => interopDefault(import('../pages/infocar/infocar.vue' /* webpackChunkName: "pages/infocar/infocar" */))
 const _b9b338a6 = () => interopDefault(import('../pages/liff/appointment.vue' /* webpackChunkName: "pages/liff/appointment" */))
@@ -61,7 +64,9 @@ const _a8a4236c = () => interopDefault(import('../pages/reports/report_booking_d
 const _357bc128 = () => interopDefault(import('../pages/reports/report_cancel_workings.vue' /* webpackChunkName: "pages/reports/report_cancel_workings" */))
 const _a25738ec = () => interopDefault(import('../pages/reports/report_cars.vue' /* webpackChunkName: "pages/reports/report_cars" */))
 const _e895d5d4 = () => interopDefault(import('../pages/reports/report_commission.vue' /* webpackChunkName: "pages/reports/report_commission" */))
+const _d2276686 = () => interopDefault(import('../pages/reports/report_expense.vue' /* webpackChunkName: "pages/reports/report_expense" */))
 const _0d232c54 = () => interopDefault(import('../pages/reports/report_income.vue' /* webpackChunkName: "pages/reports/report_income" */))
+const _d6705088 = () => interopDefault(import('../pages/reports/report_income_old.vue' /* webpackChunkName: "pages/reports/report_income_old" */))
 const _07df9390 = () => interopDefault(import('../pages/reports/report_part_cars.vue' /* webpackChunkName: "pages/reports/report_part_cars" */))
 const _08ad036f = () => interopDefault(import('../pages/reports/report_profit.vue' /* webpackChunkName: "pages/reports/report_profit" */))
 const _4731c4fe = () => interopDefault(import('../pages/reports/report_purchase_car.vue' /* webpackChunkName: "pages/reports/report_purchase_car" */))
@@ -162,9 +167,17 @@ export const routerOptions = {
     component: _5ad2bf1f,
     name: "index_status"
   }, {
+    path: "/installments",
+    component: _13af7fba,
+    name: "installments"
+  }, {
     path: "/login",
     component: _3e40e30e,
     name: "login"
+  }, {
+    path: "/negotiations",
+    component: _4043ba52,
+    name: "negotiations"
   }, {
     path: "/check/receive_money",
     component: _d94062a6,
@@ -217,6 +230,10 @@ export const routerOptions = {
     path: "/historys/history_workings",
     component: _1477f526,
     name: "historys-history_workings"
+  }, {
+    path: "/incomes/financial",
+    component: _feb6a398,
+    name: "incomes-financial"
   }, {
     path: "/incomes/income",
     component: _768aa5e4,
@@ -374,9 +391,17 @@ export const routerOptions = {
     component: _e895d5d4,
     name: "reports-report_commission"
   }, {
+    path: "/reports/report_expense",
+    component: _d2276686,
+    name: "reports-report_expense"
+  }, {
     path: "/reports/report_income",
     component: _0d232c54,
     name: "reports-report_income"
+  }, {
+    path: "/reports/report_income_old",
+    component: _d6705088,
+    name: "reports-report_income_old"
   }, {
     path: "/reports/report_part_cars",
     component: _07df9390,

@@ -1,11 +1,5 @@
 <template>
-  <div
-    v-if="
-      user_group_permission == -1 ||
-      user_group_permission == 9 ||
-      user_group_permission == 11
-    "
-  >
+  <div v-if="user_group_permission == -1 || user_group_permission == 9 || user_group_permission == 11">
     <v-card>
       <v-card-title>
         <v-col cols="5">
@@ -22,13 +16,9 @@
             dense
             hide-details
           >
-            <template slot="selection" slot-scope="{ item }">
-              {{ item.car_no }} ({{ item.car_regis }})
-            </template>
+            <template slot="selection" slot-scope="{ item }"> {{ item.car_no }} ({{ item.car_regis }}) </template>
 
-            <template slot="item" slot-scope="{ item }">
-              {{ item.car_no }} ({{ item.car_regis }})
-            </template>
+            <template slot="item" slot-scope="{ item }"> {{ item.car_no }} ({{ item.car_regis }}) </template>
           </v-autocomplete>
         </v-col>
 
@@ -37,8 +27,8 @@
         <v-col cols="3">
           <v-text-field
             v-model="search"
-id="search"
-name="search"
+            id="search"
+            name="search"
             append-icon="mdi-magnify"
             label="ค้นหา"
             single-line
@@ -76,9 +66,7 @@ name="search"
             fab
             x-small
             dark
-            @click="
-              editItem(item.id, item.repair.repair_name, item.car_part_buy)
-            "
+            @click="editItem(item.id, item.repair.repair_name, item.car_part_buy)"
           >
             <v-icon> mdi-pencil </v-icon>
           </v-btn>
@@ -116,9 +104,7 @@ export default {
   },
   data() {
     return {
-      user_group_permission: this.$auth.$storage.getLocalStorage(
-        "userData-user_group_permission"
-      ),
+      user_group_permission: this.$auth.$storage.getLocalStorage("userData-user_group_permission"),
       loading: false,
       search: "",
       dialog: false,
@@ -156,11 +142,8 @@ export default {
   methods: {
     filterObject(item, queryText, itemText) {
       return (
-        item.car_no.toLocaleLowerCase().indexOf(queryText.toLocaleLowerCase()) >
-          -1 ||
-        item.car_regis
-          .toLocaleLowerCase()
-          .indexOf(queryText.toLocaleLowerCase()) > -1
+        item.car_no.toLocaleLowerCase().indexOf(queryText.toLocaleLowerCase()) > -1 ||
+        item.car_regis.toLocaleLowerCase().indexOf(queryText.toLocaleLowerCase()) > -1
       );
     },
     async getDataCar() {

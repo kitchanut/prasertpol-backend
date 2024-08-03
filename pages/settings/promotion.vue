@@ -1,7 +1,5 @@
 <template>
-  <div
-    v-if="user_group_permission == -1 || user_group_permission == 13"
-  >
+  <div v-if="user_group_permission == -1 || user_group_permission == 13">
     <v-card>
       <v-card-title>
         <template>
@@ -16,8 +14,8 @@
         <v-col cols="3">
           <v-text-field
             v-model="search"
-id="search"
-name="search"
+            id="search"
+            name="search"
             append-icon="mdi-magnify"
             label="ค้นหา"
             single-line
@@ -38,33 +36,20 @@ name="search"
       >
         <template v-slot:[`item.promotion_image`]="{ item }">
           <v-btn icon v-if="item.promotion_image != null">
-            <v-avatar
-              size="40"
-              @click="showImg(serverUrl + '/' + item.promotion_image)"
-            >
+            <v-avatar size="40" @click="showImg(serverUrl + '/' + item.promotion_image)">
               <v-img :src="serverUrl + '/' + item.promotion_image"> </v-img>
             </v-avatar>
           </v-btn>
         </template>
 
         <template v-slot:[`item.promotion_link_facebook`]="{ item }">
-          <a
-            target="_blank"
-            :href="item.promotion_link_facebook"
-            style="text-decoration: none; color: inherit"
-          >
+          <a target="_blank" :href="item.promotion_link_facebook" style="text-decoration: none; color: inherit">
             <span>{{ item.promotion_link_facebook }}</span>
           </a>
         </template>
 
         <template v-slot:[`item.promotion_active`]="{ item }">
-          <v-btn
-            v-if="item.promotion_active == '1'"
-            x-small
-            color="success"
-            dark
-            >เปิดใช้งาน</v-btn
-          >
+          <v-btn v-if="item.promotion_active == '1'" x-small color="success" dark>เปิดใช้งาน</v-btn>
           <v-btn v-else x-small color="red" dark>ปิดการใช้งาน</v-btn>
         </template>
 
@@ -88,11 +73,7 @@ name="search"
         @error="addError()"
       />
 
-      <dialogImage
-        :dialog="dialogImg"
-        :imgUrl="imgUrl"
-        @cancleItem="dialogImg = false"
-      />
+      <dialogImage :dialog="dialogImg" :imgUrl="imgUrl" @cancleItem="dialogImg = false" />
     </v-card>
   </div>
 </template>
@@ -119,9 +100,7 @@ export default {
       dialogImg: false,
       imgUrl: null,
       action: "add",
-      user_group_permission: this.$auth.$storage.getLocalStorage(
-        "userData-user_group_permission"
-      ),
+      user_group_permission: this.$auth.$storage.getLocalStorage("userData-user_group_permission"),
       headers: [
         {
           text: "รูปภาพ",

@@ -34,6 +34,8 @@
             append-icon="mdi-magnify"
             label="ค้นหา"
             single-line
+            outlined
+            dense
             hide-details
           >
           </v-text-field>
@@ -116,8 +118,8 @@
     />
   </div>
 </template>
-  
-  <script>
+
+<script>
 import * as apiWorks from "@/Api/apiWorks";
 import * as apiBranch_teams from "@/Api/apiBranch_teams";
 
@@ -131,9 +133,7 @@ export default {
     return {
       loading: true,
       dialogReceiveDown: false,
-      user_group_permission: this.$auth.$storage.getLocalStorage(
-        "userData-user_group_permission"
-      ),
+      user_group_permission: this.$auth.$storage.getLocalStorage("userData-user_group_permission"),
       id: "",
       car_no: "",
 
@@ -142,9 +142,7 @@ export default {
 
       formTitle: "Add",
       action: "add",
-      user_group_permission: this.$auth.$storage.getLocalStorage(
-        "userData-user_group_permission"
-      ),
+      user_group_permission: this.$auth.$storage.getLocalStorage("userData-user_group_permission"),
       headers: [
         // { text: "ลำดับ", value: "no", width: "8%" },
         { text: "รหัสงาน", value: "working_id", width: "8%" },
@@ -184,13 +182,8 @@ export default {
       this.loading = false;
 
       this.$nextTick(() => {
-        if (
-          this.user_group_permission == 3 ||
-          this.user_group_permission == 2
-        ) {
-          this.branch_team_id = this.$auth.$storage.getLocalStorage(
-            "userDataOrg-branch_team_id"
-          );
+        if (this.user_group_permission == 3 || this.user_group_permission == 2) {
+          this.branch_team_id = this.$auth.$storage.getLocalStorage("userDataOrg-branch_team_id");
           this.changeBranch_team();
         }
       });
@@ -205,10 +198,7 @@ export default {
     },
     changeBranch_team() {
       this.data = this.dataAll.filter((item) => {
-        return (
-          item.branch_team_id == this.branch_team_id ||
-          this.branch_team_id == -1
-        );
+        return item.branch_team_id == this.branch_team_id || this.branch_team_id == -1;
       });
     },
     async ReceiveDown(car_no, work_id) {
@@ -268,19 +258,12 @@ export default {
         item.no = key + 1;
         item.working_id = "W" + item.id;
         item.customer_name = item.customer_name + "<br>" + item.customer_tel;
-        item.remain =
-          Number(item.appointment_banks.down) - Number(item.sumFinancial);
-        item.sale_detail =
-          item.branch_team_name +
-          "<br>" +
-          item.branch_name +
-          "<br>" +
-          item.team_name;
+        item.remain = Number(item.appointment_banks.down) - Number(item.sumFinancial);
+        item.sale_detail = item.branch_team_name + "<br>" + item.branch_name + "<br>" + item.team_name;
       });
     },
   },
 };
 </script>
-  
-  <style></style>
-  
+
+<style></style>

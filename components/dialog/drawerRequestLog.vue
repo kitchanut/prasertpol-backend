@@ -1,10 +1,7 @@
 <template>
   <v-navigation-drawer v-model="drawerComponent" fixed right width="400">
     <v-list-item>
-      <v-list-item-action
-        style="margin-right: 5px"
-        @click="$emit('cancleItem')"
-      >
+      <v-list-item-action style="margin-right: 5px" @click="$emit('cancleItem')">
         <v-btn icon>
           <v-icon color="grey lighten-1">mdi-close</v-icon>
         </v-btn>
@@ -14,12 +11,7 @@
     </v-list-item>
 
     <v-divider></v-divider>
-    <v-progress-linear
-      v-if="loadingSideBar"
-      indeterminate
-      rounded
-      height="4"
-    ></v-progress-linear>
+    <v-progress-linear v-if="loadingSideBar" indeterminate rounded height="4"></v-progress-linear>
     <v-list-item-content>
       <v-card-text class="px-5">
         <v-row no-gutters>
@@ -114,12 +106,7 @@
           </v-row>
         </template>
 
-        <template
-          v-if="
-            type == 'การทำสัญญา' ||
-            (type == 'เปลี่ยนจอง' && item.sign_type == 'เซนต์ใหม่')
-          "
-        >
+        <template v-if="type == 'การทำสัญญา' || (type == 'เปลี่ยนจอง' && item.sign_type == 'เซนต์ใหม่')">
           <v-row no-gutters>
             <v-col :cols="colWidth">ผลเครดิต:</v-col>
             <v-col :cols="12 - colWidth">{{ item.credit }}</v-col>
@@ -143,9 +130,7 @@
           </v-row>
           <v-row no-gutters>
             <v-col :cols="colWidth">ราคากลาง:</v-col>
-            <v-col :cols="12 - colWidth"
-              >{{ item.middle_price }} X {{ item.percent }}</v-col
-            >
+            <v-col :cols="12 - colWidth">{{ item.middle_price }} X {{ item.percent }}</v-col>
           </v-row>
           <v-row no-gutters>
             <v-col :cols="colWidth">ยอดจัด:</v-col>
@@ -167,8 +152,28 @@
             <v-col :cols="12 - colWidth">{{ item.release_date }}</v-col>
           </v-row>
           <v-row no-gutters>
-            <v-col :cols="colWidth">เงินที่ได้รับ:</v-col>
+            <v-col :cols="colWidth">เงินดาวน์/ซื้อเงินสด:</v-col>
             <v-col :cols="12 - colWidth">{{ item.dow }}</v-col>
+          </v-row>
+          <v-row no-gutters>
+            <v-col :cols="colWidth">ค่างวดล่วงหน้า:</v-col>
+            <v-col :cols="12 - colWidth">{{ item.advance_payment }}</v-col>
+          </v-row>
+          <v-row no-gutters>
+            <v-col :cols="colWidth">ค่าสมาร์ทชัว:</v-col>
+            <v-col :cols="12 - colWidth">{{ item.insurance }}</v-col>
+          </v-row>
+          <v-row no-gutters>
+            <v-col :cols="colWidth">ค่าซื้อประกันอื่นๆ:</v-col>
+            <v-col :cols="12 - colWidth">{{ item.insurance_other }}</v-col>
+          </v-row>
+          <v-row no-gutters>
+            <v-col :cols="colWidth">เงินอื่นๆ:</v-col>
+            <v-col :cols="12 - colWidth">{{ item.other_receive }}</v-col>
+          </v-row>
+          <v-row no-gutters>
+            <v-col :cols="colWidth">รวมเงินทั้งหมด:</v-col>
+            <v-col :cols="12 - colWidth">{{ item.total_receive }}</v-col>
           </v-row>
         </template>
 
@@ -242,7 +247,11 @@
             </v-card-text>
           </v-card>
 
-          <v-card class="mr-2 mt-3" v-if="item.booking_sheet" outlined>
+          <v-card
+            class="mr-2 mt-3"
+            v-if="item.booking_sheet && (user_group_permission == -1 || user_group_permission == 11)"
+            outlined
+          >
             <v-card-text>
               <div class="text-center">ใบจอง</div>
               <div class="images" v-viewer>
@@ -251,7 +260,11 @@
             </v-card-text>
           </v-card>
 
-          <v-card class="mr-2 mt-3" v-if="item.sale_sheet" outlined>
+          <v-card
+            class="mr-2 mt-3"
+            v-if="item.sale_sheet && (user_group_permission == -1 || user_group_permission == 11)"
+            outlined
+          >
             <v-card-text>
               <div class="text-center">ใบจอง</div>
               <div class="images" v-viewer>
@@ -260,7 +273,11 @@
             </v-card-text>
           </v-card>
 
-          <v-card class="mr-2 mt-3" v-if="item.sign_sheet" outlined>
+          <v-card
+            class="mr-2 mt-3"
+            v-if="item.sign_sheet && (user_group_permission == -1 || user_group_permission == 11)"
+            outlined
+          >
             <v-card-text>
               <div class="text-center">ใบงานเซนต์</div>
               <div class="images" v-viewer>
@@ -269,7 +286,14 @@
             </v-card-text>
           </v-card>
 
-          <v-card class="mr-2 mt-3" v-if="item.release_img" outlined>
+          <v-card
+            class="mr-2 mt-3"
+            v-if="
+              item.release_img &&
+              (user_group_permission == -1 || user_group_permission == 10 || user_group_permission == 11)
+            "
+            outlined
+          >
             <v-card-text>
               <div class="text-center">ปล่อยรถ</div>
               <div class="images" v-viewer>
@@ -278,31 +302,62 @@
             </v-card-text>
           </v-card>
 
-          <v-card class="mr-2 mt-3" v-if="item.insurance_font_sheet" outlined>
+          <v-card
+            class="mr-2 mt-3"
+            v-if="
+              item.ImageCar &&
+              (user_group_permission == -1 || user_group_permission == 10 || user_group_permission == 11)
+            "
+            outlined
+          >
+            <v-card-text>
+              <div class="text-center">รถก่อนปล่อย</div>
+              <div class="images" v-viewer>
+                <img width="80px" :src="serverUrl + item.ImageCar" />
+              </div>
+            </v-card-text>
+          </v-card>
+
+          <v-card
+            class="mr-2 mt-3"
+            v-if="
+              item.insurance_font_sheet &&
+              (user_group_permission == -1 || user_group_permission == 10 || user_group_permission == 11)
+            "
+            outlined
+          >
             <v-card-text>
               <div class="text-center">ใบประกันหน้า</div>
               <div class="images" v-viewer>
-                <img
-                  width="80px"
-                  :src="serverUrl + item.insurance_font_sheet"
-                />
+                <img width="80px" :src="serverUrl + item.insurance_font_sheet" />
               </div>
             </v-card-text>
           </v-card>
 
-          <v-card class="mr-2 mt-3" v-if="item.insurance_back_sheet" outlined>
+          <v-card
+            class="mr-2 mt-3"
+            v-if="
+              item.insurance_back_sheet &&
+              (user_group_permission == -1 || user_group_permission == 10 || user_group_permission == 11)
+            "
+            outlined
+          >
             <v-card-text>
               <div class="text-center">ใบประกันหลัง</div>
               <div class="images" v-viewer>
-                <img
-                  width="80px"
-                  :src="serverUrl + item.insurance_back_sheet"
-                />
+                <img width="80px" :src="serverUrl + item.insurance_back_sheet" />
               </div>
             </v-card-text>
           </v-card>
 
-          <v-card class="mr-2 mt-3" v-if="item.receipt" outlined>
+          <v-card
+            class="mr-2 mt-3"
+            v-if="
+              item.receipt &&
+              (user_group_permission == -1 || user_group_permission == 10 || user_group_permission == 11)
+            "
+            outlined
+          >
             <v-card-text>
               <div class="text-center">ใบเสร็จรับเงิน</div>
               <div class="images" v-viewer>
@@ -311,7 +366,14 @@
             </v-card-text>
           </v-card>
 
-          <v-card class="mr-2 mt-3" v-if="item.booking_slip" outlined>
+          <v-card
+            class="mr-2 mt-3"
+            v-if="
+              item.booking_slip &&
+              (user_group_permission == -1 || user_group_permission == 10 || user_group_permission == 11)
+            "
+            outlined
+          >
             <v-card-text>
               <div class="text-center">สลิป</div>
               <div class="images" v-viewer>
@@ -320,11 +382,32 @@
             </v-card-text>
           </v-card>
 
-          <v-card class="mr-2 mt-3" v-if="item.slip" outlined>
+          <v-card
+            class="mr-2 mt-3"
+            v-if="
+              item.slip && (user_group_permission == -1 || user_group_permission == 10 || user_group_permission == 11)
+            "
+            outlined
+          >
             <v-card-text>
               <div class="text-center">สลิป</div>
               <div class="images" v-viewer>
                 <img width="80px" :src="serverUrl + item.slip" />
+              </div>
+            </v-card-text>
+          </v-card>
+
+          <v-card
+            class="mr-2 mt-3"
+            v-if="
+              item.po && (user_group_permission == -1 || user_group_permission == 10 || user_group_permission == 11)
+            "
+            outlined
+          >
+            <v-card-text>
+              <div class="text-center">ใบ PO</div>
+              <div class="images" v-viewer>
+                <img width="80px" :src="serverUrl + item.po" />
               </div>
             </v-card-text>
           </v-card>
@@ -354,6 +437,7 @@ export default {
   props: ["dialog", "type", "id"],
   data() {
     return {
+      user_group_permission: this.$auth.$storage.getLocalStorage("userData-user_group_permission"),
       serverUrl: process.env.serverUrl,
       drawerComponent: false,
       loadingSideBar: false,

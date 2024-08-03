@@ -1,3 +1,5 @@
+// nvm use 12
+
 import colors from "vuetify/es5/util/colors";
 
 // const serverUrl = "http://localhost/server";
@@ -77,8 +79,12 @@ export default {
         type: "text/javascript",
       },
       {
-        // src: "https://static.line-scdn.net/liff/edge/versions/2.5.0/sdk.js"
         src: "https://static.line-scdn.net/liff/edge/2/sdk.js",
+      },
+      {
+        src: "https://fastly.jsdelivr.net/npm/@mdi/font@latest/css/materialdesignicons.min.css",
+        rel: "stylesheet",
+        type: "text/css",
       },
     ],
   },

@@ -1,187 +1,201 @@
 <template>
   <div>
     <v-card>
-      <v-card-text>
-        <v-row class="d-flex align-center">
-          <v-col>
-            <v-dialog v-model="dialogFilter" width="550">
+      <v-card-text class="pb-0">
+        <v-row class="d-flex align-center" no-gutters>
+          <v-btn-toggle v-model="toggleTeam" mandatory color="primary" style="height: 40px !important" class="mr-2">
+            <v-btn :value="null" style="min-width: 0px; height: 40px !important"> คัน </v-btn>
+            <v-btn value="team" style="min-width: 0px; height: 40px !important"> ทีม </v-btn>
+          </v-btn-toggle>
+
+          <v-btn-toggle v-model="toggleView" mandatory color="success" class="mr-2" style="height: 40px !important">
+            <v-btn value="com" style="min-width: 0px; height: 40px !important"> เดือนคอม </v-btn>
+            <v-btn value="release" style="min-width: 0px; height: 40px !important"> ปล่อย </v-btn>
+            <v-btn value="money" style="min-width: 0px; height: 40px !important"> รับเงิน </v-btn>
+          </v-btn-toggle>
+
+          <!-- <v-btn
+            :color="toggleView == 'com' ? 'lime' : ''"
+            :dark="toggleView == 'com' ? true : false"
+            v-blur
+            class="ml-1 my-1"
+            style="min-width: 0px; padding: 0 8px"
+            @click="toggleView = 'com'"
+          >
+            เดือนคอม
+          </v-btn>
+
+          <v-btn
+            :color="toggleView == 'release' ? 'lime' : ''"
+            :dark="toggleView == 'release' ? true : false"
+            v-blur
+            class="ml-2 my-1"
+            style="min-width: 0px; padding: 0 8px"
+            @click="toggleView = 'release'"
+          >
+            ปล่อย
+          </v-btn>
+
+          <v-btn
+            :color="toggleView == 'money' ? 'lime' : ''"
+            :dark="toggleView == 'money' ? true : false"
+            v-blur
+            class="ml-1 my-1"
+            style="min-width: 0px; padding: 0 8px"
+            @click="toggleView = 'money'"
+          >
+            รับเงิน
+          </v-btn> -->
+
+          <v-col v-if="toggleView == 'release' || toggleView == 'money'" cols="2">
+            <v-menu
+              ref="menuTimeStart"
+              v-model="menuTimeStart"
+              :close-on-content-click="false"
+              transition="scale-transition"
+              offset-y
+              max-width="290px"
+              min-width="auto"
+            >
               <template v-slot:activator="{ on, attrs }">
-                <v-btn
-                  :color="
-                    car_serie_id != null ||
-                    car_model_id != null ||
-                    car_serie_sub_id != null ||
-                    year_start != null ||
-                    year_end != null
-                      ? 'warning'
-                      : ''
-                  "
-                  v-blur
-                  class="ml-2"
-                  style="min-width: 0px; padding: 0 8px"
+                <v-text-field
+                  v-model="timeStart"
+                  label="วันที่เริ่มต้น"
                   v-bind="attrs"
                   v-on="on"
-                >
-                  <v-icon>mdi-filter-variant</v-icon>
-                </v-btn>
-              </template>
-
-              <v-card>
-                <v-toolbar
-                  color="warning"
-                  dark
-                  flat
+                  persistent-hint
+                  prepend-icon=""
+                  outlined
                   dense
-                  style="font-size: 20px"
-                  height="6"
-                >
-                </v-toolbar>
-
-                <v-fab-transition>
-                  <v-btn
-                    icon
-                    absolute
-                    style="top: 10px; right: 10px"
-                    fab
-                    small
-                    @click="dialogFilter = false"
-                  >
-                    <v-icon>mdi-close</v-icon>
-                  </v-btn>
-                </v-fab-transition>
-
-                <h3 class="text-center" style="font-size: 22px; margin: 10px">
-                  กรองข้อมูล
-                </h3>
-
-                <v-divider></v-divider>
-                <v-card-text class="mt-5">
-                  <v-row no-gutters class="d-flex align-center mt-3">
-                    <v-col cols="4" style="font-size: 16px">ยี่ห้อรถ:</v-col>
-                    <v-col>
-                      <v-autocomplete
-                        v-model="car_model_id"
-                        :items="carModel"
-                        item-text="car_model_name"
-                        item-value="id"
-                        outlined
-                        dense
-                        hide-details=""
-                        @change="
-                          filterData();
-                          eventSelectModel();
-                        "
-                        clearable
-                      ></v-autocomplete>
-                    </v-col>
-                  </v-row>
-
-                  <v-row no-gutters class="d-flex align-center mt-3">
-                    <v-col cols="4" style="font-size: 16px">รุ่นรถ:</v-col>
-                    <v-col>
-                      <v-autocomplete
-                        v-model="car_serie_id"
-                        :items="carSerie"
-                        item-text="car_series_name"
-                        item-value="id"
-                        outlined
-                        dense
-                        hide-details="false"
-                        @change="
-                          filterData();
-                          getCarSerieSub();
-                        "
-                        clearable
-                      >
-                      </v-autocomplete
-                    ></v-col>
-                  </v-row>
-
-                  <v-row no-gutters class="d-flex align-center mt-3">
-                    <v-col cols="4" style="font-size: 16px">รุ่นย่อย:</v-col>
-                    <v-col cols="8">
-                      <v-autocomplete
-                        v-model="car_serie_sub_id"
-                        :items="carSerieSub"
-                        item-text="car_serie_sub_name"
-                        item-value="id"
-                        outlined
-                        dense
-                        hide-details="false"
-                        @change="filterData()"
-                        clearable
-                      ></v-autocomplete>
-                    </v-col>
-                  </v-row>
-
-                  <v-row no-gutters class="d-flex align-center mt-3">
-                    <v-col cols="4" style="font-size: 16px"
-                      >รุ่นปี ค.ศ. :</v-col
-                    >
-                    <v-col cols="8">
-                      <v-row no-gutters class="d-flex align-center">
-                        <v-col cols="5">
-                          <v-select
-                            v-model="year_start"
-                            :items="years"
-                            outlined
-                            dense
-                            hide-details="false"
-                            clearable
-                            @change="filterData()"
-                          ></v-select
-                        ></v-col>
-                        <v-col cols="2 text-center" style="font-size: 16px"
-                          >-</v-col
-                        >
-                        <v-col cols="5">
-                          <v-select
-                            v-model="year_end"
-                            :items="years"
-                            outlined
-                            dense
-                            hide-details="false"
-                            clearable
-                            @change="filterData()"
-                          ></v-select>
-                        </v-col>
-                      </v-row>
-                    </v-col>
-                  </v-row>
-                </v-card-text>
-                <v-card-actions>
-                  <v-spacer></v-spacer>
-                  <v-btn
-                    color="warning"
-                    text
-                    @click="
-                      car_serie_id = null;
-                      car_model_id = null;
-                      car_serie_sub_id = null;
-                      year_start = null;
-                      year_end = null;
-                      filterData();
-                    "
-                  >
-                    <v-icon left>mdi-replay</v-icon>ล้างข้อมูล
-                  </v-btn>
-                </v-card-actions>
-              </v-card>
-            </v-dialog>
+                  hide-details
+                  flathide-details
+                ></v-text-field>
+              </template>
+              <v-date-picker
+                v-model="timeStart"
+                locale="th-TH"
+                picker-date
+                @input="menuTimeStart = false"
+              ></v-date-picker>
+            </v-menu>
           </v-col>
-          <v-col cols="7">
-            <dateSelect2 @timeSelect="selectTimeStart" />
-            <!-- <v-btn
-              @click="handleDownload()"
-              color="success"
-              class="ml-2"
+
+          <v-col v-if="toggleView == 'release' || toggleView == 'money'" cols="2 ml-1">
+            <v-menu
+              ref="menuTimeEnd"
+              v-model="menuTimeEnd"
+              :close-on-content-click="false"
+              transition="scale-transition"
+              offset-y
+              max-width="290px"
+              min-width="auto"
             >
-              <v-icon left>mdi-microsoft-excel</v-icon>
-              Excel
-            </v-btn> -->
+              <template v-slot:activator="{ on, attrs }">
+                <v-text-field
+                  v-model="timeEnd"
+                  label="วันที่สิ้นสุด"
+                  v-bind="attrs"
+                  v-on="on"
+                  persistent-hint
+                  prepend-icon=""
+                  outlined
+                  dense
+                  hide-details
+                  flathide-details
+                ></v-text-field>
+              </template>
+              <v-date-picker v-model="timeEnd" locale="th-TH" picker-date @input="menuTimeEnd = false"></v-date-picker>
+            </v-menu>
           </v-col>
+
+          <v-col v-if="toggleView == 'com'" cols="2">
+            <v-menu
+              ref="menu"
+              v-model="menu"
+              :close-on-content-click="false"
+              :return-value.sync="mount"
+              transition="scale-transition"
+              offset-y
+              max-width="290px"
+              min-width="auto"
+            >
+              <template v-slot:activator="{ on, attrs }">
+                <v-text-field
+                  class="mt-0"
+                  label="เดือนคอม"
+                  v-model="mount"
+                  append-icon="mdi-calendar"
+                  readonly
+                  v-bind="attrs"
+                  v-on="on"
+                  hide-details=""
+                  outlined
+                  dense
+                ></v-text-field>
+              </template>
+              <v-date-picker
+                v-model="mount"
+                multiple
+                type="month"
+                locale="th"
+                no-title
+                scrollable
+                @update="$refs.menu.save(mount)"
+                @change="$refs.menu.save(mount)"
+              >
+                <v-btn text color="primary" @click="menu = false"> Cancel </v-btn>
+                <v-spacer></v-spacer>
+                <v-btn text color="warning" @click="mount = []"> clear </v-btn>
+                <v-btn
+                  text
+                  color="success"
+                  @click="
+                    $refs.menu.save(mount);
+                    getData();
+                  "
+                >
+                  OK
+                </v-btn>
+              </v-date-picker>
+            </v-menu>
+          </v-col>
+
+          <v-col cols="2 ml-1">
+            <v-autocomplete
+              v-model="branch_team_id"
+              :items="dataSelectBranch_teams"
+              label="ทีมสาขา"
+              item-text="branch_team_name"
+              item-value="id"
+              no-data-text="ไม่มีข้อมูล"
+              outlined
+              dense
+              hide-details
+            >
+            </v-autocomplete>
+          </v-col>
+          <v-btn
+            v-if="toggleView != 'com'"
+            color="primary"
+            v-blur
+            class="ml-2 my-1"
+            elevation="0"
+            style="min-width: 0px; padding: 0px 8px; height: 40px"
+            @click="getData()"
+          >
+            <v-icon>mdi-magnify</v-icon>
+          </v-btn>
+          <v-btn
+            @click="handleDownload()"
+            color="success"
+            class="ml-1 my-1"
+            elevation="0"
+            style="min-width: 0px; padding: 0 8px; height: 40px"
+          >
+            <v-icon>mdi-microsoft-excel</v-icon>
+          </v-btn>
           <v-spacer></v-spacer>
-          <v-col cols="4">
+          <v-col cols="2">
             <v-text-field
               v-model="search"
               id="search"
@@ -196,124 +210,193 @@
             </v-text-field>
           </v-col>
         </v-row>
+      </v-card-text>
+      <br />
+      <v-divider></v-divider>
+      <v-data-table
+        :headers="headers"
+        :items="data_filter"
+        :search="search"
+        :loading="loading"
+        no-data-text="ยังไม่มีการเพิ่มข้อมูล"
+        loading-text="กำลังโหลดข้อมูลกรุณารอสักครู่"
+        dense
+        :mobile-breakpoint="0"
+        :multi-sort="true"
+        :footer-props="{
+          'items-per-page-options': [5, 10, 20, 50, 100, -1],
+        }"
+      >
+        <template v-slot:[`body.prepend`]>
+          <tr>
+            <td v-for="(header, keyHeader) in headers" :key="keyHeader" style="text-align: right">
+              <b v-if="header.value == 'number_of_cars'" style="color: blue">
+                {{ countField(header.value) }}
+              </b>
+              <b v-else-if="header.value == 'number_of_profit_cars'" style="color: green">
+                {{ countField(header.value) }}
+              </b>
+              <b v-else-if="header.value == 'number_of_loss_cars'" style="color: red">
+                {{ countField(header.value) }}
+              </b>
 
-        <br />
-
-        <v-data-table
-          :headers="headers"
-          :items="data_filter"
-          :search="search"
-          :loading="loading"
-          no-data-text="ยังไม่มีการเพิ่มข้อมูล"
-          loading-text="กำลังโหลดข้อมูลกรุณารอสักครู่"
-          :mobile-breakpoint="0"
-          :multi-sort="true"
-          :footer-props="{
-            'items-per-page-options': [5, 10, 20, 50, 100, -1],
-          }"
-        >
-          <template v-slot:[`item.car_detail`]="{ item }">
-            <div v-html="item.car_detail" />
-          </template>
-
-          <template v-slot:[`item.cars.car_no`]="{ item }">
-            <a
-              small
-              color="primary"
-              @click="AllInfoCar(item.cars.id, item.cars.car_no)"
-              >{{ item.cars.car_no }}</a
-            >
-          </template>
-
-          <template v-slot:[`item.income_sum`]="{ item }">
-            <!-- <li
-              v-for="(income,index) in item.income"
-              :key="index"
-            >
-              {{income.money}}
-            </li> -->
-            {{
-              Number(item.income_sum).toLocaleString("th-TH", {
-                maximumFractionDigits: 2,
-                minimumFractionDigits: 2,
-              })
-            }}
-          </template>
-
-          <template v-slot:[`item.expenses_without_car_sum`]="{ item }">
-            <!-- <li
-              v-for="(expenses,index) in item.expenses_without_car"
-              :key="index"
-            >
-              {{expenses.money}}
-            </li> -->
-            {{
-              Number(item.expenses_without_car_sum).toLocaleString("th-TH", {
-                maximumFractionDigits: 2,
-                minimumFractionDigits: 2,
-              })
-            }}
-          </template>
-
-          <template v-slot:[`item.cars.amount_overCost`]="{ item }">
-            {{
-              Number(item.cars.amount_overCost).toLocaleString("th-TH", {
-                maximumFractionDigits: 2,
-                minimumFractionDigits: 2,
-              })
-            }}
-          </template>
-
-          <template v-slot:[`item.expenses_car`]="{ item }">
-            <span
-              v-for="(expenses, index) in item.sum_over_all_expenses"
-              :key="index"
-            >
-              <span v-if="expenses.detail == 'ค่าตัวรถ'">
+              <b v-else-if="header.align == 'end' && header.value == 'income_sum_money'" style="color: blue">
                 {{
-                  Number(expenses.money).toLocaleString("th-TH", {
+                  Number(countField(header.value)).toLocaleString("th-TH", {
                     maximumFractionDigits: 2,
-                    minimumFractionDigits: 2,
+                    minimumFractionDigits: 0,
                   })
                 }}
-              </span>
-            </span>
-          </template>
+              </b>
+              <b
+                v-else-if="header.align == 'end' && header.value == 'sum_over_all_expenses_sum_money'"
+                style="color: orange"
+              >
+                {{
+                  Number(countField(header.value)).toLocaleString("th-TH", {
+                    maximumFractionDigits: 2,
+                    minimumFractionDigits: 0,
+                  })
+                }}
+              </b>
+              <b
+                v-else-if="header.align == 'end' && header.value == 'profitOrLoss'"
+                :style="countField(header.value) > 0 ? 'color: green' : 'color: red'"
+              >
+                {{
+                  Number(countField(header.value)).toLocaleString("th-TH", {
+                    maximumFractionDigits: 2,
+                    minimumFractionDigits: 0,
+                  })
+                }}
+              </b>
+              <b v-else-if="header.align == 'end' && header.value != 'persent'">
+                {{
+                  Number(countField(header.value)).toLocaleString("th-TH", {
+                    maximumFractionDigits: 2,
+                    minimumFractionDigits: 0,
+                  })
+                }}
+              </b>
+              <b
+                v-else-if="header.value == 'persent'"
+                :style="countField('profitOrLoss') > 0 ? 'color: green' : 'color: red'"
+              >
+                {{
+                  Number((countField("profitOrLoss") / countField("income_sum_money")) * 100).toLocaleString("th-TH", {
+                    maximumFractionDigits: 0,
+                    minimumFractionDigits: 0,
+                  })
+                }}%
+              </b>
+            </td>
+          </tr>
+        </template>
 
-          <template v-slot:[`item.expenses_sum`]="{ item }">
+        <template v-slot:[`item.number_of_cars`]="{ item }">
+          <span v-if="item.number_of_cars > 0" style="color: blue">{{ item.number_of_cars }}</span>
+        </template>
+        <template v-slot:[`item.number_of_profit_cars`]="{ item }">
+          <span v-if="item.number_of_profit_cars > 0" style="color: green">{{ item.number_of_profit_cars }}</span>
+        </template>
+        <template v-slot:[`item.number_of_loss_cars`]="{ item }">
+          <span v-if="item.number_of_loss_cars > 0" style="color: red">{{ item.number_of_loss_cars }}</span>
+        </template>
+
+        <template v-slot:[`item.cars.car_no`]="{ item }">
+          <a small color="primary" @click="AllInfoCar(item.cars.id, item.cars.car_no)">{{ item.cars.car_no }}</a>
+        </template>
+
+        <template v-slot:[`item.income_sum_money`]="{ item }">
+          <div style="color: blue">
             {{
-              Number(item.expenses_sum).toLocaleString("th-TH", {
+              Number(item.income_sum_money).toLocaleString("th-TH", {
                 maximumFractionDigits: 2,
-                minimumFractionDigits: 2,
+                minimumFractionDigits: 0,
               })
             }}
-          </template>
+          </div>
+        </template>
 
-          <template v-slot:[`item.profitOrLoss`]="{ item }">
-            <span v-if="item.profitOrLoss < 0" style="color: red">{{
-              Number(item.profitOrLoss).toLocaleString("th-TH", {
+        <template v-slot:[`item.expenses_without_car_sum_money`]="{ item }">
+          {{
+            Number(item.expenses_without_car_sum_money).toLocaleString("th-TH", {
+              maximumFractionDigits: 2,
+              minimumFractionDigits: 0,
+            })
+          }}
+        </template>
+
+        <template v-slot:[`item.amount_overCost`]="{ item }">
+          {{
+            Number(item.amount_overCost).toLocaleString("th-TH", {
+              maximumFractionDigits: 2,
+              minimumFractionDigits: 0,
+            })
+          }}
+        </template>
+
+        <template v-slot:[`item.expenses_only_car_sum_money`]="{ item }">
+          {{
+            Number(item.expenses_only_car_sum_money).toLocaleString("th-TH", {
+              maximumFractionDigits: 2,
+              minimumFractionDigits: 0,
+            })
+          }}
+        </template>
+
+        <template v-slot:[`item.sum_over_all_expenses_sum_money`]="{ item }">
+          <div style="color: orange">
+            {{
+              Number(item.sum_over_all_expenses_sum_money).toLocaleString("th-TH", {
                 maximumFractionDigits: 2,
-                minimumFractionDigits: 2,
+                minimumFractionDigits: 0,
               })
-            }}</span>
-            <span v-else>{{
-              Number(item.profitOrLoss).toLocaleString("th-TH", {
-                maximumFractionDigits: 2,
-                minimumFractionDigits: 2,
+            }}
+          </div>
+        </template>
+
+        <template v-slot:[`item.profitOrLoss`]="{ item }">
+          <span v-if="item.profitOrLoss < 0" style="color: red">{{
+            Number(item.profitOrLoss).toLocaleString("th-TH", {
+              maximumFractionDigits: 2,
+              minimumFractionDigits: 0,
+            })
+          }}</span>
+          <span v-else style="color: green">{{
+            Number(item.profitOrLoss).toLocaleString("th-TH", {
+              maximumFractionDigits: 2,
+              minimumFractionDigits: 0,
+            })
+          }}</span>
+        </template>
+
+        <template v-slot:[`item.persent`]="{ item }">
+          <span v-if="item.persent < 0" style="color: red"
+            >{{
+              Number(item.persent).toLocaleString("th-TH", {
+                maximumFractionDigits: 0,
+                minimumFractionDigits: 0,
               })
-            }}</span>
-          </template>
-        </v-data-table>
-      </v-card-text>
+            }}%</span
+          >
+          <span v-else style="color: green"
+            >{{
+              Number(item.persent).toLocaleString("th-TH", {
+                maximumFractionDigits: 0,
+                minimumFractionDigits: 0,
+              })
+            }}%</span
+          >
+        </template>
+      </v-data-table>
     </v-card>
   </div>
 </template>
 
 <script>
 import * as apiReport from "@/Api/apiReport";
-import * as apiCar_models from "@/Api/apiCar_models";
-import * as apiCar_series from "@/Api/apiCar_series";
-import * as apiCar_serie_sub from "@/Api/apiCar_serie_sub";
+import * as apiBranch_teams from "@/Api/apiBranch_teams";
 import moment from "moment";
 
 import dateSelect2 from "@/components/DateSelect/dateSelect2";
@@ -325,89 +408,30 @@ export default {
   data() {
     return {
       loading: false,
-      dialogFilter: false,
+      toggleTeam: null,
+      toggleView: "com",
+
+      menu: false,
+      menuTimeStart: false,
+      menuTimeEnd: false,
+      mount: [new Date().toISOString().substr(0, 7)],
       timeStart: moment().startOf("day").format("YYYY-MM-DD HH:mm"),
       timeEnd: moment().endOf("day").format("YYYY-MM-DD HH:mm"),
-      search: "",
+
       dialogAllInfoCar: false,
       formTitleAllInfoCar: "ภาพรวมลำดับรถ",
+
+      branch_team_id: 0,
+      branch_teams: [],
+      dataSelectBranch_teams: [],
+
+      search: "",
       data: [],
       data_filter: [],
-      car_model_id: null,
-      car_serie_id: null,
-      car_serie_sub_id: null,
-      year_start: null,
-      year_end: null,
-      carModel: [],
-      carSerie: [],
-      carSerieSub: [],
-      years: [],
-      headers: [
-        {
-          text: "วันที่ปล่อยรถ",
-          value: "contract.contract_date",
-        },
-        {
-          text: "ลำดับ",
-          value: "cars.car_no",
-          align: "center",
-          class: "textOneLine",
-        },
-        {
-          text: "สาขา",
-          value: "branch.branch_name",
-          class: "textOneLine",
-        },
-
-        {
-          text: "รายละเอียดรถ",
-          value: "car_detail",
-          class: "textOneLine",
-        },
-        {
-          text: "รายรับ",
-          value: "income_sum",
-          class: "textOneLine",
-          align: "right",
-        },
-
-        {
-          text: "ค่าตัวรถ",
-          value: "expenses_car",
-          class: "textOneLine",
-          align: "right",
-        },
-        {
-          text: "ค่าดำเนินการ",
-          value: "cars.amount_overCost",
-          class: "textOneLine",
-          align: "right",
-        },
-        {
-          text: "ค่าใช้จ่าย",
-          value: "expenses_without_car_sum",
-          class: "textOneLine",
-          align: "right",
-        },
-        {
-          text: "รวมรายจ่าย",
-          value: "expenses_sum",
-          class: "textOneLine",
-          align: "right",
-        },
-        {
-          text: "กำไร/ขาดทุน",
-          value: "profitOrLoss",
-          class: "textOneLine",
-          align: "right",
-        },
-      ],
     };
   },
   mounted() {
-    this.getData();
-    this.getCarmodels();
-    this.getYearCurrent();
+    this.getBranch_teams();
   },
   computed: {
     tHeader() {
@@ -415,101 +439,277 @@ export default {
         return item.text;
       });
     },
-    // profit(key, data_income, data_expense) {
-    //   let income = data_income.reduce((sum, item) => sum + item[key], 0);
-    //   let expense = data_expense.reduce((sum, item) => sum + item[key], 0);
-    //   return income - expense;
-    // },
+    headers() {
+      if (this.toggleTeam == "team") {
+        return [
+          {
+            text: "สาขา",
+            value: "branch_team.branch_team_name",
+            class: "textOneLine",
+          },
+          {
+            text: "จำนวนคัน",
+            value: "number_of_cars",
+            class: "textOneLine",
+            align: "end",
+          },
+          {
+            text: "กำไร",
+            value: "number_of_profit_cars",
+            class: "textOneLine",
+            align: "end",
+          },
+          {
+            text: "ขาดทุน",
+            value: "number_of_loss_cars",
+            class: "textOneLine",
+            align: "end",
+          },
+          {
+            text: "รวมรายรับ",
+            value: "income_sum_money",
+            class: "textOneLine",
+            align: "end",
+          },
+
+          {
+            text: "ค่าตัวรถ",
+            value: "expenses_only_car_sum_money",
+            class: "textOneLine",
+            align: "end",
+          },
+          {
+            text: "ค่าดำเนินการ",
+            value: "amount_overCost",
+            class: "textOneLine",
+            align: "end",
+          },
+          {
+            text: "ค่าใช้จ่าย",
+            value: "expenses_without_car_sum_money",
+            class: "textOneLine",
+            align: "end",
+          },
+          {
+            text: "รวมรายจ่าย",
+            value: "sum_over_all_expenses_sum_money",
+            class: "textOneLine",
+            align: "end",
+          },
+          {
+            text: "กำไร/ขาดทุน",
+            value: "profitOrLoss",
+            class: "textOneLine",
+            align: "end",
+          },
+          {
+            text: "%",
+            value: "persent",
+            class: "textOneLine",
+            align: "end",
+          },
+        ];
+      } else {
+        return [
+          {
+            text: "ลำดับ",
+            value: "cars.car_no",
+            align: "center",
+            class: "textOneLine",
+            width: "10%",
+          },
+          {
+            text: "วันที่ปล่อยรถ",
+            value: "contract.contract_date",
+            width: "10%",
+          },
+          {
+            text: "วันรับเงิน",
+            value: "appointment_banks.appointment_money_date",
+            width: "10%",
+          },
+          {
+            text: "สาขา",
+            value: "branch_team.branch_team_name",
+            class: "textOneLine",
+          },
+          {
+            text: "รวมรายรับ",
+            value: "income_sum_money",
+            class: "textOneLine",
+            align: "end",
+          },
+
+          {
+            text: "ค่าตัวรถ",
+            value: "expenses_only_car_sum_money",
+            class: "textOneLine",
+            align: "end",
+          },
+          {
+            text: "ค่าดำเนินการ",
+            value: "amount_overCost",
+            class: "textOneLine",
+            align: "end",
+          },
+          {
+            text: "ค่าใช้จ่าย",
+            value: "expenses_without_car_sum_money",
+            class: "textOneLine",
+            align: "end",
+          },
+          {
+            text: "รวมรายจ่าย",
+            value: "sum_over_all_expenses_sum_money",
+            class: "textOneLine",
+            align: "end",
+          },
+          {
+            text: "กำไร/ขาดทุน",
+            value: "profitOrLoss",
+            class: "textOneLine",
+            align: "end",
+          },
+          {
+            text: "%",
+            value: "persent",
+            class: "textOneLine",
+            align: "end",
+          },
+        ];
+      }
+    },
   },
   methods: {
-    async selectTimeStart(time) {
-      this.timeStart = time.timeStart;
-      this.timeEnd = time.timeEnd;
-      this.getData();
+    async getBranch_teams() {
+      const response = await apiBranch_teams.select();
+      this.branch_teams = response.data;
+      this.dataSelectBranch_teams = response.data;
+      this.dataSelectBranch_teams.push({ id: 0, branch_team_name: "ทั้งหมด" });
     },
     async getData() {
       this.loading = true;
       const data = new FormData();
       data.append("timeStart", this.timeStart);
       data.append("timeEnd", this.timeEnd);
+      data.append("type", this.toggleView);
+      data.append("mount", this.mount);
+      data.append("branch_team_id", this.branch_team_id);
+
       const response = await apiReport.report_profit(data);
-      console.log(response.data);
-      this.data = response.data;
-      this.data_filter = this.data;
+      if (response.status == 200) {
+        // console.log(response.data);
+        this.data = response.data;
+        this.filterData();
+      } else {
+        alert("เกิดข้อผิดพลาด");
+      }
       this.loading = false;
-    },
-    async getCarmodels() {
-      const response = await apiCar_models.select();
-      this.carModel = response.data;
-      this.loading = false;
-    },
-    async eventSelectModel() {
-      this.getCarseries();
-      this.car_serie_id = null;
-    },
-    async getCarseries() {
-      const response = await apiCar_series.selectDropdownCarSerieOnly(
-        this.car_model_id
-      );
-      this.carSerie = response.data;
-      // this.loading = false;
-      // this.getCarSerieSub();
-    },
-    async getCarSerieSub() {
-      const response = await apiCar_serie_sub.select(this.car_serie_id);
-      this.carSerieSub = response.data;
     },
     filterData() {
-      console.log(this.car_model_id);
-      this.data_filter = this.data
-        .filter((item) => {
-          if (!this.car_model_id) {
-            return true;
-          } else {
-            return item.cars.car_models_id == this.car_model_id;
-          }
-        })
-        .filter((item) => {
-          if (!this.car_serie_id) {
-            return true;
-          } else {
-            return item.cars.car_serie_id == this.car_serie_id;
-          }
-        })
-        .filter((item) => {
-          if (!this.car_serie_sub_id) {
-            return true;
-          } else {
-            return item.cars.car_serie_sub_id == this.car_serie_sub_id;
-          }
-        })
-        .filter((item) => {
-          if (!this.year_start && !this.year_end) {
-            return true;
-          } else if (this.year_start && !this.year_end) {
-            return item.cars.car_year >= this.year_start;
-          } else if (!this.year_start && this.year_end) {
-            return (
-              item.cars.car_year <= this.year_end && item.cars.car_year != null
-            );
-          } else {
-            return (
-              item.cars.car_year >= this.year_start &&
-              item.cars.car_year <= this.year_end
-            );
-          }
-        });
-    },
-    async getYearCurrent() {
-      var max = new Date().getFullYear();
-      var min = max - 50;
+      if (this.toggleTeam == "team") {
+        this.data_filter = [];
+        this.branch_teams.forEach((item, key) => {
+          // amount_overCost
+          let amount_overCost = this.data
+            .filter((x) => x.branch_team_id == item.id)
+            .reduce((sum, item) => sum + Number(item.cars.amount_overCost), 0);
 
-      for (var i = max; i >= min; i--) {
-        this.years.push(i);
+          // sum_income
+          let sum_income = this.data
+            .filter((x) => x.detail != "ค่าคอมจากธนาคาร")
+            .filter((x) => x.branch_team_id == item.id)
+            .map((map) => {
+              return map.income.reduce((sum, item) => sum + item["money"], 0);
+            })
+            .reduce((sum, item) => sum + item, 0);
+
+          // sum_expense
+          let sum_expense =
+            amount_overCost +
+            this.data
+              .filter((x) => x.branch_team_id == item.id)
+              .map((map) => {
+                return map.expenses.reduce((sum, item) => sum + item["money"], 0);
+              })
+              .reduce((sum, item) => sum + item, 0);
+
+          // sum_expense_only_car
+          let sum_expense_only_car = this.data
+            .filter((x) => x.branch_team_id == item.id)
+            .map((map) => {
+              return map.expenses.reduce((sum, item) => (item["detail"] == "ค่าตัวรถ" ? sum + item["money"] : sum), 0);
+            })
+            .reduce((sum, item) => sum + item, 0);
+
+          // number_of_cars
+          let number_of_cars = this.data.filter((x) => x.branch_team_id == item.id).length;
+
+          // number_of_profit_cars
+          let number_of_profit_cars = this.data
+            .filter((x) => x.branch_team_id == item.id)
+            .map((map) => {
+              return (
+                map.income.reduce((sum, item) => sum + item["money"], 0) >
+                map.expenses.reduce((sum, item) => sum + item["money"], 0)
+              );
+            })
+            .reduce((sum, item) => (item == true ? sum + 1 : sum), 0);
+
+          // number_of_loss_cars
+          let number_of_loss_cars = this.data
+            .filter((x) => x.branch_team_id == item.id)
+            .map((map) => {
+              return (
+                map.income.reduce((sum, item) => sum + item["money"], 0) <
+                map.expenses.reduce((sum, item) => sum + item["money"], 0)
+              );
+            })
+            .reduce((sum, item) => (item == true ? sum + 1 : sum), 0);
+
+          this.data_filter.push({
+            cars: {},
+            contract: {},
+            appointment_banks: {},
+            branch_team: {
+              branch_team_name: item.branch_team_name,
+            },
+            amount_overCost: amount_overCost,
+            income_sum_money: sum_income,
+            sum_over_all_expenses_sum_money: sum_expense,
+            expenses_only_car_sum_money: sum_expense_only_car,
+            expenses_without_car_sum_money: sum_expense - sum_expense_only_car - amount_overCost,
+            profitOrLoss: sum_income - sum_expense,
+            persent: ((sum_income - sum_expense) / sum_income) * 100,
+            number_of_cars: number_of_cars,
+            number_of_profit_cars: number_of_profit_cars,
+            number_of_loss_cars: number_of_loss_cars,
+          });
+        });
+      } else {
+        this.data.map(function (item) {
+          item.amount_overCost = item.cars.amount_overCost;
+          item.income_sum_money = item.income
+            .filter((x) => x.detail != "ค่าคอมจากธนาคาร")
+            .reduce((sum, item) => sum + item["money"], 0);
+          item.sum_over_all_expenses_sum_money =
+            Number(item.expenses.reduce((sum, item) => sum + item["money"], 0)) + Number(item.amount_overCost);
+          item.expenses_only_car_sum_money = item.expenses.reduce(
+            (sum, item) => (item["detail"] == "ค่าตัวรถ" ? sum + item["money"] : sum),
+            0
+          );
+          item.expenses_without_car_sum_money =
+            item.sum_over_all_expenses_sum_money - item.expenses_only_car_sum_money - Number(item.amount_overCost);
+
+          item.profitOrLoss = item.income_sum_money - item.sum_over_all_expenses_sum_money;
+          item.persent = (item.profitOrLoss / item.income_sum_money) * 100;
+        });
+        this.data_filter = this.data;
       }
-      this.$nextTick(() => {
-        this.years.push(9999);
-      });
+      // console.log(this.data_filter);
+    },
+    countField(key) {
+      return this.data_filter.reduce((total, x) => (x[key] != " " ? total + Number(x[key]) : total), 0);
     },
     async AllInfoCar(id, car_no) {
       let routeData = this.$router.resolve({
@@ -527,15 +727,12 @@ export default {
       this.$nextTick(() => {
         import("@/vendor/Export2Excel").then((excel) => {
           const tHeader = this.tHeader;
-          const list = this.data;
+          const list = this.data_filter;
           const data = this.formatJson(filterVal, list);
           excel.export_json_to_excel({
             header: tHeader,
             data,
-            filename:
-              "รายงานกำไรขาดทุน (" +
-              moment().format("DD/MM/YYYY ( HH:mm น.)") +
-              ")",
+            filename: "รายงานกำไรขาดทุน (" + moment().format("DD/MM/YYYY ( HH:mm น.)") + ")",
             autoWidth: true,
             bookType: "xlsx",
           });
@@ -543,55 +740,29 @@ export default {
       });
     },
     formatJson(filterVal, jsonData) {
-      // return jsonData.map((v) =>
-      return jsonData.map((v) => filterVal.map((j) => {}));
+      return jsonData.map((v) =>
+        filterVal.map((j) => {
+          if (j == "cars.car_no") {
+            return v.cars.car_no;
+          } else if (j == "contract.contract_date" && v.contract) {
+            return v.contract.contract_date;
+          } else if (j == "appointment_banks.appointment_money_date" && v.appointment_banks) {
+            return v.appointment_banks.appointment_money_date;
+          } else if (j == "branch_team.branch_team_name" && v.branch_team) {
+            return v.branch_team.branch_team_name;
+          } else {
+            return v[j];
+          }
+        })
+      );
     },
   },
   watch: {
-    data() {
-      // const self = this;
-      return this.data.map(function (item) {
-        let income = item.income.reduce((sum, item) => sum + item["money"], 0);
-        let expense = item.sum_over_all_expenses.reduce(
-          (sum, item) => sum + item["money"],
-          0
-        );
-        item.profitOrLoss = income - expense;
-
-        item.income_sum = item.income.reduce(
-          (sum, item) => sum + item["money"],
-          0
-        );
-        item.expenses_without_car_sum = item.expenses_without_car.reduce(
-          (sum, item) => sum + item["money"],
-          0
-        );
-        item.expenses_sum = item.sum_over_all_expenses.reduce(
-          (sum, item) => sum + item["money"],
-          0
-        );
-
-        item.car_detail =
-          "<div>ยี่ห้อ: " +
-          item.cars.car_models.car_model_name +
-          "</div>" +
-          "<div>รุ่น: " +
-          item.cars.car_series.car_series_name +
-          "</div>" +
-          "<div>รุ่นย่อย: " +
-          item.cars.car_serie_sub.car_serie_sub_name +
-          "</div>" +
-          "<div>ปี: " +
-          item.cars.car_year +
-          "</div>" +
-          "<div>สี: " +
-          item.cars.color.color_name +
-          "</div>";
-      });
+    toggleTeam() {
+      this.filterData();
     },
   },
 };
 </script>
 
-<style>
-</style>
+<style></style>

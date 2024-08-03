@@ -1,68 +1,66 @@
 <template>
-<div v-if="user_group_permission == -1">
-  <v-card >
-    <v-card-title>
-      <template>
-        <v-btn color="primary" dark @click.stop="AddItem()">
-          <v-icon left>mdi-plus</v-icon>
-          เพิ่มรายการใหม่
-        </v-btn>
-      </template>
+  <div v-if="user_group_permission == -1">
+    <v-card>
+      <v-card-title>
+        <template>
+          <v-btn color="primary" dark @click.stop="AddItem()">
+            <v-icon left>mdi-plus</v-icon>
+            เพิ่มรายการใหม่
+          </v-btn>
+        </template>
 
-      <v-spacer></v-spacer>
+        <v-spacer></v-spacer>
 
-      <v-col cols="3">
-        <v-text-field
-          v-model="search"
-id="search"
-name="search"
-          append-icon="mdi-magnify"
-          label="ค้นหา"
-          single-line
-          hide-details
-        >
-        </v-text-field>
-      </v-col>
-    </v-card-title>
+        <v-col cols="3">
+          <v-text-field
+            v-model="search"
+            id="search"
+            name="search"
+            append-icon="mdi-magnify"
+            label="ค้นหา"
+            single-line
+            hide-details
+          >
+          </v-text-field>
+        </v-col>
+      </v-card-title>
 
-    <v-data-table
-      :headers="headers"
-      :items="data"
-      :items-per-page="10"
-      :search="search"
-      :loading="loading"
-      loading-text="กำลังโหลดข้อมูลกรุณารอสักครู่"
-      no-data-text="ยังไม่มีการเพิ่มข้อมูล"
-    >
-      <!-- <template v-slot:item.branch_team_active="{ item }"> -->
-      <template v-slot:[`item.branch_team_active`]="{ item }">
-        <v-btn v-if="item.branch_team_active == '1'" x-small color="success" dark
-          >เปิดใช้งาน</v-btn
-        >
-        <v-btn v-else x-small color="red" dark>ปิดการใช้งาน</v-btn>
-      </template>
+      <v-data-table
+        :headers="headers"
+        :items="data"
+        :items-per-page="10"
+        :search="search"
+        :loading="loading"
+        loading-text="กำลังโหลดข้อมูลกรุณารอสักครู่"
+        no-data-text="ยังไม่มีการเพิ่มข้อมูล"
+      >
+        <!-- <template v-slot:item.branch_team_active="{ item }"> -->
+        <template v-slot:[`item.branch_team_active`]="{ item }">
+          <v-btn v-if="item.branch_team_active == '1'" x-small color="success" dark>เปิดใช้งาน</v-btn>
+          <v-btn v-else x-small color="red" dark>ปิดการใช้งาน</v-btn>
+        </template>
 
-      <!-- <template v-slot:item.actions="{ item }"> -->
-      <template v-slot:[`item.actions`]="{ item }">
-        <v-btn color="primary" fab x-small dark @click="editItem(item.id)">
-          <v-icon> mdi-pencil </v-icon>
-        </v-btn>
-        <v-btn color="red" fab x-small dark @click="deleteItem(item.id)">
-          <v-icon> mdi-delete </v-icon>
-        </v-btn>
-      </template>
-    </v-data-table>
+        <!-- <template v-slot:item.actions="{ item }"> -->
+        <template v-slot:[`item.actions`]="{ item }">
+          <v-btn color="primary" fab x-small dark @click="editItem(item.id)">
+            <v-icon> mdi-pencil </v-icon>
+          </v-btn>
+          <v-btn color="red" fab x-small dark @click="deleteItem(item.id)">
+            <v-icon> mdi-delete </v-icon>
+          </v-btn>
+        </template>
+      </v-data-table>
 
-    <dialogNew
-      :dialog="dialog"
-      :id="id"
-      :action="action"
-      :formTitle="formTitle"
-      @cancleItem="dialog = false"
-      @success="addSuccess()"
-      @error="addError()"
-    />
-  </v-card>
+      <dialogNew
+        :dialog="dialog"
+        :id="id"
+        :action="action"
+        :formTitle="formTitle"
+        @cancleItem="dialog = false"
+        @success="addSuccess()"
+        @error="addError()"
+      />
+    </v-card>
   </div>
 </template>
 
@@ -90,9 +88,7 @@ export default {
         { text: "จัดการ", value: "actions", sortable: false, width: "7%" },
       ],
       data: [],
-      user_group_permission: this.$auth.$storage.getLocalStorage(
-        "userData-user_group_permission"
-      ),
+      user_group_permission: this.$auth.$storage.getLocalStorage("userData-user_group_permission"),
     };
   },
   mounted() {

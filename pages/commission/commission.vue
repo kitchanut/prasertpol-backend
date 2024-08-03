@@ -1,11 +1,5 @@
 <template>
-  <div
-    v-if="
-      user_group_permission == -1 ||
-      user_group_permission == 9 ||
-      user_group_permission == 11
-    "
-  >
+  <div v-if="user_group_permission == -1 || user_group_permission == 9 || user_group_permission == 11">
     <v-card class="d-flex">
       <v-row class="pa-2">
         <v-col cols="3">
@@ -121,8 +115,8 @@
         <v-col cols="3">
           <v-text-field
             v-model="search"
-id="search"
-name="search"
+            id="search"
+            name="search"
             append-icon="mdi-magnify"
             label="ค้นหา"
             single-line
@@ -166,13 +160,7 @@ name="search"
 
         <!-- <template v-slot:item.actions="{ item }"> -->
         <template v-slot:[`item.actions`]="{ item }">
-          <v-btn
-            color="primary"
-            fab
-            x-small
-            dark
-            @click="editItem(item.car_no, item.id)"
-          >
+          <v-btn color="primary" fab x-small dark @click="editItem(item.car_no, item.id)">
             <v-icon> mdi-pencil </v-icon>
           </v-btn>
         </template>
@@ -234,9 +222,7 @@ export default {
       id: "",
       formTitle: "Add",
       action: "add",
-      user_group_permission: this.$auth.$storage.getLocalStorage(
-        "userData-user_group_permission"
-      ),
+      user_group_permission: this.$auth.$storage.getLocalStorage("userData-user_group_permission"),
     };
   },
   mounted() {
@@ -293,58 +279,31 @@ export default {
         this.timeStart = moment().startOf("day").format("YYYY-MM-DD HH:mm");
         this.timeEnd = moment().endOf("day").format("YYYY-MM-DD HH:mm");
       } else if (value == 2) {
-        this.timeStart = moment()
-          .startOf("day")
-          .add(-1, "days")
-          .format("YYYY-MM-DD HH:mm");
-        this.timeEnd = moment()
-          .endOf("day")
-          .add(-1, "days")
-          .format("YYYY-MM-DD HH:mm");
+        this.timeStart = moment().startOf("day").add(-1, "days").format("YYYY-MM-DD HH:mm");
+        this.timeEnd = moment().endOf("day").add(-1, "days").format("YYYY-MM-DD HH:mm");
       } else if (value == 3) {
-        this.timeStart = moment()
-          .startOf("day")
-          .add(-7, "days")
-          .format("YYYY-MM-DD HH:mm");
+        this.timeStart = moment().startOf("day").add(-7, "days").format("YYYY-MM-DD HH:mm");
         this.timeEnd = moment().endOf("day").format("YYYY-MM-DD HH:mm");
       } else if (value == 4) {
-        this.timeStart = moment()
-          .startOf("day")
-          .add(-30, "days")
-          .format("YYYY-MM-DD HH:mm");
+        this.timeStart = moment().startOf("day").add(-30, "days").format("YYYY-MM-DD HH:mm");
         this.timeEnd = moment().endOf("day").format("YYYY-MM-DD HH:mm");
       } else if (value == 5) {
         this.timeStart = moment().startOf("months").format("YYYY-MM-DD HH:mm");
         this.timeEnd = moment().endOf("months").format("YYYY-MM-DD HH:mm");
       } else if (value == 6) {
-        this.timeStart = moment()
-          .add(-1, "months")
-          .startOf("months")
-          .format("YYYY-MM-DD HH:mm");
-        this.timeEnd = moment()
-          .add(-1, "months")
-          .endOf("months")
-          .format("YYYY-MM-DD HH:mm");
+        this.timeStart = moment().add(-1, "months").startOf("months").format("YYYY-MM-DD HH:mm");
+        this.timeEnd = moment().add(-1, "months").endOf("months").format("YYYY-MM-DD HH:mm");
       } else if (value == 7) {
-        this.timeStart = moment()
-          .add(-3, "months")
-          .startOf("months")
-          .format("YYYY-MM-DD HH:mm");
+        this.timeStart = moment().add(-3, "months").startOf("months").format("YYYY-MM-DD HH:mm");
         this.timeEnd = moment().endOf("day").format("YYYY-MM-DD HH:mm");
       } else if (value == 8) {
-        this.timeStart = moment()
-          .add(-6, "months")
-          .startOf("months")
-          .format("YYYY-MM-DD HH:mm");
+        this.timeStart = moment().add(-6, "months").startOf("months").format("YYYY-MM-DD HH:mm");
         this.timeEnd = moment().endOf("day").format("YYYY-MM-DD HH:mm");
       } else if (value == 9) {
         this.timeStart = moment().startOf("years").format("YYYY-MM-DD HH:mm");
         this.timeEnd = moment().endOf("day").format("YYYY-MM-DD HH:mm");
       } else if (value == 10) {
-        this.timeStart = moment()
-          .add(-3, "years")
-          .startOf("years")
-          .format("YYYY-MM-DD HH:mm");
+        this.timeStart = moment().add(-3, "years").startOf("years").format("YYYY-MM-DD HH:mm");
         this.timeEnd = moment().endOf("day").format("YYYY-MM-DD HH:mm");
       }
       await this.getData();

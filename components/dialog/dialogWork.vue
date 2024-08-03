@@ -45,6 +45,146 @@
                 </v-col>
               </v-row>
 
+              <v-row
+                v-if="actionWork == 'edit' && car_id_master != formData.car_id"
+                class="rounded ma-auto mt-3"
+                style="border-style: solid; border-width: 1px; border-color: gray"
+              >
+                <v-col>
+                  <v-radio-group v-model="formDataChangCar.sign_type" :rules="rule" hide-details>
+                    <template>
+                      <div class="mr-1">การทำสัญญา (กรณีเปลี่ยนคัน):</div>
+                    </template>
+
+                    <v-radio label="เซนต์เดิม" value="เซนต์เดิม"></v-radio>
+                    <v-radio label="เซนต์ใหม่" color="green" value="เซนต์ใหม่"></v-radio>
+                    <v-radio label="ยังไม่เซนต์" color="red" value="ยังไม่เซนต์"></v-radio>
+                  </v-radio-group>
+
+                  <v-card class="mt-3" v-if="formDataChangCar.sign_type == 'เซนต์ใหม่'" outlined>
+                    <v-card-text>
+                      <v-menu
+                        ref="menuSignDate"
+                        v-model="menuSignDate"
+                        :close-on-content-click="false"
+                        transition="scale-transition"
+                        offset-y
+                        max-width="290px"
+                        min-width="auto"
+                      >
+                        <template v-slot:activator="{ on, attrs }">
+                          <v-text-field
+                            class="mt-3"
+                            autocomplete="true"
+                            v-model="formDataChangCar.sign_date"
+                            label="วันที่เซนต์สัญญา*"
+                            v-bind="attrs"
+                            v-on="on"
+                            persistent-hint
+                            outlined
+                            dense
+                            hide-details
+                            :rules="rule"
+                            readonly
+                            clearable
+                          ></v-text-field>
+                        </template>
+                        <v-date-picker
+                          v-model="formDataChangCar.sign_date"
+                          locale="th-TH"
+                          picker-date
+                          @input="menuSignDate = false"
+                        ></v-date-picker>
+                      </v-menu>
+
+                      <v-select
+                        class="mt-3"
+                        v-model="formDataChangCar.bank_name"
+                        @change="change_branch(formDataChangCar.bank_name)"
+                        :items="dataBank"
+                        item-text="bank_name"
+                        no-data-text="ไม่มีข้อมูล"
+                        item-value="bank_name"
+                        label="ธนาคาร*"
+                        outlined
+                        dense
+                        hide-details
+                        :rules="rule"
+                      ></v-select>
+
+                      <v-select
+                        class="mt-3"
+                        v-model="formDataChangCar.bank_branch_name"
+                        :items="dataBank_branch"
+                        item-text="bank_branch_name"
+                        no-data-text="ไม่มีข้อมูล"
+                        item-value="bank_branch_name"
+                        label="สาขาธนาคาร*"
+                        outlined
+                        dense
+                        hide-details
+                        :rules="rule"
+                      ></v-select>
+
+                      <v-text-field
+                        class="mt-3"
+                        label="ชื่อ MKT*"
+                        v-model="formDataChangCar.mtk_name"
+                        outlined
+                        dense
+                        hide-details
+                        :rules="rule"
+                      >
+                      </v-text-field>
+
+                      <v-text-field
+                        class="mt-3"
+                        label="เบอร์โทร MTK*"
+                        v-model="formDataChangCar.mtk_tel"
+                        outlined
+                        dense
+                        hide-details
+                        :rules="rule"
+                      >
+                      </v-text-field>
+
+                      <v-text-field
+                        class="mt-3"
+                        label="ผลเครดิต*"
+                        v-model="formDataChangCar.credit"
+                        outlined
+                        dense
+                        hide-details
+                        :rules="rule"
+                      >
+                      </v-text-field>
+
+                      <v-radio-group class="mt-3" v-model="formDataChangCar.document" :rules="rule" hide-details row>
+                        <template>
+                          <div class="mr-1">เอกสาร:</div>
+                        </template>
+
+                        <v-radio label="ครบ" value="ครบ"></v-radio>
+                        <v-radio label="ไม่ครบ" color="red" value="ไม่ครบ"></v-radio>
+                      </v-radio-group>
+
+                      <v-textarea
+                        v-if="formDataChangCar.document == 'ไม่ครบ'"
+                        class="mt-3"
+                        rows="2"
+                        label="รายการเอกสารที่ไม่ครบ"
+                        v-model="formDataChangCar.document_list"
+                        outlined
+                        dense
+                        hide-details
+                        :rules="rule"
+                      >
+                      </v-textarea>
+                    </v-card-text>
+                  </v-card>
+                </v-col>
+              </v-row>
+
               <v-row>
                 <v-col cols="12" xs="12" sm="12" md="12" lg="12" xl="12" class="pt-0">
                   <v-autocomplete
@@ -75,24 +215,6 @@
                   </v-autocomplete>
                 </v-col>
               </v-row>
-
-              <!-- <v-row v-if="actionWork == 'add'">
-                <v-col cols="12">
-                  <v-text-field
-                    autocomplete="true"
-                    label="รหัสลับของเซล"
-                    append-icon=""
-                    v-model="formData.sale_code"
-                    id="formData.sale_code"
-                    name="formData.sale_code"
-                    outlined
-                    dense
-                    hide-details
-                    :rules="rule"
-                  >
-                  </v-text-field>
-                </v-col>
-              </v-row> -->
 
               <v-row>
                 <v-col cols="12" class="pt-0">
@@ -136,6 +258,7 @@
                     <v-radio value="5" label="ใบปลิว"></v-radio>
                     <v-radio value="6" label="Marketplace/ไลน์/เพจส่วนตัว"></v-radio>
                     <v-radio value="7" label="เว็บไซต์"></v-radio>
+                    <v-radio value="8" label="tiktok"></v-radio>
                   </v-radio-group>
                 </v-col>
               </v-row>
@@ -156,12 +279,46 @@
                   </v-textarea>
                 </v-col>
               </v-row>
+
+              <v-file-input
+                v-if="
+                  actionWork == 'edit' &&
+                  (car_id_master != formData.car_id || customer_id_master != formData.customer_id)
+                "
+                class="mt-3"
+                label="รูปบัตรประจำตัวประชาชนลูกค้าปัจจุบัน*"
+                v-model="id_card"
+                prepend-icon=""
+                append-icon="mdi-image"
+                show-size
+                outlined
+                dense
+                hide-details=""
+                :rules="ruleMustImage"
+              ></v-file-input>
+
+              <v-file-input
+                v-if="
+                  actionWork == 'edit' &&
+                  (car_id_master != formData.car_id || customer_id_master != formData.customer_id)
+                "
+                class="mt-3"
+                v-model="sale_sheet"
+                label="เอกสารสรุปการขาย*"
+                prepend-icon=""
+                append-icon="mdi-image"
+                show-size
+                outlined
+                dense
+                hide-details=""
+                :rules="ruleMustImage"
+              ></v-file-input>
             </div>
 
             <v-row v-if="actionWork == 'cancel'">
               <v-col cols="12">
                 <v-textarea
-                  rows="2"
+                  rows="3"
                   label="เหตุผลที่ยกเลิก"
                   append-icon=""
                   v-model="formData.cancel_list"
@@ -173,6 +330,19 @@
                   :rules="cancel_rule"
                 >
                 </v-textarea>
+              </v-col>
+              <v-col class="pt-0">
+                <v-file-input
+                  label="รูปบัตรประจำตัวประชาชนลูกค้า*"
+                  v-model="id_card"
+                  prepend-icon=""
+                  append-icon="mdi-image"
+                  show-size
+                  outlined
+                  dense
+                  hide-details=""
+                  :rules="ruleMustImage"
+                ></v-file-input>
               </v-col>
             </v-row>
 
@@ -194,6 +364,8 @@ import * as apiWorks from "@/Api/apiWorks";
 import * as apiCustomers from "@/Api/apiCustomers";
 import * as apiUsers from "@/Api/apiUsers";
 import * as apiCars from "@/Api/apiCars";
+import * as apiBank from "@/Api/apiBank";
+import * as apiBank_branch from "@/Api/apiBank_branch";
 import selectAddCustomer from "@/components/selectAdd/selectAddCustomer";
 
 export default {
@@ -203,9 +375,18 @@ export default {
   props: ["dialogWork", "actionWork", "idWork", "formTitleWork"],
   data() {
     return {
+      menuSignDate: false,
       btnloading: true,
       formDataLoading: false,
+      customer_id_master: 0,
+      car_id_master: 0,
+      dataBank: [],
+      dataBank_branch: [],
+      dataBank_branch_all: [],
       formData: {},
+      formDataChangCar: {
+        sign_type: null,
+      },
       rule: [(value) => !!value || "กรุณาใส่ข้อมูล"],
       dataCar: [],
       datauserSale: [],
@@ -213,9 +394,18 @@ export default {
       cancel_rule: [],
       dialogDeleteComponent: false,
       user_group_permission: this.$auth.$storage.getLocalStorage("userData-user_group_permission"),
+      id_card: null,
+      sale_sheet: null,
+      ruleMustImage: [(value) => !!value, (value) => !value || value.size < 11000000 || "ขนาดรูปต้องน้อยกว่า 10 MB"],
     };
   },
-  mounted() {},
+  mounted() {
+    this.getCars();
+    this.getSale();
+    this.getCustomer();
+    this.getBank();
+    this.getBank_branch();
+  },
   methods: {
     filterObject(item, queryText, itemText) {
       return (
@@ -247,6 +437,28 @@ export default {
 
       // console.log(this.datauserSale);
     },
+    async getBank() {
+      const response = await apiBank.select();
+      this.dataBank = await response.data;
+    },
+    async getBank_branch() {
+      const response = await apiBank_branch.select();
+      this.dataBank_branch_all = await response.data;
+      // this.dataPreviewBanks = await response.data;
+    },
+    async change_branch(bank_name) {
+      const bank = this.dataBank.filter((item) => {
+        return item.bank_name == bank_name;
+      });
+
+      let newArray = [];
+      for (let index = 0; index < this.dataBank_branch_all.length; index++) {
+        if (this.dataBank_branch_all[index].bank_id == bank[0].id) {
+          newArray.push(this.dataBank_branch_all[index]);
+        }
+      }
+      this.dataBank_branch = newArray;
+    },
     async addSuccess(value) {
       if (value == "AddCustomer") {
         await this.getCustomer();
@@ -272,7 +484,13 @@ export default {
             this.$emit("error", "work");
           }
         } else if (this.actionWork == "edit") {
-          const response = await apiWorks.update(this.idWork, this.formData);
+          let formData = new FormData();
+          formData.append("_method", "PUT");
+          formData.append("formData", JSON.stringify(this.formData));
+          formData.append("formDataChangCar", JSON.stringify(this.formDataChangCar));
+          formData.append("id_card", this.id_card);
+          formData.append("sale_sheet", this.sale_sheet);
+          const response = await apiWorks.update(this.idWork, formData);
           // console.log(response);
           this.$refs.form.reset();
 
@@ -282,7 +500,10 @@ export default {
             this.$emit("error", "work");
           }
         } else if (this.actionWork == "cancel") {
-          const response = await apiWorks.cancel(this.formData);
+          let formData = new FormData();
+          formData.append("formData", JSON.stringify(this.formData));
+          formData.append("id_card", this.id_card);
+          const response = await apiWorks.cancel(formData);
           // console.log(response);
           this.$refs.form.reset();
 
@@ -305,11 +526,6 @@ export default {
       if (this.dialogWork) {
         if (this.actionWork == "add") {
           this.formDataLoading = true;
-
-          this.getCars();
-          await this.getSale();
-          await this.getCustomer();
-
           this.$nextTick(() => {
             this.$refs.form.reset();
             const self = this;
@@ -326,24 +542,14 @@ export default {
         } else if (this.actionWork == "edit") {
           this.formDataLoading = true;
           const response = await apiWorks.show(this.idWork);
-          console.log(response);
 
-          this.formData = await response.data;
-
-          this.$nextTick(() => {
-            // this.$refs.form.reset();
-            const self = this;
-            this.$nextTick(async () => {
-              this.getCars();
-              await this.getSale();
-              await this.getCustomer();
-            });
-          });
+          this.customer_id_master = response.data.customer_id;
+          this.car_id_master = response.data.car_id;
+          this.formData = response.data;
           this.formDataLoading = false;
         } else if (this.actionWork == "cancel") {
           this.formDataLoading = true;
           const response = await apiWorks.show(this.idWork);
-          // console.log(response);
 
           this.$nextTick(() => {
             this.$refs.form.reset();
@@ -352,8 +558,6 @@ export default {
               self.formData = await response.data;
               self.formData.status_del = 0;
               self.cancel_rule = [(value) => !!value || "กรุณาใส่ข้อมูล"];
-              await this.getSale();
-              await this.getCustomer();
             });
           });
           // console.log(this.formData);

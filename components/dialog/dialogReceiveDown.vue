@@ -1,23 +1,10 @@
 <template>
   <div>
-    <v-dialog
-      v-model="dialogComponent"
-      fullscreen
-      hide-overlay
-      transition="dialog-bottom-transition"
-    >
+    <v-dialog v-model="dialogComponent" fullscreen hide-overlay transition="dialog-bottom-transition">
       <v-card tile style="position: relative; background-color: #eee">
         <v-form ref="form" lazy-validation>
           <v-toolbar flat dark color="primary">
-            <div
-              class="container"
-              style="
-                align-items: center;
-                display: flex;
-                position: relative;
-                padding: 0px;
-              "
-            >
+            <div class="container" style="align-items: center; display: flex; position: relative; padding: 0px">
               <v-btn icon dark @click="cancleItem()">
                 <v-icon>mdi-close</v-icon>
               </v-btn>
@@ -29,121 +16,86 @@
           <v-card-text>
             <v-card class="container">
               <v-card-text>
-                <div
-                  class="text-center"
-                  style="font-size: 26px; font-weight: 500"
-                >
-                  เงินจอง / เงินดาวน์ / ซื้อเงินสด
-                </div>
-
+                <div class="text-center" style="font-size: 26px; font-weight: 500">ใบสำคัญรับเงินทั้งหมด</div>
                 <table class="bordered mt-3">
                   <thead>
                     <tr>
-                      <th width="5%" style="padding: 10px; text-align: center">
-                        ลำดับ
-                      </th>
+                      <th width="5%" style="padding: 10px; text-align: center">ลำดับ</th>
                       <th
                         width="8%"
-                        style="
-                          border-left: 1px solid rgba(0, 0, 0, 0.2);
-                          padding: 10px;
-                          text-align: left;
-                        "
+                        style="border-left: 1px solid rgba(0, 0, 0, 0.2); padding: 10px; text-align: center"
                       >
+                        เลขธุรกรรม
+                      </th>
+                      <th width="8%" style="border-left: 1px solid rgba(0, 0, 0, 0.2); padding: 10px; text-align: left">
                         ประเภท
                       </th>
                       <th
                         width="12%"
-                        style="
-                          border-left: 1px solid rgba(0, 0, 0, 0.2);
-                          padding: 10px;
-                          text-align: left;
-                        "
+                        style="border-left: 1px solid rgba(0, 0, 0, 0.2); padding: 10px; text-align: left"
                       >
                         วันที่บันทึก
                       </th>
                       <th
                         width="15%"
-                        style="
-                          border-left: 1px solid rgba(0, 0, 0, 0.2);
-                          padding: 10px;
-                          text-align: left;
-                        "
+                        style="border-left: 1px solid rgba(0, 0, 0, 0.2); padding: 10px; text-align: left"
                       >
                         ลูกค้า
                       </th>
                       <th
                         width="10%"
-                        style="
-                          border-left: 1px solid rgba(0, 0, 0, 0.2);
-                          padding: 10px;
-                          text-align: left;
-                        "
+                        style="border-left: 1px solid rgba(0, 0, 0, 0.2); padding: 10px; text-align: left"
                       >
                         ลำดับรถ
                       </th>
                       <th
                         width="15%"
-                        style="
-                          border-left: 1px solid rgba(0, 0, 0, 0.2);
-                          padding: 10px;
-                          text-align: left;
-                        "
+                        style="border-left: 1px solid rgba(0, 0, 0, 0.2); padding: 10px; text-align: left"
                       >
                         รถ
                       </th>
                       <th
                         width="15%"
-                        style="
-                          border-left: 1px solid rgba(0, 0, 0, 0.2);
-                          padding: 10px;
-                          text-align: left;
-                        "
+                        style="border-left: 1px solid rgba(0, 0, 0, 0.2); padding: 10px; text-align: left"
                       >
                         จำนวนเงิน
                       </th>
                       <th
                         width="5%"
-                        style="
-                          border-left: 1px solid rgba(0, 0, 0, 0.2);
-                          padding: 10px;
-                          text-align: right;
-                        "
+                        style="border-left: 1px solid rgba(0, 0, 0, 0.2); padding: 10px; text-align: right"
                       ></th>
                     </tr>
                   </thead>
                   <tbody>
-                    <tr
-                      style="line-height: 1rem; font-size: 1rem"
-                      v-for="(item, key) in data"
-                      :key="key"
-                    >
-                      <td
-                        style="
-                          border-top: 1px solid rgba(0, 0, 0, 0.2);
-                          text-align: center;
-                        "
-                      >
+                    <tr style="line-height: 1rem; font-size: 1rem" v-for="(item, key) in data" :key="key">
+                      <td style="border-top: 1px solid rgba(0, 0, 0, 0.2); text-align: center">
                         {{ key + 1 }}
                       </td>
                       <td
                         style="
                           border-left: 1px solid rgba(0, 0, 0, 0.2);
                           border-top: 1px solid rgba(0, 0, 0, 0.2);
+                          text-align: center;
+                        "
+                      >
+                        {{ item.id }}
+                      </td>
+                      <td
+                        style="
+                          border-left: 1px solid rgba(0, 0, 0, 0.2);
+                          border-top: 1px solid rgba(0, 0, 0, 0.2);
                           padding: 10px;
                           text-align: left;
                         "
                       >
-                        <div v-if="item.payment_type == 1">
-                          จอง ({{ item.id }})
-                        </div>
-                        <div v-else-if="item.payment_type == 2">
-                          ดาวน์ ({{ item.id }})
-                        </div>
-                        <div v-else-if="item.payment_type == 3">
-                          ซื้อเงินสด ({{ item.id }})
-                        </div>
-                        <div v-else>N/A ({{ item.id }})</div>
+                        <div v-if="item.payment_type == 1">จอง</div>
+                        <div v-else-if="item.payment_type == 2">ดาวน์</div>
+                        <div v-else-if="item.payment_type == 3">ซื้อเงินสด</div>
+                        <div v-else-if="item.payment_type == 4">ค่างวดล่วงหน้า</div>
+                        <div v-else-if="item.payment_type == 5">สมาร์ทชัว</div>
+                        <div v-else-if="item.payment_type == 6">ประกันอื่นๆ</div>
+                        <div v-else-if="item.payment_type == 99">อื่นๆ</div>
+                        <div v-else>N/A</div>
                       </td>
                       <td
                         style="
@@ -152,7 +104,7 @@
                           padding: 10px;
                         "
                       >
-                        {{ item.created_at }}
+                        {{ $moment(item.created_at).format("YYYY-MM-DD") }}
                       </td>
                       <td
                         style="
@@ -208,15 +160,7 @@
                           fab
                           x-small
                           dark
-                          @click="
-                            Financial(
-                              item.id,
-                              car_no,
-                              idWork,
-                              item.payment_type,
-                              'edit'
-                            )
-                          "
+                          @click="Financial(item.id, car_no, idWork, item.payment_type, 'edit')"
                         >
                           <v-icon> mdi-pencil </v-icon>
                         </v-btn>
@@ -225,12 +169,7 @@
                   </tbody>
                 </table>
 
-                <v-btn
-                  class="mt-3"
-                  text
-                  color="primary"
-                  @click="Financial('', car_no, idWork, '2', 'add')"
-                >
+                <v-btn class="mt-3" text color="primary" @click="Financial('', car_no, idWork, '2', 'add')">
                   <v-icon left> mdi-plus </v-icon>
                   เพิ่มรายการ
                 </v-btn>
@@ -242,7 +181,6 @@
                   :car_no="car_no"
                   :payment_type="payment_type"
                   :actionFinancial="actionFinancial"
-                  :formTitleFinancial="formTitleFinancial"
                   @cancleItem="dialogFinancial = false"
                   @success="
                     dialogFinancial = false;
@@ -271,7 +209,6 @@ export default {
       data: [],
       financial_id: "",
       dialogFinancial: false,
-      formTitleFinancial: "Add",
       actionFinancial: "check",
       payment_type: "1",
       dialogContract: false,
@@ -286,14 +223,7 @@ export default {
       // console.log(response.data);
       this.data = response.data;
     },
-    async Financial(
-      financial_id,
-      car_no,
-      work_id,
-      payment_type,
-      actionFinancial
-    ) {
-      this.formTitleFinancial = "หลักฐานการรับเงิน ธุระกิจการขายรถยนต์ใช้แล้ว";
+    async Financial(financial_id, car_no, work_id, payment_type, actionFinancial) {
       this.car_no = car_no;
       this.idWork = work_id;
       this.financial_id = financial_id;
@@ -326,7 +256,7 @@ export default {
 
 <style scoped>
 table {
-  *border-collapse: collapse; /* IE7 and lower */
+  border-collapse: collapse; /* IE7 and lower */
   border-spacing: 0;
   width: 100%;
 }
@@ -361,9 +291,7 @@ th:only-child {
 </style>
 
 <style lang="scss">
-.none-rotation.v-select.v-select--is-menu-active
-  .v-input__icon--append
-  .v-icon {
+.none-rotation.v-select.v-select--is-menu-active .v-input__icon--append .v-icon {
   transform: none !important;
 }
 

@@ -1,17 +1,8 @@
 <template>
-  <v-dialog
-    v-model="dialogComponent"
-    fullscreen
-    hide-overlay
-    transition="dialog-bottom-transition"
-    persistent
-  >
+  <v-dialog v-model="dialogComponent" fullscreen hide-overlay transition="dialog-bottom-transition" persistent>
     <v-card>
       <v-toolbar dark color="primary">
-        <div
-          class="container"
-          style="align-items: center; display: flex; position: relative: padding: 0px;"
-        >
+        <div class="container" style="align-items: center; display: flex; position: relative: padding: 0px;">
           <v-btn icon dark @click="close()">
             <v-icon>mdi-close</v-icon>
           </v-btn>
@@ -23,7 +14,7 @@
           <v-data-table
             :headers="headers"
             :items="data"
-            :items-per-page="10"
+            :items-per-page="-1"
             :search="search"
             :loading="loading"
             :mobile-breakpoint="0"
@@ -31,18 +22,20 @@
             loading-text="กำลังโหลดข้อมูลกรุณารอสักครู่"
             no-data-text="ยังไม่มีการเพิ่มข้อมูล"
           >
-            <template v-slot:[`item.pictureUrl`]="{ item }">
-              <v-btn icon>
-                <v-avatar size="40" @click="showImg(item.pictureUrl)">
-                  <v-img :src="item.pictureUrl"> </v-img>
-                </v-avatar>
-              </v-btn>
-              <div>{{ item.displayName }}</div>
-            </template>
-
             <template v-slot:[`item.sale_name`]="{ item }">
-              <div>{{ item.sale_name }}</div>
-              <div>{{ item.branch_name }}</div>
+              <div no-gutters class="d-flex align-center">
+                <div class="mr-3">
+                  <v-btn icon>
+                    <v-avatar size="40" @click="showImg(serverUrl + item.user_image)">
+                      <v-img :src="serverUrl + item.user_image"> </v-img>
+                    </v-avatar>
+                  </v-btn>
+                </div>
+                <div>
+                  <div>{{ item.sale_name }}</div>
+                  <div>{{ item.branch_name }}</div>
+                </div>
+              </div>
             </template>
 
             <template v-slot:[`item.car_no_all`]="{ item }">
@@ -57,67 +50,63 @@
             </template>
 
             <template v-slot:[`item.request_status`]="{ item }">
-              <v-btn
-                v-if="item.request_status == 'pedding'"
-                color="warning"
-                fab
-                x-small
-                dark
-                @click="editItem(item.type, item.ref_id)"
-              >
-                <v-icon> mdi-checkbox-blank-outline</v-icon>
-              </v-btn>
-              <v-btn
-                v-else-if="item.request_status == 'approve'"
-                color="success"
-                fab
-                x-small
-                dark
-                @click="editItem(item.type, item.ref_id)"
-              >
-                <v-icon> mdi-checkbox-outline</v-icon>
-              </v-btn>
-              <v-btn
-                v-else-if="item.request_status == 'cancle'"
-                color="primary"
-                fab
-                x-small
-                dark
-                @click="editItem(item.type, item.ref_id)"
-              >
-                <v-icon> mdi-arrow-u-left-top</v-icon>
-              </v-btn>
-              <v-btn
-                v-if="item.request_status != 'cancle'"
-                color="red"
-                fab
-                x-small
-                dark
-                @click="cancleItem(item.type, item.ref_id)"
-              >
-                <v-icon> mdi-close </v-icon>
-              </v-btn>
+              <span v-if="user_group_permission == -1">
+                <v-btn
+                  v-if="item.request_status == 'pedding'"
+                  color="warning"
+                  fab
+                  x-small
+                  dark
+                  @click="editItem(item.type, item.ref_id)"
+                >
+                  <v-icon> mdi-checkbox-blank-outline</v-icon>
+                </v-btn>
+                <v-btn
+                  v-else-if="item.request_status == 'approve'"
+                  color="success"
+                  fab
+                  x-small
+                  dark
+                  @click="editItem(item.type, item.ref_id)"
+                >
+                  <v-icon> mdi-checkbox-outline</v-icon>
+                </v-btn>
+                <v-btn
+                  v-else-if="item.request_status == 'cancle'"
+                  color="primary"
+                  fab
+                  x-small
+                  dark
+                  @click="editItem(item.type, item.ref_id)"
+                >
+                  <v-icon> mdi-arrow-u-left-top</v-icon>
+                </v-btn>
+                <v-btn
+                  v-if="item.request_status != 'cancle'"
+                  color="red"
+                  fab
+                  x-small
+                  dark
+                  @click="cancleItem(item.type, item.ref_id)"
+                >
+                  <v-icon> mdi-close </v-icon>
+                </v-btn>
 
-              <v-btn
-                v-if="item.request_status == 'cancle'"
-                color="red"
-                fab
-                x-small
-                dark
-                @click="deleteItem(item.type, item.ref_id)"
-              >
-                <v-icon> mdi-delete </v-icon>
-              </v-btn>
+                <v-btn
+                  v-if="item.request_status == 'cancle'"
+                  color="red"
+                  fab
+                  x-small
+                  dark
+                  @click="deleteItem(item.type, item.ref_id)"
+                >
+                  <v-icon> mdi-delete </v-icon>
+                </v-btn>
+              </span>
             </template>
 
             <template v-slot:[`item.actions`]="{ item }">
-              <v-btn
-                color="primary"
-                fab
-                x-small
-                dark
-                @click="showData(item.type, item.ref_id)"
-              >
+              <v-btn color="primary" fab x-small dark @click="showData(item.type, item.ref_id)">
                 <v-icon> mdi-information-variant </v-icon>
               </v-btn>
             </template>
@@ -162,6 +151,8 @@ export default {
 
   data() {
     return {
+      serverUrl: process.env.serverUrl,
+      user_group_permission: this.$auth.$storage.getLocalStorage("userData-user_group_permission"),
       dialogComponent: false,
       loading: false,
       update: false,
@@ -180,10 +171,11 @@ export default {
         },
         { text: "เวลา", value: "created_at", width: "11%" },
 
-        { text: "Line", value: "pictureUrl", align: "center", width: "12%" },
-        { text: "เซล/สาขา", value: "sale_name", width: "12%" },
-        { text: "ประเภท", value: "type", width: "12%" },
+        // { text: "Line", value: "pictureUrl", align: "center", width: "12%" },
+        { text: "เซล/สาขา", value: "sale_name", width: "20%" },
+        { text: "ประเภท", value: "type", width: "15%" },
         { text: "ลำดับรถ", value: "car_no_all" },
+        { text: "หมายเหตุ", value: "note", width: "12%" },
         {
           text: "รายละเอียด",
           value: "actions",
@@ -333,5 +325,4 @@ export default {
 };
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

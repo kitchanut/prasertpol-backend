@@ -2,25 +2,19 @@
   <v-container>
     <v-dialog
       v-model="dialogDeleteComponent"
-      content-class="v-dialog--custom"
-      fullscreen
+      :fullscreen="$vuetify.breakpoint.name == 'xs' || $vuetify.breakpoint.name == 'sm' ? true : false"
+      width="550px"
     >
       <v-card>
-        <v-form
-          ref="form"
-          autocomplete="true"
-          :disabled="formDisabled"
-          @submit.prevent="onAction()"
-        >
+        <v-form ref="form" autocomplete="true" :disabled="formDisabled" @submit.prevent="onAction()">
           <v-toolbar color="primary" dark flat>
-            <v-btn color="red darken-1" text @click="$emit('cancleItem')">
+            <v-btn text @click="$emit('cancleItem')">
               <v-icon>mdi-close</v-icon>
             </v-btn>
-            <v-toolbar-title> {{ formTitleFinancial }} </v-toolbar-title>
-
+            <v-toolbar-title> ใบสำคัญรับเงิน </v-toolbar-title>
             <v-spacer></v-spacer>
 
-            <v-btn
+            <!-- <v-btn
               v-if="this.formData.action == 'edit'"
               @click="print_a4()"
               target="_blank"
@@ -30,27 +24,14 @@
               style="font-size: 18px"
             >
               ปริ้น
-            </v-btn>
+            </v-btn> -->
 
             <v-toolbar-items>
-              <v-btn
-                type="submit"
-                dark
-                text
-                :loading="btnloading"
-                style="font-size: 18px"
-              >
-                บันทึก
-              </v-btn>
+              <v-btn type="submit" dark text :loading="btnloading" style="font-size: 18px"> บันทึก </v-btn>
             </v-toolbar-items>
           </v-toolbar>
 
-          <v-progress-linear
-            v-if="formDataLoading"
-            indeterminate
-            color="yellow darken-2"
-          >
-          </v-progress-linear>
+          <v-progress-linear v-if="formDataLoading" indeterminate color="yellow darken-2"> </v-progress-linear>
 
           <v-card-text>
             <v-row class="d-flex flex-row">
@@ -61,73 +42,137 @@
               </v-col>
             </v-row>
 
-            <v-row class="d-flex flex-row">
-              <v-col> </v-col>
+            <v-dialog
+              ref="menuDateCreated_at"
+              v-model="menuDateCreated_at"
+              id="menuDateCreated_at"
+              name="menuDateCreated_at"
+              width="290px"
+            >
+              <template v-slot:activator="{ on, attrs }">
+                <v-text-field
+                  autocomplete="true"
+                  v-model="formData.created_at"
+                  id="formData.created_at"
+                  name="formData.created_at"
+                  label="วันที่รับเงิน"
+                  v-bind="attrs"
+                  v-on="on"
+                  readonly
+                  persistent-hint
+                  prepend-icon=""
+                  outlined
+                  dense
+                  hide-details
+                  clearable
+                  flat
+                  :rules="rule"
+                ></v-text-field>
+              </template>
+              <v-date-picker
+                v-model="formData.created_at"
+                id="formData.created_at"
+                name="formData.created_at"
+                locale="th-TH"
+                picker-date
+                @input="menuDateCreated_at = false"
+              ></v-date-picker>
+            </v-dialog>
+
+            <v-text-field
+              class="mt-3"
+              label="จำนวนเงิน"
+              v-model="formData.bath"
+              onkeypress="return  (event.charCode >= 48 && event.charCode <= 57)"
+              @input="cvToString"
+              outlined
+              dense
+              hide-details
+              :rules="rule"
+            >
+            </v-text-field>
+
+            <v-text-field
+              class="mt-3"
+              autocomplete="true"
+              readonly
+              label="ตัวอักษร"
+              v-model="formData.bath_string"
+              outlined
+              dense
+              hide-details
+            >
+            </v-text-field>
+
+            <v-row
+              class="d-flex flex-row rounded ma-auto mt-3 mb-3"
+              style="border-style: solid; border-width: 1px; border-color: gray"
+            >
               <v-col>
-                <v-menu
-                  ref="menuDateCreated_at"
-                  v-model="menuDateCreated_at"
-                  id="menuDateCreated_at"
-                  name="menuDateCreated_at"
-                  :close-on-content-click="false"
-                  transition="scale-transition"
-                  offset-y
-                  max-width="290px"
-                  min-width="auto"
+                <v-radio-group
+                  v-model="formData.payment_type"
+                  id="formData.payment_type"
+                  name="formData.payment_type"
+                  hide-details=""
                 >
-                  <template v-slot:activator="{ on, attrs }">
-                    <v-text-field
-                      autocomplete="true"
-                      v-model="formData.created_at"
-                      id="formData.created_at"
-                      name="formData.created_at"
-                      label="วันที่"
-                      v-bind="attrs"
-                      v-on="on"
-                      readonly
-                      persistent-hint
-                      prepend-icon=""
-                      outlined
-                      dense
-                      hide-details
-                      clearable
-                      flat
-                      :rules="rule"
-                    ></v-text-field>
+                  <template>
+                    <div class="mb-3">รายการชำระเงินค่ารถยนต์:</div>
                   </template>
-                  <v-date-picker
-                    v-model="formData.created_at"
-                    id="formData.created_at"
-                    name="formData.created_at"
-                    locale="th-TH"
-                    picker-date
-                    @input="menuDateCreated_at = false"
-                  ></v-date-picker>
-                </v-menu>
+                  <v-radio value="1" label="เงินจอง/มัดจำ"></v-radio>
+                  <v-radio value="2" label="เงินดาวน์"></v-radio>
+                  <v-radio value="3" label="ซื้อเงินสด"></v-radio>
+                  <v-radio value="4" label="ค่างวดล่วงหน้า"></v-radio>
+                  <v-radio value="5" label="สมาร์ทชัว"></v-radio>
+                  <v-radio value="6" label="ประกันอื่นๆ"></v-radio>
+                  <v-radio value="7" label="คืนค่างวดบริษัท"></v-radio>
+                  <v-radio value="99" label="อื่นๆ"></v-radio>
+                </v-radio-group>
+
+                <v-text-field
+                  v-if="formData.payment_type == 99"
+                  class="mt-3"
+                  label="กรุณาระบุรายการ"
+                  v-model="formData.details"
+                  outlined
+                  dense
+                  hide-details
+                  :rules="rule"
+                >
+                </v-text-field>
               </v-col>
             </v-row>
-            <!-- กรอบข้อมูลช่อง 1 -->
-            <v-row
-              class="d-flex flex-row mt-2"
-              style="
-                border-top: 2px solid black;
-                border-bottom: 2px solid black;
-              "
-            >
-              <v-col
-                cols="4"
-                class="text-center"
-                style="border-right: 2px solid black"
-              >
-                <h3>บริษัทประเสริฐผลรุ่งเรืองนครพนม จำกัด</h3>
-                <h3>
-                  ที่อยู่ : 216/111 นิตโย ตำบลในเมือง อำเภอเมืองนครพนม นครพนม
-                  48000
-                </h3>
-                <h3>โทร: 042-51332 แฟกซ์: 042-513588</h3>
-                <h3>เลขประจำตัวผู้เสียภาษีอาการ</h3>
-                <h3>0485548000108</h3>
-              </v-col>
+
+            <v-file-input
+              class="mt-3"
+              label="รูปบัตรประจำตัวประชาชนลูกค้า*"
+              v-model="id_card"
+              prepend-icon=""
+              append-icon="mdi-image"
+              show-size
+              outlined
+              dense
+              hide-details=""
+              :rules="ruleMustImage"
+            ></v-file-input>
+
+            <v-file-input
+              v-if="formData.bath > 0"
+              class="mt-3"
+              label="รูปประกอบการรับเงิน เช่น สลิป*"
+              v-model="slip"
+              prepend-icon=""
+              append-icon="mdi-image"
+              show-size
+              outlined
+              dense
+              hide-details=""
+              :rules="ruleMustImage"
+            ></v-file-input>
+
+            <v-textarea class="mt-3" label="หมายเหตุ" v-model="formData.note" rows="2" outlined dense hide-details>
+            </v-textarea>
+
+            <v-row class="d-flex flex-row mt-2" style="border-top: 2px solid black; border-bottom: 2px solid black">
               <v-col>
                 <v-text-field
                   autocomplete="true"
@@ -142,7 +187,7 @@
                 >
                 </v-text-field>
 
-                <v-row class="d-flex flex-row mt-1 mb-1">
+                <v-row no-gutters class="mt-3">
                   <v-col>
                     <v-text-field
                       autocomplete="true"
@@ -158,7 +203,9 @@
                     >
                     </v-text-field>
                   </v-col>
+                </v-row>
 
+                <v-row no-gutters class="mt-3">
                   <v-col>
                     <v-autocomplete
                       v-model="formData.amphure_id"
@@ -177,8 +224,7 @@
                     >
                     </v-autocomplete>
                   </v-col>
-
-                  <v-col>
+                  <v-col class="pl-1">
                     <v-autocomplete
                       v-model="formData.district_id"
                       id="formData.district_id"
@@ -196,7 +242,9 @@
                     >
                     </v-autocomplete>
                   </v-col>
+                </v-row>
 
+                <v-row no-gutters class="mt-3">
                   <v-col>
                     <v-autocomplete
                       v-model="formData.province_id"
@@ -216,7 +264,7 @@
                     </v-autocomplete>
                   </v-col>
 
-                  <v-col>
+                  <v-col class="pl-1">
                     <v-text-field
                       autocomplete="true"
                       label="รหัสไปรษณีย์"
@@ -235,6 +283,7 @@
                 </v-row>
 
                 <v-text-field
+                  class="mt-3"
                   autocomplete="true"
                   label="เบอร์โทร"
                   v-model="formData.customer_tel"
@@ -251,7 +300,7 @@
             <!--  -->
 
             <!-- กรอบข้อมูลช่อง 2 -->
-            <v-row class="d-flex flex-row mt-5">
+            <v-row class="d-flex flex-row mt-3">
               <v-col class="text-center">
                 <h3>รายละเอียดรถยนต์</h3>
               </v-col>
@@ -259,7 +308,7 @@
             <!--  -->
 
             <!-- กรอบข้อมูลช่อง 3 -->
-            <v-row class="d-flex flex-row">
+            <v-row no-gutters class="mt-3">
               <v-col>
                 <v-text-field
                   autocomplete="true"
@@ -274,21 +323,7 @@
                 >
                 </v-text-field>
               </v-col>
-              <v-col>
-                <v-text-field
-                  autocomplete="true"
-                  label="ยี่ห้อ"
-                  v-model="formData.car_model_name"
-                  id="formData.car_model_name"
-                  name="formData.car_model_name"
-                  append-icon=""
-                  outlined
-                  dense
-                  hide-details
-                >
-                </v-text-field>
-              </v-col>
-              <v-col>
+              <v-col class="pl-1">
                 <v-text-field
                   autocomplete="true"
                   label="หมายเลขเครื่องยนต์"
@@ -306,8 +341,22 @@
             <!--  -->
 
             <!-- กรอบข้อมูลช่อง 4 -->
-            <v-row class="d-flex flex-row">
+            <v-row no-gutters class="mt-3">
               <v-col>
+                <v-text-field
+                  autocomplete="true"
+                  label="ยี่ห้อ"
+                  v-model="formData.car_model_name"
+                  id="formData.car_model_name"
+                  name="formData.car_model_name"
+                  append-icon=""
+                  outlined
+                  dense
+                  hide-details
+                >
+                </v-text-field>
+              </v-col>
+              <v-col class="pl-1">
                 <v-text-field
                   autocomplete="true"
                   label="รุ่น"
@@ -321,7 +370,10 @@
                 >
                 </v-text-field>
               </v-col>
+            </v-row>
+            <!--  -->
 
+            <v-row no-gutters class="mt-3">
               <v-col>
                 <v-text-field
                   autocomplete="true"
@@ -337,10 +389,9 @@
                 </v-text-field>
               </v-col>
             </v-row>
-            <!--  -->
 
             <!-- กรอบข้อมูลช่อง 5 -->
-            <v-row class="d-flex flex-row">
+            <v-row no-gutters class="mt-3">
               <v-col>
                 <v-text-field
                   autocomplete="true"
@@ -355,7 +406,7 @@
                 >
                 </v-text-field>
               </v-col>
-              <v-col>
+              <v-col class="pl-1 pr-1">
                 <v-text-field
                   autocomplete="true"
                   label="สีรถ"
@@ -372,7 +423,7 @@
               <v-col>
                 <v-text-field
                   autocomplete="true"
-                  label="หมายเลขทะเขียน"
+                  label="ทะเบียน"
                   v-model="formData.car_regis"
                   id="formData.car_regis"
                   name="formData.car_regis"
@@ -387,7 +438,7 @@
             <!--  -->
 
             <!-- กรอบข้อมูลช่อง 6 -->
-            <v-row class="d-flex flex-row">
+            <v-row no-gutters class="mt-3">
               <v-col>
                 <v-text-field
                   autocomplete="true"
@@ -402,7 +453,7 @@
                 >
                 </v-text-field>
               </v-col>
-              <v-col>
+              <v-col class="pl-1">
                 <v-text-field
                   autocomplete="true"
                   label="ภาระผูกพัน(ถ้ามี)"
@@ -420,7 +471,7 @@
             <!--  -->
 
             <!-- กรอบข้อมูลช่อง 7 -->
-            <v-row class="d-flex flex-row">
+            <v-row no-gutters class="mt-3">
               <v-col>
                 <v-text-field
                   autocomplete="true"
@@ -439,7 +490,7 @@
             <!--  -->
 
             <!-- กรอบข้อมูลช่อง 8 -->
-            <v-row class="d-flex flex-row">
+            <v-row no-gutters class="mt-3">
               <v-col>
                 <v-text-field
                   autocomplete="true"
@@ -448,263 +499,6 @@
                   id="formData.occupy"
                   name="formData.occupy"
                   append-icon=""
-                  outlined
-                  dense
-                  hide-details
-                >
-                </v-text-field>
-              </v-col>
-            </v-row>
-            <!--  -->
-
-            <!-- กรอบข้อมูลช่อง 9 -->
-            <v-row
-              class="d-flex flex-row rounded ma-auto mt-3 mb-3"
-              style="border-style: solid; border-width: 1px; border-color: gray"
-            >
-              <v-col>
-                <v-radio-group
-                  v-model="formData.payment_type"
-                  id="formData.payment_type"
-                  name="formData.payment_type"
-                  row
-                  :rules="rule"
-                  hide-details
-                >
-                  <template>
-                    <div class="mr-3">รายการชำระเงินค่ารถยนต์:</div>
-                  </template>
-                  <v-radio value="1" label="วางเงินจอง"></v-radio>
-                  <v-radio value="2" label="วางเงินดาวน์"></v-radio>
-                  <v-radio value="3" label="ซื้อรถเงินสด"></v-radio>
-                </v-radio-group>
-              </v-col>
-            </v-row>
-            <!--  -->
-
-            <!-- กรอบข้อมูลช่อง 10 -->
-            <v-row class="d-flex flex-row">
-              <v-col>
-                <v-text-field
-                  autocomplete="true"
-                  label="จำนวนเงิน (บ.)"
-                  v-model="formData.bath"
-                  id="formData.bath"
-                  name="formData.bath"
-                  @input="cvToString"
-                  append-icon=""
-                  outlined
-                  dense
-                  hide-details
-                  :rules="rule"
-                  type="number"
-                >
-                </v-text-field>
-              </v-col>
-              <v-col cols="4">
-                <v-text-field
-                  autocomplete="true"
-                  readonly
-                  label="ตัวอักษร"
-                  v-model="formData.bath_string"
-                  id="formData.bath_string"
-                  name="formData.bath_string"
-                  append-icon=""
-                  outlined
-                  dense
-                  hide-details
-                >
-                </v-text-field>
-              </v-col>
-            </v-row>
-            <!--  -->
-
-            <!-- กรอบข้อมูลช่อง 11 -->
-            <v-row class="d-flex flex-row">
-              <v-col>
-                <v-menu
-                  ref="menuDatecon_reg"
-                  v-model="menuDatecon_reg"
-                  id="menuDatecon_reg"
-                  name="menuDatecon_reg"
-                  :close-on-content-click="false"
-                  transition="scale-transition"
-                  offset-y
-                  max-width="290px"
-                  min-width="auto"
-                >
-                  <template v-slot:activator="{ on, attrs }">
-                    <v-text-field
-                      autocomplete="true"
-                      label="ผู้ขายตกลงส่งมอบสำเนาสมุดคู่มือจดทะเบียนรถยนต์"
-                      v-model="formData.date_con_reg"
-                      id="formData.date_con_reg"
-                      name="formData.date_con_reg"
-                      v-bind="attrs"
-                      v-on="on"
-                      persistent-hint
-                      prepend-icon=""
-                      outlined
-                      dense
-                      hide-details
-                      clearable
-                      flathide-details
-                    ></v-text-field>
-                  </template>
-                  <v-date-picker
-                    v-model="formData.date_con_reg"
-                    id="formData.date_con_reg"
-                    name="formData.date_con_reg"
-                    locale="th-TH"
-                    picker-date
-                    @input="menuDatecon_reg = false"
-                  ></v-date-picker>
-                </v-menu>
-              </v-col>
-            </v-row>
-            <!--  -->
-
-            <!-- กรอบข้อมูลช่อง 12 -->
-            <v-row class="d-flex flex-row">
-              <v-col>
-                <v-menu
-                  ref="menuDate_deliver"
-                  v-model="menuDate_deliver"
-                  id="menuDate_deliver"
-                  name="menuDate_deliver"
-                  :close-on-content-click="false"
-                  transition="scale-transition"
-                  offset-y
-                  max-width="290px"
-                  min-width="auto"
-                >
-                  <template v-slot:activator="{ on, attrs }">
-                    <v-text-field
-                      autocomplete="true"
-                      label="ผู้ขายตกลงส่งมอบรถในวันที่"
-                      v-model="formData.date_deliver"
-                      id="formData.date_deliver"
-                      name="formData.date_deliver"
-                      v-bind="attrs"
-                      v-on="on"
-                      persistent-hint
-                      prepend-icon=""
-                      outlined
-                      dense
-                      hide-details
-                      flathide-details
-                      clearable
-                    ></v-text-field>
-                  </template>
-                  <v-date-picker
-                    v-model="formData.date_deliver"
-                    id="formData.date_deliver"
-                    name="formData.date_deliver"
-                    locale="th-TH"
-                    picker-date
-                    @input="menuDate_deliver = false"
-                  ></v-date-picker>
-                </v-menu>
-              </v-col>
-            </v-row>
-            <!--  -->
-
-            <!-- กรอบข้อมูลช่อง 13 -->
-            <v-row
-              class="d-flex flex-row mb-2"
-              style="border-bottom: 2px solid black"
-            >
-              <v-col>
-                <v-menu
-                  ref="menuDate_document"
-                  v-model="menuDate_document"
-                  id="menuDate_document"
-                  name="menuDate_document"
-                  :close-on-content-click="false"
-                  transition="scale-transition"
-                  offset-y
-                  max-width="290px"
-                  min-width="auto"
-                >
-                  <template v-slot:activator="{ on, attrs }">
-                    <v-text-field
-                      autocomplete="true"
-                      label="ผู้ขายตกลงส่งมอบสมุดคู่มือจดทะเบียนพร้อมเอกสารที่จำเป็นสำหรับการจดทะเบียนรถยนต์ตามที่กรมขนส่งทางบกกำหนดให้กับผู้ซื้อในวันที่"
-                      v-model="formData.date_document"
-                      id="formData.date_document"
-                      name="formData.date_document"
-                      v-bind="attrs"
-                      v-on="on"
-                      persistent-hint
-                      prepend-icon=""
-                      outlined
-                      dense
-                      hide-details
-                      flathide-details
-                      clearable
-                    ></v-text-field>
-                  </template>
-                  <v-date-picker
-                    v-model="formData.date_document"
-                    id="formData.date_document"
-                    name="formData.date_document"
-                    locale="th-TH"
-                    picker-date
-                    @input="menuDate_document = false"
-                  ></v-date-picker>
-                </v-menu>
-              </v-col>
-            </v-row>
-
-            <!--  -->
-
-            <!-- กรอบข้อมูลช่อง 15 -->
-            <v-row class="d-flex flex-row">
-              <v-col class="text-center m-2">
-                <h4>
-                  ในกรณีทีไม่สามารถดำเนินการจดทะเบียนรถยนต์ใช้แล้วเป็นชื่อผู้บริโภคหรือไม่สามารถส่งมอบรถยนต์ใช้แล้วให้ผู้บริโภคหรือมีการบอกเลิกสัญญาขายรถยนต์ใช้แล้วโดยมิใช่ความผิดของผู้บริโภค
-                  ผู้ประกอบการธธุระกิจคืนเงินจำนวนดังกล่าวให้ผู้บริโภค
-                </h4>
-              </v-col>
-            </v-row>
-            <!--  -->
-
-            <!-- กรอบข้อมูลช่อง 16 -->
-            <v-row class="d-flex flex-row">
-              <v-col>
-                <v-text-field
-                  autocomplete="true"
-                  disabled
-                  label="ลายเซ็นผู้ซื้อ"
-                  append-icon=""
-                  outlined
-                  dense
-                  hide-details
-                >
-                </v-text-field>
-              </v-col>
-
-              <v-col>
-                <v-text-field
-                  autocomplete="true"
-                  disabled
-                  label="ลายเซ็นผู้ขาย"
-                  readonly
-                  append-icon=""
-                  outlined
-                  dense
-                  hide-details
-                >
-                </v-text-field>
-              </v-col>
-
-              <v-col>
-                <v-text-field
-                  autocomplete="true"
-                  disabled
-                  label="ลายเซ็นผู้มีอำนาจออกหลักฐานการรับเงิน"
-                  append-icon=""
-                  readonly
                   outlined
                   dense
                   hide-details
@@ -728,24 +522,16 @@ import * as apiDistricts from "@/Api/apiDistricts";
 import THBText from "thai-baht-text"; // for ES6
 
 export default {
-  props: [
-    "dialogFinancial",
-    "actionFinancial",
-    "financial_id",
-    "idWork",
-    "formTitleFinancial",
-    "payment_type",
-    "car_no",
-  ],
+  props: ["dialogFinancial", "financial_id", "actionFinancial", "idWork", "payment_type", "car_no"],
   data() {
     return {
       btnloading: true,
       formDataLoading: false,
       formData: {},
       menuDateCreated_at: false,
-      menuDatecon_reg: false,
-      menuDate_deliver: false,
-      menuDate_document: false,
+      // menuDatecon_reg: false,
+      // menuDate_deliver: false,
+      // menuDate_document: false,
       dialogDeleteComponent: false,
       rule: [(value) => !!value || "กรุณาใส่ข้อมูล"],
 
@@ -755,9 +541,16 @@ export default {
       dataDistricts: [],
       dataSelectDistricts: [],
       formDisabled: true,
+      id_card: null,
+      slip: null,
+      ruleMustImage: [(value) => !!value, (value) => !value || value.size < 11000000 || "ขนาดรูปต้องน้อยกว่า 10 MB"],
     };
   },
-  async mounted() {},
+  async mounted() {
+    await this.getProvinces();
+    await this.getAmphures();
+    await this.getDistricts();
+  },
   methods: {
     async getProvinces() {
       const response = await apiProvinces.select();
@@ -819,25 +612,6 @@ export default {
         query: { idFinancial: this.formData.id },
       });
       window.open(routeData.href, "_blank");
-
-      // const response = await apiFinancial.update(
-      //   this.formData.id,
-      //   this.formData
-      // );
-      // // console.log(response);
-      // this.$refs.form.reset();
-      // if (response.status == 200) {
-      //   this.$emit("success", "Financial");
-      //   this.$nextTick(() => {
-      //     let routeData = this.$router.resolve({
-      //       name: "prints-print_financial",
-      //       query: { idFinancial: this.formData.id },
-      //     });
-      //     window.open(routeData.href, "_blank");
-      //   });
-      // } else {
-      //   this.$emit("error", "Financial");
-      // }
     },
     async onAction() {
       if (this.$refs.form.validate()) {
@@ -845,7 +619,11 @@ export default {
         this.formDataLoading = true;
 
         if (this.formData.action == "add") {
-          const response = await apiFinancial.store(this.formData);
+          let formData = new FormData();
+          formData.append("formData", JSON.stringify(this.formData));
+          formData.append("id_card", this.id_card);
+          formData.append("slip", this.slip);
+          const response = await apiFinancial.store(formData);
           // console.log(response);
           this.$refs.form.reset();
 
@@ -855,10 +633,12 @@ export default {
             this.$emit("error", "Financial");
           }
         } else if (this.formData.action == "edit") {
-          const response = await apiFinancial.update(
-            this.formData.id,
-            this.formData
-          );
+          let formData = new FormData();
+          formData.append("_method", "PUT");
+          formData.append("formData", JSON.stringify(this.formData));
+          formData.append("id_card", this.id_card);
+          formData.append("slip", this.slip);
+          const response = await apiFinancial.update(this.formData.id, formData);
           // console.log(response);
           this.$refs.form.reset();
 
@@ -882,41 +662,29 @@ export default {
         this.formDataLoading = true;
         this.formDisabled = true;
 
-        await this.getProvinces();
-        await this.getAmphures();
-        await this.getDistricts();
-
         if (this.actionFinancial == "check") {
-          const response = await apiFinancial.dataWork(
-            this.idWork,
-            this.payment_type
-          );
+          const response = await apiFinancial.dataWork(this.idWork, this.payment_type);
           await this.$refs.form.reset();
           this.formData = await response.data;
-          this.formData.customer_id = await response.data.customer_id;
           this.formData.owner = await response.data.customer_name;
           this.formData.occupy = await response.data.customer_name;
-
+          // console.log(response.data);
           await this.selectSeeAmphure();
         } else if (this.actionFinancial == "add") {
           const response = await apiFinancial.addFinancial(this.idWork);
-
           await this.$refs.form.reset();
           this.formData = await response.data;
-          this.formData.customer_id = await response.data.customer_id;
           this.formData.owner = await response.data.customer_name;
           this.formData.occupy = await response.data.customer_name;
-
+          this.formData.payment_type = this.payment_type;
+          this.formData.created_at = "";
           await this.selectSeeAmphure();
         } else if (this.actionFinancial == "edit") {
-          await this.$refs.form.reset();
-          console.log(this.financial_id);
           const response = await apiFinancial.show(this.financial_id);
-          this.formData = await response.data;
-          this.formData.action = "edit";
-          // this.formData.owner = await response.data.customer_name;
-          // this.formData.occupy = await response.data.customer_name;
-
+          await this.$refs.form.reset();
+          this.formData = response.data;
+          this.formData.owner = response.data.customer_name;
+          this.formData.occupy = response.data.customer_name;
           await this.selectSeeAmphure();
         }
 

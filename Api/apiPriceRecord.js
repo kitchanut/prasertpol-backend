@@ -1,8 +1,8 @@
 import { request, HOSTNAME } from "./api";
 const path = "/api/price_record";
 
-export function index() {
-  const url = HOSTNAME + path;
+export function index(query) {
+  const url = HOSTNAME + path + "?" + query;
   return request("get", url, {});
 }
 

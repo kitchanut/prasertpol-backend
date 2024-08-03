@@ -37,8 +37,8 @@
         <v-col cols="3">
           <v-text-field
             v-model="search"
-id="search"
-name="search"
+            id="search"
+            name="search"
             append-icon="mdi-magnify"
             label="ค้นหา"
             single-line
@@ -57,38 +57,18 @@ name="search"
         loading-text="กำลังโหลดข้อมูลกรุณารอสักครู่"
       >
         <template v-slot:[`item.withdraw_part_status`]="{ item }">
-          <h5 v-if="item.withdraw_part_status == '1'" class="orange--text">
-            รอรับอะไหล่
-          </h5>
-          <h5 v-if="item.withdraw_part_status == '2'" class="blue--text">
-            รับอะไหล่
-          </h5>
-          <h5 v-if="item.withdraw_part_status == '3'" class="red--text">
-            รอรับคืนไหล่
-          </h5>
-          <h5 v-if="item.withdraw_part_status == '4'" class="red--text">
-            ได้รับคืนแล้ว
-          </h5>
+          <h5 v-if="item.withdraw_part_status == '1'" class="orange--text">รอรับอะไหล่</h5>
+          <h5 v-if="item.withdraw_part_status == '2'" class="blue--text">รับอะไหล่</h5>
+          <h5 v-if="item.withdraw_part_status == '3'" class="red--text">รอรับคืนไหล่</h5>
+          <h5 v-if="item.withdraw_part_status == '4'" class="red--text">ได้รับคืนแล้ว</h5>
         </template>
 
         <template v-slot:[`item.actions`]="{ item }">
-          <v-btn
-            color="primary"
-            v-if="item.withdraw_part_status == '1'"
-            x-small
-            dark
-            @click="editItem(item.id)"
-          >
+          <v-btn color="primary" v-if="item.withdraw_part_status == '1'" x-small dark @click="editItem(item.id)">
             รับอะไหล่
           </v-btn>
 
-          <v-btn
-            color="error"
-            v-if="item.withdraw_part_status == '3'"
-            x-small
-            dark
-            @click="editItem(item.id)"
-          >
+          <v-btn color="error" v-if="item.withdraw_part_status == '3'" x-small dark @click="editItem(item.id)">
             คืนอะไหล่
           </v-btn>
         </template>
@@ -119,9 +99,7 @@ export default {
   },
   data() {
     return {
-      user_group_permission: this.$auth.$storage.getLocalStorage(
-        "userData-user_group_permission"
-      ),
+      user_group_permission: this.$auth.$storage.getLocalStorage("userData-user_group_permission"),
       loading: true,
       search: "",
 

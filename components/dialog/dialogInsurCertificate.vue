@@ -1,20 +1,9 @@
 <template>
   <v-container>
-    <v-dialog
-      v-model="dialogDeleteComponent"
-      max-width="70%"
-    >
+    <v-dialog v-model="dialogDeleteComponent" max-width="70%">
       <v-card>
-        <v-form
-          autocomplete="true"
-          ref="form"
-          @submit.prevent="onAction()"
-        >
-          <v-toolbar
-            color="primary"
-            dark
-            flat
-          >
+        <v-form autocomplete="true" ref="form" @submit.prevent="onAction()">
+          <v-toolbar color="primary" dark flat>
             <v-toolbar-title> {{ formTitleInsurCertificate }} </v-toolbar-title>
 
             <v-spacer></v-spacer>
@@ -33,12 +22,7 @@
             </v-toolbar-items>
           </v-toolbar>
 
-          <v-progress-linear
-            v-if="formDataLoading"
-            indeterminate
-            color="yellow darken-2"
-          >
-          </v-progress-linear>
+          <v-progress-linear v-if="formDataLoading" indeterminate color="yellow darken-2"> </v-progress-linear>
           <v-card-text>
             <v-row class="d-flex flex-row">
               <v-col align="end">
@@ -323,14 +307,8 @@
                   <h3>รายการที่เคยซ่อมหลังการขาย</h3>
                 </v-col>
               </v-row>
-              <v-row
-                v-for="(repair_detail, keys) in formData.repair_details"
-                :key="keys"
-              >
-                <v-col
-                  class="text-center"
-                  cols="1"
-                >
+              <v-row v-for="(repair_detail, keys) in formData.repair_details" :key="keys">
+                <v-col class="text-center" cols="1">
                   <h3 class="mt-2">{{ keys + 1 }}</h3>
                 </v-col>
 
@@ -429,22 +407,11 @@
             </v-col>
           </v-card-text>
 
-          {{formData}}
-
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn
-              color="red darken-1"
-              text
-              @click="$emit('cancleItem')"
-            >ยกเลิก</v-btn>
+            <v-btn color="red darken-1" text @click="$emit('cancleItem')">ยกเลิก</v-btn>
 
-            <v-btn
-              type="submit"
-              color="success darken-1"
-              text
-              :loading="btnloading"
-            >บันทึก</v-btn>
+            <v-btn type="submit" color="success darken-1" text :loading="btnloading">บันทึก</v-btn>
           </v-card-actions>
         </v-form>
       </v-card>
@@ -459,13 +426,7 @@ import * as apiProvinces from "@/Api/apiProvinces";
 import * as apiAmphures from "@/Api/apiAmphures";
 import * as apiDistricts from "@/Api/apiDistricts";
 export default {
-  props: [
-    "dialogInsurCertificate",
-    "actionInsurCertificate",
-    "idWork",
-    "jobType",
-    "formTitleInsurCertificate",
-  ],
+  props: ["dialogInsurCertificate", "actionInsurCertificate", "idWork", "jobType", "formTitleInsurCertificate"],
   data() {
     return {
       btnloading: true,
@@ -558,10 +519,7 @@ export default {
             this.$emit("error", "InsurCertificate");
           }
         } else if (this.formData.action == "edit") {
-          const response = await apiInsurCertificate.update(
-            this.formData.id,
-            this.formData
-          );
+          const response = await apiInsurCertificate.update(this.formData.id, this.formData);
           // console.log(response);
           this.$refs.form.reset();
           if (response.status == 200) {
@@ -591,28 +549,19 @@ export default {
         this.getRepairlists();
 
         if (this.actionInsurCertificate == "check") {
-          const response = await apiInsurCertificate.checkInsurCertificate(
-            this.idWork,
-            this.jobType
-          );
+          const response = await apiInsurCertificate.checkInsurCertificate(this.idWork, this.jobType);
           // console.log(response);
           await this.$refs.form.reset();
           this.formData = await response.data;
 
           if (response.data.action == "add") {
             // amphure
-            this.formData.amphure = await this.getAmphures(
-              response.data.amphure_id
-            );
+            this.formData.amphure = await this.getAmphures(response.data.amphure_id);
             // district
 
-            this.formData.district = await this.getDistrict(
-              response.data.district_id
-            );
+            this.formData.district = await this.getDistrict(response.data.district_id);
             // province
-            this.formData.province = await this.getProvince(
-              response.data.province_id
-            );
+            this.formData.province = await this.getProvince(response.data.province_id);
           }
         }
         this.formDataLoading = false;

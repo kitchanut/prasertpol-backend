@@ -1,11 +1,5 @@
 <template>
-  <div
-    v-if="
-      user_group_permission == -1 ||
-      user_group_permission == 9 ||
-      user_group_permission == 11
-    "
-  >
+  <div v-if="user_group_permission == -1 || user_group_permission == 9 || user_group_permission == 11">
     <v-card>
       <v-card-title>
         <v-col cols="9">
@@ -17,8 +11,8 @@
         <v-col cols="3">
           <v-text-field
             v-model="search"
-id="search"
-name="search"
+            id="search"
+            name="search"
             append-icon="mdi-magnify"
             label="ค้นหา"
             single-line
@@ -37,13 +31,7 @@ name="search"
         loading-text="กำลังโหลดข้อมูลกรุณารอสักครู่"
       >
         <template v-slot:[`item.po_number`]="{ item }">
-          <v-btn
-            @click="editItem(item.purchase_id)"
-            x-small
-            color="primary"
-            dark
-            >{{ item.po_number }}</v-btn
-          >
+          <v-btn @click="editItem(item.purchase_id)" x-small color="primary" dark>{{ item.po_number }}</v-btn>
         </template>
         <template v-slot:[`item.updated_at`]="{ item }">
           <h5>
@@ -64,19 +52,11 @@ name="search"
 
         <template v-slot:[`item.po_active`]="{ item }">
           <div class="blue--text" v-if="item.po_active == 1">สร้างเอกสาร</div>
-          <div class="green--text" v-if="item.po_active == 2">
-            รับอะไหล่เข้าคลังแล้ว
-          </div>
+          <div class="green--text" v-if="item.po_active == 2">รับอะไหล่เข้าคลังแล้ว</div>
         </template>
       </v-data-table>
     </v-card>
-    <dialogNew
-      :dialog="dialog"
-      :id="id"
-      :action="action"
-      :formTitle="formTitle"
-      @cancleItem="dialog = false"
-    />
+    <dialogNew :dialog="dialog" :id="id" :action="action" :formTitle="formTitle" @cancleItem="dialog = false" />
   </div>
 </template>
 
@@ -92,9 +72,7 @@ export default {
   },
   data() {
     return {
-      user_group_permission: this.$auth.$storage.getLocalStorage(
-        "userData-user_group_permission"
-      ),
+      user_group_permission: this.$auth.$storage.getLocalStorage("userData-user_group_permission"),
       loading: false,
       search: "",
       headers: [

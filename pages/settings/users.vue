@@ -12,14 +12,7 @@
         <v-spacer></v-spacer>
 
         <v-col cols="3">
-          <v-text-field
-            v-model="search"
-            id="search"
-            name="search"
-            append-icon="mdi-magnify"
-            label="ค้นหา"
-            single-line
-          >
+          <v-text-field v-model="search" id="search" name="search" append-icon="mdi-magnify" label="ค้นหา" single-line>
           </v-text-field>
         </v-col>
       </v-card-title>
@@ -43,9 +36,7 @@
         </template>
 
         <template v-slot:[`item.user_active`]="{ item }">
-          <v-btn v-if="item.user_active == 1" x-small color="success" dark
-            >เปิดใช้งาน</v-btn
-          >
+          <v-btn v-if="item.user_active == 1" x-small color="success" dark>เปิดใช้งาน</v-btn>
           <v-btn v-else x-small color="red" dark>ปิดการใช้งาน</v-btn>
         </template>
 
@@ -69,11 +60,7 @@
         @success="addSuccess()"
         @error="addError()"
       />
-      <dialogImage
-        :dialog="dialogImg"
-        :imgUrl="imgUrl"
-        @cancleItem="dialogImg = false"
-      />
+      <dialogImage :dialog="dialogImg" :imgUrl="imgUrl" @cancleItem="dialogImg = false" />
     </v-card>
   </div>
 </template>
@@ -100,16 +87,15 @@ export default {
       action: "add",
       imgUrl: "",
       dialogImg: false,
-      user_group_permission: this.$auth.$storage.getLocalStorage(
-        "userData-user_group_permission"
-      ),
+      user_group_permission: this.$auth.$storage.getLocalStorage("userData-user_group_permission"),
       branch_id: this.$auth.$storage.getLocalStorage("userData-branch_id"),
       headers: [
         { text: "รูปภาพ", value: "user_image" },
         { text: "ชื่อ นามสกุล", value: "full_name" },
         // { text: "ชื่อผู้ใช้งาน", value: "email" },
         { text: "ตำแหน่ง", value: "user_group.user_group_name" },
-        { text: "สังกัด", value: "branch.branch_name" },
+        { text: "ทีมสาขา", value: "branch_team.branch_team_name" },
+        { text: "สาขาย่อย", value: "branch.branch_name" },
         { text: "ทีม", value: "team.team_name", width: "10%" },
         { text: "เบอร์", value: "tel" },
         { text: "ตำแหน่ง (จำนวน)", value: "user_sub_groups" },
@@ -140,10 +126,7 @@ export default {
         if (this.branch_id == 1) {
           let array = [];
           for (let index = 0; index < response.data.length; index++) {
-            if (
-              response.data[index].user_group_id == 3 &&
-              response.data[index].branch_id == this.branch_id
-            ) {
+            if (response.data[index].user_group_id == 3 && response.data[index].branch_id == this.branch_id) {
               array.push(response.data[index]);
             }
           }

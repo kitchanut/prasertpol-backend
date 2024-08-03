@@ -23,7 +23,7 @@ export function store(params) {
 
 export function update(id, params) {
   const url = HOSTNAME + path + "/" + id;
-  return request("put", url, params);
+  return request("post", url, params);
 }
 
 export function show(id) {
@@ -38,6 +38,11 @@ export function CheckWorking(name, tel) {
 
 export function updateStatusWorking(workingID, params) {
   const url = HOSTNAME + "/api/updateStatusWorking/" + workingID;
+  return request("post", url, params);
+}
+
+export function updatePedding(workingID, params) {
+  const url = HOSTNAME + "/api/updatePedding/" + workingID;
   return request("post", url, params);
 }
 
@@ -89,4 +94,9 @@ export function commission_month_by_team_branch(params) {
 export function updateNote(workingID, params) {
   const url = HOSTNAME + "/api/updateNote/" + workingID;
   return request("post", url, params);
+}
+
+export function activeWorkingID(params) {
+  const url = HOSTNAME + "/api/activeWorkingID";
+  return request("get", url, params);
 }

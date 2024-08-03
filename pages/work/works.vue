@@ -9,322 +9,352 @@
       user_group_permission == 11
     "
   >
-    <v-card>
-      <v-card-text>
-        <v-row>
-          <v-btn
-            :color="toggleView == 'small' ? 'lime' : ''"
-            :dark="toggleView == 'small' ? true : false"
-            v-blur
-            class="ml-2 my-1"
-            style="min-width: 0px; padding: 0 8px"
-            @click="toggleView = 'small'"
-          >
-            <v-icon>mdi-view-grid</v-icon>
-          </v-btn>
-
-          <v-btn
-            :color="toggleView == 'large' ? 'lime' : ''"
-            :dark="toggleView == 'large' ? true : false"
-            v-blur
-            class="ml-1 my-1"
-            style="min-width: 0px; padding: 0 8px"
-            @click="toggleView = 'large'"
-          >
-            <v-icon>mdi-apps</v-icon>
-          </v-btn>
-
-          <v-dialog v-model="dialogFilter" width="550">
-            <template v-slot:activator="{ on, attrs }">
-              <v-btn
-                :color="
-                  branch_team_id != 0 || branch_id != 0 || user_team_id != 0 || searchInServer != '' ? 'warning' : ''
-                "
-                v-blur
-                class="ml-2 my-1"
-                style="min-width: 0px; padding: 0 8px"
-                v-bind="attrs"
-                v-on="on"
-              >
-                <v-icon>mdi-filter-variant</v-icon>
-              </v-btn>
-            </template>
-
-            <v-card>
-              <v-toolbar color="warning" dark flat dense style="font-size: 20px" height="6"> </v-toolbar>
-
-              <v-fab-transition>
-                <v-btn icon absolute style="top: 10px; right: 10px" fab small @click="dialogFilter = false">
-                  <v-icon>mdi-close</v-icon>
-                </v-btn>
-              </v-fab-transition>
-
-              <h3 class="text-center" style="font-size: 22px; margin: 10px">กรองข้อมูล</h3>
-
-              <v-divider></v-divider>
-              <v-card-text class="mt-5">
-                <v-row no-gutters class="d-flex align-center mt-2">
-                  <v-col cols="4">ค้นหางาน:</v-col>
-                  <v-col cols="7">
-                    <v-text-field
-                      v-model="searchInServer"
-                      label="ลำดับรถ ชื่อลูกค้า ทะเบียนรถ"
-                      outlined
-                      single-line
-                      hide-details=""
-                      dense
-                    ></v-text-field>
-                  </v-col>
-                  <v-col cols="1">
-                    <v-btn color="primary" v-blur class="ml-2" style="min-width: 0px; padding: 0 8px" @click="getData">
-                      <v-icon>mdi-magnify</v-icon>
-                    </v-btn>
-                  </v-col>
-                </v-row>
-                <v-row
-                  v-if="
-                    user_group_permission == -1 ||
-                    user_group_permission == 9 ||
-                    user_group_permission == 10 ||
-                    user_group_permission == 11
-                  "
-                  no-gutters
-                  class="d-flex align-center mt-2"
-                >
-                  <v-col cols="4">ทีมสาขา:</v-col>
-                  <v-col cols="8">
-                    <v-autocomplete
-                      v-model="branch_team_id"
-                      :items="dataSelectBranch_teams"
-                      item-text="branch_team_name"
-                      item-value="id"
-                      no-data-text="ไม่มีข้อมูล"
-                      outlined
-                      dense
-                      hide-details
-                      @change="changeBranch_team"
-                    >
-                    </v-autocomplete>
-                  </v-col>
-                </v-row>
-
-                <v-row
-                  v-if="
-                    user_group_permission == -1 ||
-                    user_group_permission == 9 ||
-                    user_group_permission == 10 ||
-                    user_group_permission == 11
-                  "
-                  no-gutters
-                  class="d-flex align-center mt-2"
-                >
-                  <v-col cols="4">สาขาย่อย:</v-col>
-                  <v-col cols="8">
-                    <v-autocomplete
-                      v-model="branch_id"
-                      :items="branches"
-                      item-text="branch_name"
-                      item-value="id"
-                      no-data-text="ไม่มีข้อมูล"
-                      outlined
-                      dense
-                      hide-details
-                      @change="selectBranch"
-                    >
-                    </v-autocomplete>
-                  </v-col>
-                </v-row>
-
-                <v-row
-                  v-if="
-                    user_group_permission == -1 ||
-                    user_group_permission == 9 ||
-                    user_group_permission == 10 ||
-                    user_group_permission == 11
-                  "
-                  no-gutters
-                  class="d-flex align-center mt-2"
-                >
-                  <v-col cols="4">ทีมเซล:</v-col>
-                  <v-col cols="8">
-                    <v-autocomplete
-                      v-model="user_team_id"
-                      :items="user_teams"
-                      no-data-text="ไม่มีข้อมูล"
-                      item-text="team_name"
-                      item-value="id"
-                      outlined
-                      dense
-                      hide-details
-                      @change="select_user_team"
-                    >
-                    </v-autocomplete>
-                  </v-col>
-                </v-row>
-              </v-card-text>
-              <v-divider></v-divider>
-              <v-card-actions>
-                <v-btn
-                  color="warning"
-                  text
-                  @click="
-                    branch_team_id = 0;
-                    branch_id = 0;
-                    user_team_id = 0;
-                    searchInServer = '';
-                    getData();
-                  "
-                >
-                  <v-icon left>mdi-replay</v-icon>ล้างข้อมูล
-                </v-btn>
-                <v-spacer></v-spacer>
-                <!-- <v-btn
-                color="primary"
-                text
-                
-                @click="getData"
-              >
-                <v-icon left>mdi-magnify</v-icon>ค้นหา
-              </v-btn> -->
-              </v-card-actions>
-            </v-card>
-          </v-dialog>
-
-          <v-btn
-            v-if="
-              (user_group_permission == -1 && data.length > 0) ||
-              (user_group_permission == 8 && data.length > 0) ||
-              (user_group_permission == 10 && data.length > 0) ||
-              (user_group_permission == 11 && data.length > 0)
-            "
-            @click="handleDownload()"
-            color="success"
-            class="ml-2 my-1"
-          >
-            <v-icon>mdi-microsoft-excel</v-icon>
-          </v-btn>
-
-          <v-btn
-            v-if="
-              user_group_permission == -1 ||
-              user_group_permission == 2 ||
-              user_group_permission == 3 ||
-              user_group_permission == 10
-            "
-            class="ml-2 my-1"
-            color="primary"
-            dark
-            @click.stop="AddItem()"
-          >
-            <v-icon left>mdi-plus</v-icon>
-            เพิ่มรายการ
-          </v-btn>
-
-          <v-spacer></v-spacer>
-
-          <v-text-field
-            v-if="data.length > 0"
-            class="mx-2 my-1"
-            v-model="search"
-            id="search"
-            name="search"
-            append-icon="mdi-magnify"
-            label="ค้นหา"
-            single-line
-            outlined
-            dense
-            hide-details
-          >
-          </v-text-field>
-        </v-row>
-
-        <br />
-
-        <v-row
-          v-if="
-            toggleView == 'large' &&
-            (user_group_permission == -1 ||
-              user_group_permission == 9 ||
-              user_group_permission == 10 ||
-              user_group_permission == 11)
-          "
+    <v-card-text>
+      <v-row>
+        <v-btn
+          :color="toggleView == 'small' ? 'lime' : ''"
+          :dark="toggleView == 'small' ? true : false"
+          v-blur
+          class="my-1"
+          style="min-width: 0px; padding: 0 8px"
+          @click="toggleView = 'small'"
         >
-          <v-col>
-            <v-select
-              v-model="selectedHeaders"
-              :items="headers"
-              label="แสดง/ซ่อน หัวข้อ"
-              multiple
-              outlined
-              return-object
-              hide-details=""
+          <v-icon>mdi-view-grid</v-icon>
+        </v-btn>
+
+        <v-btn
+          :color="toggleView == 'large' ? 'lime' : ''"
+          :dark="toggleView == 'large' ? true : false"
+          v-blur
+          class="ml-1 my-1"
+          style="min-width: 0px; padding: 0 8px"
+          @click="toggleView = 'large'"
+        >
+          <v-icon>mdi-apps</v-icon>
+        </v-btn>
+
+        <v-dialog v-model="dialogFilter" width="550">
+          <template v-slot:activator="{ on, attrs }">
+            <v-btn
+              v-if="
+                user_group_permission == -1 ||
+                user_group_permission == 2 ||
+                user_group_permission == 9 ||
+                user_group_permission == 10 ||
+                user_group_permission == 11
+              "
+              :color="
+                branch_team_id != 0 ||
+                branch_id != 0 ||
+                user_team_id != 0 ||
+                searchInServer != '' ||
+                commission_mount != ''
+                  ? 'warning'
+                  : ''
+              "
+              v-blur
+              class="ml-2 my-1"
+              style="min-width: 0px; padding: 0 8px"
+              v-bind="attrs"
+              v-on="on"
             >
-            </v-select>
-          </v-col>
-        </v-row>
-        <br />
+              <v-icon>mdi-filter-variant</v-icon>
+            </v-btn>
+          </template>
 
-        <v-tabs grow v-model="selectTab" @change="getData">
-          <v-tab>
-            <v-badge color="green" :content="content_all"> ทั้งหมด </v-badge>
-          </v-tab>
+          <v-card>
+            <v-toolbar color="warning" dark flat dense style="font-size: 20px" height="6"> </v-toolbar>
 
-          <v-tab>
-            <v-badge color="green" :content="content_1"> สนใจ </v-badge>
-          </v-tab>
+            <v-fab-transition>
+              <v-btn icon absolute style="top: 10px; right: 10px" fab small @click="dialogFilter = false">
+                <v-icon>mdi-close</v-icon>
+              </v-btn>
+            </v-fab-transition>
 
-          <v-tab>
-            <v-badge color="green" :content="content_2"> จอง </v-badge>
-          </v-tab>
+            <h3 class="text-center" style="font-size: 22px; margin: 10px">กรองข้อมูล</h3>
 
-          <v-tab>
-            <v-badge color="green" :content="content_3"> มัดจำ </v-badge>
-          </v-tab>
+            <v-divider></v-divider>
+            <v-card-text class="mt-5">
+              <v-row no-gutters class="d-flex align-center mt-2">
+                <v-col cols="4">ค้นหางาน:</v-col>
+                <v-col cols="7">
+                  <v-text-field
+                    v-model="searchInServer"
+                    label="ลำดับรถ ชื่อลูกค้า ทะเบียนรถ"
+                    outlined
+                    single-line
+                    hide-details=""
+                    dense
+                  ></v-text-field>
+                </v-col>
+                <v-col cols="1">
+                  <v-btn color="primary" v-blur class="ml-2" style="min-width: 0px; padding: 0 8px" @click="getData">
+                    <v-icon>mdi-magnify</v-icon>
+                  </v-btn>
+                </v-col>
+              </v-row>
+              <v-row
+                v-if="
+                  user_group_permission == -1 ||
+                  user_group_permission == 9 ||
+                  user_group_permission == 10 ||
+                  user_group_permission == 11
+                "
+                no-gutters
+                class="d-flex align-center mt-2"
+              >
+                <v-col cols="4">ทีมสาขา:</v-col>
+                <v-col cols="8">
+                  <v-autocomplete
+                    v-model="branch_team_id"
+                    :items="dataSelectBranch_teams"
+                    item-text="branch_team_name"
+                    item-value="id"
+                    no-data-text="ไม่มีข้อมูล"
+                    outlined
+                    dense
+                    hide-details
+                    @change="changeBranch_team"
+                  >
+                  </v-autocomplete>
+                </v-col>
+              </v-row>
 
-          <v-tab>
-            <v-badge color="green" :content="content_4"> รอทำสัญญา </v-badge>
-          </v-tab>
+              <v-row
+                v-if="
+                  user_group_permission == -1 ||
+                  user_group_permission == 9 ||
+                  user_group_permission == 10 ||
+                  user_group_permission == 11
+                "
+                no-gutters
+                class="d-flex align-center mt-2"
+              >
+                <v-col cols="4">สาขาย่อย:</v-col>
+                <v-col cols="8">
+                  <v-autocomplete
+                    v-model="branch_id"
+                    :items="branches"
+                    item-text="branch_name"
+                    item-value="id"
+                    no-data-text="ไม่มีข้อมูล"
+                    outlined
+                    dense
+                    hide-details
+                    @change="selectBranch"
+                  >
+                  </v-autocomplete>
+                </v-col>
+              </v-row>
 
-          <v-tab>
-            <v-badge color="green" :content="content_5"> รอแบงค์อนุมัติ </v-badge>
-          </v-tab>
+              <v-row
+                v-if="
+                  user_group_permission == -1 ||
+                  user_group_permission == 9 ||
+                  user_group_permission == 10 ||
+                  user_group_permission == 11
+                "
+                no-gutters
+                class="d-flex align-center mt-2"
+              >
+                <v-col cols="4">ทีมเซล:</v-col>
+                <v-col cols="8">
+                  <v-autocomplete
+                    v-model="user_team_id"
+                    :items="user_teams"
+                    no-data-text="ไม่มีข้อมูล"
+                    item-text="team_name"
+                    item-value="id"
+                    outlined
+                    dense
+                    hide-details
+                    @change="select_user_team"
+                  >
+                  </v-autocomplete>
+                </v-col>
+              </v-row>
+              <v-row
+                v-if="
+                  user_group_permission == -1 ||
+                  user_group_permission == 9 ||
+                  user_group_permission == 10 ||
+                  user_group_permission == 11
+                "
+                no-gutters
+                class="d-flex align-center mt-2"
+              >
+                <v-col cols="4">เดือนคอม:</v-col>
+                <v-col cols="8">
+                  <v-dialog v-model="menuCommission_mount" width="290px">
+                    <template v-slot:activator="{ on, attrs }">
+                      <v-text-field
+                        autocomplete="true"
+                        v-model="commission_mount"
+                        readonly
+                        v-bind="attrs"
+                        v-on="on"
+                        persistent-hint
+                        clearable
+                        prepend-icon=""
+                        outlined
+                        dense
+                        hide-details
+                      ></v-text-field>
+                    </template>
+                    <v-date-picker
+                      v-model="commission_mount"
+                      locale="th-TH"
+                      type="month"
+                      @input="
+                        menuCommission_mount = false;
+                        getData();
+                      "
+                    ></v-date-picker>
+                  </v-dialog>
+                </v-col>
+              </v-row>
+            </v-card-text>
+            <v-divider></v-divider>
+            <v-card-actions>
+              <v-btn
+                color="warning"
+                text
+                @click="
+                  branch_team_id = 0;
+                  branch_id = 0;
+                  user_team_id = 0;
+                  searchInServer = '';
+                  commission_mount = '';
+                  getData();
+                "
+              >
+                <v-icon left>mdi-replay</v-icon>ล้างข้อมูล
+              </v-btn>
+              <v-spacer></v-spacer>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
 
-          <v-tab>
-            <v-badge color="green" :content="content_6"> ไม่อนุมัติ </v-badge>
-          </v-tab>
+        <v-btn
+          v-if="
+            (user_group_permission == -1 && data.length > 0) ||
+            (user_group_permission == 8 && data.length > 0) ||
+            (user_group_permission == 10 && data.length > 0) ||
+            (user_group_permission == 11 && data.length > 0)
+          "
+          @click="handleDownload()"
+          color="success"
+          class="ml-2 my-1"
+          style="min-width: 0px; padding: 0 8px"
+        >
+          <v-icon>mdi-microsoft-excel</v-icon>
+        </v-btn>
 
-          <v-tab>
-            <v-badge color="green" :content="content_7"> อนุมัติแล้ว </v-badge>
-          </v-tab>
+        <v-btn
+          v-if="
+            user_group_permission == -1 ||
+            user_group_permission == 2 ||
+            user_group_permission == 3 ||
+            user_group_permission == 10
+          "
+          class="ml-2 my-1"
+          color="primary"
+          dark
+          @click.stop="AddItem()"
+        >
+          <v-icon left>mdi-plus</v-icon>
+          เพิ่มรายการ
+        </v-btn>
 
-          <v-tab>
-            <v-badge color="green" :content="content_8"> รอชุดโอน </v-badge>
-          </v-tab>
+        <v-spacer></v-spacer>
 
-          <v-tab>
-            <v-badge color="green" :content="content_9"> รอตรวจสอบ </v-badge>
-          </v-tab>
+        <v-text-field
+          v-if="data.length > 0"
+          class="my-1"
+          v-model="search"
+          id="search"
+          name="search"
+          append-icon="mdi-magnify"
+          label="ค้นหา"
+          single-line
+          outlined
+          dense
+          hide-details
+        >
+        </v-text-field>
+      </v-row>
 
-          <v-tab>
-            <v-badge color="green" :content="content_10"> รอปิดงาน </v-badge>
-          </v-tab>
+      <v-row
+        v-if="
+          toggleView == 'large' &&
+          (user_group_permission == -1 ||
+            user_group_permission == 9 ||
+            user_group_permission == 10 ||
+            user_group_permission == 11)
+        "
+        class="mt-3"
+      >
+        <v-col>
+          <v-select
+            v-model="selectedHeaders"
+            :items="headers"
+            label="แสดง/ซ่อน หัวข้อ"
+            multiple
+            outlined
+            return-object
+            hide-details=""
+          >
+          </v-select>
+        </v-col>
+      </v-row>
+    </v-card-text>
 
-          <!-- <v-tab v-if="
-              user_group_permission == -1 ||
-              user_group_permission == 9 ||
-              user_group_permission == 10 ||
-              user_group_permission == 11
-            ">
-            <v-badge
-              color="green"
-              :content="content_11"
-            >
-              งานที่ปิดแล้ว
-            </v-badge>
-          </v-tab> -->
-        </v-tabs>
-      </v-card-text>
+    <v-card outlined class="mt-3">
+      <v-tabs class="mt-1" grow v-model="selectTab" @change="getData">
+        <v-tab>
+          <v-badge color="green" :content="content[0]"> ทั้งหมด </v-badge>
+        </v-tab>
 
+        <v-tab>
+          <v-badge color="green" :content="content[1]"> สนใจ </v-badge>
+        </v-tab>
+
+        <v-tab>
+          <v-badge color="green" :content="content[2]"> จอง </v-badge>
+        </v-tab>
+
+        <v-tab>
+          <v-badge color="green" :content="content[3]"> มัดจำ </v-badge>
+        </v-tab>
+
+        <v-tab>
+          <v-badge color="green" :content="content[4]"> รอทำสัญญา </v-badge>
+        </v-tab>
+
+        <v-tab>
+          <v-badge color="green" :content="content[5]"> รอแบงค์อนุมัติ </v-badge>
+        </v-tab>
+
+        <v-tab>
+          <v-badge color="green" :content="content[6]"> ไม่อนุมัติ </v-badge>
+        </v-tab>
+
+        <v-tab>
+          <v-badge color="green" :content="content[7]"> อนุมัติแล้ว </v-badge>
+        </v-tab>
+
+        <v-tab>
+          <v-badge color="green" :content="content[8]"> รอชุดโอน </v-badge>
+        </v-tab>
+
+        <v-tab>
+          <v-badge color="green" :content="content[9]"> รอตรวจสอบ </v-badge>
+        </v-tab>
+
+        <v-tab>
+          <v-badge color="green" :content="content[10]"> รอปิดงาน </v-badge>
+        </v-tab>
+      </v-tabs>
       <div id="mycontainer">
         <div id="outer">
           <div class="wrapper1" style="overflow-x: scroll; overflow-y: hidden">
@@ -347,6 +377,100 @@
             :mobile-breakpoint="0"
             dense
           >
+            <template v-slot:[`item.work_status`]="{ item }">
+              <div v-if="item.status_del == 0">
+                <v-btn class="mt-1" small depressed color="red" dark>ยกเลิก</v-btn>
+              </div>
+              <div v-else>
+                <v-btn v-if="item.work_status == '1'" small depressed color="primary" dark>รอจอง</v-btn>
+                <v-btn v-if="item.work_status == '2'" small depressed color="primary" dark>รอมัดจำ</v-btn>
+                <v-btn v-if="item.work_status == '3'" small depressed color="primary" dark>รอนัดทำสัญญา</v-btn>
+                <v-btn v-if="item.work_status == '4'" small depressed color="primary" dark>รอทำสัญญา</v-btn>
+                <v-btn v-if="item.work_status == '5'" small depressed color="primary" dark>รอแบงค์อนุมัติ</v-btn>
+                <v-btn v-if="item.work_status == '6'" small depressed color="red" dark>แบงค์ไม่อนุมัติ</v-btn>
+                <v-btn v-if="item.work_status == '7'" small depressed color="primary" dark>รอปล่อยรถ</v-btn>
+                <v-btn v-if="item.work_status == '8'" small depressed color="primary" dark>รอชุดโอน</v-btn>
+                <v-btn v-if="item.work_status == '9'" small depressed color="warning" dark> รอตรวจสอบ </v-btn>
+                <v-btn v-if="item.work_status == '10'" small depressed color="warning" dark>รอปิดงาน</v-btn>
+                <v-btn v-if="item.work_status == '11'" small depressed color="success" dark>ปิดงาน</v-btn>
+              </div>
+
+              <v-btn v-if="item.pathner_job_technician == 1" class="mt-1" x-small depressed color="red" dark
+                >มีงานซ่อมนอก</v-btn
+              >
+              <span v-if="item.job_fix != 0">
+                <v-btn class="mt-1" x-small depressed color="red" dark>มีงานซ่อม</v-btn>
+              </span>
+
+              <div v-if="item.contract != null">
+                <span v-if="item.appointment_book_date == ' '">
+                  <v-btn class="mt-1" x-small depressed color="red" dark>ชุดโอน</v-btn>
+                </span>
+
+                <span v-if="item.appointment_transfer_date == ' '">
+                  <v-btn class="mt-1" x-small depressed color="red" dark>โอนรถ</v-btn>
+                </span>
+
+                <span v-if="item.appointment_money_date == ' '">
+                  <v-btn class="mt-1" x-small depressed color="red" dark>ได้เงิน</v-btn>
+                </span>
+
+                <span v-if="item.appointment_mkt_date == null">
+                  <v-btn class="mt-1" x-small depressed color="red" dark>MRT</v-btn>
+                </span>
+              </div>
+            </template>
+
+            <template v-slot:[`item.pedding`]="{ item }">
+              <v-menu offset-y>
+                <template v-slot:activator="{ on, attrs }">
+                  <v-btn
+                    :color="item.pedding == 'ปล่อยรถแล้ว' ? 'success' : item.pedding ? 'warning' : ''"
+                    small
+                    depressed
+                    v-bind="attrs"
+                    v-on="on"
+                  >
+                    {{ item.pedding ? item.pedding : "กรุณาเลือก" }}
+                  </v-btn>
+                </template>
+                <v-list>
+                  <v-list-item-group
+                    v-model="item.pedding"
+                    :color="item.pedding == 'ปล่อยรถแล้ว' ? 'success' : 'warning'"
+                  >
+                    <v-list-item
+                      v-for="(pedding, i) in pedding_main_items"
+                      :key="'main_' + i"
+                      style="min-height: 32px"
+                      :value="pedding"
+                      @click="updatePedding(item.id, pedding)"
+                    >
+                      <v-list-item-title>{{ pedding }}</v-list-item-title>
+                    </v-list-item>
+                    <v-divider></v-divider>
+                    <v-list-item
+                      v-for="(pedding, i) in pedding_items"
+                      :key="i"
+                      style="min-height: 32px; color: blue"
+                      :value="pedding"
+                      @click="updatePedding(item.id, pedding)"
+                    >
+                      <v-list-item-title>{{ pedding }}</v-list-item-title>
+                    </v-list-item>
+                  </v-list-item-group>
+                </v-list>
+              </v-menu>
+            </template>
+            <template v-slot:[`item.amount_price`]="{ item }">
+              {{ Number(item.amount_price).toLocaleString() }}
+            </template>
+            <template v-slot:[`item.amount_down`]="{ item }">
+              {{ Number(item.amount_down).toLocaleString() }}
+            </template>
+            <template v-slot:[`item.car_price_vat`]="{ item }">
+              {{ Number(item.car_price_vat).toLocaleString() }}
+            </template>
             <template v-slot:[`item.customer`]="{ item }">
               <h5 v-if="item.customer_id == null" class="red--text">
                 {{ item.customer_name }}
@@ -354,216 +478,77 @@
               <h5 v-else class="green--text">{{ item.customer_name }}</h5>
             </template>
 
-            <!-- <template v-slot:[`item.hear_from_type`]="{ item }">
-                <h5 v-if="item.hear_from_type == 1">หน้าร้าน</h5>
-                <h5 v-if="item.hear_from_type == 2">เพจบริษัท</h5>
-                <h5 v-if="item.hear_from_type == 3">ลูกค้าเก่าแนะนำ</h5>
-                <h5 v-if="item.hear_from_type == 4">นายหน้า</h5>
-                <h5 v-if="item.hear_from_type == 5">ใบปลิว</h5>
-                <h5 v-if="item.hear_from_type == 6">
-                  Marketplace/ไลน์/เพจส่วนตัว
-                </h5>
-                <h5 v-if="item.hear_from_type == 7">ออนไลน์</h5>
-              </template> -->
-
             <template v-slot:[`item.sale`]="{ item }">
               <h5 v-if="item.sale_id == null || item.sale_id == 0" class="red--text">ยังไม่เลือก</h5>
               <h5 v-else>
-                <v-btn dark x-small class="mx-1" color="green" @click="getSale(item.sale_id)">
+                <a
+                  href="javascript:void(0)"
+                  class="textOneLine"
+                  style="font-size: 0.8rem"
+                  @click="getSale(item.sale_id)"
+                >
                   {{ item.sale == null ? "" : item.sale }}
-                </v-btn>
+                </a>
               </h5>
             </template>
 
             <template v-slot:[`item.branch_name`]="{ item }">
-              <h5 v-if="item.sale_id == null || item.sale_id == 0" class="red--text">
+              <div v-if="item.sale_id == null || item.sale_id == 0" class="red--text">
                 {{ item.branch_name }}
-              </h5>
-              <h5 v-else>
-                {{ item.branch_name }}
-              </h5>
-            </template>
-
-            <template v-slot:[`item.appointment_bank_type`]="{ item }">
-              <v-btn v-if="item.appointment_bank_type == 'ครบ'" class="mt-1" x-small color="green" dark>ครบ</v-btn>
-              <v-btn v-if="item.appointment_bank_type == 'ไม่ครบ'" class="mt-1" x-small color="red" dark>ไม่ครบ</v-btn>
-            </template>
-
-            <template v-slot:[`item.work_status`]="{ item }">
-              <div v-if="item.status_del == 0">
-                <v-btn class="mt-1" x-small color="red" dark>ยกเลิก</v-btn>
               </div>
               <div v-else>
-                <v-btn v-if="item.work_status == '1'" x-small color="primary" dark>ลูกค้าสนใจ</v-btn>
-                <v-btn v-if="item.work_status == '2'" x-small color="primary" dark>ยืนยันการจอง</v-btn>
-                <v-btn v-if="item.work_status == '3'" x-small color="primary" dark>วางมัดจำแล้ว</v-btn>
-                <v-btn v-if="item.work_status == '4'" x-small color="primary" dark>นัดทำสัญญาแล้ว</v-btn>
-                <v-btn v-if="item.work_status == '5'" x-small color="primary" dark>รอแบงค์อนุมัติ</v-btn>
-                <v-btn v-if="item.work_status == '6'" x-small color="red" dark>แบงค์ไม่อนุมัติ</v-btn>
-                <v-btn v-if="item.work_status == '7'" x-small color="primary" dark>แบงค์อนุมัติแล้ว</v-btn>
-                <v-btn v-if="item.work_status == '8'" x-small color="primary" dark>รอชุดโอน</v-btn>
-                <v-btn v-if="item.work_status == '9'" x-small color="warning" dark> รอตรวจสอบ </v-btn>
-                <v-btn v-if="item.work_status == '10'" x-small color="warning" dark>รอปิดงาน</v-btn>
-                <v-btn v-if="item.work_status == '11'" x-small color="success" dark>ปิดงาน</v-btn>
-              </div>
-
-              <v-btn v-if="item.pathner_job_technician == 1" class="mt-1" x-small color="red" dark>มีงานซ่อมนอก</v-btn>
-              <span v-if="item.job_fix != 0">
-                <v-btn class="mt-1" x-small color="red" dark>มีงานซ่อม</v-btn>
-              </span>
-
-              <div v-if="item.contract != null">
-                <span v-if="item.appointment_book_date == ' '">
-                  <v-btn class="mt-1" x-small color="red" dark>ชุดโอน</v-btn>
-                </span>
-
-                <span v-if="item.appointment_transfer_date == ' '">
-                  <v-btn class="mt-1" x-small color="red" dark>โอนรถ</v-btn>
-                </span>
-
-                <span v-if="item.appointment_money_date == ' '">
-                  <v-btn class="mt-1" x-small color="red" dark>ได้เงิน</v-btn>
-                </span>
-
-                <span v-if="item.appointment_mkt_date == null">
-                  <v-btn class="mt-1" x-small color="red" dark>MRT</v-btn>
-                </span>
-                <!-- <span
-                    v-if="
-                      item.financials_sum_bath != item.down &&
-                      item.work_status >= 8 &&
-                      item.bank_id != 6
-                    "
-                  >
-                    <v-menu open-on-hover offset-y :nudge-width="100">
-                      <template v-slot:activator="{ on, attrs }">
-                        <v-btn
-                          color="red"
-                          x-small
-                          dark
-                          v-bind="attrs"
-                          v-on="on"
-                        >
-                          ค้างดาวน์
-                        </v-btn>
-                      </template>
-                      <v-card>
-                        <v-card-text>
-                          <v-row no-gutters>
-                            <v-col>เงินดาวน์​: </v-col>
-                            <v-col align="right">
-                              {{
-                                Number(item.down).toLocaleString("th-TH", {
-                                  minimumFractionDigits: 2,
-                                  maximumFractionDigits: 2,
-                                })
-                              }}
-                            </v-col>
-                          </v-row>
-                          <v-row no-gutters>
-                            <v-col>จ่ายแล้ว: </v-col>
-                            <v-col align="right">
-                              {{
-                                Number(item.financials_sum_bath).toLocaleString(
-                                  "th-TH",
-                                  {
-                                    minimumFractionDigits: 2,
-                                    maximumFractionDigits: 2,
-                                  }
-                                )
-                              }}
-                            </v-col>
-                          </v-row>
-                          <v-row no-gutters>
-                            <v-col>ค้างจ่าย: </v-col>
-                            <v-col align="right">
-                              {{
-                                (
-                                  Number(item.down) -
-                                  Number(item.financials_sum_bath)
-                                ).toLocaleString("th-TH", {
-                                  minimumFractionDigits: 2,
-                                  maximumFractionDigits: 2,
-                                })
-                              }}
-                            </v-col>
-                          </v-row>
-                        </v-card-text>
-                      </v-card>
-                    </v-menu>
-                  </span> -->
+                {{ item.branch_name }}
               </div>
             </template>
 
             <template v-slot:[`item.booking_date`]="{ item }">
-              <!-- <span
-                  style="color: red"
-                  v-if="
-                    $moment().unix() >
-                    Number($moment(item.booking_date).unix()) + 25200
-                  "
-                >
-                  {{ $moment(item.booking_date).fromNow(true) }}
-                </span> -->
-
-              <span
-                style="color: red"
-                v-if="$moment().unix() > Number($moment(item.booking_date).unix()) + 604800 && item.booking_date != ' '"
-              >
-                {{ $moment().diff($moment(item.booking_date), "days") }} วัน
-              </span>
-
-              <span
-                style="color: blue"
-                v-else-if="
-                  $moment().unix() > Number($moment(item.booking_date).unix()) + 86400 && item.booking_date != ' '
-                "
-              >
-                {{ $moment().diff($moment(item.booking_date), "days") }} วัน
-              </span>
-
-              <span style="color: blue" v-else-if="item.booking_date != ' '">
-                {{ $moment(item.booking_date).fromNow(true) }}
-              </span>
+              <div v-if="item.booking_date != ' '">{{ $moment(item.booking_date).format("YYYY-MM-DD") }}</div>
             </template>
 
-            <template v-slot:[`item.updated_at`]="{ item }">
-              {{ $moment(item.updated_at).fromNow(true) }}
+            <template v-slot:[`item.deposit`]="{ item }">
+              <div v-if="item.deposit != ' '">{{ Number(item.deposit).toLocaleString() }}</div>
             </template>
 
-            <template v-slot:[`item.appointment_banks.car_price`]="{ item }">
-              <span v-if="item.appointment_banks != null">
+            <template v-slot:[`item.down`]="{ item }">
+              <div v-if="item.down >= 0">{{ Number(item.down).toLocaleString() }}</div>
+              <!-- <div v-else>{{ item.down }}</div> -->
+            </template>
+
+            <template v-slot:[`item.commission`]="{ item }">
+              <div v-if="item.commission > 0">{{ Number(item.commission).toLocaleString() }}</div>
+            </template>
+
+            <template v-slot:[`item.insurance`]="{ item }">
+              <div v-if="item.insurance > 0">{{ Number(item.insurance).toLocaleString() }}</div>
+            </template>
+
+            <template v-slot:[`item.finance_price`]="{ item }">
+              <div v-if="item.finance_price > 0">{{ Number(item.finance_price).toLocaleString() }}</div>
+            </template>
+
+            <template v-slot:[`item.finance_price_vat`]="{ item }">
+              <div v-if="item.finance_price > 0">{{ Number(item.finance_price * 1.07).toLocaleString() }}</div>
+            </template>
+
+            <template v-slot:[`item.appointment_bank_type`]="{ item }">
+              <div v-if="item.appointment_bank_type == 'ครบ'" style="color: green" class="text-center">
+                {{ item.appointment_bank_type }}
+              </div>
+              <div v-if="item.appointment_bank_type == 'ไม่ครบ'">
+                <div style="color: red" class="text-center">{{ item.appointment_bank_type }}</div>
+                <div v-html="item.appointment_bank_list" class="text-left"></div>
+              </div>
+            </template>
+
+            <template v-slot:[`item.appointment_money_price`]="{ item }">
+              <span v-if="item.appointment_money_price != ' '">
                 {{
-                  Number(item.appointment_banks.car_price).toLocaleString("th-TH", {
+                  Number(item.appointment_money_price).toLocaleString("th-TH", {
                     maximumFractionDigits: 2,
                     minimumFractionDigits: 2,
                   })
-                }}</span
-              >
-              <span v-else>0</span>
-            </template>
-
-            <template v-slot:[`item.bookings.amount_slacken`]="{ item }">
-              <span v-if="item.bookings != null">
-                {{
-                  Number(item.bookings.amount_slacken).toLocaleString("th-TH", {
-                    maximumFractionDigits: 2,
-                    minimumFractionDigits: 2,
-                  })
-                }}</span
-              >
-              <span v-else>0</span>
-            </template>
-            <template v-slot:[`item.appointment_banks.appointment_money_price`]="{ item }">
-              <span v-if="item.appointment_banks != null">
-                {{
-                  Number(item.appointment_banks.appointment_money_price).toLocaleString("th-TH", {
-                    maximumFractionDigits: 2,
-                    minimumFractionDigits: 2,
-                  })
-                }}</span
-              >
-              <span v-else>0</span>
+                }}
+              </span>
             </template>
 
             <template v-slot:[`item.commission_mount`]="{ item }">
@@ -587,11 +572,46 @@
               </div>
             </template>
 
+            <template v-slot:[`item.monthly_payment`]="{ item }">
+              <div v-if="item.monthly_payment > 0">{{ Number(item.monthly_payment).toLocaleString() }}</div>
+            </template>
+
             <template v-slot:[`item.user`]="{ item }">
               <span style="font-size: 12px">{{ item.user }}</span>
             </template>
 
-            <!-- <template v-slot:item.actions="{ item }"> -->
+            <template v-slot:[`item.note`]="{ item }">
+              <div v-if="item.note != ' '" v-html="item.note" @click="note(item.id)" style="cursor: pointer"></div>
+              <div v-else x-small class="white--text" rounded dark @click="note(item.id)" style="cursor: pointer">
+                + เพิ่ม
+              </div>
+            </template>
+
+            <template v-slot:[`item.note_sale`]="{ item }">
+              <div
+                v-if="item.note_sale != ' '"
+                @click="note(item.id)"
+                v-html="item.note_sale"
+                style="cursor: pointer"
+              ></div>
+              <div v-else x-small class="white--text" rounded dark @click="note(item.id)" style="cursor: pointer">
+                + เพิ่ม
+              </div>
+            </template>
+
+            <template v-slot:[`item.request_update`]="{ item }">
+              <div v-for="item in item.request_update">
+                <span style="color: blue">{{ item.created_at }}:</span> {{ item.note }}
+              </div>
+              <DialogRequestUpdate
+                action="add"
+                appearance="text"
+                :working_id="item.id"
+                :car_no="item.car_no"
+                @success="getData()"
+              />
+            </template>
+
             <template v-slot:[`item.actions`]="{ item }">
               <v-menu offset-y>
                 <template v-slot:activator="{ on, attrs }">
@@ -599,7 +619,7 @@
                     <v-icon>mdi-dots-horizontal</v-icon>
                   </v-btn>
                 </template>
-                <v-list>
+                <v-list class="work">
                   <v-list-item
                     @click="editItem(item.id)"
                     v-if="
@@ -647,14 +667,12 @@
                       (item.work_status >= 3 && user_group_permission == -1) ||
                       (item.work_status >= 3 && user_group_permission == 2) ||
                       (item.work_status >= 3 && user_group_permission == 3) ||
-                      (item.work_status >= 3 && user_group_permission == 9) ||
-                      (item.work_status >= 3 && user_group_permission == 10) ||
-                      (item.work_status >= 3 && user_group_permission == 11)
+                      (item.work_status >= 3 && user_group_permission == 10)
                     "
-                    @click="ReceiveDown(item.car_no, item.id)"
+                    @click="Appointment(item.car_no, item.id)"
                   >
-                    <v-list-item-title style="color: green">{{
-                      item.work_status > 3 ? "ใบสำคัญรับเงิน" : "ใบสำคัญรับเงิน"
+                    <v-list-item-title :style="item.work_status == 3 ? 'color:blue' : ''">{{
+                      item.work_status > 3 ? "ดูข้อมูลการฝาก/นัด" : "ฝาก/นัด"
                     }}</v-list-item-title>
                   </v-list-item>
 
@@ -663,28 +681,27 @@
                       (item.work_status >= 3 && user_group_permission == -1) ||
                       (item.work_status >= 3 && user_group_permission == 2) ||
                       (item.work_status >= 3 && user_group_permission == 3) ||
-                      (item.work_status >= 3 && user_group_permission == 10)
+                      (item.work_status >= 3 && user_group_permission == 9) ||
+                      (item.work_status >= 3 && user_group_permission == 10) ||
+                      (item.work_status >= 3 && user_group_permission == 11)
                     "
-                    @click="Appointment(item.car_no, item.id)"
+                    @click="AppointmentBank(item.car_no, item.id)"
                   >
                     <v-list-item-title :style="item.work_status == 3 ? 'color:blue' : ''">{{
-                      item.work_status > 3 ? "ดูข้อมูลการนัดทำสัญญากับแบงค์" : "นัดทำสัญญากับแบงค์"
+                      item.work_status > 3 ? `ดูข้อมูลการทำสัญญา (${item.appointment_bank_type})` : `ทำสัญญา`
                     }}</v-list-item-title>
                   </v-list-item>
 
                   <v-list-item
                     v-if="
-                      (item.work_status >= 4 && user_group_permission == -1) ||
-                      (item.work_status >= 4 && user_group_permission == 2) ||
-                      (item.work_status >= 4 && user_group_permission == 3) ||
-                      (item.work_status >= 4 && user_group_permission == 9) ||
-                      (item.work_status >= 4 && user_group_permission == 10) ||
-                      (item.work_status >= 4 && user_group_permission == 11)
+                      (item.work_status >= 5 && user_group_permission == -1) ||
+                      (item.work_status >= 5 && user_group_permission == 9) ||
+                      (item.work_status >= 5 && user_group_permission == 10)
                     "
-                    @click="AppointmentBank(item.car_no, item.id)"
+                    @click="PreApprove(item.id)"
                   >
-                    <v-list-item-title :style="item.work_status == 4 ? 'color:blue' : ''">{{
-                      item.work_status > 4 ? "ดูข้อมูลการทำสัญญา" : "ทำสัญญา"
+                    <v-list-item-title :style="item.work_status == 5 ? 'color:blue' : ''">{{
+                      item.work_status > 5 ? "ดูข้อมูลอนุมัติเบื้องต้น" : "อนุมัติเบื้องต้น"
                     }}</v-list-item-title>
                   </v-list-item>
 
@@ -714,42 +731,6 @@
                     >
                   </v-list-item>
 
-                  <!-- <v-list-item
-                      v-if="
-                        (item.work_status >= 7 && user_group_permission == -1) ||
-                        (item.work_status >= 7 && user_group_permission == 2) ||
-                        (item.work_status >= 7 && user_group_permission == 3) ||
-                        (item.work_status >= 7 && user_group_permission == 9) ||
-                        (item.work_status >= 7 && user_group_permission == 10) ||
-                        (item.work_status >= 7 && user_group_permission == 11)
-                      "
-                      @click="Financial(item.car_no, item.id, '2')"
-                    >
-                      <v-list-item-title>{{
-                        item.work_status > 7
-                          ? "ดูข้อมูลเงินดาวน์"
-                          : "วางเงินดาวน์"
-                      }}</v-list-item-title>
-                    </v-list-item> -->
-
-                  <!-- <v-list-item
-                      v-if="
-                        (item.work_status >= 7 && user_group_permission == -1) ||
-                        (item.work_status >= 7 && user_group_permission == 2) ||
-                        (item.work_status >= 7 && user_group_permission == 3) ||
-                        (item.work_status >= 7 && user_group_permission == 9) ||
-                        (item.work_status >= 7 && user_group_permission == 10) ||
-                        (item.work_status >= 7 && user_group_permission == 11)
-                      "
-                      @click="Financial(item.car_no, item.id, '3')"
-                    >
-                      <v-list-item-title>{{
-                        item.work_status > 7
-                          ? "ดูข้อมูลชำระเงินสด"
-                          : "ชำระเงินสด"
-                      }}</v-list-item-title>
-                    </v-list-item> -->
-
                   <v-list-item
                     v-if="
                       (item.work_status >= 7 && user_group_permission == -1) ||
@@ -766,7 +747,7 @@
                     }}</v-list-item-title>
                   </v-list-item>
 
-                  <v-list-item
+                  <!-- <v-list-item
                     v-if="
                       (item.work_status >= 7 && user_group_permission == -1) ||
                       (item.work_status >= 7 && user_group_permission == 2) ||
@@ -778,7 +759,7 @@
                     <v-list-item-title :style="item.work_status == 7 ? 'color:blue' : ''">{{
                       item.work_status > 7 ? "ดูข้อมูลใบประกันรถยนต์" : "ใบประกันรถยนต์"
                     }}</v-list-item-title>
-                  </v-list-item>
+                  </v-list-item> -->
 
                   <v-list-item
                     v-if="
@@ -819,18 +800,6 @@
                       {{ item.work_status > 7 ? "ดูข้อมูลบันทึกการรับเงิน (ค่าคอม)" : "บันทึกการรับเงิน (ค่าคอม)" }}
                     </v-list-item-title>
                   </v-list-item>
-
-                  <!-- <v-list-item
-                      v-if="
-                        (item.work_status == 8 &&
-                          user_group_permission == -1) ||
-                        (item.work_status == 8 && user_group_permission == 10)
-                      "
-                      @click="CarTransferred(item.car_no, item.id)"
-                    >
-                      <v-list-item-title>โอนสำเร็จ</v-list-item-title>
-                    </v-list-item> -->
-
                   <v-list-item
                     v-if="
                       (item.work_status == 9 && user_group_permission == -1) ||
@@ -862,7 +831,61 @@
                   >
                     <v-list-item-title :style="item.work_status == 10 ? 'color:green' : ''">ปิดงาน</v-list-item-title>
                   </v-list-item>
+                  <v-list-item
+                    @click="note(item.id)"
+                    v-if="
+                      user_group_permission == -1 ||
+                      user_group_permission == 2 ||
+                      user_group_permission == 3 ||
+                      user_group_permission == 9 ||
+                      user_group_permission == 10
+                    "
+                  >
+                    <v-list-item-title>หมายเหตุ</v-list-item-title>
+                  </v-list-item>
 
+                  <v-divider></v-divider>
+                  <v-list-item
+                    v-if="
+                      (item.work_status >= 3 && user_group_permission == -1) ||
+                      (item.work_status >= 3 && user_group_permission == 2) ||
+                      (item.work_status >= 3 && user_group_permission == 3) ||
+                      (item.work_status >= 3 && user_group_permission == 9) ||
+                      (item.work_status >= 3 && user_group_permission == 10) ||
+                      (item.work_status >= 3 && user_group_permission == 11)
+                    "
+                    @click="ReceiveDown(item.car_no, item.id)"
+                  >
+                    <v-list-item-title style="color: green">{{
+                      item.work_status > 3 ? "ใบสำคัญรับเงิน" : "ใบสำคัญรับเงิน"
+                    }}</v-list-item-title>
+                  </v-list-item>
+
+                  <dialogInsurancesList
+                    v-if="
+                      (item.work_status >= 8 && user_group_permission == -1) ||
+                      (item.work_status >= 8 && user_group_permission == 2) ||
+                      (item.work_status >= 8 && user_group_permission == 3) ||
+                      (item.work_status >= 8 && user_group_permission == 9)
+                    "
+                    appearance="list"
+                    :car_id="item.car_id"
+                    :car_no="item.car_no"
+                  />
+
+                  <dialogInstallment
+                    v-if="
+                      (item.work_status >= 8 && user_group_permission == -1) ||
+                      (item.work_status >= 8 && user_group_permission == 2) ||
+                      (item.work_status >= 8 && user_group_permission == 3) ||
+                      (item.work_status >= 8 && user_group_permission == 9)
+                    "
+                    appearance="list"
+                    :working_id="item.id"
+                    :car_no="item.car_no"
+                  />
+
+                  <v-divider v-if="item.work_status >= 3 && user_group_permission == -1"></v-divider>
                   <v-list-item
                     v-if="item.work_status >= 3 && user_group_permission == -1"
                     @click="JobTechnician(item.car_no, item.id, item.car_id)"
@@ -879,33 +902,21 @@
                     <v-list-item-title>แจ้งซ่อม (อู่นอก)</v-list-item-title>
                   </v-list-item>
 
-                  <v-list-item
-                    @click="note(item.id)"
-                    v-if="
-                      user_group_permission == -1 ||
-                      user_group_permission == 2 ||
-                      user_group_permission == 3 ||
-                      user_group_permission == 9 ||
-                      user_group_permission == 10
-                    "
-                  >
-                    <v-list-item-title>หมายเหตุ</v-list-item-title>
-                  </v-list-item>
-
+                  <v-divider v-if="user_group_permission == -1 || user_group_permission == 9"></v-divider>
                   <v-list-item
                     v-if="user_group_permission == -1 || user_group_permission == 9"
                     @click="AllInfoCar(item.car_id, item.car_no)"
                   >
                     <v-list-item-title>ภาพรวมของรถ</v-list-item-title>
                   </v-list-item>
-
+                  <v-divider v-if="user_group_permission == -1 || user_group_permission == 9"></v-divider>
                   <v-list-item
                     @click="deleteItem(item.id)"
                     v-if="user_group_permission == -1 || user_group_permission == 10 || item.work_status <= 7"
                   >
-                    <v-list-item-title>ยกเลิก</v-list-item-title>
+                    <v-list-item-title style="color: red">ยกเลิก</v-list-item-title>
                   </v-list-item>
-
+                  <v-divider v-if="user_group_permission == -1 || user_group_permission == 9"></v-divider>
                   <v-list-item
                     @click="update_status(item.id, item.work_status)"
                     v-if="user_group_permission == -1 || user_group_permission == 10"
@@ -1020,6 +1031,14 @@
       @error="addError"
     />
 
+    <dialogPreApprove
+      :dialog="dialogPreApprove"
+      :working_id="idWork"
+      @cancleItem="dialogPreApprove = false"
+      @success="addSuccess"
+      @error="addError"
+    />
+
     <dialogAppointmentBank
       :dialogAppointmentBank="dialogAppointmentBank"
       :idWork="idWork"
@@ -1089,11 +1108,15 @@ import dialogReceiveDown from "@/components/dialog/dialogReceiveDown";
 import dialogContract from "@/components/dialog/dialogContract";
 import dialogJobTechnician from "@/components/dialog/dialogJobTechnician";
 import dialogAppointment from "@/components/dialog/dialogAppointment";
+import dialogPreApprove from "@/components/dialog/dialogPreApprove";
 import dialogAppointmentBank from "@/components/dialog/dialogAppointmentBank";
 import dialogInsurCertificate from "@/components/dialog/dialogInsurCertificate";
 import dialogPathnerJobTechnician from "@/components/dialog/dialogPathnerJobTechnician";
 import dialogReceivingMoney from "@/components/dialog/dialogReceivingMoney";
 import dialogNote from "@/components/dialog/dialogNote";
+import dialogRequestUpdate from "@/components/dialog/dialogRequestUpdate";
+import dialogInsurancesList from "@/components/dialog/dialogInsurancesList";
+import dialogInstallment from "@/components/dialog/dialogInstallment";
 
 import dialogMiniUser from "@/components/dialog/dialogMini_user";
 import febButtonWork from "@/components/febButtonWork";
@@ -1105,20 +1128,21 @@ export default {
     dialogWork,
     dialogBooking,
     dialogMiniUser,
-
     dialogFinancial,
     dialogReceiveDown,
     dialogContract,
     dialogJobTechnician,
     dialogPathnerJobTechnician,
-
     dialogAppointment,
+    dialogPreApprove,
     dialogAppointmentBank,
     dialogInsurCertificate,
     dialogReceivingMoney,
     febButtonWork,
-
     dialogNote,
+    dialogRequestUpdate,
+    dialogInsurancesList,
+    dialogInstallment,
   },
   data() {
     return {
@@ -1134,7 +1158,8 @@ export default {
       search: "",
       branch_team_id: 0,
       dataSelectBranch_teams: [],
-      // height: "80vh",
+      menuCommission_mount: false,
+      commission_mount: "",
 
       dialogMiniUser: false,
       sale_id: "",
@@ -1179,6 +1204,8 @@ export default {
       formTitleAppointment: "Add",
       actionAppointment: "check",
 
+      dialogPreApprove: false,
+
       dialogAppointmentBank: false,
       formTitleAppointmentBank: "Add",
       actionAppointmentBank: "check",
@@ -1210,19 +1237,19 @@ export default {
       branch_id: 0,
       branches: [],
       selectTab: 0,
-      content_all: "0",
-      content_1: "0",
-      content_2: "0",
-      content_3: "0",
-      content_4: "0",
-      content_5: "0",
-      content_6: "0",
-      content_7: "0",
-      content_8: "0",
-      content_9: "0",
-      content_10: "0",
-      content_11: "0",
+      content: ["0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0"],
       timer: "",
+      pedding_main_items: [
+        "รอจอง",
+        "รอมัดจำ",
+        "รอนัดทำสัญญา",
+        "รอทำสัญญา",
+        "รอเอกสาร",
+        "รอแบงค์อนุมัติ",
+        "รอปล่อยรถ",
+        "ปล่อยรถแล้ว",
+      ],
+      pedding_items: ["รอรูปรถ", "รอเช็คเกอร์", "รอคนค้ำ", "รอคนซื้อแทน", "รอหารถ", "รอรถซ่อม", ""],
     };
   },
   beforeMount() {
@@ -1236,7 +1263,6 @@ export default {
     this.getUser_teams();
     this.getBranches();
     this.getBranch_teams();
-    // console.log(this.branch_id);
     this.getData();
     this.fileExcel_name();
 
@@ -1259,7 +1285,6 @@ export default {
 
   beforeUpdate() {},
   created() {
-    // this.headers = Object.values(this.headersMap);
     if (
       this.user_group_permission == -1 ||
       this.user_group_permission == 9 ||
@@ -1267,332 +1292,116 @@ export default {
       this.user_group_permission == 11
     ) {
       this.headers = [
-        {
-          text: "จัดการ",
-          value: "actions",
-          sortable: false,
-          class: "textOneLine sticky-header",
-        },
-
-        {
-          text: "รหัสงาน",
-          value: "codeWorking",
-          class: "textOneLine sticky-header",
-          align: "center",
-        },
-        {
-          text: "ลำดับรถ",
-          value: "car_no",
-          class: "textOneLine sticky-header",
-        },
-        {
-          text: "ยี่ห้อ",
-          value: "car_model_name",
-          class: "textOneLine sticky-header",
-        },
-        {
-          text: "รุ่น",
-          value: "car_series_name",
-          class: "textOneLine sticky-header",
-          width: "150px",
-        },
-        {
-          text: "รุ่นย่อย",
-          value: "car_serie_sub_name",
-          class: "textOneLine sticky-header",
-          width: "200px",
-        },
-        {
-          text: "ทะเบียน",
-          value: "car_regis",
-          class: "textOneLine sticky-header",
-        },
-
-        {
-          text: "ปีรถ",
-          value: "car_year",
-          class: "textOneLine sticky-header",
-        },
-        {
-          text: "สี",
-          value: "color_name",
-          class: "textOneLine sticky-header",
-          width: "100px",
-        },
-        {
-          text: "ดาวน์+F",
-          value: "bookings.amount_slacken",
-          class: "textOneLine sticky-header",
-        },
-        {
-          text: "ลูกค้า",
-          width: "200px",
-          value: "customer_name",
-          class: "textOneLine sticky-header",
-        },
-
-        {
-          text: "เบอร์ลูกค้า",
-          value: "customer_tel",
-          class: "textOneLine sticky-header",
-        },
-        { text: "เซล", value: "sale", class: "textOneLine sticky-header" },
-        {
-          text: "ทีมเซล",
-          value: "team_name",
-          class: "textOneLine sticky-header",
-        },
-        {
-          text: "สาขาย่อย",
-          value: "branch_name",
-          class: "textOneLine sticky-header",
-        },
-        {
-          text: "ทีมสาขา",
-          value: "branch_team_name",
-          class: "textOneLine sticky-header",
-        },
-        {
-          text: "เวลาจอง",
-          value: "booking_date",
-          class: "textOneLine sticky-header",
-          align: "right",
-        },
-        {
-          text: "ทราบข่าว",
-          value: "hear_from",
-          class: "textOneLine sticky-header",
-        },
-        {
-          text: "อาชีพลูกค้า",
-          value: "customer_job",
-          width: "160px",
-        },
-        {
-          text: "ชื่อ MKT",
-          value: "sale_name",
-          class: "textOneLine sticky-header",
-        },
-        {
-          text: "เบอร์ MKT",
-          value: "sale_tel",
-          class: "textOneLine sticky-header",
-        },
-        {
-          text: "ธนาคาร",
-          value: "bank_nick_name",
-          class: "textOneLine sticky-header",
-          width: "140px",
-        },
-        {
-          text: "สาขาธนาคาร",
-          value: "bank_branch_name",
-          class: "textOneLine sticky-header",
-        },
-        {
-          text: "เอกสาร",
-          value: "appointment_bank_type",
-          class: "textOneLine sticky-header",
-        },
-        {
-          text: "ผลเครดิต",
-          value: "credit",
-          width: "140px",
-        },
-        {
-          text: "อนุมัติ",
-          value: "appointment_date",
-          class: "textOneLine sticky-header",
-          width: "120px",
-        },
-        {
-          text: "วันปล่อยรถ",
-          value: "contract_date",
-          class: "textOneLine sticky-header",
-          width: "120px",
-        },
-        {
-          text: "ชุดโอน",
-          value: "appointment_book_date",
-          class: "textOneLine sticky-header",
-          width: "120px",
-        },
-        {
-          text: "โอนรถ",
-          value: "appointment_transfer_date",
-          class: "textOneLine sticky-header",
-          width: "120px",
-        },
+        { text: "จัดการ", value: "actions", sortable: false, class: "textOneLine " },
+        { text: "สถานะหลัก", value: "work_status", class: "textOneLine" },
+        { text: "รอ", value: "pedding", class: "textOneLine", align: "center" },
+        { text: "รหัสงาน", value: "codeWorking", class: "textOneLine", align: "center" },
+        { text: "ลำดับรถ", value: "car_no", class: "textOneLine" },
+        { text: "ยี่ห้อ", value: "car_model_name", class: "textOneLine" },
+        { text: "รุ่น", value: "car_series_name", class: "textOneLine", width: "150px" },
+        { text: "รุ่นย่อย", value: "car_serie_sub_name", class: "textOneLine", width: "200px" },
+        { text: "ปีรถ", value: "car_year", class: "textOneLine" },
+        { text: "ทะเบียน", value: "car_regis", class: "textOneLine" },
+        { text: "ทะเบียนใหม่", value: "car_regis_current", class: "textOneLine" },
+        { text: "สี", value: "color_name", class: "textOneLine", width: "100px" },
+        { text: "จัด", value: "amount_price", class: "textOneLine ", align: "end" },
+        { text: "ดาวน์", value: "amount_down", class: "textOneLine ", align: "end" },
+        { text: "ขาย", value: "car_price_vat", class: "textOneLine ", align: "end" },
+        { text: "เซล", value: "sale", class: "textOneLine " },
+        { text: "ทีมเซล", value: "team_name", class: "textOneLine " },
+        { text: "ทีมสาขา", value: "branch_team_name", class: "textOneLine " },
+        { text: "สาขาย่อย", value: "branch_name", class: "textOneLine " },
+        { text: "ลูกค้า", width: "200px", value: "customer_name", class: "textOneLine " },
+        { text: "เบอร์ลูกค้า", value: "customer_tel", class: "textOneLine " },
+        { text: "วันจอง", value: "booking_date", class: "textOneLine ", width: "120px", align: "center" },
+        { text: "เงินจอง", value: "deposit", class: "textOneLine ", align: "end" },
+        { text: "ดาวน์+F", value: "down", class: "textOneLine ", align: "end" },
+        { text: "ค่านายหน้า", value: "commission", class: "textOneLine ", align: "end" },
+        { text: "สมาร์ทชัว+ประกัน", value: "insurance", class: "textOneLine ", align: "end" },
+        { text: "ยอดจัด", value: "finance_price", class: "textOneLine ", align: "end" },
+        { text: "รวมยอดจัด", value: "finance_price_vat", class: "textOneLine ", align: "end" },
+        { text: "เกรด", value: "customer_grade", class: "textOneLine " },
+        { text: "ทราบข่าว", value: "hear_from", class: "textOneLine " },
+        { text: "อาชีพลูกค้า", value: "customer_job", width: "160px" },
+        { text: "วันที่ฝาก", value: "deposit_date", width: "120px", align: "center" },
+        { text: "วันที่นัด", value: "appointment_date_before", width: "120px", align: "center" },
+        { text: "วันที่เซนต์", value: "appointment_bank_date", width: "120px", align: "center" },
+        { text: "MKT", value: "sale_name", class: "textOneLine ", align: "center" },
+        { text: "ธนาคาร", value: "bank_nick_name", class: "textOneLine ", align: "center" },
+        { text: "เอกสาร", value: "appointment_bank_type", class: "textOneLine ", width: "180px", align: "center" },
+        { text: "วันที่เอกสารครบ", value: "appointment_bank_document_date", width: "120px", align: "center" },
+        { text: "ผลเครดิต", value: "credit", width: "100px", align: "center" },
+        { text: "จัดได้ %", value: "car_price_persen", width: "100px", align: "center" },
+        { text: "อนุมัติเบื้องต้น", value: "pre_approve_date", class: "textOneLine ", width: "120px", align: "center" },
+        { text: "อนุมัติ", value: "appointment_date", class: "textOneLine ", width: "120px", align: "center" },
+        { text: "ปล่อยรถ", value: "contract_date", class: "textOneLine ", width: "120px", align: "center" },
+        { text: "ชุดโอนมา", value: "appointment_book_date", class: "textOneLine ", width: "120px", align: "center" },
+        { text: "โอนรถ", value: "appointment_transfer_date", class: "textOneLine ", width: "120px", align: "center" },
         {
           text: "ส่งเล่มทำเงิน",
           value: "appointment_sentbook_date",
-          class: "textOneLine sticky-header",
+          class: "textOneLine ",
           width: "120px",
+          align: "center",
         },
-        {
-          text: "ได้เงิน",
-          value: "appointment_money_date",
-          class: "textOneLine sticky-header",
-          width: "120px",
-        },
-        {
-          text: "ค่าตัวรถ",
-          value: "car_price_approve",
-          class: "textOneLine sticky-header",
-        },
-        {
-          text: "เงินเข้า",
-          value: "appointment_money_price",
-          class: "textOneLine sticky-header",
-        },
-        {
-          text: "ค่า MKT",
-          value: "appointment_mkt_date",
-          class: "textOneLine sticky-header",
-        },
-        {
-          text: "%",
-          value: "car_price_persen",
-          class: "textOneLine sticky-header",
-        },
-        {
-          text: "งวดแรก",
-          value: "customer_payment_due",
-          class: "textOneLine sticky-header",
-          width: "120px",
-        },
-        {
-          text: "เดือนคอม",
-          value: "commission_mount",
-          class: "textOneLine sticky-header",
-          width: "120px",
-        },
-        {
-          text: "ผู้ลงข้อมูล",
-          value: "user",
-          class: "textOneLine sticky-header",
-        },
-        {
-          text: "สถานะ",
-          value: "work_status",
-          class: "textOneLine sticky-header",
-          width: "320px",
-        },
+        { text: "เงินมา", value: "appointment_money_date", class: "textOneLine ", width: "120px", align: "center" },
+        { text: "จำนวน", value: "appointment_money_price", class: "textOneLine ", align: "end" },
+        { text: "งวดแรก", value: "customer_payment_due", class: "textOneLine ", width: "120px", align: "center" },
+        { text: "ค่างวด", value: "customer_payment", class: "textOneLine ", width: "120px", align: "center" },
+        { text: "เดือนคอม", value: "commission_mount", class: "textOneLine ", width: "120px", align: "center" },
+        { text: "หมายเหตุ (ส่วนกลาง)", value: "note", width: "220px" },
+        { text: "หมายเหตุ (เซล)", value: "note_sale", width: "400px" },
+        { text: "รายการอัพเดท", value: "request_update", width: "500px" },
+        { text: "ผู้ลงข้อมูล", value: "user", class: "textOneLine " },
       ];
     } else {
       this.headers = [
-        {
-          text: "จัดการ",
-          value: "actions",
-          sortable: false,
-          class: "textOneLine",
-        },
-
-        {
-          text: "รหัสงาน",
-          value: "codeWorking",
-          align: "center",
-          class: "textOneLine",
-        },
+        { text: "จัดการ", value: "actions", sortable: false, class: "textOneLine" },
+        { text: "สถานะหลัก", value: "work_status", class: "textOneLine" },
+        { text: "รอ", value: "pedding", class: "textOneLine", align: "center" },
+        { text: "รหัสงาน", value: "codeWorking", align: "center", class: "textOneLine" },
         { text: "ลำดับรถ", value: "car_no", class: "textOneLine" },
-        {
-          text: "ยี่ห้อ",
-          value: "car_model_name",
-          class: "textOneLine",
-        },
-        {
-          text: "รุ่น",
-          value: "car_series_name",
-          class: "textOneLine",
-          width: "160px",
-        },
-        {
-          text: "รุ่นย่อย",
-          value: "car_serie_sub_name",
-          class: "textOneLine",
-          width: "200px",
-        },
+        { text: "ยี่ห้อ", value: "car_model_name", class: "textOneLine" },
+        { text: "รุ่น", value: "car_series_name", class: "textOneLine", width: "160px" },
+        { text: "รุ่นย่อย", value: "car_serie_sub_name", class: "textOneLine", width: "200px" },
         { text: "ทะเบียน", value: "car_regis", class: "textOneLine" },
-
+        { text: "ทะเบียนใหม่", value: "car_regis_current", class: "textOneLine" },
         { text: "ปีรถ", value: "car_year", class: "textOneLine" },
-        { text: "สี", value: "color.color_name", class: "textOneLine" },
-        {
-          text: "ลูกค้า",
-          value: "customer_name",
-          width: "200px",
-          class: "textOneLine",
-        },
-
+        { text: "สี", value: "color_name", class: "textOneLine" },
+        { text: "ลูกค้า", value: "customer_name", width: "200px", class: "textOneLine" },
         { text: "เบอร์ลูกค้า", value: "customer_tel", class: "textOneLine" },
         { text: "เซล", value: "sale", class: "textOneLine" },
         { text: "ทีมเซล", value: "team_name", class: "textOneLine" },
+        { text: "ทีมสาขา", value: "branch_team_name", class: "textOneLine " },
         { text: "สาขาย่อย", value: "branch_name", class: "textOneLine" },
-        {
-          text: "เวลาจอง",
-          value: "booking_date",
-          class: "textOneLine",
-          align: "right",
-        },
+        { text: "วันจอง", value: "booking_date", class: "textOneLine", width: "120px", align: "center" },
+        { text: "เงินจอง", value: "deposit", class: "textOneLine ", align: "end" },
+        { text: "ดาวน์+F", value: "down", class: "textOneLine ", align: "end" },
+        { text: "ค่านายหน้า", value: "commission", class: "textOneLine ", align: "end" },
+        { text: "สมาร์ทชัว+ประกัน", value: "", class: "textOneLine ", align: "end" },
+        { text: "ยอดจัด", value: "finance_price", class: "textOneLine ", align: "end" },
+        { text: "รวมยอดจัด", value: "finance_price_vat", class: "textOneLine ", align: "end" },
         { text: "ทราบข่าว", value: "hear_from", class: "textOneLine" },
-        {
-          text: "อาชีพลูกค้า",
-          value: "customer_job",
-          width: "160px",
-        },
-        {
-          text: "ชื่อ MKT",
-          value: "sale_name",
-          class: "textOneLine sticky-header",
-        },
-        {
-          text: "เบอร์ MKT",
-          value: "sale_tel",
-          class: "textOneLine sticky-header",
-        },
-        {
-          text: "ธนาคาร",
-          value: "bank_nick_name",
-          class: "textOneLine sticky-header",
-          width: "140px",
-        },
-        {
-          text: "สาขาธนาคาร",
-          value: "bank_branch_name",
-          class: "textOneLine sticky-header",
-        },
-        {
-          text: "เอกสาร",
-          value: "appointment_bank_type",
-          class: "textOneLine sticky-header",
-        },
-        {
-          text: "ผลเครดิต",
-          value: "credit",
-          width: "140px",
-        },
-        {
-          text: "วันปล่อยรถ",
-          value: "contract_date",
-          class: "textOneLine",
-        },
-        {
-          text: "ชุดโอน",
-          value: "appointment_book_date",
-          class: "textOneLine sticky-header",
-          width: "120px",
-        },
-
-        {
-          text: "สถานะ",
-          value: "work_status",
-          class: "textOneLine",
-          width: "320px",
-        },
+        { text: "อาชีพลูกค้า", value: "customer_job", width: "160px" },
+        { text: "วันที่ฝาก", value: "deposit_date", width: "120px", align: "center" },
+        { text: "วันที่เซนต์", value: "appointment_date_before", width: "120px", align: "center" },
+        { text: "วันที่เซนต์", value: "appointment_bank_date", width: "120px", align: "center" },
+        { text: "MKT", value: "sale_name", class: "textOneLine " },
+        { text: "เบอร์ MKT", value: "sale_tel", class: "textOneLine " },
+        { text: "ธนาคาร", value: "bank_nick_name", class: "textOneLine ", width: "140px" },
+        { text: "สาขาธนาคาร", value: "bank_branch_name", class: "textOneLine ", align: "center" },
+        { text: "เอกสาร", value: "appointment_bank_type", class: "textOneLine ", width: "180px", align: "center" },
+        { text: "วันที่เอกสารครบ", value: "appointment_bank_document_date", width: "120px", align: "center" },
+        { text: "ผลเครดิต", value: "credit", width: "100px", align: "center" },
+        { text: "อนุมัติเบื้องต้น", value: "pre_approve_date", class: "textOneLine ", width: "120px", align: "center" },
+        { text: "อนุมัติ", value: "appointment_date", class: "textOneLine ", width: "120px", align: "center" },
+        { text: "ปล่อยรถ", value: "contract_date", class: "textOneLine ", width: "120px", align: "center" },
+        { text: "ชุดโอนมา", value: "appointment_book_date", class: "textOneLine ", width: "120px", align: "center" },
+        { text: "หมายเหตุ (เซล)", value: "note_sale", width: "400px" },
+        { text: "รายการอัพเดท", value: "request_update", width: "500px" },
       ];
     }
-
     this.selectedHeaders = this.headers;
-
     window.addEventListener("resize", this.onResize);
     this.$nextTick(this.onResize);
   },
@@ -1602,12 +1411,53 @@ export default {
         return item.text;
       });
     },
-    //Done to get the ordered headers
+
     showHeaders() {
       return this.headers.filter((s) => this.selectedHeaders.includes(s));
     },
   },
   methods: {
+    async getData() {
+      this.loading = true;
+      this.content = ["0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0"];
+      const data = new FormData();
+
+      // check permission
+      if (this.user_group_permission == 2) {
+        data.append("branch_team_id", this.$auth.$storage.getLocalStorage("userDataOrg-branch_team_id"));
+      } else if (this.user_group_permission == 3) {
+        data.append("user_id", this.user_id);
+      } else {
+        data.append("branch_team_id", this.branch_team_id);
+        data.append("branch_id", this.branch_id);
+        data.append("user_team_id", this.user_team_id);
+      }
+
+      // check search
+      if (this.searchInServer) {
+        data.append("search", this.searchInServer);
+        data.append("work_status", "all");
+      } else {
+        data.append("work_status", this.selectTab);
+      }
+
+      data.append("user_group_permission", this.user_group_permission);
+      data.append("commission_mount", this.commission_mount);
+
+      const response = await apiWorks.followWork(data);
+      // console.log(response.data);
+      this.data = response.data.data;
+      const badgeWorking = response.data.badgeWorking;
+
+      badgeWorking.forEach((item) => {
+        this.content[item.status] = item.content ?? 0;
+      });
+
+      this.loading = false;
+      this.$nextTick(() => {
+        this.tableWidth = $(".v-data-table-header").width();
+      });
+    },
     async getSale(sale_id) {
       this.dialogMiniUser = true;
       this.sale_id = sale_id;
@@ -1617,7 +1467,6 @@ export default {
       this.dataSelectBranch_teams = response.data;
       this.dataSelectBranch_teams.push({ id: 0, branch_team_name: "ทั้งหมด" });
     },
-
     async getBranches() {
       const response = await apiBranches.select();
       this.branches = response.data;
@@ -1664,13 +1513,9 @@ export default {
       } else {
         this.user_team_id = 0;
       }
-      // this.user_teams = response.data;
       this.user_teams_all = response.data;
-      // console.log(response.data);
       this.user_teams.push({ id: 0, team_name: "ทั้งหมด" });
-      // this.loading = false;
     },
-
     async changeUser_teams() {
       this.$nextTick(() => {
         let new_teams = [];
@@ -1681,82 +1526,14 @@ export default {
             if (this.user_teams_all[index].branch_id == this.branch_id) new_teams.push(this.user_teams_all[index]);
           }
         }
-
         this.user_teams = new_teams;
         this.user_teams.push({ id: 0, team_name: "ทั้งหมด" });
       });
-      // console.log(branch_id);
       this.fileExcel_name();
     },
     async select_user_team() {
       await this.getData();
       this.fileExcel_name();
-    },
-    async getData() {
-      this.loading = true;
-
-      this.content_all = "0";
-      this.content_1 = "0";
-      this.content_2 = "0";
-      this.content_3 = "0";
-      this.content_4 = "0";
-      this.content_5 = "0";
-      this.content_6 = "0";
-      this.content_7 = "0";
-      this.content_8 = "0";
-      this.content_9 = "0";
-      this.content_10 = "0";
-      this.content_11 = "0";
-
-      const data = new FormData();
-      data.append("search", this.searchInServer);
-      data.append("branch_team_id", this.branch_team_id);
-      data.append("user_team_id", this.user_team_id);
-      data.append("branch_id", this.branch_id);
-      if (this.user_group_permission == 3) {
-        data.append("user_id", this.user_id);
-      } else {
-        data.append("user_id", 0);
-      }
-      data.append("work_status", this.selectTab);
-      data.append("user_group_permission", this.user_group_permission);
-      const response = await apiWorks.followWork(data);
-      console.log(response.data);
-
-      this.data = response.data.data;
-      const badgeWorking = response.data.badgeWorking;
-      this.content_all = response.data.dataAll;
-
-      for (let index = 0; index < badgeWorking.length; index++) {
-        if (badgeWorking[index].status == 1) {
-          this.content_1 = badgeWorking[index].content;
-        } else if (badgeWorking[index].status == 2) {
-          this.content_2 = badgeWorking[index].content;
-        } else if (badgeWorking[index].status == 3) {
-          this.content_3 = badgeWorking[index].content;
-        } else if (badgeWorking[index].status == 4) {
-          this.content_4 = badgeWorking[index].content;
-        } else if (badgeWorking[index].status == 5) {
-          this.content_5 = badgeWorking[index].content;
-        } else if (badgeWorking[index].status == 6) {
-          this.content_6 = badgeWorking[index].content;
-        } else if (badgeWorking[index].status == 7) {
-          this.content_7 = badgeWorking[index].content;
-        } else if (badgeWorking[index].status == 8) {
-          this.content_8 = badgeWorking[index].content;
-        } else if (badgeWorking[index].status == 9) {
-          this.content_9 = badgeWorking[index].content;
-        } else if (badgeWorking[index].status == 10) {
-          this.content_10 = badgeWorking[index].content;
-        } else if (badgeWorking[index].status == 11) {
-          this.content_11 = badgeWorking[index].content;
-        }
-      }
-      this.loading = false;
-
-      this.$nextTick(() => {
-        this.tableWidth = $(".v-data-table-header").width();
-      });
     },
 
     fileExcel_name() {
@@ -1798,7 +1575,6 @@ export default {
           }
         });
       } else {
-        // console.log(car_no);
         this.formTitleBooking = "เอกสารสรุปการขาย ( ใบปะหน้า )";
         this.idWork = work_id;
         this.idCar = car_id;
@@ -1852,7 +1628,6 @@ export default {
       this.actionPathnerJobTechnician = "add";
     },
     async AppointmentBank(car_no, work_id) {
-      // console.log("55");
       this.car_no = car_no;
 
       this.formTitleAppointmentBank = "ทำสัญญากับแบงค์ (" + car_no + ")";
@@ -1860,6 +1635,11 @@ export default {
       this.idWork = work_id;
       this.status_bank = 5;
       this.actionAppointmentBank = "check";
+    },
+
+    async PreApprove(working_id) {
+      this.dialogPreApprove = true;
+      this.idWork = working_id;
     },
     async BankApproved(car_no, work_id) {
       this.car_no = car_no;
@@ -1929,6 +1709,25 @@ export default {
       });
     },
 
+    async updatePedding(id, pedding) {
+      var isConfirmed = customAlart.ConfirmedStatus();
+      await isConfirmed.then(async (result) => {
+        if (result == true) {
+          const respone = await apiWorks.updatePedding(id, {
+            pedding: pedding,
+          });
+          if (respone.status == 200) {
+            customAlart.TopSuccess();
+          } else {
+            customAlart.TopError();
+          }
+        }
+      });
+      this.$nextTick(async () => {
+        await this.getData();
+      });
+    },
+
     async rollback_status(id, status) {
       var isConfirmed = customAlart.ConfirmedStatus();
       await isConfirmed.then(async (result) => {
@@ -1948,13 +1747,7 @@ export default {
       });
     },
 
-    async CarEndJob(
-      work_id,
-      appointment_book_date,
-      appointment_transfer_date,
-      appointment_sentbook_date,
-      appointment_money_date
-    ) {
+    async CarEndJob(work_id, appointment_money_date) {
       if (appointment_money_date != " ") {
         var isConfirmed = customAlart.ConfirmedStatus();
         await isConfirmed.then(async (result) => {
@@ -1986,12 +1779,9 @@ export default {
     },
     handleDownload() {
       const filterVal = [];
-      // console.log(this.showHeaders);
       for (let index = 0; index < this.showHeaders.length; index++) {
-        // console.log(this.showHeaders[index].value);
         filterVal.push(this.showHeaders[index].value);
       }
-      // console.log(moment().format("DD/MM/YYYY ( HH:mm น.)"));
       this.$nextTick(() => {
         import("@/vendor/Export2Excel").then((excel) => {
           const tHeader = this.tHeader;
@@ -2000,14 +1790,7 @@ export default {
           excel.export_json_to_excel({
             header: tHeader,
             data,
-            filename:
-              "ทีม: " +
-              this.branch_team_name +
-              "สาขาย่อย: " +
-              this.branch_name +
-              "(" +
-              moment().format("DD/MM/YYYY ( HH:mm น.)") +
-              ")",
+            filename: "รวมงาน " + "(" + moment().format("DD/MM/YYYY HH:mm") + ")",
             autoWidth: true,
             bookType: "xlsx",
           });
@@ -2015,138 +1798,11 @@ export default {
       });
     },
     formatJson(filterVal, jsonData) {
-      // console.log(this.$store.state.status_working)
-      // return jsonData.map((v) =>
       return jsonData.map((v) =>
         filterVal.map((j) => {
-          if (j == "codeWorking") {
-            // console.log(v)
-            return v.codeWorking;
-          } else if (j == "customer") {
-            if (v.customer_id == null) {
-              return "ยังไม่ได้เลือก";
-            } else {
-              return v.customer_name;
-            }
-          } else if (j == "sale") {
-            if (v.sale_id == null) {
-              return "ยังไม่ได้เลือก";
-            } else {
-              return v.sale == null ? "ยังไม่ได้เลือก" : v.sale.first_name;
-            }
-          } else if (j == "appointments.sale_name") {
-            if (v.appointments == null) {
-              return "ยังไม่ได้เลือก";
-            } else {
-              return v.appointments.sale_name;
-            }
-          } else if (j == "appointments.sale_tel") {
-            if (v.appointments == null) {
-              return "ยังไม่ได้เลือก";
-            } else {
-              return v.appointments.sale_tel;
-            }
-          } else if (j == "cars.car_year") {
-            return v.cars.car_year;
-          } else if (j == "appointment_banks.car_price") {
-            if (v.appointment_banks == null) {
-              return 0;
-            } else {
-              return v.appointment_banks.car_price;
-            }
-          } else if (j == "branch_team.branch_team_name") {
-            if (v.branch_team == null) {
-              return "";
-            } else {
-              return v.branch_team.branch_team_name;
-            }
-          } else if (j == " appointment_banks.appointment_money_price") {
-            if (v.appointment_banks == null) {
-              return 0;
-            } else {
-              return v.appointment_banks.appointment_money_price;
-            }
-          } else if (j == "appointment_banks.car_price_persen") {
-            if (v.appointment_banks == null) {
-              return 0;
-            } else {
-              return v.appointment_banks.car_price_persen;
-            }
-          } else if (j == "banks.bank_nick_name") {
-            if (v.banks == null) {
-              return "ยังไม่ได้เลือก";
-            } else {
-              return v.banks.bank_nick_name;
-            }
-          } else if (j == "bookings.amount_slacken") {
-            if (v.bookings == null) {
-              return "";
-            } else {
-              return v.bookings.amount_slacken;
-            }
-          } else if (j == "bank_branchs.bank_branch_name") {
-            if (v.bank_branchs == null) {
-              return "ยังไม่ได้เลือก";
-            } else {
-              return v.bank_branchs.bank_branch_name;
-            }
-          } else if (j == "appointments.sale_tel") {
-            if (v.appointments == null) {
-              return "ยังไม่ได้เลือก";
-            } else {
-              return v.appointments.sale_tel;
-            }
-          } else if (j == "appointment_bank_type") {
-            if (v.appointment_bank_type == 1) {
-              return "ครบ";
-            } else {
-              return "ไม่ครบ";
-            }
-          } else if (j == "booking_date") {
-            if (moment().unix() > Number(moment(v.booking_date).unix() + 86400)) {
-              return moment().diff(moment(v.booking_date), "days") + " วัน";
-            } else {
-              return moment(v.booking_date).fromNow(true);
-            }
-          } else if (j == "updated_at") {
-            // return moment(v.updated_at).format("DD/MM/YYYY ( HH:mm น.)");
-            return moment(v.updated_at).format("DD/MM/YYYY ( HH:mm น.)");
-          } else if (j == "team.team_name") {
-            return v.team == null ? "-" : v.team.team_name;
-          } else if (j == "hear_from_type") {
-            // console.log(v.hear_from_type)
-            return this.$store.state.hear_from_type[Number(v[j])];
-          } else if (j == "branch.branch_name") {
-            return v.branch.branch_name;
-          } else if (j == "cars.car_regis") {
-            return v.cars.car_regis;
-          } else if (j == "crs.car_no") {
-            return v.cars.car_no;
-          } else if (j == "cars.car_models.car_model_name") {
-            // return v.car_models.car_model_name;
-            if (v.cars.car_models == null) {
-              return "ยี่ห้อไม่ถูกต้อง";
-            } else {
-              return v.cars.car_models.car_model_name;
-            }
-          } else if (j == "cars.car_series.car_series_name") {
-            // return v.car_series.car_series_name;
-            if (v.cars.car_series == null) {
-              return "รุ่นไม่ถูกต้อง";
-            } else {
-              return v.cars.car_series.car_series_name;
-            }
-          } else if (j == "cars.car_serie_sub.car_serie_sub_name") {
-            if (v.cars.car_serie_sub == null) {
-              return "รุ่นย่อยไม่ถูกต้อง";
-            } else {
-              return v.cars.car_serie_sub.car_serie_sub_name;
-            }
-          } else if (j == "cars.color.color_name") {
-            return v.cars.color.color_name;
+          if (j == "booking_date") {
+            return moment(v.booking_date).format("YYYY-MM-DD");
           } else if (j == "work_status") {
-            // return this.$store.state.status_working[Number(j) + 1];
-            // return this.$store.state.status_working[Number(j) + 1];
             return this.$store.state.status_working[Number(v[j])];
           } else {
             return v[j];
@@ -2163,7 +1819,6 @@ export default {
       this.actionReceivingMoney = "check";
     },
     async addSuccess(value) {
-      // console.log(value);
       if (value == "work") {
         this.dialogWork = false;
       } else if (value == "Booking") {
@@ -2178,6 +1833,8 @@ export default {
         this.dialogPathnerJobTechnician = false;
       } else if (value == "Appointment") {
         this.dialogAppointment = false;
+      } else if (value == "PreApprove") {
+        this.dialogPreApprove = false;
       } else if (value == "AppointmentBank") {
         this.dialogAppointmentBank = false;
       } else if (value == "InsurCertificate") {
@@ -2209,6 +1866,8 @@ export default {
         this.dialogPathnerJobTechnician = false;
       } else if (value == "Appointment") {
         this.dialogAppointment = false;
+      } else if (value == "PreApprove") {
+        this.dialogPreApprove = false;
       } else if (value == "AppointmentBank") {
         this.dialogAppointmentBank = false;
       } else if (value == "InsurCertificate") {
@@ -2235,14 +1894,8 @@ export default {
 };
 </script>
 
-<style scoped>
-.v-data-table /deep/ .sticky-header {
-  position: sticky;
-  position: -webkit-sticky;
-  top: var(--toolbarHeight);
+<style>
+.work > .v-list-item {
+  min-height: 42px;
 }
-
-/* .v-data-table /deep/ .v-data-table__wrapper {
-  overflow: unset;
-} */
 </style>

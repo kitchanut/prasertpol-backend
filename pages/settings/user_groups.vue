@@ -36,29 +36,13 @@
       >
         <!-- <template v-slot:item.user_group_active="{ item }"> -->
         <template v-slot:[`item.user_group_active`]="{ item }">
-          <v-btn
-            v-if="item.user_group_active == '1'"
-            x-small
-            color="success"
-            dark
-          >เปิดใช้งาน</v-btn>
-          <v-btn
-            v-else
-            x-small
-            color="red"
-            dark
-          >ปิดการใช้งาน</v-btn>
+          <v-btn v-if="item.user_group_active == '1'" x-small color="success" dark>เปิดใช้งาน</v-btn>
+          <v-btn v-else x-small color="red" dark>ปิดการใช้งาน</v-btn>
         </template>
 
         <!-- <template v-slot:item.actions="{ item }"> -->
         <template v-slot:[`item.actions`]="{ item }">
-          <v-btn
-            color="primary"
-            fab
-            x-small
-            dark
-            @click="editItem(item.id)"
-          >
+          <v-btn color="primary" fab x-small dark @click="editItem(item.id)">
             <v-icon> mdi-pencil </v-icon>
           </v-btn>
         </template>
@@ -102,9 +86,7 @@ export default {
         { text: "จัดการ", value: "actions", sortable: false, width: "5%" },
       ],
       data: [],
-      user_group_permission: this.$auth.$storage.getLocalStorage(
-        "userData-user_group_permission"
-      ),
+      user_group_permission: this.$auth.$storage.getLocalStorage("userData-user_group_permission"),
     };
   },
   mounted() {

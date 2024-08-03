@@ -70,7 +70,7 @@
               <v-list-item-subtitle v-if="userData.user_team"> ทีม: {{ userData.user_team }} </v-list-item-subtitle>
               <br />
 
-              <v-list-item-subtitle v-if="sub_groups.length > 0">
+              <!-- <v-list-item-subtitle v-if="sub_groups.length > 0">
                 <v-row class="mt-1">
                   <v-col cols="12" class="pb-0">
                     <v-select
@@ -100,11 +100,11 @@
                     >
                   </v-col>
                 </v-row>
-              </v-list-item-subtitle>
+              </v-list-item-subtitle> -->
 
               <v-row v-if="userData.user_group_permission == 2 || userData.user_group_permission == 3">
                 <v-col>
-                  <v-btn block small color="primary" class="pt-5 pb-5" to="/mobile/work">ใช้งานบนมือถือ</v-btn>
+                  <v-btn block small color="primary" class="mt-1 pt-5 pb-5" to="/mobile/work">ใช้งานบนมือถือ</v-btn>
                 </v-col>
               </v-row>
             </v-list-item-content>
@@ -134,7 +134,7 @@ export default {
   data() {
     return {
       serverUrl: process.env.serverUrl + "/",
-      sub_groups: this.$auth.$storage.getLocalStorage("userData-sub_group"),
+      // sub_groups: [],
       sub_id: this.$auth.$storage.getLocalStorage("userData-sub_id"),
       clipped: true,
       drawer: true,
@@ -146,16 +146,16 @@ export default {
           icon: "mdi-chart-areaspline",
           title: "ภาพรวม",
           to: "/index_sale",
-          level: [-1, 9, 2, 10, 11],
+          level: [-1, 2, 3, 9, 10, 11],
           listActive: "",
           active: false,
           classActive: "",
         },
         {
-          icon: "mdi-book-plus",
-          title: "แจ้งลงงาน",
+          icon: "mdi-book-clock",
+          title: "ประวัติ",
           to: "/request/log",
-          level: [-1, 9, 11],
+          level: [-1, 2, 3, 9, 10, 11],
           listActive: "",
           active: false,
           classActive: "",
@@ -180,19 +180,8 @@ export default {
           to: "/work/works",
           active: false,
         },
-
         {
-          icon: "mdi-currency-usd",
-          title: "ตามเงินดาวน์",
-          level: [2],
-          listActive: "",
-          classActive: "",
-          to: "/work/followDown",
-          active: false,
-        },
-
-        {
-          icon: "mdi-book-clock",
+          icon: "mdi-book-heart",
           title: "ตามงาน",
           level: [-1, 9, 10, 11],
           listActive: "",
@@ -201,6 +190,25 @@ export default {
           active: false,
         },
 
+        {
+          icon: "mdi-currency-usd",
+          title: "งวดรถ",
+          level: [-1, 2, 3],
+          listActive: "",
+          classActive: "",
+          to: "/installments",
+          active: false,
+        },
+
+        {
+          icon: "mdi-account-voice",
+          title: "ต่อรอง",
+          level: [-1, 2, 3],
+          listActive: "",
+          classActive: "",
+          to: "/negotiations",
+          active: false,
+        },
         {
           icon: "mdi-file",
           title: "ใบกำกับ",
@@ -223,70 +231,33 @@ export default {
         },
 
         {
-          icon: "mdi-cash-multiple",
+          icon: "mdi-upload",
           title: "ค่าใช้จ่าย",
           to: "",
-          level: "-1",
+          level: [-1, 11],
           listActive: "",
           classActive: "",
           active: false,
           children: [
-            {
-              title: "ค่าใช้จ่ายตัวรถ",
-              to: "/withdraw/payment_car",
-            },
-
-            {
-              title: "ราคาซ่อม (อู่นอก)",
-              to: "/settings/repair_prices_outdoor",
-            },
-            // {
-            //   title: "เพิ่มเงินสาขา",
-            //   to: "/settings/branches",
-            // },
-            // {
-            //   title: "เพิ่มค่าใช้จ่ายสาขา",
-            //   to: "/withdraw/withdraw_money",
-            // },
-            {
-              title: "เพิ่มรายรับ",
-              to: "/incomes/income",
-            },
-            { title: "ค่าคอมมิชชั่น", to: "/commission/commission" },
-            { title: "ราคาซ่อม (อู่ใน)", to: "/settings/repair_prices" },
+            { title: "ค่าใช้จ่ายตัวรถ", to: "/withdraw/payment_car" },
+            // { title: "เพิ่มเงินสาขา", to: "/settings/branches" },
+            // { title: "เพิ่มค่าใช้จ่ายสาขา", to: "/withdraw/withdraw_money" },
+            // { title: "ค่าคอมมิชชั่น", to: "/commission/commission" },
+            // { title: "ราคาซ่อม (อู่ใน)", to: "/settings/repair_prices" },
+            // { title: "ราคาซ่อม (อู่นอก)", to: "/settings/repair_prices_outdoor" },
           ],
         },
         {
-          icon: "mdi-cash-multiple",
-          title: "ค่าใช้จ่าย",
+          icon: "mdi-download",
+          title: "รายรับ",
           to: "",
-          level: "11",
+          level: [-1, 11],
           listActive: "",
           classActive: "",
           active: false,
           children: [
-            //{ title: "ค่าคอมมิชชั่น", to: "/commission/commission" },
-            {
-              title: "ค่าใช้จ่ายตัวรถ",
-              to: "/withdraw/payment_car",
-            },
-            // {
-            //   title: "เพิ่มเงินสาขา",
-            //   to: "/settings/branches",
-            // },
-            // {
-            //   title: "เพิ่มค่าใช้จ่ายสาขา",
-            //   to: "/withdraw/withdraw_money",
-            // },
-            {
-              title: "เพิ่มรายรับ",
-              to: "/incomes/income",
-            },
-            { title: "ราคาซ่อม (อู่ใน)", to: "/settings/repair_prices" },
-            {
-              title: "ราคาซ่อม (อู่นอก)",
-              to: "/settings/repair_prices_outdoor",
-            },
+            { title: "รายรับทั้งหมด", to: "/incomes/income" },
+            { title: "ใบสำคัญรับเงิน", to: "/incomes/financial" },
           ],
         },
 
@@ -308,29 +279,6 @@ export default {
           classActive: "",
           active: false,
         },
-        // {
-        //   icon: "mdi-car-door",
-        //   title: "อะไหล่",
-        //   to: "",
-        //   level: [-1, 6, 7, 11],
-        //   listActive: "",
-        //   classActive: "",
-        //   active: false,
-        //   children: [
-        //     {
-        //       title: "คลังอะไหล่",
-        //       to: "/stock/stock_parts",
-        //     },
-        //     {
-        //       title: "ใบสั่งซื้ออะไหล่",
-        //       to: "/purchases/purchase_parts",
-        //     },
-        //     {
-        //       title: "รอเบิกอะไหล่",
-        //       to: "/withdraw/withdraw_part",
-        //     },
-        //   ],
-        // },
         {
           icon: "mdi-text-to-speech",
           title: "โปรโมชั่น",
@@ -341,42 +289,25 @@ export default {
           active: false,
           to: "/settings/promotion",
         },
-
-        // {
-        //   icon: "mdi-car-cog",
-        //   title: "งานซ่อม",
-        //   to: "",
-        //   level: [-1, 8],
-        //   listActive: "",
-        //   classActive: "",
-        //   active: false,
-        //   children: [
-        //     {
-        //       title: "งานของช่าง/บิ้ว",
-        //       to: "/work/work_Technician",
-        //     },
-        //     {
-        //       title: "งานซ่อมภายนอก",
-        //       to: "/work/work_Technician_pathner",
-        //     },
-        //   ],
-        // },
-        // {
-        //   icon: "mdi-car-cog",
-        //   title: "งานซ่อม",
-        //   to: "",
-        //   level: [4, 5],
-        //   listActive: "",
-        //   classActive: "",
-        //   active: false,
-        //   children: [
-        //     {
-        //       title: "งานของช่าง/บิ้ว",
-        //       to: "/work/work_Technician",
-        //     },
-        //   ],
-        // },
-
+        {
+          icon: "mdi-car-cog",
+          title: "งานซ่อม",
+          to: "",
+          level: [-1, 8],
+          listActive: "",
+          classActive: "",
+          active: false,
+          children: [
+            {
+              title: "งานของช่าง/บิ้ว",
+              to: "/work/work_Technician",
+            },
+            {
+              title: "งานซ่อมภายนอก",
+              to: "/work/work_Technician_pathner",
+            },
+          ],
+        },
         {
           icon: "mdi-account",
           title: "ลูกค้า",
@@ -405,21 +336,11 @@ export default {
           icon: "mdi-cash-multiple",
           title: "ค่าคอมมิชชั่น",
           to: "/commission/commission",
-          level: "9",
+          level: [9],
           listActive: "",
           classActive: "",
           active: false,
         },
-        {
-          icon: "mdi-cash-multiple",
-          title: "เพิ่มค่าใช้จ่ายสาขา",
-          to: "/withdraw/withdraw_money",
-          level: "2",
-          listActive: "",
-          classActive: "",
-          active: false,
-        },
-
         {
           icon: "mdi-file-outline",
           title: "รายงาน",
@@ -435,6 +356,8 @@ export default {
             { title: "ยกเลิก", to: "/reports/report_work_cancle" },
             { title: "จองซ้อนกัน", to: "/reports/report_booking_duplicate" },
             { title: "คอมมิชชัน", to: "/reports/report_commission" },
+            { title: "รายรับ", to: "/reports/report_income" },
+            { title: "รายจ่าย", to: "/reports/report_expense" },
             { title: "กำไร/ขาดทุน", to: "/reports/report_profit" },
 
             // { title: "งานซื้อขายรถ", to: "/reports/report_workings" },
@@ -467,7 +390,7 @@ export default {
           icon: "mdi-file-outline",
           title: "รายงาน",
           to: "",
-          level: "13",
+          level: [13],
           listActive: "",
           classActive: "",
           active: false,
@@ -481,7 +404,7 @@ export default {
           icon: "mdi-file-outline",
           title: "รายงาน",
           to: "",
-          level: "8",
+          level: [8],
           listActive: "",
           classActive: "",
           active: false,
@@ -494,7 +417,7 @@ export default {
           icon: "mdi-file-outline",
           title: "รายงาน",
           to: "",
-          level: "10",
+          level: [10],
           listActive: "",
           classActive: "",
           active: false,
@@ -504,7 +427,7 @@ export default {
           icon: "mdi-file-outline",
           title: "รายงาน",
           to: "",
-          level: "11",
+          level: [11],
           listActive: "",
           classActive: "",
           active: false,
@@ -523,7 +446,7 @@ export default {
         {
           icon: "mdi-cog",
           title: "ตั้งค่า",
-          level: "-1",
+          level: [-1],
           listActive: "",
           classActive: "",
           to: "",
@@ -565,12 +488,12 @@ export default {
           icon: "mdi-cog",
           title: "ตั้งค่า",
           to: "",
-          level: "2",
+          level: [2],
           listActive: "",
           classActive: "",
           active: false,
           children: [
-            { title: "ทีมเซล", to: "/settings/user_teams" },
+            // { title: "ทีมเซล", to: "/settings/user_teams" },
             { title: "ผู้ใช้งานในระบบ", to: "/settings/users" },
           ],
         },
@@ -578,7 +501,7 @@ export default {
       miniVariant: true,
       right: true,
       rightDrawer: false,
-      title: "ประเสริฐผลยูสด์คาร์" + this.$auth.$storage.getLocalStorage("userData-branch_name"),
+      title: `ประเสริฐผลยูสด์คาร์`,
       userData: {
         first_name: "",
         last_name: "",
@@ -590,19 +513,25 @@ export default {
       },
     };
   },
-  beforeCreate() {
-    // const hours = new Date().getHours();
-    // const isDayTime = hours > 6 && hours < 20;
-    // if (!isDayTime) {
-    //   this.$vuetify.theme.dark = true;
-    // }
-    // console.log(this.$auth.$storage.getLocalStorage("userData-sub_group"));
-    // this.change_sub(this.sub_id)
+  computed: {
+    sub_groups() {
+      if (this.$auth.$storage.getLocalStorage("userData-sub_group")) {
+        return this.$auth.$storage.getLocalStorage("userData-sub_group");
+      } else {
+        return [];
+      }
+    },
   },
-  mounted() {
-    // this.change_sub(this.sub_id);
-  },
+  async mounted() {
+    await this.getlocalUser();
+    if (this.userData.user_group_permission == 3) {
+      this.title = `ประเสริฐผลยูสด์คาร์ [${this.$auth.$storage.getLocalStorage("userData-branch_name")}]`;
+    } else {
+      this.title = `ประเสริฐผลยูสด์คาร์ [${this.$auth.$storage.getLocalStorage("userDataOrg-branch_team_name")}]`;
+    }
 
+    this.checkRoute();
+  },
   methods: {
     async groupOrg() {
       await this.$auth.$storage.setLocalStorage("userData-sub_id", null);
@@ -690,7 +619,7 @@ export default {
         } else if (user_group_permission == 9) {
           await this.$router.push("/");
         } else if (user_group_permission == 10) {
-          await this.$router.push("/work/works");
+          await this.$router.push("/index_sale");
         } else if (user_group_permission == 11) {
           await this.$router.push("/work/works");
         } else if (user_group_permission == 12) {
@@ -708,38 +637,15 @@ export default {
       this.$vuetify.theme.dark = !this.$vuetify.theme.dark;
     },
     async logout() {
-      // $nuxt.$auth.logout();
-      // console.log(this.$auth.$storage.getLocalStorage);
       var keys = Object.keys(localStorage),
         i = keys.length;
-
       while (i--) {
         localStorage.removeItem(keys[i]);
       }
       this.$nextTick(() => {
         $nuxt.$auth.logout();
       });
-      // console.log(values);
     },
-    // async Image() {
-    //   this.imagePreviewURL =
-    //     this.serverUrl +
-    //     (await this.$auth.$storage.getLocalStorage("userData-user_image"));
-    // },
-    // async checkRoute() {
-    //   const self = this;
-    //   this.items.map(function (item) {
-    //     if (item.children) {
-    //       const self2 = self;
-    //       item.active = false;
-    //       item.children.map(function (children) {
-    //         if (self2.$route.path == children.to) {
-    //           item.active = true;
-    //         }
-    //       });
-    //     }
-    //   });
-    // },
     checkRoute() {
       const self = this;
       this.items.map(function (item) {
@@ -765,7 +671,12 @@ export default {
       this.userData.user_code = await this.$auth.$storage.getLocalStorage("userData-user_code");
       this.userData.last_name = await this.$auth.$storage.getLocalStorage("userData-last_name");
       this.userData.user_group_name = await this.$auth.$storage.getLocalStorage("userData-user_group_name");
-      this.userData.branch_name = await this.$auth.$storage.getLocalStorage("userData-branch_name");
+      if (this.userData.user_group_permission == 3) {
+        this.userData.branch_name = await this.$auth.$storage.getLocalStorage("userData-branch_name");
+      } else {
+        this.userData.branch_name = this.$auth.$storage.getLocalStorage("userDataOrg-branch_team_name");
+      }
+
       this.userData.user_team = await this.$auth.$storage.getLocalStorage("userData-user_team");
       this.userData.user_group_permission = await this.$auth.$storage.getLocalStorage("userData-user_group_permission");
     },
@@ -778,13 +689,7 @@ export default {
       document.documentElement.style.setProperty("--toolbarHeight", height);
     },
   },
-  async mounted() {
-    await this.getlocalUser();
-    this.checkRoute();
-    // this.Image();
-    // this.refreshToken();
-    // console.log(navigator.onLine);
-  },
+
   watch: {
     $route() {
       this.checkRoute();

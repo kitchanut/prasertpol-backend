@@ -6,11 +6,31 @@
 
         <v-row class="d-flex align-center">
           <v-col cols="7" class="d-flex align-center">
-            <v-menu
-              v-model="menuSearch"
-              :close-on-content-click="false"
-              :nudge-width="300"
-            >
+            <v-menu offset-y>
+              <template v-slot:activator="{ on, attrs }">
+                <v-btn
+                  class="mr-2"
+                  color="primary"
+                  dark
+                  v-bind="attrs"
+                  v-on="on"
+                  style="min-width: 0px; padding: 0 8px; font-size: 24px"
+                  height="42"
+                  width="42"
+                  elevation="0"
+                >
+                  +
+                </v-btn>
+              </template>
+              <v-list>
+                <v-list-item>
+                  <v-list-item-title>
+                    <dialogRequestWithdraw action="add" appearance="text" @success="getData()" />
+                  </v-list-item-title>
+                </v-list-item>
+              </v-list>
+            </v-menu>
+            <v-menu v-model="menuSearch" :close-on-content-click="false" :nudge-width="300">
               <template v-slot:activator="{ on, attrs }">
                 <v-btn
                   v-blur
@@ -62,22 +82,11 @@
                 </v-card-actions>
               </v-card>
             </v-menu>
-            <v-btn-toggle
-              mandatory
-              v-model="toggle"
-              color="primary"
-              @change="getData()"
-            >
+            <v-btn-toggle mandatory v-model="toggle" color="primary" @change="getData()">
               <v-btn height="42" value="all">ทั้งหมด ({{ count.all }})</v-btn>
-              <v-btn height="42" value="pedding"
-                >รอดำเนินการ ({{ count.pedding }})</v-btn
-              >
-              <v-btn height="42" value="approve"
-                >ดำเนินการแล้ว ({{ count.approve }})</v-btn
-              >
-              <v-btn height="42" value="cancle"
-                >ยกเลิก ({{ count.cancle }})</v-btn
-              >
+              <v-btn height="42" value="pedding">รอดำเนินการ ({{ count.pedding }})</v-btn>
+              <v-btn height="42" value="approve">ดำเนินการแล้ว ({{ count.approve }})</v-btn>
+              <v-btn height="42" value="cancle">ยกเลิก ({{ count.cancle }})</v-btn>
             </v-btn-toggle>
           </v-col>
 
@@ -113,10 +122,7 @@
         loading-text="กำลังโหลดข้อมูลกรุณารอสักครู่"
         no-data-text="ยังไม่มีการเพิ่มข้อมูล"
       >
-        <template
-          v-for="(col, i) in filters"
-          v-slot:[`header.${i}`]="{ header }"
-        >
+        <template v-for="(col, i) in filters" v-slot:[`header.${i}`]="{ header }">
           <div style="display: inline-block; padding: 16px 0" :key="col.id">
             {{ header.text }}
           </div>
@@ -135,9 +141,7 @@
                   <v-icon
                     small
                     :color="
-                      activeFilters[header.value] &&
-                      activeFilters[header.value].length <
-                        filters[header.value].length
+                      activeFilters[header.value] && activeFilters[header.value].length < filters[header.value].length
                         ? 'red'
                         : 'default'
                     "
@@ -150,44 +154,19 @@
               <v-list flat dense class="pa-0">
                 <v-row no-gutters>
                   <v-col cols="6">
-                    <v-btn
-                      text
-                      block
-                      @click="toggleAll(header.value)"
-                      color="success"
-                      >เลือกทั้งหมด</v-btn
-                    >
+                    <v-btn text block @click="toggleAll(header.value)" color="success">เลือกทั้งหมด</v-btn>
                   </v-col>
                   <v-col cols="6">
-                    <v-btn
-                      text
-                      block
-                      @click="clearAll(header.value)"
-                      color="warning"
-                      >ล้างข้อมูล</v-btn
-                    >
+                    <v-btn text block @click="clearAll(header.value)" color="warning">ล้างข้อมูล</v-btn>
                   </v-col>
                 </v-row>
                 <v-divider></v-divider>
 
-                <v-list-item-group
-                  multiple
-                  v-model="activeFilters[header.value]"
-                  class="py-2"
-                >
-                  <v-list-item
-                    v-for="item in filters[header.value]"
-                    :key="`${item}`"
-                    :value="item"
-                  >
+                <v-list-item-group multiple v-model="activeFilters[header.value]" class="py-2">
+                  <v-list-item v-for="item in filters[header.value]" :key="`${item}`" :value="item">
                     <template v-slot:default="{ active }">
                       <v-list-item-action>
-                        <v-checkbox
-                          :input-value="active"
-                          :true-value="item"
-                          color="primary"
-                          dense
-                        ></v-checkbox>
+                        <v-checkbox :input-value="active" :true-value="item" color="primary" dense></v-checkbox>
                       </v-list-item-action>
                       <v-list-item-content>
                         <v-list-item-title>{{ item }}</v-list-item-title>
@@ -200,101 +179,99 @@
           </div>
         </template>
 
-        <template v-slot:[`item.pictureUrl`]="{ item }">
+        <!-- <template v-slot:[`item.user_image`]="{ item }">
           <v-btn icon>
-            <v-avatar size="40" @click="showImg(item.pictureUrl)">
-              <v-img :src="item.pictureUrl"> </v-img>
+            <v-avatar size="40" @click="showImg(serverUrl + item.user_image)">
+              <v-img :src="serverUrl + item.user_image"> </v-img>
             </v-avatar>
           </v-btn>
-          <div>{{ item.displayName }}</div>
-        </template>
+        </template> -->
 
         <template v-slot:[`item.sale_name`]="{ item }">
-          <div>{{ item.sale_name }}</div>
-          <div>{{ item.branch_name }}</div>
+          <div no-gutters class="d-flex align-center">
+            <div class="mr-3">
+              <v-btn icon>
+                <v-avatar size="40" @click="showImg(serverUrl + item.user_image)">
+                  <v-img :src="serverUrl + item.user_image"> </v-img>
+                </v-avatar>
+              </v-btn>
+            </div>
+            <div>
+              <div>{{ item.sale_name }}</div>
+              <div>{{ item.branch_name }}</div>
+            </div>
+          </div>
         </template>
 
         <template v-slot:[`item.car_no_all`]="{ item }">
           <div v-if="item.type == 'เปลี่ยนจอง'">
-            <a
-              href="javascript:void(0)"
-              @click="showRequestLog(item.car_no_old)"
-              >{{ item.car_no_old }}</a
-            >
+            <a href="javascript:void(0)" @click="showRequestLog(item.car_no_old)">{{ item.car_no_old }}</a>
             =>
-            <a href="javascript:void(0)" @click="showRequestLog(item.car_no)">{{
-              item.car_no
-            }}</a>
+            <a href="javascript:void(0)" @click="showRequestLog(item.car_no)">{{ item.car_no }}</a>
           </div>
           <div v-else>
-            <a href="javascript:void(0)" @click="showRequestLog(item.car_no)">{{
-              item.car_no
-            }}</a>
+            <a href="javascript:void(0)" @click="showRequestLog(item.car_no)">{{ item.car_no }}</a>
           </div>
         </template>
 
         <template v-slot:[`item.request_status`]="{ item }">
-          <v-btn
-            v-if="item.request_status == 'pedding'"
-            color="warning"
-            fab
-            x-small
-            dark
-            @click="editItem(item.type, item.ref_id)"
-          >
-            <v-icon> mdi-checkbox-blank-outline</v-icon>
-          </v-btn>
-          <v-btn
-            v-else-if="item.request_status == 'approve'"
-            color="success"
-            fab
-            x-small
-            dark
-            @click="editItem(item.type, item.ref_id)"
-          >
-            <v-icon> mdi-checkbox-outline</v-icon>
-          </v-btn>
-          <v-btn
-            v-else-if="item.request_status == 'cancle'"
-            color="primary"
-            fab
-            x-small
-            dark
-            @click="editItem(item.type, item.ref_id)"
-          >
-            <v-icon> mdi-arrow-u-left-top</v-icon>
-          </v-btn>
-          <v-btn
-            v-if="item.request_status != 'cancle'"
-            color="red"
-            fab
-            x-small
-            dark
-            @click="cancleItem(item.type, item.ref_id)"
-          >
-            <v-icon> mdi-close </v-icon>
-          </v-btn>
+          <span v-if="user_group_permission == -1">
+            <v-btn
+              v-if="item.request_status == 'pedding'"
+              color="warning"
+              fab
+              x-small
+              dark
+              @click="editItem(item.type, item.ref_id)"
+            >
+              <v-icon> mdi-checkbox-blank-outline</v-icon>
+            </v-btn>
+            <v-btn
+              v-else-if="item.request_status == 'approve'"
+              color="success"
+              fab
+              x-small
+              dark
+              @click="editItem(item.type, item.ref_id)"
+            >
+              <v-icon> mdi-checkbox-outline</v-icon>
+            </v-btn>
+            <v-btn
+              v-else-if="item.request_status == 'cancle'"
+              color="primary"
+              fab
+              x-small
+              dark
+              @click="editItem(item.type, item.ref_id)"
+            >
+              <v-icon> mdi-arrow-u-left-top</v-icon>
+            </v-btn>
+            <v-btn
+              v-if="item.request_status != 'cancle'"
+              color="red"
+              fab
+              x-small
+              dark
+              @click="cancleItem(item.type, item.ref_id)"
+            >
+              <v-icon> mdi-close </v-icon>
+            </v-btn>
 
-          <v-btn
-            v-if="item.request_status == 'cancle'"
-            color="red"
-            fab
-            x-small
-            dark
-            @click="deleteItem(item.type, item.ref_id)"
-          >
-            <v-icon> mdi-delete </v-icon>
-          </v-btn>
+            <v-btn
+              v-if="item.request_status == 'cancle'"
+              color="red"
+              fab
+              x-small
+              dark
+              @click="deleteItem(item.type, item.ref_id)"
+            >
+              <v-icon> mdi-delete </v-icon>
+            </v-btn>
+          </span>
         </template>
 
         <template v-slot:[`item.actions`]="{ item }">
-          <v-btn
-            color="primary"
-            fab
-            x-small
-            dark
-            @click="showData(item.type, item.ref_id)"
-          >
+          <v-btn color="primary" fab x-small dark @click="showData(item.type, item.ref_id)">
             <v-icon> mdi-information-variant </v-icon>
           </v-btn>
         </template>
@@ -319,11 +296,7 @@
       @cancleItem="drawerRequestLog = false"
     />
 
-    <dialogImage
-      :dialog="dialogImg"
-      :imgUrl="imgUrl"
-      @cancleItem="dialogImg = false"
-    />
+    <dialogImage :dialog="dialogImg" :imgUrl="imgUrl" @cancleItem="dialogImg = false" />
   </div>
 </template>
 
@@ -333,6 +306,7 @@ import * as customAlart from "@/customJS/customAlart";
 import dialogImage from "@/components/dialog/dialogImage";
 import dialogRequestLog from "@/components/dialog/dialogRequestLog";
 import drawerRequestLog from "@/components/dialog/drawerRequestLog";
+import dialogRequestWithdraw from "@/components/dialog/dialogRequestWithdraw";
 
 import * as apiRequestBook from "@/Api/apiRequestBook";
 import * as apiRequestAppointment from "@/Api/apiRequestAppointment";
@@ -354,6 +328,7 @@ export default {
   components: {
     drawerRequestLog,
     dialogRequestLog,
+    dialogRequestWithdraw,
     dialogImage,
     dateSelect2,
   },
@@ -381,9 +356,7 @@ export default {
       id: "",
       formTitle: "",
       action: "",
-      user_group_permission: this.$auth.$storage.getLocalStorage(
-        "userData-user_group_permission"
-      ),
+      user_group_permission: this.$auth.$storage.getLocalStorage("userData-user_group_permission"),
       searchCarNo: null,
       search: "",
       headers: [
@@ -394,11 +367,10 @@ export default {
           width: "9%",
         },
         { text: "เวลา", value: "created_at", width: "11%" },
-
-        { text: "Line", value: "pictureUrl", align: "center", width: "20%" },
         { text: "เซล/สาขา", value: "sale_name", width: "22%" },
-        { text: "ประเภท", value: "type", width: "15%" },
-        { text: "ลำดับรถ", value: "car_no_all" },
+        { text: "ประเภท", value: "type", width: "10%" },
+        { text: "ลำดับรถ", value: "car_no_all", width: "15%" },
+        { text: "หมายเหตุ", value: "note" },
         {
           text: "รายละเอียด",
           value: "actions",
@@ -449,7 +421,7 @@ export default {
 
       const response = await apiRequestLog.indexCustom(data);
 
-      // console.log(response.data);
+      console.log(response.data);
       this.data = response.data;
       this.filteredData = this.data;
       this.initFilters();
@@ -654,5 +626,4 @@ export default {
 };
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

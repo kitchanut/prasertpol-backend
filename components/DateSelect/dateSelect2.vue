@@ -141,58 +141,31 @@ export default {
         this.timeStart = moment().startOf("day").format("YYYY-MM-DD HH:mm");
         this.timeEnd = moment().endOf("day").format("YYYY-MM-DD HH:mm");
       } else if (value == 2) {
-        this.timeStart = moment()
-          .startOf("day")
-          .add(-1, "days")
-          .format("YYYY-MM-DD HH:mm");
-        this.timeEnd = moment()
-          .endOf("day")
-          .add(-1, "days")
-          .format("YYYY-MM-DD HH:mm");
+        this.timeStart = moment().startOf("day").add(-1, "days").format("YYYY-MM-DD HH:mm");
+        this.timeEnd = moment().endOf("day").add(-1, "days").format("YYYY-MM-DD HH:mm");
       } else if (value == 3) {
-        this.timeStart = moment()
-          .startOf("day")
-          .add(-7, "days")
-          .format("YYYY-MM-DD HH:mm");
+        this.timeStart = moment().startOf("day").add(-7, "days").format("YYYY-MM-DD HH:mm");
         this.timeEnd = moment().endOf("day").format("YYYY-MM-DD HH:mm");
       } else if (value == 4) {
-        this.timeStart = moment()
-          .startOf("day")
-          .add(-30, "days")
-          .format("YYYY-MM-DD HH:mm");
+        this.timeStart = moment().startOf("day").add(-30, "days").format("YYYY-MM-DD HH:mm");
         this.timeEnd = moment().endOf("day").format("YYYY-MM-DD HH:mm");
       } else if (value == 5) {
         this.timeStart = moment().startOf("months").format("YYYY-MM-DD HH:mm");
         this.timeEnd = moment().endOf("months").format("YYYY-MM-DD HH:mm");
       } else if (value == 6) {
-        this.timeStart = moment()
-          .add(-1, "months")
-          .startOf("months")
-          .format("YYYY-MM-DD HH:mm");
-        this.timeEnd = moment()
-          .add(-1, "months")
-          .endOf("months")
-          .format("YYYY-MM-DD HH:mm");
+        this.timeStart = moment().add(-1, "months").startOf("months").format("YYYY-MM-DD HH:mm");
+        this.timeEnd = moment().add(-1, "months").endOf("months").format("YYYY-MM-DD HH:mm");
       } else if (value == 7) {
-        this.timeStart = moment()
-          .add(-3, "months")
-          .startOf("months")
-          .format("YYYY-MM-DD HH:mm");
+        this.timeStart = moment().add(-3, "months").startOf("months").format("YYYY-MM-DD HH:mm");
         this.timeEnd = moment().endOf("day").format("YYYY-MM-DD HH:mm");
       } else if (value == 8) {
-        this.timeStart = moment()
-          .add(-6, "months")
-          .startOf("months")
-          .format("YYYY-MM-DD HH:mm");
+        this.timeStart = moment().add(-6, "months").startOf("months").format("YYYY-MM-DD HH:mm");
         this.timeEnd = moment().endOf("day").format("YYYY-MM-DD HH:mm");
       } else if (value == 9) {
         this.timeStart = moment().startOf("years").format("YYYY-MM-DD HH:mm");
         this.timeEnd = moment().endOf("day").format("YYYY-MM-DD HH:mm");
       } else if (value == 10) {
-        this.timeStart = moment()
-          .add(-3, "years")
-          .startOf("years")
-          .format("YYYY-MM-DD HH:mm");
+        this.timeStart = moment().add(-3, "years").startOf("years").format("YYYY-MM-DD HH:mm");
         this.timeEnd = moment().endOf("day").format("YYYY-MM-DD HH:mm");
       }
       this.returnDate();

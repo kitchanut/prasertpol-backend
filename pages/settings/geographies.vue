@@ -1,62 +1,61 @@
 <template>
   <div v-if="user_group_permission == -1">
+    <v-card>
+      <v-card-title>
+        <template>
+          <v-btn color="primary" dark @click.stop="AddItem()">
+            <v-icon left>mdi-plus</v-icon>
+            เพิ่มรายการใหม่
+          </v-btn>
+        </template>
 
-  <v-card>
-    <v-card-title>
-      <template>
-        <v-btn color="primary" dark @click.stop="AddItem()">
-          <v-icon left>mdi-plus</v-icon>
-          เพิ่มรายการใหม่
-        </v-btn>
-      </template>
+        <v-spacer></v-spacer>
 
-      <v-spacer></v-spacer>
+        <v-col cols="3">
+          <v-text-field
+            v-model="search"
+            id="search"
+            name="search"
+            append-icon="mdi-magnify"
+            label="ค้นหา"
+            single-line
+            hide-details
+          ></v-text-field>
+        </v-col>
+      </v-card-title>
 
-      <v-col cols="3">
-        <v-text-field
-          v-model="search"
-id="search"
-name="search"
-          append-icon="mdi-magnify"
-          label="ค้นหา"
-          single-line
-          hide-details
-        ></v-text-field>
-      </v-col>
-    </v-card-title>
+      <v-data-table
+        :headers="headers"
+        :items="data"
+        :items-per-page="10"
+        :search="search"
+        :loading="loading"
+        no-data-text="ยังไม่มีการเพิ่มข้อมูล"
+        loading-text="กำลังโหลดข้อมูลกรุณารอสักครู่"
+      >
+        <!-- <template v-slot:item.car_part_type_active="{ item }"> -->
 
-    <v-data-table
-      :headers="headers"
-      :items="data"
-      :items-per-page="10"
-      :search="search"
-      :loading="loading"
-      no-data-text="ยังไม่มีการเพิ่มข้อมูล"
-      loading-text="กำลังโหลดข้อมูลกรุณารอสักครู่"
-    >
-      <!-- <template v-slot:item.car_part_type_active="{ item }"> -->
+        <!-- <template v-slot:item.actions="{ item }"> -->
+        <template v-slot:[`item.actions`]="{ item }">
+          <v-btn color="primary" fab x-small dark @click="editItem(item.id)">
+            <v-icon> mdi-pencil </v-icon>
+          </v-btn>
+          <v-btn color="red" fab x-small dark @click="deleteItem(item.id)">
+            <v-icon> mdi-delete </v-icon>
+          </v-btn>
+        </template>
+      </v-data-table>
 
-      <!-- <template v-slot:item.actions="{ item }"> -->
-      <template v-slot:[`item.actions`]="{ item }">
-        <v-btn color="primary" fab x-small dark @click="editItem(item.id)">
-          <v-icon> mdi-pencil </v-icon>
-        </v-btn>
-        <v-btn color="red" fab x-small dark @click="deleteItem(item.id)">
-          <v-icon> mdi-delete </v-icon>
-        </v-btn>
-      </template>
-    </v-data-table>
-
-    <dialogNew
-      :dialog="dialog"
-      :id="id"
-      :action="action"
-      :formTitle="formTitle"
-      @cancleItem="dialog = false"
-      @success="addSuccess()"
-      @error="addError()"
-    />
-  </v-card>
+      <dialogNew
+        :dialog="dialog"
+        :id="id"
+        :action="action"
+        :formTitle="formTitle"
+        @cancleItem="dialog = false"
+        @success="addSuccess()"
+        @error="addError()"
+      />
+    </v-card>
   </div>
 </template>
 
@@ -77,9 +76,7 @@ export default {
       dialog: false,
       formTitle: "Add",
       action: "add",
-      user_group_permission: this.$auth.$storage.getLocalStorage(
-        "userData-user_group_permission"
-      ),
+      user_group_permission: this.$auth.$storage.getLocalStorage("userData-user_group_permission"),
       headers: [
         { text: "ลำดับ", value: "no", width: "7%", align: "center" },
         { text: "ชื่อภาค", value: "name", width: "15%" },

@@ -1,11 +1,5 @@
 <template>
-  <div
-    v-if="
-      user_group_permission == -1 ||
-      user_group_permission == 6 ||
-      user_group_permission == 11
-    "
-  >
+  <div v-if="user_group_permission == -1 || user_group_permission == 6 || user_group_permission == 11">
     <v-card>
       <v-card-title>
         <template>
@@ -20,8 +14,8 @@
         <v-col cols="3">
           <v-text-field
             v-model="search"
-id="search"
-name="search"
+            id="search"
+            name="search"
             append-icon="mdi-magnify"
             label="ค้นหา"
             single-line
@@ -54,12 +48,8 @@ name="search"
         </template>
 
         <template v-slot:[`item.po_active`]="{ item }">
-          <h5 v-if="item.po_active == '1'" class="orange--text">
-            รอรับเข้าคลัง
-          </h5>
-          <h5 v-else-if="item.po_active == '2'" class="blue--text">
-            อยู่ในคลัง
-          </h5>
+          <h5 v-if="item.po_active == '1'" class="orange--text">รอรับเข้าคลัง</h5>
+          <h5 v-else-if="item.po_active == '2'" class="blue--text">อยู่ในคลัง</h5>
         </template>
 
         <template v-slot:[`item.actions`]="{ item }">
@@ -109,9 +99,7 @@ export default {
   },
   data() {
     return {
-      user_group_permission: this.$auth.$storage.getLocalStorage(
-        "userData-user_group_permission"
-      ),
+      user_group_permission: this.$auth.$storage.getLocalStorage("userData-user_group_permission"),
       loading: true,
       id: "",
       search: "",

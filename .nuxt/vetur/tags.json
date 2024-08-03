@@ -1,4 +1,10 @@
 {
+  "DialogDelete": {
+    "description": "Auto imported from components/DialogDelete.vue"
+  },
+  "ImageUpload": {
+    "description": "Auto imported from components/ImageUpload.vue"
+  },
   "Logo": {
     "description": "Auto imported from components/Logo.vue"
   },
@@ -13,33 +19,6 @@
   },
   "FebButtonWork": {
     "description": "Auto imported from components/febButtonWork.vue"
-  },
-  "BarChartBranch": {
-    "description": "Auto imported from components/BarChart/BarChartBranch.vue"
-  },
-  "BarChartCar": {
-    "description": "Auto imported from components/BarChart/BarChartCar.vue"
-  },
-  "BarChartPriceCar": {
-    "description": "Auto imported from components/BarChart/BarChartPriceCar.vue"
-  },
-  "BarChartSale": {
-    "description": "Auto imported from components/BarChart/BarChartSale.vue"
-  },
-  "BarChartSaleCarByBranch": {
-    "description": "Auto imported from components/BarChart/BarChartSaleCarByBranch.vue"
-  },
-  "BarChartTopCars": {
-    "description": "Auto imported from components/BarChart/BarChartTopCars.vue"
-  },
-  "BarChartVisit": {
-    "description": "Auto imported from components/BarChart/BarChartVisit.vue"
-  },
-  "BarChartVisitCar": {
-    "description": "Auto imported from components/BarChart/BarChartVisitCar.vue"
-  },
-  "BarChartVisitLine": {
-    "description": "Auto imported from components/BarChart/BarChartVisitLine.vue"
   },
   "BarChartDashBranch": {
     "description": "Auto imported from components/BarChartDash/BarChartDashBranch.vue"
@@ -74,23 +53,44 @@
   "BarChartDashVisitCarType": {
     "description": "Auto imported from components/BarChartDash/BarChartDashVisitCarType.vue"
   },
-  "DoughnutChartBranch": {
-    "description": "Auto imported from components/DoughnutChart/DoughnutChartBranch.vue"
+  "BarChartBranch": {
+    "description": "Auto imported from components/BarChart/BarChartBranch.vue"
   },
-  "DoughnutChartCar": {
-    "description": "Auto imported from components/DoughnutChart/DoughnutChartCar.vue"
+  "BarChartCar": {
+    "description": "Auto imported from components/BarChart/BarChartCar.vue"
   },
-  "DoughnutChartUser": {
-    "description": "Auto imported from components/DoughnutChart/DoughnutChartUser.vue"
+  "BarChartPriceCar": {
+    "description": "Auto imported from components/BarChart/BarChartPriceCar.vue"
   },
-  "DoughnutChartCarType": {
-    "description": "Auto imported from components/DoughnutChartDash/DoughnutChartCarType.vue"
+  "BarChartSale": {
+    "description": "Auto imported from components/BarChart/BarChartSale.vue"
   },
-  "DoughnutChartDashBranchCar": {
-    "description": "Auto imported from components/DoughnutChartDash/DoughnutChartDashBranchCar.vue"
+  "BarChartSaleCarByBranch": {
+    "description": "Auto imported from components/BarChart/BarChartSaleCarByBranch.vue"
   },
-  "DoughnutChartDashSale": {
-    "description": "Auto imported from components/DoughnutChartDash/DoughnutChartDashSale.vue"
+  "BarChartTopCars": {
+    "description": "Auto imported from components/BarChart/BarChartTopCars.vue"
+  },
+  "BarChartVisit": {
+    "description": "Auto imported from components/BarChart/BarChartVisit.vue"
+  },
+  "BarChartVisitCar": {
+    "description": "Auto imported from components/BarChart/BarChartVisitCar.vue"
+  },
+  "BarChartVisitLine": {
+    "description": "Auto imported from components/BarChart/BarChartVisitLine.vue"
+  },
+  "DashboardComInsurances": {
+    "description": "Auto imported from components/Dashboard/ComInsurances.vue"
+  },
+  "DashboardComInventoryCar": {
+    "description": "Auto imported from components/Dashboard/ComInventoryCar.vue"
+  },
+  "DashboardComRegis": {
+    "description": "Auto imported from components/Dashboard/ComRegis.vue"
+  },
+  "DashboardComWorkStatus": {
+    "description": "Auto imported from components/Dashboard/ComWorkStatus.vue"
   },
   "DateSelect": {
     "description": "Auto imported from components/DateSelect/dateSelect.vue"
@@ -104,11 +104,29 @@
   "DateSelectMonthAll": {
     "description": "Auto imported from components/DateSelect/dateSelectMonthAll.vue"
   },
-  "DashboardComInventoryCar": {
-    "description": "Auto imported from components/Dashboard/ComInventoryCar.vue"
+  "ChartLine": {
+    "description": "Auto imported from components/Chart/Line.vue"
   },
-  "DashboardComWorkStatus": {
-    "description": "Auto imported from components/Dashboard/ComWorkStatus.vue"
+  "DoughnutChartCarType": {
+    "description": "Auto imported from components/DoughnutChartDash/DoughnutChartCarType.vue"
+  },
+  "DoughnutChartDashBranchCar": {
+    "description": "Auto imported from components/DoughnutChartDash/DoughnutChartDashBranchCar.vue"
+  },
+  "DoughnutChartDashSale": {
+    "description": "Auto imported from components/DoughnutChartDash/DoughnutChartDashSale.vue"
+  },
+  "DoughnutChartBranch": {
+    "description": "Auto imported from components/DoughnutChart/DoughnutChartBranch.vue"
+  },
+  "DoughnutChartCar": {
+    "description": "Auto imported from components/DoughnutChart/DoughnutChartCar.vue"
+  },
+  "DoughnutChartUser": {
+    "description": "Auto imported from components/DoughnutChart/DoughnutChartUser.vue"
+  },
+  "DialogCardRequestLog": {
+    "description": "Auto imported from components/dialog/cardRequestLog.vue"
   },
   "DialogAddIncome": {
     "description": "Auto imported from components/dialog/dialogAdd_income.vue"
@@ -200,6 +218,9 @@
   "DialogFileCar": {
     "description": "Auto imported from components/dialog/dialogFileCar.vue"
   },
+  "DialogFinancialFullOld": {
+    "description": "Auto imported from components/dialog/dialogFinancial-Full-old.vue"
+  },
   "DialogFinancial": {
     "description": "Auto imported from components/dialog/dialogFinancial.vue"
   },
@@ -215,8 +236,23 @@
   "DialogImageCar": {
     "description": "Auto imported from components/dialog/dialogImage_car.vue"
   },
+  "DialogInstallment": {
+    "description": "Auto imported from components/dialog/dialogInstallment.vue"
+  },
+  "DialogInstallmentHistory": {
+    "description": "Auto imported from components/dialog/dialogInstallmentHistory.vue"
+  },
+  "DialogInstallmentPayment": {
+    "description": "Auto imported from components/dialog/dialogInstallmentPayment.vue"
+  },
   "DialogInsurCertificate": {
     "description": "Auto imported from components/dialog/dialogInsurCertificate.vue"
+  },
+  "DialogInsurance": {
+    "description": "Auto imported from components/dialog/dialogInsurance.vue"
+  },
+  "DialogInsurancesList": {
+    "description": "Auto imported from components/dialog/dialogInsurancesList.vue"
   },
   "DialogJobDetail": {
     "description": "Auto imported from components/dialog/dialogJobDetail.vue"
@@ -236,6 +272,9 @@
   "DialogMiniUser": {
     "description": "Auto imported from components/dialog/dialogMini_user.vue"
   },
+  "DialogNegotiation": {
+    "description": "Auto imported from components/dialog/dialogNegotiation.vue"
+  },
   "DialogNote": {
     "description": "Auto imported from components/dialog/dialogNote.vue"
   },
@@ -250,6 +289,9 @@
   },
   "DialogPathnerJobTechnician": {
     "description": "Auto imported from components/dialog/dialogPathnerJobTechnician.vue"
+  },
+  "DialogPreApprove": {
+    "description": "Auto imported from components/dialog/dialogPreApprove.vue"
   },
   "DialogPriceRecord": {
     "description": "Auto imported from components/dialog/dialogPriceRecord.vue"
@@ -281,6 +323,12 @@
   "DialogRequestLog": {
     "description": "Auto imported from components/dialog/dialogRequestLog.vue"
   },
+  "DialogRequestUpdate": {
+    "description": "Auto imported from components/dialog/dialogRequestUpdate.vue"
+  },
+  "DialogRequestWithdraw": {
+    "description": "Auto imported from components/dialog/dialogRequestWithdraw.vue"
+  },
   "DialogSearchTerm": {
     "description": "Auto imported from components/dialog/dialogSearch_term.vue"
   },
@@ -311,23 +359,23 @@
   "DialogWork": {
     "description": "Auto imported from components/dialog/dialogWork.vue"
   },
+  "DialogDrawerFile": {
+    "description": "Auto imported from components/dialog/drawerFile.vue"
+  },
   "DialogDrawerRequestLog": {
     "description": "Auto imported from components/dialog/drawerRequestLog.vue"
   },
   "MobileDialogBooking": {
     "description": "Auto imported from components/mobile/dialogBooking.vue"
   },
-  "MobileDialogContract": {
-    "description": "Auto imported from components/mobile/dialogContract.vue"
-  },
-  "MobileDialogFinancial": {
-    "description": "Auto imported from components/mobile/dialogFinancial.vue"
-  },
   "MobileDialogInsurCertificate": {
     "description": "Auto imported from components/mobile/dialogInsurCertificate.vue"
   },
   "MobileDialogReceiveDown": {
     "description": "Auto imported from components/mobile/dialogReceiveDown.vue"
+  },
+  "SelectDropDownAmphure": {
+    "description": "Auto imported from components/selectDropDown/selectDropDownAmphure.vue"
   },
   "SelectAddCarModel": {
     "description": "Auto imported from components/selectAdd/selectAddCarModel.vue"
@@ -361,8 +409,5 @@
   },
   "SelectAddUnit": {
     "description": "Auto imported from components/selectAdd/selectAddUnit.vue"
-  },
-  "SelectDropDownAmphure": {
-    "description": "Auto imported from components/selectDropDown/selectDropDownAmphure.vue"
   }
 }

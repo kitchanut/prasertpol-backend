@@ -35,21 +35,13 @@
         no-data-text="ยังไม่มีการเพิ่มข้อมูล"
       >
         <template v-slot:[`item.fuel_code_color`]="{ item }">
-          <span
-            :style="[
-              { 'background-color': item.fuel_code_color },
-              { padding: '2px' },
-              { 'border-radius': '3px' },
-            ]"
-          >
+          <span :style="[{ 'background-color': item.fuel_code_color }, { padding: '2px' }, { 'border-radius': '3px' }]">
             {{ item.fuel_code_color }}
           </span>
         </template>
 
         <template v-slot:[`item.fuel_active`]="{ item }">
-          <v-btn v-if="item.fuel_active == '1'" x-small color="success" dark
-            >เปิดใช้งาน</v-btn
-          >
+          <v-btn v-if="item.fuel_active == '1'" x-small color="success" dark>เปิดใช้งาน</v-btn>
           <v-btn v-else x-small color="red" dark>ปิดการใช้งาน</v-btn>
         </template>
 
@@ -94,9 +86,7 @@ export default {
       id: "",
       formTitle: "Add",
       action: "add",
-      user_group_permission: this.$auth.$storage.getLocalStorage(
-        "userData-user_group_permission"
-      ),
+      user_group_permission: this.$auth.$storage.getLocalStorage("userData-user_group_permission"),
       headers: [
         { text: "ลำดับ", value: "no", width: "7%", align: "center" },
         { text: "รหัสสี", value: "fuel_code_color", width: "10%" },

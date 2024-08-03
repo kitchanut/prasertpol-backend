@@ -1,11 +1,5 @@
 <template>
-  <div
-    v-if="
-      user_group_permission == -1 ||
-      user_group_permission == 9 ||
-      user_group_permission == 11
-    "
-  >
+  <div v-if="user_group_permission == -1 || user_group_permission == 9 || user_group_permission == 11">
     <v-card>
       <v-card-title>
         <v-col cols="5">
@@ -22,13 +16,9 @@
             dense
             hide-details
           >
-            <template slot="selection" slot-scope="{ item }">
-              {{ item.car_no }} ({{ item.car_regis }})
-            </template>
+            <template slot="selection" slot-scope="{ item }"> {{ item.car_no }} ({{ item.car_regis }}) </template>
 
-            <template slot="item" slot-scope="{ item }">
-              {{ item.car_no }} ({{ item.car_regis }})
-            </template>
+            <template slot="item" slot-scope="{ item }"> {{ item.car_no }} ({{ item.car_regis }}) </template>
           </v-autocomplete>
         </v-col>
 
@@ -37,8 +27,8 @@
         <v-col cols="3">
           <v-text-field
             v-model="search"
-id="search"
-name="search"
+            id="search"
+            name="search"
             append-icon="mdi-magnify"
             label="ค้นหา"
             single-line
@@ -71,13 +61,7 @@ name="search"
 
         <!-- <template v-slot:item.actions="{ item }"> -->
         <template v-slot:[`item.actions`]="{ item }">
-          <v-btn
-            color="primary"
-            fab
-            x-small
-            dark
-            @click="PathnerJobTechnician(item.id, 'edit')"
-          >
+          <v-btn color="primary" fab x-small dark @click="PathnerJobTechnician(item.id, 'edit')">
             <v-icon> mdi-pencil </v-icon>
           </v-btn>
           <!-- <v-btn color="red" fab x-small dark @click="deleteItem(item.id)">
@@ -114,9 +98,7 @@ export default {
   },
   data() {
     return {
-      user_group_permission: this.$auth.$storage.getLocalStorage(
-        "userData-user_group_permission"
-      ),
+      user_group_permission: this.$auth.$storage.getLocalStorage("userData-user_group_permission"),
       loading: false,
       search: "",
       id: "",
@@ -152,11 +134,8 @@ export default {
   methods: {
     filterObject(item, queryText, itemText) {
       return (
-        item.car_no.toLocaleLowerCase().indexOf(queryText.toLocaleLowerCase()) >
-          -1 ||
-        item.car_regis
-          .toLocaleLowerCase()
-          .indexOf(queryText.toLocaleLowerCase()) > -1
+        item.car_no.toLocaleLowerCase().indexOf(queryText.toLocaleLowerCase()) > -1 ||
+        item.car_regis.toLocaleLowerCase().indexOf(queryText.toLocaleLowerCase()) > -1
       );
     },
     async getDataCar() {
@@ -167,9 +146,7 @@ export default {
     async selectSee() {
       this.data = [];
       this.loading = true;
-      const response = await apiPathner_job_technician.selectWhereCar(
-        this.car_id
-      );
+      const response = await apiPathner_job_technician.selectWhereCar(this.car_id);
       // console.log(response)
 
       this.data = await response.data;
@@ -177,8 +154,7 @@ export default {
     },
     async PathnerJobTechnician(id, type) {
       // console.log(id);
-      this.formTitlePathnerJobTechnician =
-        type == "edit" ? "แจ้งซ่อม (อู่นอก)" : "ปิดงาน (อู่นอก)";
+      this.formTitlePathnerJobTechnician = type == "edit" ? "แจ้งซ่อม (อู่นอก)" : "ปิดงาน (อู่นอก)";
       this.dialogPathnerJobTechnician = true;
       this.id = id;
       this.actionPathnerJobTechnician = type;

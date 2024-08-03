@@ -14,7 +14,7 @@ export default function (ctx, inject) {
 
   // Register strategies
   // local
-  $auth.registerStrategy('local', new scheme_003d9a64($auth, {"endpoints":{"login":{"url":"https://www.psnkp.co.th/server/api/auth/login","method":"post","propertyName":"access_token"},"logout":{"url":"https://www.psnkp.co.th/server/api/auth/logout","method":"post"},"user":{"url":"https://www.psnkp.co.th/server/api/me","method":"get","propertyName":"me"}},"_name":"local"}))
+  $auth.registerStrategy('local', new scheme_003d9a64($auth, {"endpoints":{"login":{"url":"http://localhost/psnkp-server/api/auth/login","method":"post","propertyName":"access_token"},"logout":{"url":"http://localhost/psnkp-server/api/auth/logout","method":"post"},"user":{"url":"http://localhost/psnkp-server/api/me","method":"get","propertyName":"me"}},"_name":"local"}))
 
   // Inject it to nuxt context as $auth
   inject('auth', $auth)

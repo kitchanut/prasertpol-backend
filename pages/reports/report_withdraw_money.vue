@@ -22,8 +22,8 @@
           <v-col cols="3">
             <v-text-field
               v-model="search"
-id="search"
-name="search"
+              id="search"
+              name="search"
               append-icon="mdi-magnify"
               label="ค้นหา"
               single-line
@@ -86,18 +86,12 @@ name="search"
         </template>
 
         <template v-slot:[`item.status_check`]="{ item }">
-          <span style="color: green" v-if="item.status_check == 1"
-            >เช็คแล้ว</span
-          >
+          <span style="color: green" v-if="item.status_check == 1">เช็คแล้ว</span>
           <span style="color: red" v-else>ยังไม่เช็ค</span>
         </template>
       </v-data-table>
 
-      <dialogImage
-        :dialog="dialogImg"
-        :imgUrl="imgUrl"
-        @cancleItem="dialogImg = false"
-      />
+      <dialogImage :dialog="dialogImg" :imgUrl="imgUrl" @cancleItem="dialogImg = false" />
     </v-card>
   </div>
 </template>
@@ -119,9 +113,7 @@ export default {
       loading: true,
       search: "",
       branch_id: this.$auth.$storage.getLocalStorage("userData-branch_id"),
-      user_group_permission: this.$auth.$storage.getLocalStorage(
-        "userData-user_group_permission"
-      ),
+      user_group_permission: this.$auth.$storage.getLocalStorage("userData-user_group_permission"),
       headers: [
         { text: "ไฟล์", value: "file" },
         {

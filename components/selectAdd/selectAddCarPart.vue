@@ -2,9 +2,7 @@
   <div>
     <v-list-item @click="AddItem()">
       <v-list-item-content>
-        <v-list-item-title style="color: #1976d2">
-          + เพิ่มข้อมูลใหม่
-        </v-list-item-title>
+        <v-list-item-title style="color: #1976d2"> + เพิ่มข้อมูลใหม่ </v-list-item-title>
       </v-list-item-content>
     </v-list-item>
     <dialogNew

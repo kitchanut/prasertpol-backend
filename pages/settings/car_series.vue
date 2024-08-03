@@ -36,23 +36,13 @@
       >
         <template v-slot:[`item.car_serie_code_color`]="{ item }">
           <span
-            :style="[
-              { 'background-color': item.car_serie_code_color },
-              { padding: '2px' },
-              { 'border-radius': '3px' },
-            ]"
+            :style="[{ 'background-color': item.car_serie_code_color }, { padding: '2px' }, { 'border-radius': '3px' }]"
           >
             {{ item.car_serie_code_color }}
           </span>
         </template>
         <template v-slot:[`item.car_series_active`]="{ item }">
-          <v-btn
-            v-if="item.car_series_active == '1'"
-            x-small
-            color="success"
-            dark
-            >เปิดใช้งาน</v-btn
-          >
+          <v-btn v-if="item.car_series_active == '1'" x-small color="success" dark>เปิดใช้งาน</v-btn>
           <v-btn v-else x-small color="red" dark>ปิดการใช้งาน</v-btn>
         </template>
 
@@ -108,9 +98,7 @@ export default {
         { text: "จัดการ", value: "actions", sortable: false, width: "10%" },
       ],
       data: [],
-      user_group_permission: this.$auth.$storage.getLocalStorage(
-        "userData-user_group_permission"
-      ),
+      user_group_permission: this.$auth.$storage.getLocalStorage("userData-user_group_permission"),
     };
   },
   mounted() {

@@ -2,57 +2,73 @@
   <v-container>
     <v-dialog v-model="dialogDeleteComponent" max-width="50%">
       <v-card>
-        <v-form
-          autocomplete="true"
-          :readonly="isReadonly"
-          ref="form"
-          @submit.prevent="onAction(formData.id)"
-        >
+        <v-form autocomplete="true" :readonly="isReadonly" ref="form" @submit.prevent="onAction(formData.id)">
           <v-toolbar color="primary" dark flat>
             {{ formTitlePathnerJobTechnician }}
           </v-toolbar>
 
-          <v-progress-linear
-            v-if="formDataLoading"
-            indeterminate
-            color="yellow darken-2"
-          >
-          </v-progress-linear>
+          <v-progress-linear v-if="formDataLoading" indeterminate color="yellow darken-2"> </v-progress-linear>
 
           <v-card-text>
             <v-container>
-              <v-row>
-                <v-col cols="6">
-                  <v-autocomplete
-                    v-model="formData.partner_technician_id"
-                    id="formData.partner_technician_id"
-                    name="formData.partner_technician_id"
-                    :items="dataPartner_technician"
-                    item-text="partner_technician"
-                    no-data-text="ไม่มีข้อมูล"
-                    item-value="id"
-                    label="มอบงานให้อู่"
-                    outlined
-                    dense
-                    hide-details
-                    :rules="rule"
-                  >
-                    <template v-slot:append-item>
-                      <selectAddPartnerTechnician
-                        @success="addSuccess"
-                        @error="addError"
-                      />
-                    </template>
-                  </v-autocomplete>
-                </v-col>
+              <v-autocomplete
+                v-model="formData.partner_technician_id"
+                id="formData.partner_technician_id"
+                name="formData.partner_technician_id"
+                :items="dataPartner_technician"
+                item-text="partner_technician"
+                no-data-text="ไม่มีข้อมูล"
+                item-value="id"
+                label="มอบงานให้อู่"
+                outlined
+                dense
+                hide-details
+                :rules="rule"
+              >
+                <template v-slot:append-item>
+                  <selectAddPartnerTechnician @success="addSuccess" @error="addError" />
+                </template>
+              </v-autocomplete>
 
-                <v-col cols="6">
+              <v-row no-gutters class="mt-3">
+                <v-col cols="6 pr-1">
                   <v-menu
                     :disabled="isReadonly"
-                    ref="menuDateExpected_date_end"
+                    v-model="menuDatecreated_at"
+                    :close-on-content-click="false"
+                    transition="scale-transition"
+                    offset-y
+                    max-width="290px"
+                    min-width="auto"
+                  >
+                    <template v-slot:activator="{ on, attrs }">
+                      <v-text-field
+                        v-model="formData.created_at"
+                        label="วันแจ้งซ่อม"
+                        v-bind="attrs"
+                        v-on="on"
+                        persistent-hint
+                        prepend-icon=""
+                        outlined
+                        dense
+                        clearable
+                        hide-details
+                        flathide-details
+                        :rules="rule"
+                      ></v-text-field>
+                    </template>
+                    <v-date-picker
+                      v-model="formData.created_at"
+                      locale="th-TH"
+                      picker-date
+                      @input="menuDatecreated_at = false"
+                    ></v-date-picker>
+                  </v-menu>
+                </v-col>
+                <v-col cols="6 pl-1">
+                  <v-menu
+                    :disabled="isReadonly"
                     v-model="menuDateExpected_date_end"
-                    id="menuDateExpected_date_end"
-                    name="menuDateExpected_date_end"
                     :close-on-content-click="false"
                     transition="scale-transition"
                     offset-y
@@ -63,8 +79,6 @@
                       <v-text-field
                         autocomplete="true"
                         v-model="formData.expected_date_end"
-                        id="formData.expected_date_end"
-                        name="formData.expected_date_end"
                         label="คาดว่าจะเสร็จวันที่"
                         v-bind="attrs"
                         v-on="on"
@@ -80,8 +94,6 @@
                     </template>
                     <v-date-picker
                       v-model="formData.expected_date_end"
-                      id="formData.expected_date_end"
-                      name="formData.expected_date_end"
                       locale="th-TH"
                       picker-date
                       @input="menuDateExpected_date_end = false"
@@ -90,56 +102,37 @@
                 </v-col>
               </v-row>
 
-              <v-row>
-                <v-col cols="12">
-                  <v-text-field
-                    autocomplete="true"
-                    label="จำนวนเงิน"
-                    append-icon=""
-                    type="number"
-                    min="0"
-                    v-model="formData.job_price"
-                    id="formData.job_price"
-                    name="formData.job_price"
-                    outlined
-                    dense
-                    hide-details
-                  >
-                  </v-text-field>
-                </v-col>
-              </v-row>
+              <v-text-field
+                class="mt-3"
+                label="จำนวนเงิน"
+                v-model="formData.job_price"
+                append-icon=""
+                type="number"
+                min="0"
+                outlined
+                dense
+                hide-details
+              >
+              </v-text-field>
 
-              <v-row>
-                <v-col cols="12">
-                  <v-textarea
-                    rows="4"
-                    label="รายการที่ต้องทำ"
-                    append-icon=""
-                    v-model="formData.job_technician_pathner_list"
-                    id="formData.job_technician_pathner_list"
-                    name="formData.job_technician_pathner_list"
-                    outlined
-                    dense
-                    hide-details
-                    :rules="rule"
-                  >
-                  </v-textarea>
-                </v-col>
-              </v-row>
+              <v-textarea
+                class="mt-3"
+                rows="10"
+                label="รายการซ่อม"
+                append-icon=""
+                v-model="formData.job_technician_pathner_list"
+                outlined
+                dense
+                hide-details
+                :rules="rule"
+              >
+              </v-textarea>
             </v-container>
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="red darken-1" text @click="$emit('cancleItem')"
-              >ยกเลิก</v-btn
-            >
-            <v-btn
-              type="submit"
-              color="success darken-1"
-              text
-              :loading="btnloading"
-              >บันทึก</v-btn
-            >
+            <v-btn color="red darken-1" text @click="$emit('cancleItem')">ยกเลิก</v-btn>
+            <v-btn type="submit" color="success darken-1" text :loading="btnloading">บันทึก</v-btn>
           </v-card-actions>
         </v-form>
       </v-card>
@@ -171,6 +164,7 @@ export default {
     return {
       btnloading: true,
       formDataLoading: false,
+      menuDatecreated_at: false,
       menuDateExpected_date_end: false,
       formData: {},
       rule: [(value) => !!value || "กรุณาใส่ข้อมูล"],
@@ -209,14 +203,8 @@ export default {
           } else {
             this.$emit("error", "Job_pathner");
           }
-        } else if (
-          this.actionPathnerJobTechnician == "edit" ||
-          this.actionPathnerJobTechnician == "endJob"
-        ) {
-          const response = await apiPathner_job_technician.update(
-            id,
-            this.formData
-          );
+        } else if (this.actionPathnerJobTechnician == "edit" || this.actionPathnerJobTechnician == "endJob") {
+          const response = await apiPathner_job_technician.update(id, this.formData);
           // console.log(response);
           this.$refs.form.reset();
 

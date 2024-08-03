@@ -60,3 +60,13 @@ export function dashboard_inventory_car(params) {
   const url = HOSTNAME + "/api/dashboard_inventory_car";
   return request("get", url, {});
 }
+
+export function dashboard_car_registration(params) {
+  const url = HOSTNAME + "/api/dashboard_car_registration";
+  return request("get", url, {});
+}
+
+export function dashboard_car_insurances(params) {
+  const url = HOSTNAME + "/api/dashboard_car_insurances";
+  return request("get", url, {});
+}

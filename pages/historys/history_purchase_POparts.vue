@@ -20,11 +20,7 @@
             </v-autocomplete>
           </v-col>
 
-          <v-col
-            v-if="purchase_id != ''"
-            @click="editItem(purchase_id)"
-            cols="1"
-          >
+          <v-col v-if="purchase_id != ''" @click="editItem(purchase_id)" cols="1">
             <v-btn color="primary" dark>ดูรายการอะไหล่</v-btn>
           </v-col>
         </template>
@@ -33,8 +29,8 @@
         <v-col cols="3">
           <v-text-field
             v-model="search"
-id="search"
-name="search"
+            id="search"
+            name="search"
             append-icon="mdi-magnify"
             label="ค้นหา"
             single-line
@@ -193,19 +189,11 @@ name="search"
 
         <template v-slot:[`item.po_active`]="{ item }">
           <div class="blue--text" v-if="item.po_active == 1">สร้างเอกสาร</div>
-          <div class="green--text" v-if="item.po_active == 2">
-            รับอะไหล่เข้าคลังแล้ว
-          </div>
+          <div class="green--text" v-if="item.po_active == 2">รับอะไหล่เข้าคลังแล้ว</div>
         </template>
       </v-data-table>
     </v-card>
-    <dialogNew
-      :dialog="dialog"
-      :id="id"
-      :action="action"
-      :formTitle="formTitle"
-      @cancleItem="dialog = false"
-    />
+    <dialogNew :dialog="dialog" :id="id" :action="action" :formTitle="formTitle" @cancleItem="dialog = false" />
   </div>
 </template>
 
@@ -219,9 +207,7 @@ export default {
   },
   data() {
     return {
-      user_group_permission: this.$auth.$storage.getLocalStorage(
-        "userData-user_group_permission"
-      ),
+      user_group_permission: this.$auth.$storage.getLocalStorage("userData-user_group_permission"),
       loading: false,
       search: "",
       id: "",
@@ -270,9 +256,7 @@ export default {
       this.data = [];
       this.purchase_id = "";
       this.loading = true;
-      const getResponse = await apiTransition_purchase_part.selectWhereID(
-        value
-      );
+      const getResponse = await apiTransition_purchase_part.selectWhereID(value);
       // console.log(this.dataPOnumber);
       this.formData = this.dataPOnumber[0];
       this.data = await getResponse.data;

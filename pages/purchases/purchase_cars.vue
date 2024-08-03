@@ -1,11 +1,5 @@
 <template>
-  <div
-    v-if="
-      user_group_permission == -1 ||
-      user_group_permission == 6 ||
-      user_group_permission == 8
-    "
-  >
+  <div v-if="user_group_permission == -1 || user_group_permission == 6 || user_group_permission == 8">
     <v-card>
       <v-card-title>
         <template>
@@ -20,8 +14,8 @@
         <v-col cols="3">
           <v-text-field
             v-model="search"
-id="search"
-name="search"
+            id="search"
+            name="search"
             append-icon="mdi-magnify"
             label="ค้นหา"
             single-line
@@ -65,15 +59,11 @@ name="search"
           }}
         </template>
         <template v-slot:[`item.car_stock`]="{ item }">
-          <h5 v-if="item.car_stock == '1'" class="orange--text">
-            รอรับเข้าคลัง
-          </h5>
+          <h5 v-if="item.car_stock == '1'" class="orange--text">รอรับเข้าคลัง</h5>
         </template>
 
         <template v-slot:[`item.booking_status`]="{ item }">
-          <h5 v-if="item.booking_status == '1'" class="green--text">
-            ยังไม่จอง
-          </h5>
+          <h5 v-if="item.booking_status == '1'" class="green--text">ยังไม่จอง</h5>
           <h5 v-if="item.booking_status == '0'" class="orange--text">จอง</h5>
         </template>
 
@@ -109,11 +99,7 @@ name="search"
         @error="addError()"
       />
 
-      <dialogImage
-        :dialog="dialogImg"
-        :imgUrl="imgUrl"
-        @cancleItem="dialogImg = false"
-      />
+      <dialogImage :dialog="dialogImg" :imgUrl="imgUrl" @cancleItem="dialogImg = false" />
     </v-card>
   </div>
 </template>
@@ -131,9 +117,7 @@ export default {
   },
   data() {
     return {
-      user_group_permission: this.$auth.$storage.getLocalStorage(
-        "userData-user_group_permission"
-      ),
+      user_group_permission: this.$auth.$storage.getLocalStorage("userData-user_group_permission"),
       serverUrl: process.env.serverUrl,
       loading: true,
       id: "",

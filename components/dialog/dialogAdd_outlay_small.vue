@@ -1,27 +1,14 @@
 <template>
   <v-container>
-    <v-dialog
-      v-model="dialogDeleteComponent"
-      fullscreen
-    >
+    <v-dialog v-model="dialogDeleteComponent" fullscreen>
       <v-card>
-        <v-form
-          ref="form"
-          @submit.prevent="onAction(formData.id)"
-          autocomplete="true"
-        >
-          <v-toolbar
-            color="primary"
-            dark
-            flat
-          >
+        <v-form ref="form" @submit.prevent="onAction(formData.id)" autocomplete="true">
+          <v-toolbar color="primary" dark flat>
             <v-btn
               icon
               dark
               :disabled="watingUpload"
-              @click="
-                action == 'edit' ? $emit('cancleItem') : deleteTempFolder()
-              "
+              @click="action == 'edit' ? $emit('cancleItem') : deleteTempFolder()"
             >
               <v-icon>mdi-close</v-icon>
             </v-btn>
@@ -29,509 +16,51 @@
 
             <v-spacer></v-spacer>
             <v-toolbar-items>
-              <v-btn
-                type="submit"
-                :disabled="watingUpload"
-                :loading="btnloading"
-                dark
-                text
-                style="font-size: 18px"
-              >
+              <v-btn type="submit" :disabled="watingUpload" :loading="btnloading" dark text style="font-size: 18px">
                 บันทึก
               </v-btn>
             </v-toolbar-items>
           </v-toolbar>
 
-          <v-progress-linear
-            v-if="formDataLoading"
-            indeterminate
-            color="yellow darken-2"
-          >
-          </v-progress-linear>
+          <v-progress-linear v-if="formDataLoading" indeterminate color="yellow darken-2"> </v-progress-linear>
 
           <v-card-text>
-            <v-container>
-              <!-- <v-row>
-                <v-col cols="4">
-                  <v-menu
-                    ref="menuDate_buy"
-                    v-model="menuDate_1"
-                    id="menuDate_1"
-                    name="menuDate_1"
-                    :close-on-content-click="false"
-                    transition="scale-transition"
-                    offset-y
-                    max-width="290px"
-                    min-width="auto"
-                  >
-                    <template v-slot:activator="{ on, attrs }">
-                      <v-text-field
-                        v-model="date"
-                        id="date"
-                        name="date"
-                        label="วันที่"
-                        readonly
-                        clearable
-                        v-bind="attrs"
-                        v-on="on"
-                        persistent-hint
-                        prepend-icon=""
-                        outlined
-                        dense
-                        hide-details
-                        flat
-                      ></v-text-field>
-                    </template>
-                    <v-date-picker
-                      v-model="date"
-                      id="date"
-                      name="date"
-                      locale="th-TH"
-                      picker-date
-                      @input="menuDate_1 = false"
-                    ></v-date-picker>
-                  </v-menu>
-                </v-col>
-                <v-col cols="4">
-                  <v-autocomplete
-                    :readonly="user_group_permission == 2 ? true : false"
-                    v-model="branch_id"
-                    id="branch_id"
-                    name="branch_id"
-                    :items="branches"
-                    item-text="branch_name"
-                    item-value="id"
-                    label="สาขา"
-                    no-data-text="ไม่มีข้อมูล"
-                    outlined
-                    dense
-                    @change="getMoney"
-                    hide-details
-                  >
-                  </v-autocomplete>
-                </v-col>
-
-                <v-col cols="4">
-                  <v-text-field
-                    label="คงเหลือ"
-                    readonly
-                    type="number"
-                    append-icon=""
-                    v-model="branch_money"
-                    id="branch_money"
-                    name="branch_money"
-                    outlined
-                    dense
-                    hide-details
-                  >
-                  </v-text-field>
-                </v-col>
-              </v-row>
-
-              <br />
-              <br /> -->
-              <!-- <v-row class="d-flex justify-center">
-                <h2>รายการ</h2>
-              </v-row>
-
-              <br />
-              <br /> -->
-              <!-- <div
-                v-for="(outlay_cost, keys) in formData.outlay_costs"
-                :key="keys"
-              >
-                <v-row>
-                  <v-col cols="4">
-                    <v-menu
-                      ref="menuDate_buy"
-                      v-model="outlay_cost.menuDate"
-                      id="menuDate"
-                      name="menuDate"
-                      :close-on-content-click="false"
-                      transition="scale-transition"
-                      offset-y
-                      max-width="290px"
-                      min-width="auto"
-                    >
-                      <template v-slot:activator="{ on, attrs }">
-                        <v-text-field
-                          v-model="outlay_cost.date"
-                          id="date"
-                          name="date"
-                          label="วันที่"
-                          readonly
-                          clearable
-                          v-bind="attrs"
-                          v-on="on"
-                          persistent-hint
-                          prepend-icon=""
-                          outlined
-                          dense
-                          hide-details
-                          flat
-                          :rules="rule"
-                        ></v-text-field>
-                      </template>
-                      <v-date-picker
-                        v-model="outlay_cost.date"
-                        id="outlay_cost.date"
-                        name="outlay_cost.date"
-                        locale="th-TH"
-                        picker-date
-                        @input="outlay_cost.menuDate = false"
-                      ></v-date-picker>
-                    </v-menu>
-                  </v-col>
-                  <v-col
-                    cols="4"
-                    v-if="outlay_cost.type == 1"
-                  >
-                    <v-row>
-                      <v-col :cols="user_group_permission == 10 ? 8 : 8">
-                        <v-autocomplete
-                          v-model="outlay_cost.car_id"
-                          id="outlay_cost.car_id"
-                          name="outlay_cost.car_id"
-                          :items="dataCar"
-                          item-text="car_no"
-                          item-value="id"
-                          label="ลำดับรถ"
-                          :filter="filterObject"
-                          no-data-text="ไม่มีข้อมูล"
-                          outlined
-                          dense
-                          hide-details
-                          @change="changeBranch(outlay_cost.car_id, keys)"
-                          :rules="
-                            outlay_cost.type == 1
-                              ? [(value) => !!value || 'กรุณาใส่ข้อมูล']
-                              : []
-                          "
-                        >
-                          <template
-                            slot="selection"
-                            slot-scope="{ item }"
-                          >
-                            {{ item.car_no }} ({{ item.car_regis }})
-                          </template>
-
-                          <template
-                            slot="item"
-                            slot-scope="{ item }"
-                          >
-                            {{ item.car_no }} ({{ item.car_regis }})
-                          </template>
-                        </v-autocomplete>
-                      </v-col>
-                      <v-col
-                        cols="2"
-                        v-if="formData.outlay_costs[keys].car_id != null"
-                      >
-                        <v-btn
-                          @click="editItem(formData.outlay_costs[keys].car_id)"
-                          class="mt-1"
-                          small
-                          dark
-                          color="blue"
-                        >
-                          <v-icon small> mdi-pencil </v-icon>
-                        </v-btn>
-                      </v-col>
-                      <v-col
-                        cols="2"
-                        v-if="formData.outlay_costs[keys].car_id != null"
-                      >
-                        <v-btn
-                          @click="
-                            getminiInfoCar(formData.outlay_costs[keys].car_id)
-                          "
-                          class="mt-1"
-                          small
-                          dark
-                          color="blue"
-                        >
-                          <v-icon small> mdi-magnify </v-icon>
-                        </v-btn>
-                      </v-col>
-                    </v-row>
-                  </v-col>
-                  <v-col cols="4">
-                    <v-text-field
-                      autocomplete="true"
-                      label="เลขธุรกรรม"
-                      append-icon=""
-                      v-model="outlay_cost.no"
-                      id="no"
-                      name="no"
-                      outlined
-                      dense
-                      hide-details
-                    >
-                    </v-text-field>
-                  </v-col>
-                </v-row>
-
-                <v-row>
-                  <v-col cols="4">
-                    <v-text-field
-                      clearable
-                      autocomplete="true"
-                      label="ร้านค้า/ลูกค้า"
-                      append-icon=""
-                      v-model="outlay_cost.shop"
-                      id="shop"
-                      name="shop"
-                      outlined
-                      dense
-                      hide-details
-                    >
-                    </v-text-field>
-                  </v-col>
-
-                  <v-col cols="4">
-                    <v-text-field
-                      clearable
-                      autocomplete="true"
-                      label="รายการ"
-                      append-icon=""
-                      v-model="outlay_cost.detail"
-                      id="detail"
-                      name="detail"
-                      outlined
-                      dense
-                      hide-details
-                      :rules="rule"
-                    >
-                    </v-text-field>
-                  </v-col>
-
-                  <v-col cols="4">
-                    <v-autocomplete
-                      :readonly="
-                        user_group_permission == 3 || user_group_permission == 2
-                          ? true
-                          : false
-                      "
-                      v-model="outlay_cost.branch_id"
-                      id="outlay_cost.branch_id"
-                      name="outlay_cost.branch_id"
-                      :items="branches"
-                      item-text="branch_name"
-                      item-value="id"
-                      label="สาขา"
-                      no-data-text="ไม่มีข้อมูล"
-                      outlined
-                      dense
-                      hide-details
-                    >
-                    </v-autocomplete>
-                  </v-col>
-                </v-row>
-
-                <v-row>
-                  <v-col
-                    cols="2"
-                    v-if="
-                      user_group_permission == -1 ||
-                      user_group_permission == 8 ||
-                      user_group_permission == 10 ||
-                      user_group_permission == 11
-                    "
-                  >
-                    <v-radio-group
-                      class="mt-2"
-                      v-model="outlay_cost.broken"
-                      id="outlay_cost.broken"
-                      name="outlay_cost.broken"
-                      :rules="[(value) => !!value]"
-                      row
-                    >
-                      <template>
-                        <div class="mr-1">หักเงิน:</div>
-                      </template>
-                      <v-radio
-                        label="ไม่"
-                        value="1"
-                      ></v-radio>
-                      <v-radio
-                        label="หัก"
-                        color="red"
-                        value="2"
-                      ></v-radio>
-                    </v-radio-group>
-                  </v-col>
-
-                  <v-col cols="2">
-                    <v-radio-group
-                      class="mt-2"
-                      v-model="outlay_cost.type"
-                      id="outlay_cost.type"
-                      name="outlay_cost.type"
-                      :rules="[(value) => !!value]"
-                      row
-                      @change="changeType(outlay_cost.type, keys)"
-                    >
-                      <template>
-                        <div class="mr-1">ประเภท:</div>
-                      </template>
-                      <v-radio
-                        label="ตัวรถ"
-                        value="1"
-                      ></v-radio>
-                      <v-radio
-                        label="อื่น ๆ"
-                        color="red"
-                        value="2"
-                      ></v-radio>
-                    </v-radio-group>
-                  </v-col>
-                  <v-col cols="2">
-                    <v-radio-group
-                      class="mt-2"
-                      v-model="outlay_cost.type_bill"
-                      id="outlay_cost.type_bill"
-                      name="outlay_cost.type_bill"
-                      :rules="[(value) => !!value]"
-                      row
-                    >
-                      <template>
-                        <div class="mr-1">บิล:</div>
-                      </template>
-                      <v-radio
-                        label="เงินสด"
-                        value="1"
-                      ></v-radio>
-                      <v-radio
-                        label="ใบกำกับภาษี"
-                        color="red"
-                        value="2"
-                      ></v-radio>
-                    </v-radio-group>
-                  </v-col>
-
-                  <v-col cols="3">
-                    <v-text-field
-                      autocomplete="true"
-                      label="จำนวนเงิน (บ.)"
-                      append-icon=""
-                      type="number"
-                      v-model="outlay_cost.money"
-                      id="money"
-                      name="money"
-                      outlined
-                      dense
-                      hide-details
-                      :rules="rule"
-                    >
-                    </v-text-field>
-                  </v-col>
-                  <v-col cols="2">
-                    <v-file-input
-                      @change="selectFile(outlay_cost.img, keys)"
-                      v-model="outlay_cost.img"
-                      id="outlay_cost.img"
-                      name="outlay_cost.img"
-                      accept="image/jpeg,image/png,image/jpg"
-                      show-size
-                      label="เลือกรูปภาพ"
-                    ></v-file-input>
-
-                    <v-text-field
-                      autocomplete="true"
-                      v-show="false"
-                      append-icon=""
-                      v-model="outlay_cost.img_name"
-                      id="img_name"
-                      name="img_name"
-                      outlined
-                      dense
-                      hide-details
-                    >
-                    </v-text-field>
-                  </v-col>
-                  <v-col cols="1">
-                    <v-btn
-                      color="red"
-                      fab
-                      x-small
-                      dark
-                      @click="rm_row(keys)"
-                    >
-                      <v-icon> mdi-delete </v-icon>
-                    </v-btn>
-                  </v-col>
-                </v-row>
-              </div>
-              <br /> -->
-
-            </v-container>
-
             <table class="bordered mt-3">
               <thead>
                 <tr>
-                  <th
-                    width="1%"
-                    style="padding: 10px;text-align: center;"
-                  >
-                    ลำดับ
-                  </th>
-                  <th
-                    width="10%"
-                    style="border-left: 1px solid rgba(0, 0, 0, 0.2);padding: 10px;text-align: left;"
-                  >
+                  <!-- <th width="1%" style="padding: 10px; text-align: center">ลำดับ</th> -->
+                  <th width="10%" style="border-left: 1px solid rgba(0, 0, 0, 0.2); padding: 10px; text-align: left">
                     วันที่
                   </th>
-                  <th
-                    width="18%"
-                    style="border-left: 1px solid rgba(0, 0, 0, 0.2);padding: 10px;text-align: left;"
-                  >
+                  <th width="15%" style="border-left: 1px solid rgba(0, 0, 0, 0.2); padding: 10px; text-align: left">
                     ลำดับรถ
                   </th>
-                  <th
-                    width="8%"
-                    style="border-left: 1px solid rgba(0, 0, 0, 0.2);padding: 10px;text-align: left;"
-                  >
+                  <th width="8%" style="border-left: 1px solid rgba(0, 0, 0, 0.2); padding: 10px; text-align: left">
                     เลขธุรกรรม
                   </th>
-                  <th
-                    width="18%"
-                    style="border-left: 1px solid rgba(0, 0, 0, 0.2);padding: 10px;text-align: left;"
-                  >
-                    ร้านค้า
-                  </th>
-                  <th
-                    width="22%"
-                    style="border-left: 1px solid rgba(0, 0, 0, 0.2);padding: 10px;text-align: left;"
-                  >
-                    รายการ
-                  </th>
-                  <th
-                    width="10%"
-                    style="border-left: 1px solid rgba(0, 0, 0, 0.2);padding: 10px;text-align: left;"
-                  >
-                    สาขา
-                  </th>
-                  <!-- <th
-                    width="8%"
-                    style="border-left: 1px solid rgba(0, 0, 0, 0.2);padding: 10px;text-align: left;"
-                  >
+                  <th width="10%" style="border-left: 1px solid rgba(0, 0, 0, 0.2); padding: 10px; text-align: left">
                     ประเภท
                   </th>
-                  <th
+                  <th width="15%" style="border-left: 1px solid rgba(0, 0, 0, 0.2); padding: 10px; text-align: left">
+                    ผู้รับเงิน
+                  </th>
+                  <th style="border-left: 1px solid rgba(0, 0, 0, 0.2); padding: 10px; text-align: left">รายการ</th>
+                  <th width="12%" style="border-left: 1px solid rgba(0, 0, 0, 0.2); padding: 10px; text-align: left">
+                    สาขา
+                  </th>
+
+                  <!-- <th
                     width="8%"
                     style="border-left: 1px solid rgba(0, 0, 0, 0.2);padding: 10px;text-align: left;"
                   >
                     บิล
                   </th> -->
-                  <th
-                    width="15%"
-                    style="border-left: 1px solid rgba(0, 0, 0, 0.2);padding: 10px;text-align: right;"
-                  >
+                  <th width="8%" style="border-left: 1px solid rgba(0, 0, 0, 0.2); padding: 10px; text-align: right">
                     จำนวนเงิน
                   </th>
                   <th
                     width="5%"
-                    style="border-left: 1px solid rgba(0, 0, 0, 0.2);padding: 10px;text-align: right;"
+                    style="border-left: 1px solid rgba(0, 0, 0, 0.2); padding: 10px; text-align: right"
                   ></th>
                 </tr>
               </thead>
@@ -539,17 +68,22 @@
                 <tr
                   v-for="(outlay_cost, keys) in formData.outlay_costs"
                   :key="keys"
-                  style="line-height: 1rem; font-size:1rem"
+                  style="line-height: 1rem; font-size: 1rem"
                 >
-                  <td style="border-top: 1px solid rgba(0, 0, 0, 0.2);text-align: center;">
-                    {{ keys+1 }}
-                  </td>
-                  <td style="border-left: 1px solid rgba(0, 0, 0, 0.2);border-top: 1px solid rgba(0, 0, 0, 0.2);padding: 0px;text-align: left;">
+                  <!-- <td style="border-top: 1px solid rgba(0, 0, 0, 0.2); text-align: center">
+                    {{ keys + 1 }}
+                  </td> -->
+                  <td
+                    style="
+                      border-left: 1px solid rgba(0, 0, 0, 0.2);
+                      border-top: 1px solid rgba(0, 0, 0, 0.2);
+                      padding: 0px;
+                      text-align: left;
+                    "
+                  >
                     <v-menu
                       ref="menuDate_buy"
                       v-model="outlay_cost.menuDate"
-                      id="menuDate"
-                      name="menuDate"
                       :close-on-content-click="false"
                       transition="scale-transition"
                       offset-y
@@ -559,12 +93,9 @@
                       <template v-slot:activator="{ on, attrs }">
                         <v-text-field
                           class="hide-border"
-                          style="border-radius: 0px;"
+                          style="border-radius: 0px"
                           v-model="outlay_cost.date"
-                          id="date"
-                          name="date"
                           readonly
-                          clearable
                           v-bind="attrs"
                           v-on="on"
                           persistent-hint
@@ -578,27 +109,26 @@
                       </template>
                       <v-date-picker
                         v-model="outlay_cost.date"
-                        id="outlay_cost.date"
-                        name="outlay_cost.date"
                         locale="th-TH"
                         picker-date
                         @input="outlay_cost.menuDate = false"
                       ></v-date-picker>
                     </v-menu>
-
                   </td>
-                  <td style="border-left: 1px solid rgba(0, 0, 0, 0.2);border-top: 1px solid rgba(0, 0, 0, 0.2);padding: 0px;text-align: right;">
+                  <td
+                    style="
+                      border-left: 1px solid rgba(0, 0, 0, 0.2);
+                      border-top: 1px solid rgba(0, 0, 0, 0.2);
+                      padding: 0px;
+                      text-align: right;
+                    "
+                  >
                     <v-row no-gutters>
-                      <v-col
-                        cols="10"
-                        class="p-0"
-                      >
+                      <v-col cols="10" class="p-0">
                         <v-autocomplete
                           class="none-rotation hide-border"
-                          style="border-radius: 0px; padding:0px"
+                          style="border-radius: 0px; padding: 0px"
                           v-model="outlay_cost.car_id"
-                          id="outlay_cost.car_id"
-                          name="outlay_cost.car_id"
                           :items="dataCar"
                           item-text="car_no"
                           item-value="id"
@@ -608,35 +138,16 @@
                           dense
                           hide-details
                           @change="changeBranch(outlay_cost.car_id, keys)"
-                          :rules="
-                            outlay_cost.type == 1
-                              ? [(value) => !!value || 'กรุณาใส่ข้อมูล']
-                              : []
-                          "
+                          :rules="outlay_cost.type == 1 ? [(value) => !!value || 'กรุณาใส่ข้อมูล'] : []"
                         >
-                          <template
-                            slot="selection"
-                            slot-scope="{ item }"
-                          >
-                            {{ item.car_no }} ({{ item.car_regis }})
-                          </template>
-
-                          <template
-                            slot="item"
-                            slot-scope="{ item }"
-                          >
+                          <template slot="item" slot-scope="{ item }">
                             {{ item.car_no }} ({{ item.car_regis }})
                           </template>
                         </v-autocomplete>
                       </v-col>
-                      <v-col
-                        cols="2"
-                        class="p-0"
-                      >
+                      <v-col cols="1" class="p-0">
                         <v-btn
-                          @click="
-                            getminiInfoCar(formData.outlay_costs[keys].car_id)
-                          "
+                          @click="getminiInfoCar(formData.outlay_costs[keys].car_id)"
                           class="mt-1"
                           dark
                           color="blue"
@@ -646,12 +157,18 @@
                         </v-btn>
                       </v-col>
                     </v-row>
-
                   </td>
-                  <td style="border-left: 1px solid rgba(0, 0, 0, 0.2);border-top: 1px solid rgba(0, 0, 0, 0.2);padding: 0px;text-align: right;">
+                  <td
+                    style="
+                      border-left: 1px solid rgba(0, 0, 0, 0.2);
+                      border-top: 1px solid rgba(0, 0, 0, 0.2);
+                      padding: 0px;
+                      text-align: right;
+                    "
+                  >
                     <v-text-field
                       class="hide-border"
-                      style="border-radius: 0px;"
+                      style="border-radius: 0px"
                       autocomplete="true"
                       append-icon=""
                       v-model="outlay_cost.no"
@@ -663,10 +180,54 @@
                     >
                     </v-text-field>
                   </td>
-                  <td style="border-left: 1px solid rgba(0, 0, 0, 0.2);border-top: 1px solid rgba(0, 0, 0, 0.2);padding: 0px;text-align: right;">
+                  <td
+                    style="
+                      border-left: 1px solid rgba(0, 0, 0, 0.2);
+                      border-top: 1px solid rgba(0, 0, 0, 0.2);
+                      padding: 0px;
+                      text-align: right;
+                    "
+                  >
+                    <v-select
+                      class="hide-border pt-0 mt-0 ml-2 mr-2"
+                      v-model="outlay_cost.type"
+                      style="border-radius: 0px"
+                      :items="[
+                        // { label: 'ค่าตัวรถ', value: 1 },
+                        { label: 'งานทะเบียน', value: 2 },
+                        { label: 'ค่าซ่อม (ก่อนขาย)', value: 3 },
+                        { label: 'ค่าซ่อม (หลังขาย)', value: 4 },
+                        { label: 'ค่าคอม', value: 5 },
+                        { label: 'ค่าจ้างคนค้ำ', value: 6 },
+                        { label: 'ค่านำพา', value: 7 },
+                        { label: 'ค่าซื้อแทน', value: 8 },
+                        { label: 'ค่าน้ำมัน', value: 9 },
+                        { label: 'ค่าสี', value: 10 },
+                        { label: 'ค่าขนส่ง', value: 11 },
+                        { label: 'ค่าส่งเสริมการขาย', value: 12 },
+                        { label: 'คืนเงิน', value: 13 },
+                        { label: 'ค่างวด', value: 14 },
+                        { label: 'อื่น ๆ', value: 99 },
+                      ]"
+                      item-text="label"
+                      item-value="value"
+                      label="กรุณาเลือก"
+                      single-line
+                      :rules="[(value) => !!value]"
+                      hide-details
+                    ></v-select>
+                  </td>
+                  <td
+                    style="
+                      border-left: 1px solid rgba(0, 0, 0, 0.2);
+                      border-top: 1px solid rgba(0, 0, 0, 0.2);
+                      padding: 0px;
+                      text-align: right;
+                    "
+                  >
                     <v-text-field
                       class="hide-border"
-                      style="border-radius: 0px;"
+                      style="border-radius: 0px"
                       clearable
                       autocomplete="true"
                       append-icon=""
@@ -679,10 +240,18 @@
                     >
                     </v-text-field>
                   </td>
-                  <td style="border-left: 1px solid rgba(0, 0, 0, 0.2);border-top: 1px solid rgba(0, 0, 0, 0.2);padding: 0px;text-align: right;">
+
+                  <td
+                    style="
+                      border-left: 1px solid rgba(0, 0, 0, 0.2);
+                      border-top: 1px solid rgba(0, 0, 0, 0.2);
+                      padding: 0px;
+                      text-align: right;
+                    "
+                  >
                     <v-text-field
                       class="hide-border"
-                      style="border-radius: 0px;"
+                      style="border-radius: 0px"
                       clearable
                       autocomplete="true"
                       v-model="outlay_cost.detail"
@@ -695,18 +264,19 @@
                     >
                     </v-text-field>
                   </td>
-                  <td style="border-left: 1px solid rgba(0, 0, 0, 0.2);border-top: 1px solid rgba(0, 0, 0, 0.2);padding: 0px;text-align: right;">
+                  <td
+                    style="
+                      border-left: 1px solid rgba(0, 0, 0, 0.2);
+                      border-top: 1px solid rgba(0, 0, 0, 0.2);
+                      padding: 0px;
+                      text-align: right;
+                    "
+                  >
                     <v-autocomplete
                       class="none-rotation hide-border"
-                      style="border-radius: 0px;"
-                      :readonly="
-                        user_group_permission == 3 || user_group_permission == 2
-                          ? true
-                          : false
-                      "
+                      style="border-radius: 0px"
+                      :readonly="user_group_permission == 3 || user_group_permission == 2 ? true : false"
                       v-model="outlay_cost.branch_id"
-                      id="outlay_cost.branch_id"
-                      name="outlay_cost.branch_id"
                       :items="branches"
                       item-text="branch_name"
                       item-value="id"
@@ -717,21 +287,7 @@
                     >
                     </v-autocomplete>
                   </td>
-                  <!-- <td style="border-left: 1px solid rgba(0, 0, 0, 0.2);border-top: 1px solid rgba(0, 0, 0, 0.2);padding: 0px;text-align: right;">
-                    <v-select
-                      class="hide-border pt-0 mt-0 ml-2 mr-2"
-                      style="border-radius: 0px;"
-                      :items="[{ label: 'ตัวรถ', value: '1' },{ label: 'อื่น ๆ', value: '2' }]"
-                      item-text="label"
-                      item-value="value"
-                      v-model="outlay_cost.type"
-                      id="outlay_cost.type"
-                      name="outlay_cost.type"
-                      :rules="[(value) => !!value]"
-                      @change="changeType(outlay_cost.type, keys)"
-                      hide-details
-                    ></v-select>
-                  </td> -->
+
                   <!-- <td style="border-left: 1px solid rgba(0, 0, 0, 0.2);border-top: 1px solid rgba(0, 0, 0, 0.2);padding: 0px;text-align: right;">
                     <v-select
                       class="hide-border pt-0 mt-0 ml-2 mr-2"
@@ -746,10 +302,17 @@
                       hide-details
                     ></v-select>
                   </td> -->
-                  <td style="border-left: 1px solid rgba(0, 0, 0, 0.2);border-top: 1px solid rgba(0, 0, 0, 0.2);padding: 0px;text-align: right;">
+                  <td
+                    style="
+                      border-left: 1px solid rgba(0, 0, 0, 0.2);
+                      border-top: 1px solid rgba(0, 0, 0, 0.2);
+                      padding: 0px;
+                      text-align: right;
+                    "
+                  >
                     <v-text-field
                       class="hide-border right-input"
-                      style="border-radius: 0px;"
+                      style="border-radius: 0px"
                       autocomplete="true"
                       type="number"
                       v-model="outlay_cost.money"
@@ -761,42 +324,27 @@
                       :rules="rule"
                     >
                     </v-text-field>
-
                   </td>
-                  <td style="border-left: 1px solid rgba(0, 0, 0, 0.2);border-top: 1px solid rgba(0, 0, 0, 0.2);text-align: center;">
-                    <v-btn
-                      icon
-                      color="red"
-                      fab
-                      x-small
-                      dark
-                      @click="rm_row(keys)"
-                    >
-                      <v-icon>
-                        mdi-delete
-                      </v-icon>
+                  <td
+                    style="
+                      border-left: 1px solid rgba(0, 0, 0, 0.2);
+                      border-top: 1px solid rgba(0, 0, 0, 0.2);
+                      text-align: center;
+                    "
+                  >
+                    <v-btn icon color="red" fab x-small dark @click="rm_row(keys)">
+                      <v-icon> mdi-delete </v-icon>
                     </v-btn>
                   </td>
                 </tr>
               </tbody>
             </table>
 
-            <v-row
-              class="d-flex mt-5"
-              v-if="addrow_dis <= 10"
-            >
+            <v-row class="d-flex mt-5" v-if="addrow_dis <= 10">
               <v-col v-show="branch_id == null ? false : true && !btnloading">
-                <v-btn
-                  color="green"
-                  dark
-                  block
-                  @click="add_row()"
-                >
-                  <v-icon>mdi-plus</v-icon> เพิ่มรายการ
-                </v-btn>
+                <v-btn color="green" dark block @click="add_row()"> <v-icon>mdi-plus</v-icon> เพิ่มรายการ </v-btn>
               </v-col>
             </v-row>
-
           </v-card-text>
         </v-form>
       </v-card>
@@ -851,9 +399,7 @@ export default {
         outlay_costs: [],
       },
       moment: moment,
-      user_group_permission: this.$auth.$storage.getLocalStorage(
-        "userData-user_group_permission"
-      ),
+      user_group_permission: this.$auth.$storage.getLocalStorage("userData-user_group_permission"),
       branch_id: null,
       user_id: this.$auth.$storage.getLocalStorage("userData-id"),
       rule: [(value) => !!value || "กรุณาใส่ข้อมูล"],
@@ -875,7 +421,10 @@ export default {
       addrow_dis: 0,
     };
   },
-  mounted() {},
+  async mounted() {
+    await this.getBranches();
+    await this.getCars();
+  },
   methods: {
     async editItem(item) {
       this.formTitle_car = "แก้ไขข้อมูล";
@@ -883,19 +432,10 @@ export default {
       this.car_id = item;
       this.action_car = "edit";
     },
-    // async getSearch_term() {
-    //   const response = await apiSearch_term.select();
-    //   this.search_terms = response.data;
-    //   this.loading = false;
-    // },
-
     filterObject(item, queryText, itemText) {
       return (
-        item.car_no.toLocaleLowerCase().indexOf(queryText.toLocaleLowerCase()) >
-          -1 ||
-        item.car_regis
-          .toLocaleLowerCase()
-          .indexOf(queryText.toLocaleLowerCase()) > -1
+        item.car_no.toLocaleLowerCase().indexOf(queryText.toLocaleLowerCase()) > -1 ||
+        item.car_regis.toLocaleLowerCase().indexOf(queryText.toLocaleLowerCase()) > -1
       );
     },
     selectFile(payload, key) {
@@ -913,8 +453,7 @@ export default {
     async changeBranch(car_id, keys) {
       for (let index = 0; index < this.dataCar.length; index++) {
         if (this.dataCar[index].id == car_id) {
-          this.formData.outlay_costs[keys].branch_id =
-            this.dataCar[index].branch_id;
+          this.formData.outlay_costs[keys].branch_id = this.dataCar[index].branch_id;
         }
       }
     },
@@ -939,23 +478,8 @@ export default {
         this.dialogMini_type = "outlay";
       });
     },
-    // async getYearCurrent() {
-    //   var max = new Date().getFullYear();
-    //   var min = max - 50;
-    //   for (var i = max; i >= min; i--) {
-    //     this.years.push({ value: i });
-    //   }
-    // },
-    async addSuccess(value) {
-      // if (value == "AddSearch_term") {
-      //   await this.getSearch_term();
-      // }
-    },
-    async addError(value) {
-      // if (value == "AddSearch_term") {
-      //   await this.getSearch_term();
-      // }
-    },
+    async addSuccess(value) {},
+    async addError(value) {},
     async getCars() {
       const response = await apiCars.selectAll();
       if (
@@ -969,10 +493,7 @@ export default {
       } else {
         let array = [];
         for (let index = 0; index < response.data.length; index++) {
-          if (
-            response.data[index].branch_id ==
-            this.$auth.$storage.getLocalStorage("userData-branch_id")
-          ) {
+          if (response.data[index].branch_id == this.$auth.$storage.getLocalStorage("userData-branch_id")) {
             array.push(response.data[index]);
           }
         }
@@ -1011,18 +532,6 @@ export default {
         this.formDataLoading = false;
       }
     },
-    // async getMoney(id) {
-    //   for (let index = 0; index < this.branches.length; index++) {
-    //     if (this.branches[index].id == id) {
-    //       this.branch_money = this.branches[index].branch_money;
-    //     }
-    //   }
-    // },
-    async changeType(type, key) {
-      if (type == 2) {
-        this.formData.outlay_costs[key].car_id = null;
-      }
-    },
     async add_row() {
       this.addrow_dis = Number(this.addrow_dis) + 1;
 
@@ -1049,7 +558,7 @@ export default {
           shop: null,
           detail: null,
           car_id: this.car_id,
-          type: "1",
+          type: null,
           broken: broken,
           type_bill: "1",
           money: 0,
@@ -1077,9 +586,7 @@ export default {
     async deleteTempFolder() {
       if (this.action == "add" && this.formData.outlay_costs.length) {
         this.$nextTick(async () => {
-          const response = await apiOutlay_costs.cancle_uploadFile_outlay(
-            this.formData
-          );
+          const response = await apiOutlay_costs.cancle_uploadFile_outlay(this.formData);
           // console.log(response);
         });
       }
@@ -1095,20 +602,13 @@ export default {
         this.formData = {
           outlay_costs: [],
         };
-        // await this.getYearCurrent();
-        await this.getBranches();
-        await this.getCars();
-        // await this.getSearch_term();
+
         if (this.action == "add") {
           this.$nextTick(() => {
             this.$refs.form.reset();
             const self = this;
             this.$nextTick(() => {
-              self.branch_id =
-                this.$auth.$storage.getLocalStorage("userData-branch_id");
-              // this.getMoney(
-              //   this.$auth.$storage.getLocalStorage("userData-branch_id")
-              // );
+              self.branch_id = this.$auth.$storage.getLocalStorage("userData-branch_id");
             });
           });
         } else if (this.action == "edit") {
@@ -1136,10 +636,9 @@ export default {
 };
 </script>
 
-
 <style scoped>
 table {
-  *border-collapse: collapse; /* IE7 and lower */
+  border-collapse: collapse; /* IE7 and lower */
   border-spacing: 0;
   width: 100%;
 }
@@ -1174,9 +673,7 @@ th:only-child {
 </style>
 
 <style lang="scss">
-.none-rotation.v-select.v-select--is-menu-active
-  .v-input__icon--append
-  .v-icon {
+.none-rotation.v-select.v-select--is-menu-active .v-input__icon--append .v-icon {
   transform: none !important;
 }
 

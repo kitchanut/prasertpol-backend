@@ -4,11 +4,7 @@
       <v-carousel cycle height="auto" hide-delimiters show-arrows-on-hover>
         <v-carousel-item v-for="(imageCar, keys) in imageCars" :key="keys">
           <v-sheet>
-            <a
-              :key="keys"
-              :href="serverUrl + imageCar.car_id + '/' + imageCar.image_name"
-              target="_blank"
-            >
+            <a :key="keys" :href="serverUrl + imageCar.car_id + '/' + imageCar.image_name" target="_blank">
               <img
                 contain
                 width="600px"

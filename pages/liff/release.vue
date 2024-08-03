@@ -1,16 +1,7 @@
 <template>
   <v-card>
-    <v-form
-      autocomplete="true"
-      ref="form"
-      @submit.prevent="onAction(formData.id)"
-    >
-      <v-progress-linear
-        v-if="formDataLoading"
-        indeterminate
-        color="yellow darken-2"
-      >
-      </v-progress-linear>
+    <v-form autocomplete="true" ref="form" @submit.prevent="onAction(formData.id)">
+      <v-progress-linear v-if="formDataLoading" indeterminate color="yellow darken-2"> </v-progress-linear>
 
       <v-card-title primary-title> แจ้งปล่อยรถ</v-card-title>
 
@@ -91,9 +82,69 @@
 
         <v-text-field
           class="mt-3"
-          label="เงินดาวน์/เงินสด ที่ได้รับในวันปล่อยรถ*"
+          label="เงินดาวน์/ซื้อเงินสด*"
           type="number"
           v-model="formData.dow"
+          outlined
+          dense
+          hide-details
+          :rules="rule"
+        >
+        </v-text-field>
+
+        <v-text-field
+          class="mt-3"
+          label="ค่างวดล่วงหน้า*"
+          type="number"
+          v-model="formData.advance_payment"
+          outlined
+          dense
+          hide-details
+          :rules="rule"
+        >
+        </v-text-field>
+
+        <v-text-field
+          class="mt-3"
+          label="ค่าสมาร์ทชัว*"
+          type="number"
+          v-model="formData.insurance"
+          outlined
+          dense
+          hide-details
+          :rules="rule"
+        >
+        </v-text-field>
+
+        <v-text-field
+          class="mt-3"
+          label="ค่าซื้อประกันอื่นๆ*"
+          type="number"
+          v-model="formData.insurance_other"
+          outlined
+          dense
+          hide-details
+          :rules="rule"
+        >
+        </v-text-field>
+
+        <v-text-field
+          class="mt-3"
+          label="เงินอื่นๆ*"
+          type="number"
+          v-model="formData.other_receive"
+          outlined
+          dense
+          hide-details
+          :rules="rule"
+        >
+        </v-text-field>
+
+        <v-text-field
+          class="mt-3"
+          label="รวมเงินที่ได้รับในวันปล่อยรถ*"
+          type="number"
+          v-model="formData.total_receive"
           outlined
           dense
           hide-details
@@ -117,6 +168,7 @@
           v-model="id_card"
           prepend-icon=""
           append-icon="mdi-image"
+          accept="image/*"
           show-size
           outlined
           dense
@@ -130,6 +182,7 @@
           label="เอกสารสรุปงานขาย*"
           prepend-icon=""
           append-icon="mdi-image"
+          accept="image/*"
           show-size
           outlined
           dense
@@ -143,6 +196,7 @@
           label="รูปปล่อยรถ*"
           prepend-icon=""
           append-icon="mdi-image"
+          accept="image/*"
           show-size
           outlined
           dense
@@ -156,6 +210,7 @@
           v-model="insurance_font_sheet"
           prepend-icon=""
           append-icon="mdi-image"
+          accept="image/*"
           show-size
           outlined
           dense
@@ -169,6 +224,7 @@
           v-model="insurance_back_sheet"
           prepend-icon=""
           append-icon="mdi-image"
+          accept="image/*"
           show-size
           outlined
           dense
@@ -182,6 +238,7 @@
           label="ใบเสร็จรับเงิน"
           prepend-icon=""
           append-icon="mdi-image"
+          accept="image/*"
           show-size
           outlined
           dense
@@ -195,6 +252,7 @@
           label="สลิปการโอนเงิน"
           prepend-icon=""
           append-icon="mdi-image"
+          accept="image/*"
           show-size
           outlined
           dense
@@ -205,19 +263,10 @@
       <v-card-actions>
         <v-row>
           <v-col>
-            <v-btn dark block color="warning" @click="closeWindow">
-              ยกเลิก
-            </v-btn>
+            <v-btn dark block color="warning" @click="closeWindow"> ยกเลิก </v-btn>
           </v-col>
           <v-col>
-            <v-btn
-              block
-              type="submit"
-              color="success darken-1"
-              :loading="loading"
-            >
-              บันทึก
-            </v-btn>
+            <v-btn block type="submit" color="success darken-1" :loading="loading"> บันทึก </v-btn>
           </v-col>
         </v-row>
       </v-card-actions>
@@ -251,13 +300,8 @@ export default {
       receipt: null,
       slip: null,
       rule: [(value) => !!value || "กรุณาใส่ข้อมูล"],
-      ruleMustImage: [
-        (value) => !!value,
-        (value) => !value || value.size < 2000000 || "ขนาดรูปต้องน้อยกว่า 2 MB",
-      ],
-      ruleImage: [
-        (value) => !value || value.size < 2000000 || "ขนาดรูปต้องน้อยกว่า 2 MB",
-      ],
+      ruleMustImage: [(value) => !!value, (value) => !value || value.size < 10000000 || "ขนาดรูปต้องน้อยกว่า 10 MB"],
+      ruleImage: [(value) => !value || value.size < 10000000 || "ขนาดรูปต้องน้อยกว่า 10 MB"],
     };
   },
   mounted() {
@@ -280,8 +324,7 @@ export default {
           " (" +
           response.data.data.user_code +
           ")";
-        this.formData.branch_name =
-          response.data.data.branch.branch_team.branch_team_name;
+        this.formData.branch_name = response.data.data.branch.branch_team.branch_team_name;
       }
 
       // console.log(response.data);
@@ -451,7 +494,7 @@ export default {
                           contents: [
                             {
                               type: "text",
-                              text: "เงินที่ได้รับ:",
+                              text: "เงินดาวน์/สด:",
                               color: "#aaaaaa",
                               size: "sm",
                               flex: 2,
@@ -459,6 +502,116 @@ export default {
                             {
                               type: "text",
                               text: response.data.dow + " บาท",
+                              wrap: true,
+                              color: "#666666",
+                              size: "sm",
+                              flex: 5,
+                            },
+                          ],
+                        },
+                        {
+                          type: "box",
+                          layout: "baseline",
+                          spacing: "sm",
+                          contents: [
+                            {
+                              type: "text",
+                              text: "งวดล่วงหน้า:",
+                              color: "#aaaaaa",
+                              size: "sm",
+                              flex: 2,
+                            },
+                            {
+                              type: "text",
+                              text: response.data.advance_payment + " บาท",
+                              wrap: true,
+                              color: "#666666",
+                              size: "sm",
+                              flex: 5,
+                            },
+                          ],
+                        },
+                        {
+                          type: "box",
+                          layout: "baseline",
+                          spacing: "sm",
+                          contents: [
+                            {
+                              type: "text",
+                              text: "สมาร์ทชัว:",
+                              color: "#aaaaaa",
+                              size: "sm",
+                              flex: 2,
+                            },
+                            {
+                              type: "text",
+                              text: response.data.insurance + " บาท",
+                              wrap: true,
+                              color: "#666666",
+                              size: "sm",
+                              flex: 5,
+                            },
+                          ],
+                        },
+                        {
+                          type: "box",
+                          layout: "baseline",
+                          spacing: "sm",
+                          contents: [
+                            {
+                              type: "text",
+                              text: "ประกันอื่น:",
+                              color: "#aaaaaa",
+                              size: "sm",
+                              flex: 2,
+                            },
+                            {
+                              type: "text",
+                              text: response.data.insurance_other + " บาท",
+                              wrap: true,
+                              color: "#666666",
+                              size: "sm",
+                              flex: 5,
+                            },
+                          ],
+                        },
+                        {
+                          type: "box",
+                          layout: "baseline",
+                          spacing: "sm",
+                          contents: [
+                            {
+                              type: "text",
+                              text: "อื่นๆ:",
+                              color: "#aaaaaa",
+                              size: "sm",
+                              flex: 2,
+                            },
+                            {
+                              type: "text",
+                              text: response.data.other_receive + " บาท",
+                              wrap: true,
+                              color: "#666666",
+                              size: "sm",
+                              flex: 5,
+                            },
+                          ],
+                        },
+                        {
+                          type: "box",
+                          layout: "baseline",
+                          spacing: "sm",
+                          contents: [
+                            {
+                              type: "text",
+                              text: "รวมรับ:",
+                              color: "#aaaaaa",
+                              size: "sm",
+                              flex: 2,
+                            },
+                            {
+                              type: "text",
+                              text: response.data.total_receive + " บาท",
                               wrap: true,
                               color: "#666666",
                               size: "sm",
@@ -536,8 +689,7 @@ export default {
                       action: {
                         type: "uri",
                         label: "ใบประกัน-ด้านหน้า",
-                        uri:
-                          this.serverUrl + response.data.insurance_font_sheet,
+                        uri: this.serverUrl + response.data.insurance_font_sheet,
                       },
                       color: "#607D8B",
                     },
@@ -548,8 +700,7 @@ export default {
                       action: {
                         type: "uri",
                         label: "ใบประกัน-ด้านหลัง",
-                        uri:
-                          this.serverUrl + response.data.insurance_back_sheet,
+                        uri: this.serverUrl + response.data.insurance_back_sheet,
                       },
                       color: "#607D8B",
                     },
@@ -635,18 +786,9 @@ export default {
     runApp() {
       liff.getProfile().then(async (profile) => {
         // console.log(profile);
-        this.$auth.$storage.setLocalStorage(
-          "userData-lineUUID",
-          profile.userId
-        );
-        this.$auth.$storage.setLocalStorage(
-          "userData-linepictureUrl",
-          profile.pictureUrl
-        );
-        this.$auth.$storage.setLocalStorage(
-          "userData-linedisplayName",
-          profile.displayName
-        );
+        this.$auth.$storage.setLocalStorage("userData-lineUUID", profile.userId);
+        this.$auth.$storage.setLocalStorage("userData-linepictureUrl", profile.pictureUrl);
+        this.$auth.$storage.setLocalStorage("userData-linedisplayName", profile.displayName);
 
         this.formData.lineUUID = profile.userId;
         this.formData.displayName = profile.displayName;
@@ -664,5 +806,4 @@ export default {
 };
 </script>
 
-<style>
-</style>
+<style></style>

@@ -36,9 +36,7 @@
       >
         <!-- <template v-slot:item.team_active="{ item }"> -->
         <template v-slot:[`item.team_active`]="{ item }">
-          <v-btn v-if="item.team_active == '1'" x-small color="success" dark
-            >เปิดใช้งาน</v-btn
-          >
+          <v-btn v-if="item.team_active == '1'" x-small color="success" dark>เปิดใช้งาน</v-btn>
           <v-btn v-else x-small color="red" dark>ปิดการใช้งาน</v-btn>
         </template>
 
@@ -91,9 +89,7 @@ export default {
         { text: "จัดการ", value: "actions", sortable: false, width: "7%" },
       ],
       data: [],
-      user_group_permission: this.$auth.$storage.getLocalStorage(
-        "userData-user_group_permission"
-      ),
+      user_group_permission: this.$auth.$storage.getLocalStorage("userData-user_group_permission"),
     };
   },
   mounted() {

@@ -55,6 +55,10 @@
   padding: 0 8px !important;
 }
 
+.v-data-table > .v-data-table__wrapper > table > tbody > tr > td {
+  padding: 0 8px !important;
+}
+
 .table-border-top >.v-data-table__wrapper>table>thead>tr>th+th {
   border-top: 1px solid #ddd;
 }
@@ -74,9 +78,10 @@
 .table-border >.v-data-table__wrapper > table > tbody > tr > td+td{
   border-left: 1px solid #ddd;
 }
-/* .table-border > th {
-  border-left: 1px solid #ddd;
-} */
+
+.text-end {
+  text-align: right !important;
+}
 
 .theme--light.v-data-table tbody tr.v-data-table__selected {
   background: #ddd;

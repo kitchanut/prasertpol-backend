@@ -193,14 +193,14 @@ export async function setContext (app, context) {
   if (!app.context) {
     app.context = {
       isStatic: process.static,
-      isDev: false,
+      isDev: true,
       isHMR: false,
       app,
       store: app.store,
       payload: context.payload,
       error: context.error,
       base: app.router.options.base,
-      env: {"serverUrlShop":"https://www.psnkp.co.th/","serverUrl":"https://www.psnkp.co.th/server","serverKey":"base64:qVDh/JchcJ9ZyjLO58QW0pszBCTo5lfozWG/g0bxynQ=","PrasertpolName":"ประเสริฐผลยูสด์คาร์","liff":{"booking":"1657381597-P5naXw27","appointment":"1657381597-nXbA63Ko","signDeposit":"1657381597-y2JZRxAN","sign":"1657381597-2WGVzXPY","bankApprove":"1657381597-Mb2n0J3x","release":"1657381597-lye41MpW","changeCar":"1657381597-V9ezjWZ8","changeCustomer":"1657381597-4mPBbdwv","update":"1657381597-POvX0Vk7","cancle":"1657381597-naP8jylD","money":"1657381597-k9PoxeG6","moneyWithdraw":"1657381597-qaA3WErN","shareRequest":"1657381597-Kla8617N","shareImage":"1657381597-rgo89b63","login":"1657381597-y0ebAoMG"}}
+      env: {"serverUrlShop":"https://www.psnkp.co.th/","serverUrl":"http://localhost/psnkp-server","serverKey":"base64:qVDh/JchcJ9ZyjLO58QW0pszBCTo5lfozWG/g0bxynQ=","PrasertpolName":"ประเสริฐผลยูสด์คาร์","liff":{"booking":"1657384096-GWgpdE3a","appointment":"1657384096-gxbqpRnv","signDeposit":"1657384096-MdR4XK3r","sign":"1657384096-qYDbnZkM","bankApprove":"1657384096-2lkL6Vge","release":"1657384096-WKnNgq34","changeCar":"1657384096-lGJaNowL","changeCustomer":"1657384096-REEbzOj3","update":"1657384096-rW1Mq06g","cancle":"1657384096-Krrqg0yR","money":"1657384096-pgzxEX4P","moneyWithdraw":"1657384096-o8ZPOVaL","shareRequest":"1657384096-wdnbjaQk","shareImage":"1657384096-eEmk7wZ5","login":"1657384096-p9exyzYM"}}
     }
     // Only set once
 
@@ -279,7 +279,7 @@ export async function setContext (app, context) {
   app.context.next = context.next
   app.context._redirected = false
   app.context._errored = false
-  app.context.isHMR = false
+  app.context.isHMR = Boolean(context.isHMR)
   app.context.params = app.context.route.params || {}
   app.context.query = app.context.route.query || {}
 }
@@ -297,6 +297,9 @@ export function middlewareSeries (promises, appContext) {
 export function promisify (fn, context) {
   let promise
   if (fn.length === 2) {
+      console.warn('Callback-based asyncData, fetch or middleware calls are deprecated. ' +
+        'Please switch to promises or async/await syntax')
+
     // fn(context, callback)
     promise = new Promise((resolve) => {
       fn(context, function (err, data) {

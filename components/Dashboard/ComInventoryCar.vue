@@ -4,8 +4,59 @@
       <template v-slot:default>
         <thead>
           <tr id="first_header">
-            <th>ยี่ห้อ</th>
-            <th><div style="width: 200px">รุ่นรถ</div></th>
+            <th>
+              <div class="d-flex justify-space-between align-center">
+                ยี่ห้อ
+                <v-menu
+                  :close-on-content-click="false"
+                  :nudge-width="200"
+                  offset-y
+                  transition="slide-y-transition"
+                  left
+                  fixed
+                  style="position: absolute; right: 0"
+                >
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-btn color="grey" icon v-bind="attrs" v-on="on">
+                      <v-icon small> mdi-filter-variant </v-icon>
+                    </v-btn>
+                  </template>
+                  <v-list flat dense class="pa-0">
+                    <v-row no-gutters>
+                      <v-col cols="6">
+                        <v-btn text block @click="toggleAll('car_model_name')" color="success">Toggle all</v-btn>
+                      </v-col>
+                      <v-col cols="6">
+                        <v-btn text block @click="clearAll('car_model_name')" color="warning">Clear all</v-btn>
+                      </v-col>
+                    </v-row>
+                    <v-divider></v-divider>
+
+                    <v-list-item-group multiple v-model="activeFilters['car_model_name']" class="py-2">
+                      <v-list-item v-for="item in filters['car_model_name']" :key="`${item}`" :value="item">
+                        <template v-slot:default="{ active, toggle }">
+                          <v-list-item-action>
+                            <v-checkbox
+                              :input-value="active"
+                              :true-value="item"
+                              @click="toggle"
+                              color="primary"
+                              dense
+                            ></v-checkbox>
+                          </v-list-item-action>
+                          <v-list-item-content>
+                            <v-list-item-title v-text="item"></v-list-item-title>
+                          </v-list-item-content>
+                        </template>
+                      </v-list-item>
+                    </v-list-item-group>
+                  </v-list>
+                </v-menu>
+              </div>
+            </th>
+            <th>
+              <div style="width: 200px" class="d-flex justify-space-between align-center">รุ่นรถ</div>
+            </th>
             <th>ทั้งหมด</th>
             <th>ขั้นต่ำ</th>
             <th>รอรับรถ</th>
@@ -29,7 +80,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="(car_sery, key) in car_series" :key="key">
+          <tr v-for="(car_sery, key) in car_series_filter" :key="key">
             <td>{{ car_sery.car_model_name }}</td>
             <td>{{ car_sery.label }}</td>
             <td align="center">
@@ -77,7 +128,18 @@ export default {
       data: [],
       rect: {},
       windowHeight: 0,
+      activeFilters: {},
+      filters: {
+        car_model_name: [],
+      },
     };
+  },
+  computed: {
+    car_series_filter() {
+      return this.car_series.filter((item) => {
+        return this.activeFilters["car_model_name"].indexOf(item.car_model_name) > -1;
+      });
+    },
   },
   async mounted() {
     await this.getBranches();
@@ -91,13 +153,25 @@ export default {
       const response = await apiDashboard.dashboard_inventory_car();
       this.data = response.data.inventory_car;
       this.car_series = response.data.car_series;
-      console.log(response.data);
+      // console.log(response.data);
+      this.initFilters();
+      // console.log(this.filters);
     },
     async getBranches() {
       const response = await apiBranches.select();
       this.branches = response.data;
-      //   this.branches.push({ id: 0, branch_name: "ทั้งหมด" });
-      // console.log(this.branches);
+    },
+    toggleAll(col) {
+      this.activeFilters[col] = this.car_series
+        .map((d) => {
+          return d[col];
+        })
+        .filter((value, index, self) => {
+          return self.indexOf(value) === index;
+        });
+    },
+    clearAll(col) {
+      this.activeFilters[col] = [];
     },
     countFieldSeparate(branch_id, car_serie_id, car_stock) {
       return this.data
@@ -123,6 +197,19 @@ export default {
           }
         })
         .reduce((total, x) => x.count + total, 0);
+    },
+    initFilters() {
+      for (const [key] of Object.entries(this.filters)) {
+        this.filters[key] = this.car_series
+          .map((d) => {
+            return d[key];
+          })
+          .filter((value, index, self) => {
+            return self.indexOf(value) === index;
+          });
+        this.filters[key].sort();
+      }
+      this.activeFilters = Object.assign({}, this.filters);
     },
   },
 };

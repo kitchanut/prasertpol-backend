@@ -1,27 +1,14 @@
 <template>
   <v-container>
-    <v-dialog
-      v-model="dialogDeleteComponent"
-      fullscreen
-    >
+    <v-dialog v-model="dialogDeleteComponent" fullscreen>
       <v-card>
-        <v-form
-          ref="form"
-          @submit.prevent="onAction(formData.id)"
-          autocomplete="true"
-        >
-          <v-toolbar
-            color="primary"
-            dark
-            flat
-          >
+        <v-form ref="form" @submit.prevent="onAction(formData.id)" autocomplete="true">
+          <v-toolbar color="primary" dark flat>
             <v-btn
               icon
               dark
               :disabled="watingUpload"
-              @click="
-                action == 'edit' ? $emit('cancleItem') : deleteTempFolder()
-              "
+              @click="action == 'edit' ? $emit('cancleItem') : deleteTempFolder()"
             >
               <v-icon>mdi-close</v-icon>
             </v-btn>
@@ -29,25 +16,13 @@
 
             <v-spacer></v-spacer>
             <v-toolbar-items>
-              <v-btn
-                type="submit"
-                :disabled="watingUpload"
-                :loading="btnloading"
-                dark
-                text
-                style="font-size: 18px"
-              >
+              <v-btn type="submit" :disabled="watingUpload" :loading="btnloading" dark text style="font-size: 18px">
                 บันทึก
               </v-btn>
             </v-toolbar-items>
           </v-toolbar>
 
-          <v-progress-linear
-            v-if="formDataLoading"
-            indeterminate
-            color="yellow darken-2"
-          >
-          </v-progress-linear>
+          <v-progress-linear v-if="formDataLoading" indeterminate color="yellow darken-2"> </v-progress-linear>
 
           <v-card-text>
             <v-container>
@@ -136,10 +111,7 @@
 
               <br />
               <br />
-              <div
-                v-for="(outlay_cost, keys) in formData.outlay_costs"
-                :key="keys"
-              >
+              <div v-for="(outlay_cost, keys) in formData.outlay_costs" :key="keys">
                 <v-row>
                   <v-col cols="4">
                     <v-menu
@@ -182,10 +154,7 @@
                       ></v-date-picker>
                     </v-menu>
                   </v-col>
-                  <v-col
-                    cols="4"
-                    v-if="outlay_cost.type == 1"
-                  >
+                  <v-col cols="4" v-if="outlay_cost.type == 1">
                     <v-row>
                       <v-col :cols="user_group_permission == 10 ? 8 : 8">
                         <v-autocomplete
@@ -202,31 +171,18 @@
                           dense
                           hide-details
                           @change="changeBranch(outlay_cost.car_id, keys)"
-                          :rules="
-                            outlay_cost.type == 1
-                              ? [(value) => !!value || 'กรุณาใส่ข้อมูล']
-                              : []
-                          "
+                          :rules="outlay_cost.type == 1 ? [(value) => !!value || 'กรุณาใส่ข้อมูล'] : []"
                         >
-                          <template
-                            slot="selection"
-                            slot-scope="{ item }"
-                          >
+                          <template slot="selection" slot-scope="{ item }">
                             {{ item.car_no }} ({{ item.car_regis }})
                           </template>
 
-                          <template
-                            slot="item"
-                            slot-scope="{ item }"
-                          >
+                          <template slot="item" slot-scope="{ item }">
                             {{ item.car_no }} ({{ item.car_regis }})
                           </template>
                         </v-autocomplete>
                       </v-col>
-                      <v-col
-                        cols="2"
-                        v-if="formData.outlay_costs[keys].car_id != null"
-                      >
+                      <v-col cols="2" v-if="formData.outlay_costs[keys].car_id != null">
                         <v-btn
                           @click="editItem(formData.outlay_costs[keys].car_id)"
                           class="mt-1"
@@ -237,14 +193,9 @@
                           <v-icon small> mdi-pencil </v-icon>
                         </v-btn>
                       </v-col>
-                      <v-col
-                        cols="2"
-                        v-if="formData.outlay_costs[keys].car_id != null"
-                      >
+                      <v-col cols="2" v-if="formData.outlay_costs[keys].car_id != null">
                         <v-btn
-                          @click="
-                            getminiInfoCar(formData.outlay_costs[keys].car_id)
-                          "
+                          @click="getminiInfoCar(formData.outlay_costs[keys].car_id)"
                           class="mt-1"
                           small
                           dark
@@ -307,11 +258,7 @@
 
                   <v-col cols="4">
                     <v-autocomplete
-                      :readonly="
-                        user_group_permission == 3 || user_group_permission == 2
-                          ? true
-                          : false
-                      "
+                      :readonly="user_group_permission == 3 || user_group_permission == 2 ? true : false"
                       v-model="outlay_cost.branch_id"
                       id="outlay_cost.branch_id"
                       name="outlay_cost.branch_id"
@@ -349,15 +296,8 @@
                       <template>
                         <div class="mr-1">หักเงิน:</div>
                       </template>
-                      <v-radio
-                        label="ไม่"
-                        value="1"
-                      ></v-radio>
-                      <v-radio
-                        label="หัก"
-                        color="red"
-                        value="2"
-                      ></v-radio>
+                      <v-radio label="ไม่" value="1"></v-radio>
+                      <v-radio label="หัก" color="red" value="2"></v-radio>
                     </v-radio-group>
                   </v-col>
 
@@ -374,15 +314,8 @@
                       <template>
                         <div class="mr-1">ประเภท:</div>
                       </template>
-                      <v-radio
-                        label="ตัวรถ"
-                        value="1"
-                      ></v-radio>
-                      <v-radio
-                        label="อื่น ๆ"
-                        color="red"
-                        value="2"
-                      ></v-radio>
+                      <v-radio label="ตัวรถ" value="1"></v-radio>
+                      <v-radio label="อื่น ๆ" color="red" value="2"></v-radio>
                     </v-radio-group>
                   </v-col>
                   <v-col cols="2">
@@ -397,15 +330,8 @@
                       <template>
                         <div class="mr-1">บิล:</div>
                       </template>
-                      <v-radio
-                        label="เงินสด"
-                        value="1"
-                      ></v-radio>
-                      <v-radio
-                        label="ใบกำกับภาษี"
-                        color="red"
-                        value="2"
-                      ></v-radio>
+                      <v-radio label="เงินสด" value="1"></v-radio>
+                      <v-radio label="ใบกำกับภาษี" color="red" value="2"></v-radio>
                     </v-radio-group>
                   </v-col>
 
@@ -470,13 +396,7 @@
                   </v-row> -->
 
                   <v-col cols="1">
-                    <v-btn
-                      color="red"
-                      fab
-                      x-small
-                      dark
-                      @click="rm_row(keys)"
-                    >
+                    <v-btn color="red" fab x-small dark @click="rm_row(keys)">
                       <v-icon> mdi-delete </v-icon>
                     </v-btn>
                   </v-col>
@@ -485,19 +405,9 @@
               <br />
 
               <!-- <v-row class="d-flex" v-show="branch_id == null ? false : true"> -->
-              <v-row
-                class="d-flex"
-                v-if="addrow_dis <= 5"
-              >
+              <v-row class="d-flex" v-if="addrow_dis <= 5">
                 <v-col v-show="branch_id == null ? false : true">
-                  <v-btn
-                    color="green"
-                    dark
-                    block
-                    @click="add_row()"
-                  >
-                    <v-icon>mdi-plus</v-icon> เพิ่มรายการ
-                  </v-btn>
+                  <v-btn color="green" dark block @click="add_row()"> <v-icon>mdi-plus</v-icon> เพิ่มรายการ </v-btn>
                 </v-col>
               </v-row>
             </v-container>
@@ -555,9 +465,7 @@ export default {
         outlay_costs: [],
       },
       moment: moment,
-      user_group_permission: this.$auth.$storage.getLocalStorage(
-        "userData-user_group_permission"
-      ),
+      user_group_permission: this.$auth.$storage.getLocalStorage("userData-user_group_permission"),
       branch_id: null,
       user_id: this.$auth.$storage.getLocalStorage("userData-id"),
       rule: [(value) => !!value || "กรุณาใส่ข้อมูล"],
@@ -597,11 +505,8 @@ export default {
 
     filterObject(item, queryText, itemText) {
       return (
-        item.car_no.toLocaleLowerCase().indexOf(queryText.toLocaleLowerCase()) >
-          -1 ||
-        item.car_regis
-          .toLocaleLowerCase()
-          .indexOf(queryText.toLocaleLowerCase()) > -1
+        item.car_no.toLocaleLowerCase().indexOf(queryText.toLocaleLowerCase()) > -1 ||
+        item.car_regis.toLocaleLowerCase().indexOf(queryText.toLocaleLowerCase()) > -1
       );
     },
     selectFile(payload, key) {
@@ -622,8 +527,7 @@ export default {
       for (let index = 0; index < this.dataCar.length; index++) {
         if (this.dataCar[index].id == car_id) {
           // console.log(this.dataCar[index]);
-          this.formData.outlay_costs[keys].branch_id =
-            this.dataCar[index].branch_id;
+          this.formData.outlay_costs[keys].branch_id = this.dataCar[index].branch_id;
         }
       }
     },
@@ -678,10 +582,7 @@ export default {
       } else {
         let array = [];
         for (let index = 0; index < response.data.length; index++) {
-          if (
-            response.data[index].branch_id ==
-            this.$auth.$storage.getLocalStorage("userData-branch_id")
-          ) {
+          if (response.data[index].branch_id == this.$auth.$storage.getLocalStorage("userData-branch_id")) {
             array.push(response.data[index]);
           }
         }
@@ -792,9 +693,7 @@ export default {
     async deleteTempFolder() {
       if (this.action == "add" && this.formData.outlay_costs.length) {
         this.$nextTick(async () => {
-          const response = await apiOutlay_costs.cancle_uploadFile_outlay(
-            this.formData
-          );
+          const response = await apiOutlay_costs.cancle_uploadFile_outlay(this.formData);
           // console.log(response);
         });
       }
@@ -817,11 +716,8 @@ export default {
             this.$refs.form.reset();
             const self = this;
             this.$nextTick(() => {
-              self.branch_id =
-                this.$auth.$storage.getLocalStorage("userData-branch_id");
-              this.getMoney(
-                this.$auth.$storage.getLocalStorage("userData-branch_id")
-              );
+              self.branch_id = this.$auth.$storage.getLocalStorage("userData-branch_id");
+              this.getMoney(this.$auth.$storage.getLocalStorage("userData-branch_id"));
               // if (
               //   this.user_group_permission != -1 ||
               //   this.user_group_permission != 11

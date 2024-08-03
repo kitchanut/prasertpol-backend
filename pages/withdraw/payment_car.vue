@@ -2,8 +2,8 @@
   <div>
     <v-card>
       <v-card-text>
-        <v-row class="d-flex align-center">
-          <v-col cols="3">
+        <v-row no-gutters class="d-flex align-center">
+          <v-col cols="3" class="mr-3">
             <v-autocomplete
               v-model="id"
               :filter="filterObject"
@@ -13,44 +13,33 @@
               no-data-text="ไม่มีข้อมูล"
               item-value="id"
               label="ลำดับรถ"
+              single-line
               outlined
               dense
               hide-details
               @change="getData()"
             >
-              <template
-                slot="selection"
-                slot-scope="{ item }"
-              >
-                {{ item.car_no }} ({{ item.car_regis }})
-              </template>
+              <template slot="selection" slot-scope="{ item }"> {{ item.car_no }} ({{ item.car_regis }}) </template>
 
-              <template
-                slot="item"
-                slot-scope="{ item }"
-              >
-                {{ item.car_no }} ({{ item.car_regis }})
-              </template>
+              <template slot="item" slot-scope="{ item }"> {{ item.car_no }} ({{ item.car_regis }}) </template>
             </v-autocomplete>
           </v-col>
-          <v-col v-show="!id">
+          <v-col class="ml-3" v-show="!id">
             <dateSelect2 @timeSelect="selectTimeStart" />
           </v-col>
           <v-col v-if="id">
             <v-btn
-              color="primary"
-              class="mr-2"
-              @click="AddOutlay(id)"
-            >เพิ่มค่าใช้จ่าย</v-btn>
-
-            <v-btn
               @click="getminiInfoCar(id)"
               dark
-              color="primary"
+              small
+              color="info"
+              class="px-2 mr-2"
+              style="height: 36px; min-width: 38px"
             >
-              <v-icon small> mdi-magnify </v-icon>
+              <v-icon> mdi-magnify </v-icon>
             </v-btn>
 
+            <v-btn color="primary" @click="AddOutlay(id)">เพิ่มค่าใช้จ่าย</v-btn>
           </v-col>
         </v-row>
         <!-- <h1 class="text-center">
@@ -68,50 +57,37 @@
         </h1> -->
 
         <v-row class="d-flex align-center">
-
           <v-spacer></v-spacer>
-          <v-col
-            xs="12"
-            sm="12"
-            md="6"
-            lg="4"
-            xl="4"
-          >
+          <v-col xs="12" sm="12" md="6" lg="4" xl="4">
             <v-text-field
               v-model="search"
               id="search"
               name="search"
               label="ค้นหารายการ"
+              outlined
+              dense
               single-line
               hide-details
               @keyup.enter="getData()"
             >
             </v-text-field>
-
           </v-col>
-          <v-btn
-            class="mx-2"
-            fab
-            dark
-            small
-            color="primary"
-            @click="getData()"
-          >
-            <v-icon dark>
-              mdi-magnify
-            </v-icon>
+          <v-btn class="mx-2" dark small color="primary" style="min-height: 40px; min-width: 40px" @click="getData()">
+            <v-icon dark> mdi-magnify </v-icon>
           </v-btn>
         </v-row>
-
-        <v-data-table
-          :headers="OutlayHeaders"
-          :items="dataOutlay"
-          :items-per-page="10"
-          :loading="loading"
-          no-data-text="ยังไม่มีการเพิ่มข้อมูล"
-          loading-text="กำลังโหลดข้อมูลกรุณารอสักครู่"
-        >
-          <!-- <template v-slot:[`item.file`]="{ item }">
+      </v-card-text>
+      <v-divider></v-divider>
+      <v-data-table
+        :headers="OutlayHeaders"
+        :items="dataOutlay"
+        :items-per-page="10"
+        :loading="loading"
+        dense
+        no-data-text="ยังไม่มีการเพิ่มข้อมูล"
+        loading-text="กำลังโหลดข้อมูลกรุณารอสักครู่"
+      >
+        <!-- <template v-slot:[`item.file`]="{ item }">
             <div v-if="item.file == null">
               <span>-</span>
             </div>
@@ -126,56 +102,64 @@
               </v-btn>
             </div>
           </template> -->
-          <template v-slot:[`item.date`]="{ item }">
-            <span>
-              {{ $moment(item.date).format("DD/MM/YYYY") }}
-            </span>
-          </template>
+        <template v-slot:[`item.date`]="{ item }">
+          <span>
+            {{ $moment(item.date).format("DD/MM/YYYY") }}
+          </span>
+        </template>
 
-          <template v-slot:[`item.money`]="{ item }">
-            {{
-                      Number(item.money).toLocaleString("th-TH", {
-                        maximumFractionDigits: 2,
-                        minimumFractionDigits: 2,
-                      })
-                    }}
-          </template>
+        <template v-slot:[`item.money`]="{ item }">
+          {{
+            Number(item.money).toLocaleString("th-TH", {
+              maximumFractionDigits: 2,
+              minimumFractionDigits: 2,
+            })
+          }}
+        </template>
 
-          <template v-slot:[`item.type`]="{ item }">
-            <span v-if="item.type == 1">ตัวรถ</span>
-            <span v-else>อื่น ๆ</span>
-          </template>
+        <template v-slot:[`item.type`]="{ item }">
+          <span v-if="item.type == 1">ค่าตัวรถ</span>
+          <span v-else-if="item.type == 2">รถ</span>
+          <span v-else-if="item.type == 3">ค่าซ่อมก่อนขาย</span>
+          <span v-else-if="item.type == 4">ค่าซ่อมหลังขาย</span>
+          <span v-else-if="item.type == 5">ค่าคอม</span>
+          <span v-else-if="item.type == 6">ค่าจ้างคนค้ำ</span>
+          <span v-else-if="item.type == 7">ค่านำพา</span>
+          <span v-else-if="item.type == 8">ค่าซื้อแทน</span>
+          <span v-else-if="item.type == 9">ค่าน้ำมัน</span>
+          <span v-else-if="item.type == 10">ค่าสี</span>
+          <span v-else-if="item.type == 11">ค่าขนส่ง</span>
+          <span v-else-if="item.type == 12">ค่าส่งเสริมการขาย</span>
+          <span v-else-if="item.type == 13">คืนเงิน</span>
+          <span v-else-if="item.type == 14">ค่างวด</span>
+          <span v-else>อื่น ๆ</span>
+        </template>
 
-          <template v-slot:[`item.broken`]="{ item }">
-            <span v-if="item.broken == 1">ไม่</span>
-            <span v-else>หัก</span>
-          </template>
+        <template v-slot:[`item.broken`]="{ item }">
+          <span v-if="item.broken == 1">ไม่</span>
+          <span v-else>หัก</span>
+        </template>
 
-          <template v-slot:[`item.type_bill`]="{ item }">
-            <span v-if="item.type_bill == 1">เงินสด</span>
-            <span v-else>ใบกำกับภาษี</span>
-          </template>
+        <template v-slot:[`item.type_bill`]="{ item }">
+          <span v-if="item.type_bill == 1">เงินสด</span>
+          <span v-else>ใบกำกับภาษี</span>
+        </template>
 
-          <template v-slot:[`item.actions`]="{ item }">
-            <v-menu offset-y>
-              <template v-slot:activator="{ on, attrs }">
-                <v-btn
-                  icon
-                  v-bind="attrs"
-                  v-on="on"
-                >
-                  <v-icon>mdi-dots-horizontal</v-icon>
-                </v-btn>
-              </template>
-              <v-list>
-                <v-list-item @click="deleteItem(item.id)">
-                  <v-list-item-title>ลบ</v-list-item-title>
-                </v-list-item>
-              </v-list>
-            </v-menu>
-          </template>
-        </v-data-table>
-      </v-card-text>
+        <template v-slot:[`item.actions`]="{ item }">
+          <v-menu offset-y>
+            <template v-slot:activator="{ on, attrs }">
+              <v-btn icon v-bind="attrs" v-on="on">
+                <v-icon>mdi-dots-horizontal</v-icon>
+              </v-btn>
+            </template>
+            <v-list>
+              <v-list-item @click="deleteItem(item.id)">
+                <v-list-item-title>ลบ</v-list-item-title>
+              </v-list-item>
+            </v-list>
+          </v-menu>
+        </template>
+      </v-data-table>
     </v-card>
 
     <dialogAddOutlay
@@ -197,7 +181,6 @@
       :data_outlay_cost="data_outlay_cost"
       @cancleItem="dialog_mini = false"
     />
-
   </div>
 </template>
 
@@ -250,8 +233,9 @@ export default {
         },
         { text: "ลำดับรถ", value: "car.car_no" },
         { text: "เลขธุรกรรม", value: "no" },
+        { text: "ประเภท", value: "type" },
         {
-          text: "ร้านค้า/ลูกค้า",
+          text: "ผู้รับเงิน",
           value: "shop",
         },
         {
@@ -260,8 +244,8 @@ export default {
         },
         // { text: "ลำดับรถ", value: "car.car_no" },
         // { text: "หักเงิน", value: "broken" },
-        { text: "ประเภท", value: "type" },
-        { text: "บิล", value: "type_bill" },
+
+        // { text: "บิล", value: "type_bill" },
         { text: "จำนวนเงิน", value: "money", align: "right" },
         { text: "สาขา", value: "branch.branch_name" },
         { text: "โดย", value: "user.first_name" },
@@ -299,11 +283,8 @@ export default {
     },
     filterObject(item, queryText, itemText) {
       return (
-        item.car_no.toLocaleLowerCase().indexOf(queryText.toLocaleLowerCase()) >
-          -1 ||
-        item.car_regis
-          .toLocaleLowerCase()
-          .indexOf(queryText.toLocaleLowerCase()) > -1
+        item.car_no.toLocaleLowerCase().indexOf(queryText.toLocaleLowerCase()) > -1 ||
+        item.car_regis.toLocaleLowerCase().indexOf(queryText.toLocaleLowerCase()) > -1
       );
     },
     async getDataCar() {
@@ -442,5 +423,4 @@ export default {
 };
 </script>
 
-<style>
-</style>
+<style></style>

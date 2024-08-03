@@ -1,17 +1,8 @@
 <template>
   <v-container>
-    <v-dialog
-      v-model="dialogDeleteComponent"
-      content-class="v-dialog--custom"
-      fullscreen
-    >
+    <v-dialog v-model="dialogDeleteComponent" content-class="v-dialog--custom" fullscreen>
       <v-card>
-        <v-form
-          autocomplete="true"
-          ref="form"
-          :disabled="formDisabled"
-          @submit.prevent="onAction()"
-        >
+        <v-form autocomplete="true" ref="form" :disabled="formDisabled" @submit.prevent="onAction()">
           <v-toolbar color="primary" dark flat>
             <v-btn text @click="$emit('cancleItem')">
               <v-icon>mdi-close</v-icon>
@@ -31,23 +22,10 @@
                 ปริ้น
               </v-btn> -->
 
-              <v-btn
-                type="submit"
-                dark
-                text
-                :loading="btnloading"
-                style="font-size: 18px"
-              >
-                บันทึก
-              </v-btn>
+              <v-btn type="submit" dark text :loading="btnloading" style="font-size: 18px"> บันทึก </v-btn>
             </v-toolbar-items>
           </v-toolbar>
-          <v-progress-linear
-            v-if="formDataLoading"
-            indeterminate
-            color="yellow darken-2"
-          >
-          </v-progress-linear>
+          <v-progress-linear v-if="formDataLoading" indeterminate color="yellow darken-2"> </v-progress-linear>
 
           <v-card-text class="pa-3">
             <v-row class="d-flex flex-row">
@@ -60,9 +38,7 @@
 
             <v-expansion-panels v-model="panel" class="mt-3" multiple>
               <v-expansion-panel>
-                <v-expansion-panel-header>
-                  ข้อมูลรถยนต์
-                </v-expansion-panel-header>
+                <v-expansion-panel-header> ข้อมูลรถยนต์ </v-expansion-panel-header>
                 <v-expansion-panel-content>
                   <!-- <v-text-field
                     autocomplete="true"
@@ -219,9 +195,7 @@
                 </v-expansion-panel-content>
               </v-expansion-panel>
               <v-expansion-panel>
-                <v-expansion-panel-header>
-                  ข้อมูลการจอง
-                </v-expansion-panel-header>
+                <v-expansion-panel-header> ข้อมูลการจอง </v-expansion-panel-header>
                 <v-expansion-panel-content>
                   <v-menu
                     ref="menuDateCreated_at"
@@ -275,11 +249,12 @@
                     outlined
                     dense
                     hide-details
-                    :rules="rule"
+                    :disabled="formData.action == 'add' ? false : true"
+                    :rules="formData.action == 'add' ? rule : []"
                   >
                   </v-text-field>
 
-                  <v-dialog
+                  <!-- <v-dialog
                     ref="menuDateCustomer_bath_date_transfer"
                     v-model="menuDateCustomer_bath_date_transfer"
                     id="menuDateCustomer_bath_date_transfer"
@@ -316,13 +291,11 @@
                       @input="menuDateCustomer_bath_date_transfer = false"
                     >
                     </v-date-picker>
-                  </v-dialog>
+                  </v-dialog> -->
                 </v-expansion-panel-content>
               </v-expansion-panel>
               <v-expansion-panel>
-                <v-expansion-panel-header>
-                  รายละเอียดการขาย
-                </v-expansion-panel-header>
+                <v-expansion-panel-header> รายละเอียดการขาย </v-expansion-panel-header>
                 <v-expansion-panel-content>
                   <v-dialog
                     ref="menuDateCustomer_bath_date_signed"
@@ -634,9 +607,9 @@
                     autocomplete="true"
                     label="ค่างวด"
                     type="number"
-                    v-model="formData.amount_down"
-                    id="formData.amount_down"
-                    name="formData.amount_down"
+                    v-model="formData.monthly_payment"
+                    id="formData.monthly_payment"
+                    name="formData.monthly_payment"
                     append-icon=""
                     outlined
                     dense
@@ -705,9 +678,63 @@
                 </v-expansion-panel-content>
               </v-expansion-panel>
               <v-expansion-panel>
-                <v-expansion-panel-header>
-                  ข้อมูลลูกค้า
-                </v-expansion-panel-header>
+                <v-expansion-panel-header> เอกสารประกอบการขาย </v-expansion-panel-header>
+                <v-expansion-panel-content>
+                  <v-file-input
+                    class="mt-3"
+                    label="รูปบัตรประจำตัวประชาชนลูกค้า*"
+                    v-model="id_card"
+                    prepend-icon=""
+                    append-icon="mdi-image"
+                    show-size
+                    outlined
+                    dense
+                    hide-details="auto"
+                    :rules="ruleMustImage"
+                  ></v-file-input>
+
+                  <v-file-input
+                    class="mt-3"
+                    v-model="booking_sheet"
+                    label="เอกสารสรุปงานขาย*"
+                    prepend-icon=""
+                    append-icon="mdi-image"
+                    show-size
+                    outlined
+                    dense
+                    hide-details="auto"
+                    :rules="ruleMustImage"
+                  ></v-file-input>
+
+                  <v-file-input
+                    class="mt-3"
+                    v-model="receipt"
+                    label="ใบเสร็จรับเงิน"
+                    prepend-icon=""
+                    append-icon="mdi-image"
+                    show-size
+                    outlined
+                    dense
+                    hide-details="auto"
+                    :rules="ruleImage"
+                  ></v-file-input>
+
+                  <v-file-input
+                    class="mt-3"
+                    v-model="booking_slip"
+                    label="สลิปการโอนเงิน"
+                    prepend-icon=""
+                    append-icon="mdi-image"
+                    show-size
+                    outlined
+                    dense
+                    hide-details="auto"
+                    :rules="ruleImage"
+                  ></v-file-input>
+                </v-expansion-panel-content>
+              </v-expansion-panel>
+              <v-expansion-panel>
+                <v-expansion-panel-header> ข้อมูลลูกค้า </v-expansion-panel-header>
                 <v-expansion-panel-content>
                   <v-text-field
                     autocomplete="true"
@@ -966,11 +993,7 @@
 
                   <v-row
                     class="d-flex flex-row rounded ma-auto mt-3 mb-3"
-                    style="
-                      border-style: solid;
-                      border-width: 1px;
-                      border-color: gray;
-                    "
+                    style="border-style: solid; border-width: 1px; border-color: gray"
                   >
                     <v-col cols="12">
                       <v-radio-group
@@ -1048,9 +1071,7 @@
                     <v-radio value="2" label="เงินสด"></v-radio>
                   </v-radio-group>
 
-                  <div class="mt-3 ml-1" style="font-size: 16px">
-                    สริปเงินเดือน:
-                  </div>
+                  <div class="mt-3 ml-1" style="font-size: 16px">สริปเงินเดือน:</div>
                   <v-radio-group
                     v-model="formData.customer_slip_money"
                     id="formData.customer_slip_money"
@@ -1062,9 +1083,7 @@
                     <v-radio value="2" label="ไม่มี"></v-radio>
                   </v-radio-group>
 
-                  <div class="mt-3 ml-1" style="font-size: 16px">
-                    หนังสือรับรองเงินเดือน:
-                  </div>
+                  <div class="mt-3 ml-1" style="font-size: 16px">หนังสือรับรองเงินเดือน:</div>
                   <v-radio-group
                     v-model="formData.customer_receive_evidence"
                     id="formData.customer_receive_evidence"
@@ -1164,9 +1183,7 @@
                   >
                   </v-text-field>
 
-                  <div class="mt-3 ml-1" style="font-size: 16px">
-                    ประวัติการผ่อน:
-                  </div>
+                  <div class="mt-3 ml-1" style="font-size: 16px">ประวัติการผ่อน:</div>
                   <v-radio-group
                     v-model="formData.customer_installment_history"
                     id="formData.customer_installment_history"
@@ -1222,9 +1239,7 @@
                 </v-expansion-panel-content>
               </v-expansion-panel>
               <v-expansion-panel>
-                <v-expansion-panel-header>
-                  ข้อมูลผู้ค้ำประกัน
-                </v-expansion-panel-header>
+                <v-expansion-panel-header> ข้อมูลผู้ค้ำประกัน </v-expansion-panel-header>
                 <v-expansion-panel-content>
                   <v-text-field
                     autocomplete="true"
@@ -1269,11 +1284,7 @@
 
                   <v-row
                     class="d-flex flex-row rounded ma-auto mt-3 mb-3"
-                    style="
-                      border-style: solid;
-                      border-width: 1px;
-                      border-color: gray;
-                    "
+                    style="border-style: solid; border-width: 1px; border-color: gray"
                   >
                     <v-col cols="7">
                       <v-radio-group
@@ -1391,9 +1402,7 @@
               </v-expansion-panel>
 
               <v-expansion-panel>
-                <v-expansion-panel-header>
-                  รถตีเทริ์น
-                </v-expansion-panel-header>
+                <v-expansion-panel-header> รถตีเทริ์น </v-expansion-panel-header>
                 <v-expansion-panel-content>
                   <v-text-field
                     autocomplete="true"
@@ -1568,9 +1577,7 @@
               </v-expansion-panel>
 
               <v-expansion-panel>
-                <v-expansion-panel-header>
-                  สิ่งที่ต้องมีก่อนปล่อยให้ลูกค้า
-                </v-expansion-panel-header>
+                <v-expansion-panel-header> สิ่งที่ต้องมีก่อนปล่อยให้ลูกค้า </v-expansion-panel-header>
                 <v-expansion-panel-content>
                   <v-textarea
                     rows="2"
@@ -1587,11 +1594,7 @@
 
                   <v-row
                     class="d-flex flex-row rounded ma-auto mt-3"
-                    style="
-                      border-style: solid;
-                      border-width: 1px;
-                      border-color: gray;
-                    "
+                    style="border-style: solid; border-width: 1px; border-color: gray"
                     align="center"
                     justify="center"
                   >
@@ -1693,18 +1696,10 @@ import * as apiProvinces from "@/Api/apiProvinces";
 import * as apiAmphures from "@/Api/apiAmphures";
 import * as apiDistricts from "@/Api/apiDistricts";
 export default {
-  props: [
-    "dialogBooking",
-    "actionBooking",
-    "idWork",
-    "idCustomer",
-    "idCar",
-    "car_no",
-    "formTitleBooking",
-  ],
+  props: ["dialogBooking", "actionBooking", "idWork", "idCustomer", "idCar", "car_no", "formTitleBooking"],
   data() {
     return {
-      panel: [1, 3],
+      panel: [1, 3, 4],
       btnloading: true,
       formDataLoading: false,
       formData: {},
@@ -1742,6 +1737,13 @@ export default {
       dataSelectDistrictsRef: [],
       idBooking: "",
       formDisabled: true,
+
+      id_card: null,
+      booking_sheet: null,
+      booking_slip: null,
+      receipt: null,
+      ruleImage: [(value) => !value || value.size < 11000000 || "ขนาดรูปต้องน้อยกว่า 10 MB"],
+      ruleMustImage: [(value) => !!value, (value) => !value || value.size < 11000000 || "ขนาดรูปต้องน้อยกว่า 10 MB"],
     };
   },
   async mounted() {},
@@ -1772,9 +1774,7 @@ export default {
       this.dataSelectAmphures = [];
       this.$nextTick(() => {
         for (let index = 0; index < this.dataAmphures.length; index++) {
-          if (
-            this.dataAmphures[index].province_id == this.formData.province_id
-          ) {
+          if (this.dataAmphures[index].province_id == this.formData.province_id) {
             this.dataSelectAmphures.push(this.dataAmphures[index]);
           }
         }
@@ -1784,13 +1784,8 @@ export default {
       this.dataSelectAmphuresCurrent = [];
       this.$nextTick(() => {
         for (let index = 0; index < this.dataAmphuresCurrent.length; index++) {
-          if (
-            this.dataAmphuresCurrent[index].province_id ==
-            this.formData.province_id_current
-          ) {
-            this.dataSelectAmphuresCurrent.push(
-              this.dataAmphuresCurrent[index]
-            );
+          if (this.dataAmphuresCurrent[index].province_id == this.formData.province_id_current) {
+            this.dataSelectAmphuresCurrent.push(this.dataAmphuresCurrent[index]);
           }
         }
       });
@@ -1799,10 +1794,7 @@ export default {
       this.dataSelectAmphuresRef = [];
       this.$nextTick(() => {
         for (let index = 0; index < this.dataAmphuresRef.length; index++) {
-          if (
-            this.dataAmphuresRef[index].province_id ==
-            this.formData.province_id_ref
-          ) {
+          if (this.dataAmphuresRef[index].province_id == this.formData.province_id_ref) {
             this.dataSelectAmphuresRef.push(this.dataAmphuresRef[index]);
           }
         }
@@ -1813,9 +1805,7 @@ export default {
       this.dataSelectDistricts = [];
       this.$nextTick(() => {
         for (let index = 0; index < this.dataDistricts.length; index++) {
-          if (
-            this.dataDistricts[index].amphure_id == this.formData.amphure_id
-          ) {
+          if (this.dataDistricts[index].amphure_id == this.formData.amphure_id) {
             this.dataSelectDistricts.push(this.dataDistricts[index]);
           }
         }
@@ -1835,24 +1825,15 @@ export default {
       this.dataSelectDistrictsCurrent = [];
       this.$nextTick(() => {
         for (let index = 0; index < this.dataDistrictsCurrent.length; index++) {
-          if (
-            this.dataDistrictsCurrent[index].amphure_id ==
-            this.formData.amphure_id_current
-          ) {
-            this.dataSelectDistrictsCurrent.push(
-              this.dataDistrictsCurrent[index]
-            );
+          if (this.dataDistrictsCurrent[index].amphure_id == this.formData.amphure_id_current) {
+            this.dataSelectDistrictsCurrent.push(this.dataDistrictsCurrent[index]);
           }
         }
       });
       this.$nextTick(() => {
         for (let index = 0; index < this.dataAmphuresCurrent.length; index++) {
-          if (
-            this.dataAmphuresCurrent[index].id ==
-            this.formData.amphure_id_current
-          ) {
-            this.formData.province_id_current =
-              this.dataAmphuresCurrent[index].province_id;
+          if (this.dataAmphuresCurrent[index].id == this.formData.amphure_id_current) {
+            this.formData.province_id_current = this.dataAmphuresCurrent[index].province_id;
             // console.log(this.dataAmphures[index]);
           }
         }
@@ -1863,10 +1844,7 @@ export default {
       this.dataSelectDistrictsRef = [];
       this.$nextTick(() => {
         for (let index = 0; index < this.dataDistrictsRef.length; index++) {
-          if (
-            this.dataDistrictsRef[index].amphure_id ==
-            this.formData.amphure_id_ref
-          ) {
+          if (this.dataDistrictsRef[index].amphure_id == this.formData.amphure_id_ref) {
             this.dataSelectDistrictsRef.push(this.dataDistrictsRef[index]);
           }
         }
@@ -1875,8 +1853,7 @@ export default {
       this.$nextTick(() => {
         for (let index = 0; index < this.dataAmphuresRef.length; index++) {
           if (this.dataAmphuresRef[index].id == this.formData.amphure_id_ref) {
-            this.formData.province_id_ref =
-              this.dataAmphuresRef[index].province_id;
+            this.formData.province_id_ref = this.dataAmphuresRef[index].province_id;
             // console.log(this.dataAmphures[index]);
           }
         }
@@ -1897,13 +1874,9 @@ export default {
     async selectSeeDistrictCurrent() {
       this.$nextTick(() => {
         for (let index = 0; index < this.dataDistrictsCurrent.length; index++) {
-          if (
-            this.dataDistrictsCurrent[index].id ==
-            this.formData.district_id_current
-          ) {
+          if (this.dataDistrictsCurrent[index].id == this.formData.district_id_current) {
             // this.dataSelectDistricts.push(this.dataDistricts[index]);
-            this.formData.zip_code_current =
-              this.dataDistrictsCurrent[index].zip_code;
+            this.formData.zip_code_current = this.dataDistrictsCurrent[index].zip_code;
           }
         }
       });
@@ -1913,9 +1886,7 @@ export default {
       this.formData.zip_code_ref = "";
       this.$nextTick(() => {
         for (let index = 0; index < this.dataDistrictsRef.length; index++) {
-          if (
-            this.dataDistrictsRef[index].id == this.formData.district_id_ref
-          ) {
+          if (this.dataDistrictsRef[index].id == this.formData.district_id_ref) {
             // this.dataSelectDistricts.push(this.dataDistricts[index]);
             this.formData.zip_code_ref = this.dataDistrictsRef[index].zip_code;
           }
@@ -1928,8 +1899,17 @@ export default {
         this.formDataLoading = true;
 
         if (this.formData.action == "add") {
-          const response = await apiBookings.store(this.formData);
-          // this.$refs.form.reset();
+          let formData = new FormData();
+          formData.append("formData", JSON.stringify(this.formData));
+          formData.append("id_card", this.id_card);
+          formData.append("booking_sheet", this.booking_sheet);
+          if (this.booking_slip) {
+            formData.append("booking_slip", this.booking_slip);
+          }
+          if (this.receipt) {
+            formData.append("receipt", this.receipt);
+          }
+          const response = await apiBookings.store(formData);
 
           if (response.status == 200) {
             this.$emit("success", "Booking");
@@ -1937,10 +1917,18 @@ export default {
             this.$emit("error", "Booking");
           }
         } else if (this.formData.action == "edit") {
-          const response = await apiBookings.update(
-            this.formData.id,
-            this.formData
-          );
+          let formData = new FormData();
+          formData.append("_method", "PUT");
+          formData.append("formData", JSON.stringify(this.formData));
+          formData.append("id_card", this.id_card);
+          formData.append("booking_sheet", this.booking_sheet);
+          if (this.booking_slip) {
+            formData.append("booking_slip", this.booking_slip);
+          }
+          if (this.receipt) {
+            formData.append("receipt", this.receipt);
+          }
+          const response = await apiBookings.update(this.formData.id, formData);
           // console.log(response);
           this.$refs.form.reset();
 
@@ -1961,26 +1949,6 @@ export default {
         query: { idBooking: this.formData.id },
       });
       window.open(routeData.href, "_blank");
-
-      // const response = await apiBookings.update(
-      //   this.formData.id,
-      //   this.formData
-      // );
-      // // console.log(response);
-      // this.$refs.form.reset();
-
-      // if (response.status == 200) {
-      //   this.$emit("success", "Booking");
-      //   this.$nextTick(() => {
-      //     let routeData = this.$router.resolve({
-      //       name: "prints-print_booking",
-      //       query: { idBooking: this.formData.id },
-      //     });
-      //     window.open(routeData.href, "_blank");
-      //   });
-      // } else {
-      //   this.$emit("error", "Booking");
-      // }
     },
   },
   watch: {
@@ -1993,11 +1961,7 @@ export default {
         await this.getAmphures();
         await this.getDistricts();
         if (this.actionBooking == "check") {
-          const response = await apiBookings.checkBooking(
-            this.idWork,
-            this.idCar,
-            this.idCustomer
-          );
+          const response = await apiBookings.checkBooking(this.idWork, this.idCar, this.idCustomer);
 
           await this.$refs.form.reset();
           // console.log(response);

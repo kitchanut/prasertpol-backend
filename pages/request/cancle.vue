@@ -1,4 +1,3 @@
-
 <template>
   <div v-if="user_group_permission == -1">
     <v-card>
@@ -6,13 +5,7 @@
         <dateSelect2 @timeSelect="selectTimeStart" />
 
         <v-row class="d-flex align-center">
-          <v-btn-toggle
-            mandatory
-            v-model="toggle"
-            color="primary"
-            class="ml-5"
-            @change="getData()"
-          >
+          <v-btn-toggle mandatory v-model="toggle" color="primary" class="ml-5" @change="getData()">
             <v-btn value="pedding">รอดำเนินการ ({{ count.pedding }})</v-btn>
             <v-btn value="approve">ดำเนินการแล้ว ({{ count.approve }})</v-btn>
             <v-btn value="cancle">ยกเลิก ({{ count.cancle }})</v-btn>
@@ -64,23 +57,11 @@
         </template>
 
         <template v-slot:[`item.id_card`]="{ item }">
-          <v-img
-            width="50px"
-            :src="serverUrl + item.id_card"
-            @click="showImg(serverUrl + item.id_card)"
-          >
-          </v-img>
+          <v-img width="50px" :src="serverUrl + item.id_card" @click="showImg(serverUrl + item.id_card)"> </v-img>
         </template>
 
         <template v-slot:[`item.actions`]="{ item }">
-          <v-btn
-            v-if="item.request_status == 'pedding'"
-            color="warning"
-            fab
-            x-small
-            dark
-            @click="editItem(item.id)"
-          >
+          <v-btn v-if="item.request_status == 'pedding'" color="warning" fab x-small dark @click="editItem(item.id)">
             <v-icon> mdi-checkbox-blank-outline</v-icon>
           </v-btn>
           <v-btn
@@ -103,36 +84,18 @@
           >
             <v-icon> mdi-arrow-u-left-top</v-icon>
           </v-btn>
-          <v-btn
-            v-if="item.request_status != 'cancle'"
-            color="red"
-            fab
-            x-small
-            dark
-            @click="cancleItem(item.id)"
-          >
+          <v-btn v-if="item.request_status != 'cancle'" color="red" fab x-small dark @click="cancleItem(item.id)">
             <v-icon> mdi-delete </v-icon>
           </v-btn>
 
-          <v-btn
-            v-if="item.request_status == 'cancle'"
-            color="red"
-            fab
-            x-small
-            dark
-            @click="deleteItem(item.id)"
-          >
+          <v-btn v-if="item.request_status == 'cancle'" color="red" fab x-small dark @click="deleteItem(item.id)">
             <v-icon> mdi-delete </v-icon>
           </v-btn>
         </template>
       </v-data-table>
     </v-card>
 
-    <dialogImage
-      :dialog="dialogImg"
-      :imgUrl="imgUrl"
-      @cancleItem="dialogImg = false"
-    />
+    <dialogImage :dialog="dialogImg" :imgUrl="imgUrl" @cancleItem="dialogImg = false" />
   </div>
 </template>
 
@@ -164,9 +127,7 @@ export default {
       id: "",
       formTitle: "",
       action: "",
-      user_group_permission: this.$auth.$storage.getLocalStorage(
-        "userData-user_group_permission"
-      ),
+      user_group_permission: this.$auth.$storage.getLocalStorage("userData-user_group_permission"),
 
       search: "",
       headers: [

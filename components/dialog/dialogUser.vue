@@ -2,20 +2,11 @@
   <v-container>
     <v-dialog v-model="dialogDeleteComponent" max-width="50%">
       <v-card>
-        <v-form
-          autocomplete="on"
-          ref="form"
-          @submit.prevent="onAction(formData.id)"
-        >
+        <v-form autocomplete="on" ref="form" @submit.prevent="onAction(formData.id)">
           <v-toolbar color="primary" dark flat>
             {{ formTitle }}
           </v-toolbar>
-          <v-progress-linear
-            v-if="formDataLoading"
-            indeterminate
-            color="yellow darken-2"
-          >
-          </v-progress-linear>
+          <v-progress-linear v-if="formDataLoading" indeterminate color="yellow darken-2"> </v-progress-linear>
 
           <v-card-text>
             <v-container>
@@ -171,17 +162,31 @@
               </v-row>
 
               <v-row>
-                <v-col cols="6">
+                <v-col cols="4">
                   <v-autocomplete
-                    :readonly="user_group_permission == 2 ? true : false"
+                    v-model="formData.branch_team_id"
+                    :items="branch_teams"
+                    no-data-text="ไม่มีข้อมูล"
+                    item-text="branch_team_name"
+                    item-value="id"
+                    label="ทีมสาขา"
+                    outlined
+                    dense
+                    hide-details
+                    :rules="rule"
+                    @change="changeBranch_teams"
+                  >
+                  </v-autocomplete>
+                </v-col>
+
+                <v-col cols="4">
+                  <v-autocomplete
                     v-model="formData.branch_id"
-                    id="formData.branch_id"
-                    name="formData.branch_id"
                     :items="branches"
                     no-data-text="ไม่มีข้อมูล"
                     item-text="branch_name"
                     item-value="id"
-                    label="สาขา"
+                    label="สาขาย่อย"
                     outlined
                     dense
                     hide-details
@@ -192,11 +197,9 @@
                   </v-autocomplete>
                 </v-col>
 
-                <v-col cols="6">
+                <v-col cols="4">
                   <v-autocomplete
                     v-model="formData.user_team_id"
-                    id="formData.user_team_id"
-                    name="formData.user_team_id"
                     :items="user_teams"
                     no-data-text="ไม่มีข้อมูล"
                     item-text="team_name"
@@ -211,24 +214,14 @@
                 </v-col>
               </v-row>
 
-              <v-row>
-                <v-col
-                  xs="12"
-                  sm="12"
-                  md="12"
-                  xl="12"
-                  class="text-center"
-                  v-if="user_group_permission == -1"
-                >
+              <v-row v-if="user_group_permission == -1">
+                <v-col xs="12" sm="12" md="12" xl="12" class="text-center">
                   <v-btn color="green" dark @click="add_row()">
                     <span> ตำแหน่ง/สาขาย่อย <v-icon>mdi-plus</v-icon> </span>
                   </v-btn>
                 </v-col>
                 <v-col xs="12" sm="12" md="12" xl="12">
-                  <v-row
-                    v-for="(user_sub_group, keys) in formData.user_sub_groups"
-                    :key="keys"
-                  >
+                  <v-row v-for="(user_sub_group, keys) in formData.user_sub_groups" :key="keys">
                     <v-col xs="12" sm="12" md="6" lg="6" xl="4">
                       <v-autocomplete
                         v-model="user_sub_group.user_group_id"
@@ -258,20 +251,11 @@
                         dense
                         no-data-text="ไม่มีข้อมูล"
                         hide-details
-                        @change="
-                          changeUser_teams_sub(user_sub_group.branch_id, keys)
-                        "
+                        @change="changeUser_teams_sub(user_sub_group.branch_id, keys)"
                         :rules="rule"
                       ></v-autocomplete>
                     </v-col>
-                    <v-col
-                      xs="12"
-                      sm="12"
-                      md="6"
-                      lg="6"
-                      xl="4"
-                      v-if="user_sub_group.user_group_id == 3"
-                    >
+                    <v-col xs="12" sm="12" md="6" lg="6" xl="4" v-if="user_sub_group.user_group_id == 3">
                       <v-autocomplete
                         v-model="user_sub_group.user_team_id"
                         id="user_sub_group.user_team_id"
@@ -305,12 +289,7 @@
               </v-row>
 
               <br />
-              <v-radio-group
-                v-model="formData.user_active"
-                id="formData.user_active"
-                name="formData.user_active"
-                row
-              >
+              <v-radio-group v-model="formData.user_active" id="formData.user_active" name="formData.user_active" row>
                 <template>
                   <div class="mr-1">อนุญาติให้เข้าใช้งานระบบ:</div>
                 </template>
@@ -323,22 +302,13 @@
                   accept="image/jpeg,image/png,image/jpg"
                   show-size
                   :label="
-                    currentFile == null
-                      ? 'เลือกรูปภาพ'
-                      : imagePreviewURL == null
-                      ? 'เลือกรูปภาพ'
-                      : 'เลือกรูปใหม่'
+                    currentFile == null ? 'เลือกรูปภาพ' : imagePreviewURL == null ? 'เลือกรูปภาพ' : 'เลือกรูปใหม่'
                   "
                   @change="selectFile"
                 ></v-file-input>
                 <v-img
                   contain
-                  v-if="
-                    currentFile != null ||
-                    imagePreviewURL != null ||
-                    currentFile != '' ||
-                    imagePreviewURL != ''
-                  "
+                  v-if="currentFile != null || imagePreviewURL != null || currentFile != '' || imagePreviewURL != ''"
                   height="250px"
                   width="250px"
                   :src="imagePreviewURL"
@@ -348,16 +318,8 @@
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="red darken-1" text @click="$emit('cancleItem')"
-              >ยกเลิก</v-btn
-            >
-            <v-btn
-              type="submit"
-              color="success darken-1"
-              text
-              :loading="btnloading"
-              >บันทึก</v-btn
-            >
+            <v-btn color="red darken-1" text @click="$emit('cancleItem')">ยกเลิก</v-btn>
+            <v-btn type="submit" color="success darken-1" text :loading="btnloading">บันทึก</v-btn>
           </v-card-actions>
         </v-form>
       </v-card>
@@ -370,6 +332,7 @@ import * as apiUsers from "@/Api/apiUsers";
 import * as apiUser_groups from "@/Api/apiUser_groups";
 import * as apiUser_teams from "@/Api/apiUser_teams";
 import * as apiBranches from "@/Api/apiBranches";
+import * as apiBranch_teams from "@/Api/apiBranch_teams";
 import * as customAlart from "@/customJS/customAlart";
 
 export default {
@@ -382,7 +345,9 @@ export default {
       formData: {
         user_sub_groups: [],
       },
+      branch_teams: [],
       branches: [],
+      branche_masters: [],
       user_groups: [],
       user_teams_all: [],
       user_teams: [],
@@ -392,16 +357,19 @@ export default {
       currentFile: null,
       imagePreviewURL: null,
       team_show: true,
-      user_group_permission: this.$auth.$storage.getLocalStorage(
-        "userData-user_group_permission"
-      ),
+      user_group_permission: this.$auth.$storage.getLocalStorage("userData-user_group_permission"),
       user_id: this.$auth.$storage.getLocalStorage("userData-id"),
 
       branch_id: this.$auth.$storage.getLocalStorage("userData-branch_id"),
       clickUser_teams_check: 0,
     };
   },
-  mounted() {},
+  mounted() {
+    this.getBranch_teams();
+    this.getBranches();
+    this.getUser_group();
+    this.getUser_teams();
+  },
   methods: {
     selectFile(payload) {
       // console.log(payload);
@@ -418,16 +386,18 @@ export default {
     },
     async getUser_teams() {
       const response = await apiUser_teams.select();
-      // this.user_teams = response.data;
       this.user_teams_all = response.data;
-      // console.log(response.data);
       this.loading = false;
+    },
+    changeBranch_teams() {
+      this.branches = this.branche_masters.filter((item) => {
+        return item.branch_team_id == this.formData.branch_team_id;
+      });
     },
     async changeUser_teams(branch_id) {
       let new_teams = [];
       for (let index = 0; index < this.user_teams_all.length; index++) {
-        if (this.user_teams_all[index].branch_id == branch_id)
-          new_teams.push(this.user_teams_all[index]);
+        if (this.user_teams_all[index].branch_id == branch_id) new_teams.push(this.user_teams_all[index]);
       }
       this.user_teams = new_teams;
       if (this.clickUser_teams_check == 1) {
@@ -435,7 +405,6 @@ export default {
       }
       // console.log(branch_id);
     },
-
     clickUser_teams() {
       this.clickUser_teams_check = 1;
     },
@@ -443,11 +412,9 @@ export default {
     async changeUser_teams_sub(branch_id, key) {
       let new_teams = [];
       for (let index = 0; index < this.user_teams_all.length; index++) {
-        if (this.user_teams_all[index].branch_id == branch_id)
-          new_teams.push(this.user_teams_all[index]);
+        if (this.user_teams_all[index].branch_id == branch_id) new_teams.push(this.user_teams_all[index]);
       }
       this.formData.user_sub_groups[key].user_teams = new_teams;
-      // console.log(branch_id);
     },
     async getUser_group() {
       const response = await apiUser_groups.select();
@@ -470,8 +437,17 @@ export default {
     async getBranches() {
       const response = await apiBranches.select();
       this.branches = response.data;
+      this.branche_masters = response.data;
       this.loading = false;
       // console.log(response.data);
+    },
+    async getBranch_teams() {
+      const response = await apiBranch_teams.index();
+      this.branch_teams = response.data.filter((item) => {
+        return item.branch_team_active == "1";
+      });
+      // this.loading = false;
+      console.log(response.data);
     },
     async onAction(id) {
       if (this.$refs.form.validate()) {
@@ -534,9 +510,6 @@ export default {
     async dialog() {
       this.dialogDeleteComponent = this.dialog;
       if (this.dialogDeleteComponent) {
-        this.getBranches();
-        this.getUser_group();
-        this.getUser_teams();
         this.imagePreviewURL = null;
         if (this.action == "add") {
           this.$nextTick(async () => {
@@ -574,8 +547,7 @@ export default {
             this.$nextTick(async () => {
               self.formData = await response.data;
               if (response.data.user_image != undefined) {
-                this.imagePreviewURL =
-                  this.serverUrl + "/" + response.data.user_image;
+                this.imagePreviewURL = this.serverUrl + "/" + response.data.user_image;
               }
             });
           });

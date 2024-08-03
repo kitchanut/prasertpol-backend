@@ -1,16 +1,7 @@
 <template>
   <v-card>
-    <v-form
-      autocomplete="true"
-      ref="form"
-      @submit.prevent="onAction(formData.id)"
-    >
-      <v-progress-linear
-        v-if="formDataLoading"
-        indeterminate
-        color="yellow darken-2"
-      >
-      </v-progress-linear>
+    <v-form autocomplete="true" ref="form" @submit.prevent="onAction(formData.id)">
+      <v-progress-linear v-if="formDataLoading" indeterminate color="yellow darken-2"> </v-progress-linear>
 
       <v-card-title primary-title>แจ้งแบงค์อนุมัติ</v-card-title>
 
@@ -139,7 +130,7 @@
 
         <v-text-field
           class="mt-3"
-          label="ราคาปิด*"
+          label="ราคาขาย (ปิด)*"
           type="number"
           v-model="formData.car_price"
           outlined
@@ -172,23 +163,28 @@
           :rules="rule"
           @change="selectIDCard"
         ></v-file-input>
+
+        <v-file-input
+          class="mt-3"
+          label="ใบ PO*"
+          v-model="po"
+          prepend-icon=""
+          append-icon="mdi-image"
+          show-size
+          outlined
+          dense
+          hide-details=""
+          :rules="rule"
+          @change="selectPO"
+        ></v-file-input>
       </v-card-text>
       <v-card-actions>
         <v-row>
           <v-col>
-            <v-btn dark block color="warning" @click="closeWindow">
-              ยกเลิก
-            </v-btn>
+            <v-btn dark block color="warning" @click="closeWindow"> ยกเลิก </v-btn>
           </v-col>
           <v-col>
-            <v-btn
-              block
-              type="submit"
-              color="success darken-1"
-              :loading="loading"
-            >
-              บันทึก
-            </v-btn>
+            <v-btn block type="submit" color="success darken-1" :loading="loading"> บันทึก </v-btn>
           </v-col>
         </v-row>
       </v-card-actions>
@@ -244,8 +240,7 @@ export default {
           " (" +
           response.data.data.user_code +
           ")";
-        this.formData.branch_name =
-          response.data.data.branch.branch_team.branch_team_name;
+        this.formData.branch_name = response.data.data.branch.branch_team.branch_team_name;
       }
 
       // console.log(response.data);
@@ -262,6 +257,7 @@ export default {
         let formData = new FormData();
         formData.append("formData", JSON.stringify(this.formData));
         formData.append("id_card", this.id_card);
+        formData.append("po", this.po);
 
         const response = await apiRequestBankApprove.store(formData);
 
@@ -440,6 +436,16 @@ export default {
                     },
                     {
                       type: "button",
+                      style: "secondary",
+                      height: "sm",
+                      action: {
+                        type: "uri",
+                        label: "ใบ PO",
+                        uri: this.serverUrl + response.data.po,
+                      },
+                    },
+                    {
+                      type: "button",
                       style: "link",
                       height: "sm",
                       action: {
@@ -490,6 +496,9 @@ export default {
     selectIDCard(payload) {
       this.id_card = payload;
     },
+    selectPO(payload) {
+      this.po = payload;
+    },
     initializeLiff(myLiffId) {
       liff.init({ liffId: myLiffId }, () => {
         if (liff.isLoggedIn()) {
@@ -502,18 +511,9 @@ export default {
     runApp() {
       liff.getProfile().then(async (profile) => {
         // console.log(profile);
-        this.$auth.$storage.setLocalStorage(
-          "userData-lineUUID",
-          profile.userId
-        );
-        this.$auth.$storage.setLocalStorage(
-          "userData-linepictureUrl",
-          profile.pictureUrl
-        );
-        this.$auth.$storage.setLocalStorage(
-          "userData-linedisplayName",
-          profile.displayName
-        );
+        this.$auth.$storage.setLocalStorage("userData-lineUUID", profile.userId);
+        this.$auth.$storage.setLocalStorage("userData-linepictureUrl", profile.pictureUrl);
+        this.$auth.$storage.setLocalStorage("userData-linedisplayName", profile.displayName);
 
         this.formData.lineUUID = profile.userId;
         this.formData.displayName = profile.displayName;
@@ -531,5 +531,4 @@ export default {
 };
 </script>
 
-<style>
-</style>
+<style></style>

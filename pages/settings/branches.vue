@@ -3,12 +3,7 @@
     <v-card>
       <v-card-title>
         <template>
-          <v-btn
-            v-if="user_group_permission == -1"
-            color="primary"
-            dark
-            @click="AddItem()"
-          >
+          <v-btn v-if="user_group_permission == -1" color="primary" dark @click="AddItem()">
             <v-icon left>mdi-plus</v-icon>
             เพิ่มรายการใหม่
           </v-btn>
@@ -30,8 +25,8 @@
         <v-col cols="3">
           <v-text-field
             v-model="search"
-id="search"
-name="search"
+            id="search"
+            name="search"
             append-icon="mdi-magnify"
             label="ค้นหา"
             single-line
@@ -52,11 +47,7 @@ name="search"
       >
         <template v-slot:[`item.branch_code_color`]="{ item }">
           <span
-            :style="[
-              { 'background-color': item.branch_code_color },
-              { padding: '2px' },
-              { 'border-radius': '3px' },
-            ]"
+            :style="[{ 'background-color': item.branch_code_color }, { padding: '2px' }, { 'border-radius': '3px' }]"
           >
             {{ item.branch_code_color }}
           </span>
@@ -84,17 +75,12 @@ name="search"
         <!-- <template v-slot:item.branch_active="{ item }">
          -->
         <template v-slot:[`item.branch_active`]="{ item }">
-          <v-btn v-if="item.branch_active == '1'" x-small color="success" dark
-            >เปิดใช้งาน</v-btn
-          >
+          <v-btn v-if="item.branch_active == '1'" x-small color="success" dark>เปิดใช้งาน</v-btn>
           <v-btn v-else x-small color="red" dark>ปิดการใช้งาน</v-btn>
         </template>
 
         <!-- <template v-slot:item.actions="{ item }"> -->
-        <template
-          v-slot:[`item.actions`]="{ item }"
-          v-if="user_group_permission == -1"
-        >
+        <template v-slot:[`item.actions`]="{ item }" v-if="user_group_permission == -1">
           <v-btn color="primary" fab x-small dark @click="editItem(item.id)">
             <v-icon> mdi-pencil </v-icon>
           </v-btn>
@@ -123,11 +109,7 @@ name="search"
         @error="addError"
       />
 
-      <dialogImage
-        :dialog="dialogImg"
-        :imgUrl="imgUrl"
-        @cancleItem="dialogImg = false"
-      />
+      <dialogImage :dialog="dialogImg" :imgUrl="imgUrl" @cancleItem="dialogImg = false" />
     </v-card>
   </div>
 </template>
@@ -155,9 +137,7 @@ export default {
       dialogImg: false,
       // user_id: this.$auth.$storage.getLocalStorage("userData-id"),
       // branch_id: this.$auth.$storage.getLocalStorage("userData-branch_id"),
-      user_group_permission: this.$auth.$storage.getLocalStorage(
-        "userData-user_group_permission"
-      ),
+      user_group_permission: this.$auth.$storage.getLocalStorage("userData-user_group_permission"),
       id: "",
       formTitle: "Add",
       action: "add",

@@ -11,39 +11,33 @@
     <v-card>
       <v-card-title>
         <v-row>
-          <v-col cols="2" class="mt-3">
-            <v-btn class="ml-1" color="blue-grey" dark @click="AddIncome()">
+          <!-- <v-col cols="2" class="d-flex align-center">
+            <v-btn color="blue-grey" dark @click="AddIncome()" style="height: 40px">
               <v-icon left>mdi-plus</v-icon>
               เพิ่มรายรับ
             </v-btn>
-          </v-col>
-
-          <!-- <v-col
-          cols="10"
-          v-if="user_group_permission == -1 || user_group_permission == 11"
-        > -->
-
-          <v-col cols="10">
-            <dateSelect @tineSelect="selectTimeStart" />
+          </v-col> -->
+          <v-col cols="8" class="d-flex align-center">
+            <dateSelect2 @timeSelect="selectTimeStart" />
           </v-col>
         </v-row>
+
         <v-spacer></v-spacer>
-        <v-row>
-          <v-spacer></v-spacer>
 
-          <v-col cols="3">
-            <v-text-field
-              v-model="search"
-              id="search"
-              name="search"
-              append-icon="mdi-magnify"
-              label="ค้นหา"
-              single-line
-              hide-details
-            >
-            </v-text-field>
-          </v-col>
-        </v-row>
+        <v-col cols="3">
+          <v-text-field
+            v-model="search"
+            id="search"
+            name="search"
+            append-icon="mdi-magnify"
+            label="ค้นหา"
+            outlined
+            dense
+            single-line
+            hide-details
+          >
+          </v-text-field>
+        </v-col>
       </v-card-title>
 
       <v-data-table
@@ -54,6 +48,7 @@
         :loading="loading"
         no-data-text="ยังไม่มีการเพิ่มข้อมูล"
         loading-text="กำลังโหลดข้อมูลกรุณารอสักครู่"
+        dense
       >
         <template v-slot:[`item.file`]="{ item }">
           <div v-if="item.file == null">
@@ -97,33 +92,52 @@
         </template>
 
         <template v-slot:[`item.status_check`]="{ item }">
-          <span style="color: green" v-if="item.status_check == 1"
-            >เช็คแล้ว</span
-          >
+          <span style="color: green" v-if="item.status_check == 1">เช็คแล้ว</span>
           <span style="color: red" v-else>ยังไม่เช็ค</span>
         </template>
 
         <template v-slot:[`item.actions`]="{ item }">
-          <v-menu offset-y>
+          <v-btn
+            v-if="item.main_type == 'ใบสำคัญรับเงิน'"
+            color="primary"
+            fab
+            x-small
+            dark
+            @click="Financial(Number(item.no), item.car.car_no, item.working_id, 'edit')"
+          >
+            <v-icon> mdi-pencil </v-icon>
+          </v-btn>
+          <v-btn color="error" fab x-small dark @click="deleteItem(item.id)">
+            <v-icon> mdi-delete </v-icon>
+          </v-btn>
+
+          <!-- <v-menu offset-y>
             <template v-slot:activator="{ on, attrs }">
               <v-btn icon v-bind="attrs" v-on="on">
                 <v-icon>mdi-dots-horizontal</v-icon>
               </v-btn>
             </template>
             <v-list>
-              <!-- <v-list-item
+              <v-list-item
                 v-if="
-                  user_group_permission == 11 || user_group_permission == -1
+                  item.detail == 'เงินจอง' ||
+                  item.detail == 'เงินดาวน์' ||
+                  item.detail == 'ซื้อเงินสด' ||
+                  item.detail == 'ค่างวดล่วงหน้า' ||
+                  item.detail == 'สมาร์ทชัว' ||
+                  item.detail == 'ประกันอื่นๆ' ||
+                  item.detail == 'ใบสำคัญรับเงิน (อื่นๆ)' ||
+                  item.detail == 'ใบสำคัญรับเงิน'
                 "
-                @click="comfirm(item.id)"
+                @click="Financial(Number(item.no), item.car.car_no, item.working_id, 'edit')"
               >
-                <v-list-item-title>ตรวจผ่าน</v-list-item-title>
-              </v-list-item> -->
+                <v-list-item-title>ใบสำคัญรับเงิน</v-list-item-title>
+              </v-list-item>
               <v-list-item @click="deleteItem(item.id)">
                 <v-list-item-title>ลบ</v-list-item-title>
               </v-list-item>
             </v-list>
-          </v-menu>
+          </v-menu> -->
         </template>
       </v-data-table>
 
@@ -136,28 +150,40 @@
         @success="addSuccess"
         @error="addError"
       />
-      <dialogImage
-        :dialog="dialogImg"
-        :imgUrl="imgUrl"
-        @cancleItem="dialogImg = false"
+
+      <dialogFinancial
+        :dialogFinancial="dialogFinancial"
+        :financial_id="financial_id"
+        :idWork="idWork"
+        :car_no="car_no"
+        :actionFinancial="actionFinancial"
+        @cancleItem="dialogFinancial = false"
+        @success="
+          dialogFinancial = false;
+          getData();
+        "
+        @error="dialogFinancial = false"
       />
+
+      <dialogImage :dialog="dialogImg" :imgUrl="imgUrl" @cancleItem="dialogImg = false" />
     </v-card>
   </div>
 </template>
 
 <script>
+import moment from "moment";
 import * as apiBranches from "@/Api/apiBranches";
 import * as apiAdd_income from "@/Api/apiAdd_income";
 
 import * as customAlart from "@/customJS/customAlart";
 import dialogAddIncome from "@/components/dialog/dialogAdd_income";
 import dialogImage from "@/components/dialog/dialogImage";
-import dateSelect from "@/components/DateSelect/dateSelect";
+import dateSelect2 from "@/components/DateSelect/dateSelect2";
 
 export default {
   components: {
     dialogAddIncome,
-    dateSelect,
+    dateSelect2,
     dialogImage,
   },
   data() {
@@ -165,43 +191,31 @@ export default {
       serverUrl: process.env.serverUrl,
       loading: true,
       search: "",
+
       user_id: this.$auth.$storage.getLocalStorage("userData-id"),
       branch_id: this.$auth.$storage.getLocalStorage("userData-branch_id"),
-      user_group_permission: this.$auth.$storage.getLocalStorage(
-        "userData-user_group_permission"
-      ),
+      user_group_permission: this.$auth.$storage.getLocalStorage("userData-user_group_permission"),
+
       idDialogAddIncome: "",
       formTitleDialogAddIncome: "Add",
       actionDialogAddIncome: "add",
       dialogDialogAddIncome: false,
 
       headers: [
-        {
-          text: "วันที่",
-          value: "date",
-        },
-        {
-          text: "รหัสงาน",
-          value: "working_id",
-        },
-        { text: "ลำดับรถ", value: "car.car_no" },
-        { text: "เลขธุรกรรม", value: "no" },
-        {
-          text: "ร้านค้า/ลูกค้า",
-          value: "shop",
-        },
-        {
-          text: "รายการ",
-          value: "detail",
-        },
-
+        { text: "วันที่", value: "date", width: "8%" },
+        { text: "ข้อมูลจาก", value: "main_type", width: "10%" },
+        { text: "รหัสงาน", value: "working_id", width: "8%" },
+        { text: "ลำดับรถ", value: "car.car_no", width: "12%" },
+        { text: "เลขธุรกรรม", value: "no", width: "8%" },
+        { text: "ร้านค้า/ลูกค้า", value: "shop", width: "20%" },
+        { text: "รายการ", value: "detail" },
         // { text: "ประเภท", value: "type" },
         // { text: "บิล", value: "type_bill" },
-        { text: "จำนวนเงิน", value: "money" },
-        { text: "สาขา", value: "branch.branch_name" },
+        { text: "จำนวนเงิน", value: "money", width: "10%", align: "end" },
+        // { text: "สาขา", value: "branch.branch_name" },
         // { text: "สถานะ", value: "status_check" },
-        { text: "ไฟล์", value: "file" },
-        { text: "จัดการ", value: "actions", sortable: false },
+        // { text: "ไฟล์", value: "file" },
+        { text: "จัดการ", value: "actions", sortable: false, width: "8%" },
       ],
       data: [],
       years: [],
@@ -210,10 +224,19 @@ export default {
       money_year: null,
       imgUrl: "",
       dialogImg: false,
+
+      timeStart: moment().startOf("day").format("YYYY-MM-DD HH:mm"),
+      timeEnd: moment().endOf("day").format("YYYY-MM-DD HH:mm"),
+
+      dialogFinancial: false,
+      financial_id: 0,
+      idWork: 0,
+      car_no: "",
+      actionFinancial: "",
     };
   },
   mounted() {
-    this.getBranches();
+    this.getData();
   },
   computed: {
     tHeader() {
@@ -223,34 +246,29 @@ export default {
     },
   },
   methods: {
-    async comfirm(id) {
-      var isConfirmed = customAlart.ConfirmedStatus();
-      await isConfirmed.then((result) => {
-        if (result == true) {
-          const respone = apiAdd_income.comfirm_income(id);
-          respone.then(async (res) => {
-            // console.log(res);
-            if (res.status == 200) {
-              customAlart.TopSuccess();
-            } else {
-              customAlart.TopError();
-            }
-
-            this.$nextTick(() => {
-              this.getData();
-            });
-          });
-        }
-      });
-    },
     async selectTimeStart(time) {
-      this.branch_id = time.branch_id;
       this.timeStart = time.timeStart;
       this.timeEnd = time.timeEnd;
-
       await this.getData();
     },
-
+    async getData() {
+      this.loading = true;
+      this.data = [];
+      const data = new FormData();
+      // data.append("branch_id", this.branch_id);
+      data.append("timeStart", this.timeStart);
+      data.append("timeEnd", this.timeEnd);
+      const response = await apiAdd_income.index_where(data);
+      console.log(response);
+      this.data = await response.data;
+      this.loading = false;
+    },
+    async editItem(item) {
+      this.formTitleDialogAddOutlay = "แก้ไข้";
+      this.dialogDialogAddIncome = true;
+      this.idDialogAddOutlay = "";
+      this.actionDialogAddOutlay = "Edit";
+    },
     async deleteItem(id) {
       var isConfirmed = customAlart.Confirmed();
       await isConfirmed.then((result) => {
@@ -272,6 +290,14 @@ export default {
       });
     },
 
+    async Financial(financial_id, car_no, working_id, actionFinancial) {
+      this.financial_id = financial_id;
+      this.car_no = car_no;
+      this.idWork = working_id;
+      this.actionFinancial = actionFinancial;
+      this.dialogFinancial = true;
+    },
+
     showImg(url) {
       this.dialogImg = true;
       this.imgUrl = url;
@@ -289,24 +315,6 @@ export default {
       this.loading = false;
       // console.log(response);
       // await this.getData();
-    },
-    async getData() {
-      this.loading = true;
-      this.data = [];
-      const data = new FormData();
-      data.append("branch_id", this.branch_id);
-      data.append("timeStart", this.timeStart);
-      data.append("timeEnd", this.timeEnd);
-      const response = await apiAdd_income.index_where(data);
-      console.log(response);
-      this.data = await response.data;
-      this.loading = false;
-    },
-    async editItem(item) {
-      this.formTitleDialogAddOutlay = "แก้ไข้";
-      this.dialogDialogAddIncome = true;
-      this.idDialogAddOutlay = "";
-      this.actionDialogAddOutlay = "Edit";
     },
 
     async addSuccess(value) {

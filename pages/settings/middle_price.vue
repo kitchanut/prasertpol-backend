@@ -49,12 +49,12 @@
         <v-col cols="3">
           <v-text-field
             v-model="search"
-id="search"
-name="search"
             append-icon="mdi-magnify"
             label="ค้นหา"
             single-line
             hide-details
+            outlined
+            dense
           >
           </v-text-field>
         </v-col>
@@ -68,6 +68,7 @@ name="search"
         :loading="loading"
         loading-text="กำลังโหลดข้อมูลกรุณารอสักครู่"
         no-data-text="ยังไม่มีการเพิ่มข้อมูล"
+        dense
       >
         <template v-slot:[`item.amount_down_start`]="{ item }">
           {{
@@ -93,13 +94,7 @@ name="search"
         </template>
 
         <template v-slot:[`item.middle_price_active`]="{ item }">
-          <v-btn
-            v-if="item.middle_price_active == '1'"
-            x-small
-            color="success"
-            dark
-            >เปิดใช้งาน</v-btn
-          >
+          <v-btn v-if="item.middle_price_active == '1'" x-small color="success" dark>เปิดใช้งาน</v-btn>
           <v-btn v-else x-small color="red" dark>ปิดการใช้งาน</v-btn>
         </template>
 
@@ -146,16 +141,13 @@ export default {
       id: "",
       formTitle: "Add",
       action: "add",
-      user_group_permission: this.$auth.$storage.getLocalStorage(
-        "userData-user_group_permission"
-      ),
+      user_group_permission: this.$auth.$storage.getLocalStorage("userData-user_group_permission"),
       headers: [
-        { text: "ลำดับ", value: "no", width: "7%", align: "center" },
-        { text: "รุ่น", value: "car_serie.car_series_name", width: "15%" },
+        { text: "ID", value: "id", width: "7%", align: "center" },
+        { text: "รุ่น", value: "car_serie.car_series_name", width: "20%" },
         {
           text: "รุ่นย่อย",
           value: "car_serie_sub.car_serie_sub_name",
-          width: "10%",
         },
         {
           text: "เกียร์",
@@ -169,7 +161,7 @@ export default {
           width: "10%",
         },
         { text: "สถานะ", value: "middle_price_active", width: "5%" },
-        { text: "จัดการ", value: "actions", sortable: false, width: "10%" },
+        { text: "จัดการ", value: "actions", sortable: false, width: "5%" },
       ],
       carSerie: [],
       carSerieSub: [],
@@ -213,10 +205,7 @@ export default {
         this.dataMiddle = response.data;
         this.getfirst = false;
       } else {
-        if (
-          Number.isInteger(this.car_serie_id) == true &&
-          Number.isInteger(this.car_serie_sub_id) == true
-        ) {
+        if (Number.isInteger(this.car_serie_id) == true && Number.isInteger(this.car_serie_sub_id) == true) {
           this.data = [];
           for (let index = 0; index < this.dataMiddle.length; index++) {
             if (

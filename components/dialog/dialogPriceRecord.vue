@@ -2,21 +2,12 @@
   <v-container>
     <v-dialog v-model="dialogDeleteComponent" width="550px">
       <v-card>
-        <v-form
-          autocomplete="true"
-          ref="form"
-          @submit.prevent="onAction(formData.id)"
-        >
+        <v-form autocomplete="true" ref="form" @submit.prevent="onAction(formData.id)">
           <v-toolbar color="primary" dark flat>
             {{ formTitle }}
           </v-toolbar>
 
-          <v-progress-linear
-            v-if="formDataLoading"
-            indeterminate
-            color="yellow darken-2"
-          >
-          </v-progress-linear>
+          <v-progress-linear v-if="formDataLoading" indeterminate color="yellow darken-2"> </v-progress-linear>
 
           <!-- {{ formData }} -->
 
@@ -134,10 +125,7 @@
                 :rules="rule"
               >
                 <template v-slot:append-item>
-                  <selectAddCarSerieSub
-                    @success="addSuccess"
-                    @error="addError"
-                  />
+                  <selectAddCarSerieSub @success="addSuccess" @error="addError" />
                 </template>
               </v-autocomplete>
 
@@ -169,13 +157,7 @@
                 :rules="rule"
               ></v-autocomplete>
 
-              <v-radio-group
-                class="mt-2"
-                v-model="formData.car_gear"
-                row
-                hide-details=""
-                :rules="rule"
-              >
+              <v-radio-group class="mt-2" v-model="formData.car_gear" row hide-details="" :rules="rule">
                 <template>
                   <div class="mr-1">เกียร์รถ:</div>
                 </template>
@@ -227,6 +209,7 @@
                 class="mt-2"
                 autocomplete="true"
                 label="ราคาจบ"
+                type="number"
                 append-icon=""
                 v-model="formData.price"
                 outlined
@@ -244,11 +227,7 @@
                   accept="image/*"
                   show-size
                   :label="
-                    currentFile == null
-                      ? 'เลือกรูปภาพ'
-                      : imagePreviewURL == null
-                      ? 'เลือกรูปภาพ'
-                      : 'เลือกรูปใหม่'
+                    currentFile == null ? 'เลือกรูปภาพ' : imagePreviewURL == null ? 'เลือกรูปภาพ' : 'เลือกรูปใหม่'
                   "
                   @change="selectFile"
                 ></v-file-input>
@@ -263,24 +242,16 @@
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="red darken-1" text @click="$emit('cancleItem')"
-              >ยกเลิก</v-btn
-            >
-            <v-btn
-              type="submit"
-              color="success darken-1"
-              text
-              :loading="btnloading"
-              >บันทึก
-            </v-btn>
+            <v-btn color="red darken-1" text @click="$emit('cancleItem')">ยกเลิก</v-btn>
+            <v-btn type="submit" color="success darken-1" text :loading="btnloading">บันทึก </v-btn>
           </v-card-actions>
         </v-form>
       </v-card>
     </v-dialog>
   </v-container>
 </template>
-  
-  <script>
+
+<script>
 import * as apiPriceRecord from "@/Api/apiPriceRecord";
 import * as apiCar_types from "@/Api/apiCar_types";
 import * as apiCar_models from "@/Api/apiCar_models";
@@ -331,10 +302,7 @@ export default {
     async getCarseries() {
       this.carSerie = [];
       if (Number.isInteger(this.formData.car_models_id) == true) {
-        const response = await apiCar_series.selectDropdown(
-          this.formData.car_types_id,
-          this.formData.car_models_id
-        );
+        const response = await apiCar_series.selectDropdown(this.formData.car_types_id, this.formData.car_models_id);
         this.carSerie = response.data;
       }
       // this.loading = false;
@@ -343,9 +311,7 @@ export default {
     async getCarSerieSub() {
       this.carSerieSub = [];
       if (Number.isInteger(this.formData.car_serie_id) == true) {
-        const response = await apiCar_serie_sub.select(
-          this.formData.car_serie_id
-        );
+        const response = await apiCar_serie_sub.select(this.formData.car_serie_id);
         this.carSerieSub = response.data;
       }
     },
@@ -491,6 +457,5 @@ export default {
   },
 };
 </script>
-  
-  <style></style>
-  
+
+<style></style>

@@ -11,29 +11,6 @@
       >
         <v-icon>mdi-cog</v-icon>
       </v-btn>
-
-      <!-- <v-btn
-        :color="toggleView == 'small' ? 'lime' : ''"
-        :dark="toggleView == 'small' ? true : false"
-        v-blur
-        class="my-1"
-        style="min-width: 0px; padding: 0 8px"
-        @click="toggleView = 'small'"
-      >
-        <v-icon>mdi-view-grid</v-icon>
-      </v-btn>
-
-      <v-btn
-        :color="toggleView == 'large' ? 'lime' : ''"
-        :dark="toggleView == 'large' ? true : false"
-        v-blur
-        class="ml-1 my-1"
-        style="min-width: 0px; padding: 0 8px"
-        @click="toggleView = 'large'"
-      >
-        <v-icon>mdi-apps</v-icon>
-      </v-btn> -->
-
       <v-btn
         :color="disableSort == false ? 'warning' : ''"
         :dark="disableSort == false ? true : false"
@@ -53,54 +30,53 @@
         <v-icon>mdi-printer</v-icon>
       </v-btn>
 
-      <dateSelectMonthAll @timeSelect="selectTimeStart" />
-      <!-- <v-col>
+      <v-col cols="2" class="my-1">
         <v-select
           v-model="work_status"
           :items="[
             {
-              value: 0,
-              text: 'ไม่รวมงานที่ปิดแล้ว',
+              text: 'งานปัจจุบัน',
+              value: -1,
             },
             {
+              text: 'งานที่ปิดแล้ว',
+              value: 'close',
+            },
+            {
+              text: 'งานทั้งหมด',
               value: 'all',
-              text: 'ทั้งหมด',
+            },
+            {
+              text: 'ค้นหาบางรายการ',
+              value: 'search',
             },
           ]"
-          item-value="value"
           item-text="text"
-          outlined
+          item-value="value"
           dense
-          hide-details=""
-          @change="initialize()"
-        >
-        </v-select>
-      </v-col> -->
-    </v-row>
-
-    <!-- <v-row v-if="toggleView == 'large'" class="mt-0">
-      <v-col>
-        <v-select v-model="selectedHeaders" :items="headers" multiple outlined return-object hide-details="">
-          <template v-slot:prepend-item>
-            <v-list-item ripple @mousedown.prevent @click="toggle">
-              <v-list-item-action>
-                <v-icon :color="selectedHeaders.length > 0 ? 'blue darken-2' : ''">
-                  {{ icon }}
-                </v-icon>
-              </v-list-item-action>
-              <v-list-item-content>
-                <v-list-item-title> Select All </v-list-item-title>
-              </v-list-item-content>
-            </v-list-item>
-            <v-divider class="mt-2"></v-divider>
-          </template>
-        </v-select>
+          outlined
+          hide-details
+        ></v-select>
       </v-col>
-    </v-row> -->
 
-    <!-- <div class="wrapper1" style="overflow-x: scroll; overflow-y: hidden">
-      <div :style="'width:' + tableWidth + 'px; height: 20px;'"></div>
-    </div> -->
+      <v-col cols="3" v-if="work_status == 'search'">
+        <v-text-field
+          v-model="searchInServer"
+          label="ลำดับรถ ชื่อลูกค้า ทะเบียนรถ"
+          outlined
+          single-line
+          hide-details=""
+          dense
+        ></v-text-field>
+      </v-col>
+
+      <v-col cols="7" v-if="work_status == 'close' || work_status == 'all'">
+        <dateSelectMonthAll @timeSelect="selectTimeStart" />
+      </v-col>
+      <v-btn @click="initialize()" color="primary" class="mx-2 my-1" style="min-width: 0px; padding: 0 8px">
+        <v-icon>mdi-magnify</v-icon>
+      </v-btn>
+    </v-row>
     <div class="mt-3"></div>
     <v-card id="followTable" outlined>
       <v-data-table
@@ -120,23 +96,6 @@
         dense
         show-select
       >
-        <!-- <template v-slot:[`item.actions`]="{ item }">
-          <v-menu offset-y>
-            <template v-slot:activator="{ on, attrs }">
-              <v-btn icon v-bind="attrs" v-on="on">
-                <v-icon>mdi-dots-horizontal</v-icon>
-              </v-btn>
-            </template>
-            <v-list>
-              <v-list-item @click="Appointment(item.car_no, item.id)">
-                <v-list-item-title>{{
-                  item.work_status > 3 ? "ดูวันนัดทำสัญญากับแบงค์" : "วันนัดทำสัญญากับแบงค์"
-                }}</v-list-item-title>
-              </v-list-item>
-            </v-list>
-          </v-menu>
-        </template> -->
-
         <template v-for="(item, index) in selectedHeaders" v-slot:[`header.${item.value}`]="{ header }">
           <div style="display: inline-block; padding: 8px 0" :key="'text_' + index">
             {{ header.text }}
@@ -224,7 +183,9 @@
                   header.value == 'appointment_book_date' ||
                   header.value == 'appointment_transfer_date' ||
                   header.value == 'appointment_sentbook_date' ||
-                  header.value == 'appointment_money_date'
+                  header.value == 'appointment_money_date' ||
+                  header.value == 'car_tax_date' ||
+                  header.value == 'car_insurance'
                 "
               >
                 <v-list-item-group multiple v-model="activeFilters[header.value]" class="py-2">
@@ -341,6 +302,45 @@
           <span>W{{ item.id }}</span>
         </template>
 
+        <template v-slot:[`item.pedding`]="{ item }">
+          <v-menu offset-y>
+            <template v-slot:activator="{ on, attrs }">
+              <v-btn
+                :color="item.pedding == 'ปล่อยรถแล้ว' ? 'success' : item.pedding ? 'warning' : ''"
+                small
+                depressed
+                v-bind="attrs"
+                v-on="on"
+              >
+                {{ item.pedding ? item.pedding : "กรุณาเลือก" }}
+              </v-btn>
+            </template>
+            <v-list>
+              <v-list-item-group v-model="item.pedding" :color="item.pedding == 'ปล่อยรถแล้ว' ? 'success' : 'warning'">
+                <v-list-item
+                  v-for="(pedding, i) in pedding_main_items"
+                  :key="'main_' + i"
+                  style="min-height: 32px"
+                  :value="pedding"
+                  @click="updatePedding(item.id, pedding)"
+                >
+                  <v-list-item-title>{{ pedding }}</v-list-item-title>
+                </v-list-item>
+                <v-divider></v-divider>
+                <v-list-item
+                  v-for="(pedding, i) in pedding_items"
+                  :key="i"
+                  style="min-height: 32px; color: blue"
+                  :value="pedding"
+                  @click="updatePedding(item.id, pedding)"
+                >
+                  <v-list-item-title>{{ pedding }}</v-list-item-title>
+                </v-list-item>
+              </v-list-item-group>
+            </v-list>
+          </v-menu>
+        </template>
+
         <template v-slot:[`item.sale`]="{ item }">
           <a @click="editItem(item.id)" style="cursor: pointer">
             {{ item.sale }}
@@ -360,6 +360,27 @@
           </a>
         </template>
 
+        <!-- ยอดจัดตั้งต้น -->
+        <template v-slot:[`item.amount_price`]="{ item }">
+          <div v-if="item.amount_price != ' '">
+            {{ Number(item.amount_price).toLocaleString() }}
+          </div>
+        </template>
+
+        <!-- ดาวน์ตั้งต้น -->
+        <template v-slot:[`item.amount_down`]="{ item }">
+          <div v-if="item.amount_down != ' '">
+            {{ Number(item.amount_down).toLocaleString() }}
+          </div>
+        </template>
+
+        <!-- ขายตั้งต้น -->
+        <template v-slot:[`item.car_price_vat`]="{ item }">
+          <div v-if="item.car_price_vat != ' '">
+            {{ Number(item.car_price_vat).toLocaleString() }}
+          </div>
+        </template>
+
         <!-- วันจอง -->
         <template v-slot:[`item.booking_date`]="{ item }">
           <span
@@ -373,18 +394,18 @@
 
         <!-- เงินจอง -->
         <template v-slot:[`item.deposit`]="{ item }">
-          <a @click="Booking(item.car_no, item.id, item.car_id, item.customer_id, item.sale_id)">
+          <a
+            v-if="item.deposit != ' '"
+            @click="Booking(item.car_no, item.id, item.car_id, item.customer_id, item.sale_id)"
+          >
             {{ Number(item.deposit).toLocaleString() }}
           </a>
         </template>
 
-        <!-- เงินดาวน์ -->
-        <template v-slot:[`item.amount_slacken`]="{ item }">
-          <a
-            v-if="Number(item.amount_slacken) > 0"
-            @click="Booking(item.car_no, item.id, item.car_id, item.customer_id, item.sale_id)"
-          >
-            {{ Number(item.amount_slacken).toLocaleString() }}
+        <!-- เงินดาวน์+F -->
+        <template v-slot:[`item.down`]="{ item }">
+          <a v-if="item.down >= 0">
+            {{ Number(item.down).toLocaleString() }}
           </a>
         </template>
 
@@ -398,6 +419,13 @@
           </a>
         </template>
 
+        <!-- ประกัน -->
+
+        <template v-slot:[`item.insurance`]="{ item }">
+          <a v-if="Number(item.insurance) > 0" @click="Contract(item.car_no, item.id, item.car_id, item.customer_id)">
+            {{ Number(item.insurance).toLocaleString() }}
+          </a>
+        </template>
         <!-- ยอดจัด -->
         <template v-slot:[`item.car_price_approve`]="{ item }">
           <a
@@ -539,15 +567,10 @@
           </span>
         </template>
 
-        <!-- จัดได้ -->
+        <!-- ยอดจัด -->
         <template v-slot:[`item.finance_price`]="{ item }">
           <a v-if="item.finance_price > 0" style="cursor: pointer" @click="BankApproved(item.car_no, item.id)">
-            <v-row no-gutters>
-              <v-col cols="8">
-                {{ Number(item.finance_price).toLocaleString() }}
-              </v-col>
-              <v-col> ({{ item.car_price_persen }}%) </v-col>
-            </v-row>
+            {{ Number(item.finance_price).toLocaleString() }}
           </a>
           <span
             v-else
@@ -558,6 +581,81 @@
             @click="BankApproved(item.car_no, item.id)"
             style="cursor: pointer"
           >
+            + เพิ่ม
+          </span>
+        </template>
+
+        <!-- รวมยอดจัด (ยอดจัด*1.07) -->
+        <template v-slot:[`item.finance_price_vat`]="{ item }">
+          <a v-if="item.finance_price_vat > 0" style="cursor: pointer" @click="BankApproved(item.car_no, item.id)">
+            {{ Number(item.finance_price_vat).toLocaleString() }}
+          </a>
+          <span
+            v-else
+            x-small
+            class="white--text"
+            rounded
+            dark
+            @click="BankApproved(item.car_no, item.id)"
+            style="cursor: pointer"
+          >
+            + เพิ่ม
+          </span>
+        </template>
+
+        <!-- ซับดาวน์ -->
+        <template v-slot:[`item.sub_down`]="{ item }">
+          <a v-if="item.sub_down > 0" style="cursor: pointer; color: green" @click="BankApproved(item.car_no, item.id)">
+            {{ Number(item.sub_down).toLocaleString() }}
+          </a>
+          <a
+            v-else-if="item.sub_down < 0"
+            style="cursor: pointer; color: red"
+            @click="BankApproved(item.car_no, item.id)"
+          >
+            {{ Number(item.sub_down).toLocaleString() }}
+          </a>
+          <span
+            v-else
+            x-small
+            class="white--text"
+            rounded
+            dark
+            @click="BankApproved(item.car_no, item.id)"
+            style="cursor: pointer"
+          >
+            + เพิ่ม
+          </span>
+        </template>
+
+        <!-- จัดได้ % -->
+        <template v-slot:[`item.car_price_persen`]="{ item }">
+          <a v-if="item.finance_price > 0" style="cursor: pointer" @click="BankApproved(item.car_no, item.id)">
+            {{ item.car_price_persen }}%
+          </a>
+          <span
+            v-else
+            x-small
+            class="white--text"
+            rounded
+            dark
+            @click="BankApproved(item.car_no, item.id)"
+            style="cursor: pointer"
+          >
+            + เพิ่ม
+          </span>
+        </template>
+
+        <!-- วันอนุมัติเบื้องต้น -->
+        <template v-slot:[`item.pre_approve_date`]="{ item }">
+          <span
+            v-if="item.pre_approve_date != ' '"
+            style="color: #fb962a; cursor: pointer"
+            @click="PreApprove(item.id)"
+          >
+            {{ $moment(item.pre_approve_date).format("DD/MM/YYYY") }}
+          </span>
+          <span v-else x-small class="white--text" rounded dark @click="PreApprove(item.id)" style="cursor: pointer">
             + เพิ่ม
           </span>
         </template>
@@ -808,6 +906,19 @@
             + เพิ่ม
           </div>
         </template>
+
+        <template v-slot:[`item.request_update`]="{ item }">
+          <div v-for="item in item.request_update">
+            <span style="color: blue">{{ item.created_at }}:</span> {{ item.note }}
+          </div>
+          <DialogRequestUpdate
+            action="add"
+            appearance="text"
+            :working_id="item.id"
+            :car_no="item.car_no"
+            @success="initialize()"
+          />
+        </template>
       </v-data-table>
     </v-card>
 
@@ -917,6 +1028,14 @@
       @error="addError"
     />
 
+    <dialogPreApprove
+      :dialog="dialogPreApprove"
+      :working_id="idWork"
+      @cancleItem="dialogPreApprove = false"
+      @success="addSuccess"
+      @error="addError"
+    />
+
     <dialogAppointmentBank
       :dialogAppointmentBank="dialogAppointmentBank"
       :idWork="idWork"
@@ -961,17 +1080,22 @@ import draggable from "vuedraggable";
 import dialogWork from "@/components/dialog/dialogWork";
 import dialogBooking from "@/components/dialog/dialogBooking";
 import dialogAppointment from "@/components/dialog/dialogAppointment";
+import dialogPreApprove from "@/components/dialog/dialogPreApprove";
 import dialogAppointmentBank from "@/components/dialog/dialogAppointmentBank";
 import dialogContract from "@/components/dialog/dialogContract";
 import dialogNote from "@/components/dialog/dialogNote";
+import dialogRequestUpdate from "@/components/dialog/dialogRequestUpdate";
+
 export default {
   components: {
     dialogWork,
     dialogBooking,
     dialogAppointment,
+    dialogPreApprove,
     dialogAppointmentBank,
     dialogContract,
     dialogNote,
+    dialogRequestUpdate,
     draggable,
   },
   data: () => ({
@@ -980,7 +1104,10 @@ export default {
     drawerSetting: false,
     renderComponent: true,
     toggleView: "small",
-    work_status: "all",
+
+    work_status: -1,
+    searchInServer: "",
+
     timeStart: moment().startOf("years").format("YYYY-MM-DD HH:mm"),
     timeEnd: moment().endOf("years").format("YYYY-MM-DD HH:mm"),
     search: "",
@@ -988,264 +1115,62 @@ export default {
     tableWidth: 0,
     headersDefault: [],
     headers: [
-      // {
-      //   text: "จัดการ",
-      //   value: "actions",
-      //   sortable: false,
-      // },
-      {
-        text: "รหัสงาน",
-        value: "id",
-        width: "120px",
-      },
-      {
-        text: "ลำดับรถ",
-        value: "car_no",
-        width: "120px",
-      },
-      {
-        text: "สถานะ",
-        value: "work_status_name",
-        width: "140px",
-      },
-      {
-        text: "รุ่น",
-        value: "car_series_name",
-        width: "180px",
-      },
-      {
-        text: "รุ่นย่อย",
-        width: "250px",
-        value: "car_serie_sub_name",
-      },
-      {
-        text: "ทะเบียน",
-        value: "car_regis",
-        width: "120px",
-        align: "center",
-      },
-      {
-        text: "ปีรถ",
-        value: "car_year",
-        width: "120px",
-        align: "center",
-      },
-      {
-        text: "สี",
-        value: "color_name",
-        width: "120px",
-      },
-      {
-        text: "จัด",
-        value: "amount_price",
-        width: "120px",
-        align: "right",
-      },
-      {
-        text: "ดาวน์",
-        value: "amount_down",
-        width: "120px",
-        align: "right",
-      },
-      {
-        text: "ขาย",
-        value: "car_price_vat",
-        width: "120px",
-        align: "right",
-      },
-      {
-        text: "เซล",
-        value: "sale",
-        width: "140px",
-      },
-      {
-        text: "สาขา",
-        value: "branch_name",
-        width: "140px",
-      },
-      {
-        text: "ทีมเซล",
-        value: "team_name",
-        width: "140px",
-      },
-      {
-        text: "ทีมสาขา",
-        value: "branch_team_name",
-        width: "140px",
-      },
-      {
-        text: "ลูกค้า",
-        value: "customer_name",
-        width: "180px",
-      },
-      {
-        text: "เกรด",
-        value: "customer_grade",
-        width: "120px",
-      },
-      {
-        text: "อาชีพลูกค้า",
-        value: "customer_job",
-        width: "160px",
-      },
-
-      {
-        text: "ทราบข่าว",
-        value: "hear_from",
-        width: "160px",
-      },
-
-      {
-        text: "จอง",
-        value: "booking_date",
-        width: "120px",
-        align: "center",
-      },
-      {
-        text: "เงินจอง",
-        value: "deposit",
-        width: "120px",
-        align: "right",
-      },
-      {
-        text: "ดาวน์+F",
-        value: "amount_slacken",
-        width: "120px",
-        align: "right",
-      },
-      {
-        text: "ค่านำพา+อื่นๆ",
-        value: "commission",
-        width: "160px",
-        align: "right",
-      },
-      {
-        text: "ยอดจัด",
-        value: "car_price_approve",
-        width: "120px",
-        align: "right",
-      },
-      {
-        text: "ยอดจัด+Vat",
-        value: "car_price_approve_vat",
-        width: "150px",
-        align: "right",
-      },
-
-      {
-        text: "วันที่เซนต์",
-        value: "appointment_bank_date",
-        width: "130px",
-        align: "center",
-      },
-      {
-        text: "ธนาคาร",
-        value: "bank_nick_name",
-        width: "120px",
-        align: "center",
-      },
-      {
-        text: "MKT",
-        value: "sale_name",
-        width: "140px",
-      },
-      {
-        text: "เอกสาร",
-        value: "appointment_bank_type",
-        width: "180px",
-      },
-      {
-        text: "ผลเครดิต",
-        value: "credit",
-        width: "130px",
-        align: "center",
-      },
-      {
-        text: "จัดได้ %",
-        value: "finance_price",
-        width: "160px",
-        align: "right",
-      },
-      {
-        text: "อนุมัติ",
-        value: "appointment_date",
-        width: "140px",
-        align: "center",
-      },
-      {
-        text: "ปล่อยรถ",
-        value: "contract_date",
-        width: "150px",
-        align: "center",
-      },
-      {
-        text: "ชุดโอนมา",
-        value: "appointment_book_date",
-        width: "150px",
-        align: "center",
-      },
-
-      {
-        text: "โอน",
-        value: "appointment_transfer_date",
-        width: "150px",
-        align: "center",
-      },
-
-      {
-        text: "ส่งเล่มทำเงิน",
-        value: "appointment_sentbook_date",
-        width: "170px",
-        align: "center",
-      },
-
-      {
-        text: "เงินมา",
-        value: "appointment_money_date",
-        width: "150px",
-        align: "center",
-      },
-      {
-        text: "จำนวน",
-        value: "appointment_money_price",
-        width: "160px",
-        align: "right",
-      },
-      {
-        text: "งวดแรก",
-        value: "customer_payment_due",
-        width: "160px",
-        align: "center",
-      },
-      {
-        text: "จำนวน",
-        value: "customer_payment",
-        width: "160px",
-        align: "right",
-      },
-      {
-        text: "หน้าสมุด",
-        value: "note_page",
-        width: "140px",
-        align: "center",
-      },
-      {
-        text: "เดือนคอม",
-        value: "commission_mount",
-        width: "160px",
-        align: "center",
-      },
-
-      {
-        text: "หมายเหตุ (ส่วนกลาง)",
-        value: "note",
-        width: "220px",
-      },
-      {
-        text: "หมายเหตุ (เซล)",
-        value: "note_sale",
-        width: "400px",
-      },
+      { text: "รหัสงาน", value: "id", width: "120px", align: "center" },
+      { text: "สถานะหลัก", value: "work_status_name", width: "140px" },
+      { text: "รอ", value: "pedding", width: "140px" },
+      { text: "ลำดับรถ", value: "car_no", width: "120px", align: "center" },
+      { text: "รุ่น", value: "car_series_name", width: "180px" },
+      { text: "รุ่นย่อย", width: "250px", value: "car_serie_sub_name" },
+      { text: "ปีรถ", value: "car_year", width: "120px", align: "center" },
+      { text: "ทะเบียน", value: "car_regis", width: "120px", align: "center" },
+      { text: "ทะเบียนใหม่", value: "car_regis_current", width: "120px", align: "center" },
+      { text: "สี", value: "color_name", width: "120px" },
+      { text: "ภาษี", value: "car_tax_date", width: "120px" },
+      { text: "ประกัน", value: "car_insurance", width: "120px" },
+      { text: "จัด", value: "amount_price", width: "120px", align: "right" },
+      { text: "ดาวน์", value: "amount_down", width: "120px", align: "right" },
+      { text: "ขาย", value: "car_price_vat", width: "120px", align: "right" },
+      { text: "เซล", value: "sale", width: "140px" },
+      { text: "ทีมเซล", value: "team_name", width: "140px" },
+      { text: "ทีมสาขา", value: "branch_team_name", width: "140px" },
+      { text: "สาขาย่อย", value: "branch_name", width: "140px" },
+      { text: "ลูกค้า", value: "customer_name", width: "180px" },
+      { text: "เบอร์ลูกค้า", value: "customer_tel", width: "120px" },
+      { text: "จอง", value: "booking_date", width: "120px", align: "center" },
+      { text: "เงินจอง", value: "deposit", width: "120px", align: "right" },
+      { text: "ดาวน์+F", value: "down", width: "120px", align: "right" },
+      { text: "ค่านำพา+อื่นๆ", value: "commission", width: "160px", align: "right" },
+      { text: "สมาร์ทชัว+ประกัน", value: "insurance", width: "180px", align: "right" },
+      { text: "ยอดจัด", value: "finance_price", width: "150px", align: "right" },
+      { text: "รวมยอดจัด", value: "finance_price_vat", width: "150px", align: "right" },
+      { text: "ซับดาวน์", value: "sub_down", width: "150px", align: "right" },
+      { text: "เกรด", value: "customer_grade", width: "120px" },
+      { text: "ทราบข่าว", value: "hear_from", width: "160px" },
+      { text: "อาชีพลูกค้า", value: "customer_job", width: "160px" },
+      { text: "วันที่ฝาก", value: "deposit_date", width: "120px", align: "center" },
+      { text: "วันที่เซนต์", value: "appointment_date_before", width: "120px", align: "center" },
+      { text: "วันที่เซนต์", value: "appointment_bank_date", width: "130px", align: "center" },
+      { text: "ธนาคาร", value: "bank_nick_name", width: "120px", align: "center" },
+      { text: "MKT", value: "sale_name", width: "140px" },
+      { text: "เอกสาร", value: "appointment_bank_type", width: "180px" },
+      { text: "วันที่เอกสารครบ", value: "appointment_bank_document_date", width: "150px", align: "center" },
+      { text: "ผลเครดิต", value: "credit", width: "130px", align: "center" },
+      { text: "จัดได้ %", value: "car_price_persen", width: "160px", align: "right" },
+      { text: "อนุมัติเบื้องต้น", value: "pre_approve_date", width: "160px", align: "center" },
+      { text: "อนุมัติ", value: "appointment_date", width: "140px", align: "center" },
+      { text: "ปล่อยรถ", value: "contract_date", width: "150px", align: "center" },
+      { text: "ชุดโอนมา", value: "appointment_book_date", width: "150px", align: "center" },
+      { text: "โอน", value: "appointment_transfer_date", width: "150px", align: "center" },
+      { text: "ส่งเล่มทำเงิน", value: "appointment_sentbook_date", width: "170px", align: "center" },
+      { text: "เงินมา", value: "appointment_money_date", width: "150px", align: "center" },
+      { text: "จำนวน", value: "appointment_money_price", width: "160px", align: "right" },
+      { text: "งวดแรก", value: "customer_payment_due", width: "160px", align: "center" },
+      { text: "จำนวน", value: "customer_payment", width: "160px", align: "right" },
+      { text: "หน้าสมุด", value: "note_page", width: "140px", align: "center" },
+      { text: "เดือนคอม", value: "commission_mount", width: "160px", align: "center" },
+      { text: "หมายเหตุ (ส่วนกลาง)", value: "note", width: "220px" },
+      { text: "หมายเหตุ (เซล)", value: "note_sale", width: "400px" },
+      { text: "รายการอัพเดท", value: "request_update", width: "500px" },
     ],
     header_value: "",
     header_index: 0,
@@ -1254,6 +1179,7 @@ export default {
     moveDistance: 0,
     filters: {
       id: [],
+      pedding: [],
       car_no: [],
       car_series_name: [],
       car_serie_sub_name: [],
@@ -1274,16 +1200,20 @@ export default {
       hear_from: [],
       booking_date: [],
       deposit: [],
-      amount_slacken: [],
+      down: [],
       commission: [],
-      car_price_approve: [],
-      car_price_approve_vat: [],
+      insurance: [],
+      finance_price: [],
+      car_price_persen: [],
+      finance_price_vat: [],
+      sub_down: [],
       appointment_bank_date: [],
       customer_job: [],
       bank_nick_name: [],
       sale_name: [],
       appointment_bank_type: [],
-      finance_price: [],
+      pre_approve_date: [],
+      deposit_date: [],
       appointment_date: [],
       contract_date: [],
       appointment_book_date: [],
@@ -1295,8 +1225,9 @@ export default {
       customer_payment: [],
       commission_mount: [],
       note_page: [],
-      // note: [],
-      // note_sale: [],
+      request_update: [],
+      car_tax_date: [],
+      car_insurance: [],
     },
     activeFilters: {},
     activeFiltersTemp: {},
@@ -1304,13 +1235,18 @@ export default {
     dates: {
       booking_date: [],
       appointment_bank_date: [],
+      pre_approve_date: [],
+      deposit_date: [],
       appointment_date: [],
+      appointment_bank_document_date: [],
       contract_date: [],
       appointment_book_date: [],
       appointment_transfer_date: [],
       appointment_sentbook_date: [],
       appointment_money_date: [],
       customer_payment_due: [],
+      car_tax_date: [],
+      car_insurance: [],
     },
 
     car_no: 0,
@@ -1327,6 +1263,8 @@ export default {
     formTitleBooking: "Add",
     actionBooking: "check",
 
+    dialogPreApprove: false,
+
     dialogAppointment: false,
     formTitleAppointment: "Add",
     actionAppointment: "check",
@@ -1342,6 +1280,18 @@ export default {
 
     dialogNote: false,
     idNote: "",
+
+    pedding_main_items: [
+      "รอจอง",
+      "รอมัดจำ",
+      "รอนัดทำสัญญา",
+      "รอทำสัญญา",
+      "รอเอกสาร",
+      "รอแบงค์อนุมัติ",
+      "รอปล่อยรถ",
+      "ปล่อยรถแล้ว",
+    ],
+    pedding_items: ["รอรูปรถ", "รอเช็คเกอร์", "รอคนค้ำ", "รอคนซื้อแทน", "รอหารถ", "รอรถซ่อม"],
   }),
 
   computed: {
@@ -1377,7 +1327,9 @@ export default {
             key == "appointment_book_date" ||
             key == "appointment_transfer_date" ||
             key == "appointment_sentbook_date" ||
-            key == "appointment_money_date"
+            key == "appointment_money_date" ||
+            key == "car_tax_date" ||
+            key == "car_insurance"
           ) {
             if (this.dates[key].length > 0) {
               this.activeFilters[key] = [];
@@ -1428,11 +1380,19 @@ export default {
     async initialize() {
       this.loading = true;
       const data = new FormData();
-      data.append("timeStart", this.timeStart);
-      data.append("timeEnd", this.timeEnd);
-      data.append("work_status", this.work_status);
+      if (this.work_status == "close" || this.work_status == "all") {
+        data.append("timeStart", this.timeStart);
+        data.append("timeEnd", this.timeEnd);
+        data.append("work_status", this.work_status);
+      } else if (this.work_status == "search") {
+        data.append("search", this.searchInServer);
+        data.append("work_status", "all");
+      } else {
+        data.append("work_status", this.work_status);
+      }
+
       const response = await apiWorks.followWork(data);
-      // console.log(response.data);
+      console.log(response.data);
       this.data = response.data.data;
       this.loading = false;
       this.tableWidth = $(".v-data-table-header").width();
@@ -1443,8 +1403,12 @@ export default {
       this.activeFiltersTemp = this.activeFilters;
       this.loading = true;
       const data = new FormData();
-      data.append("timeStart", this.timeStart);
-      data.append("timeEnd", this.timeEnd);
+      if (this.work_status == "close" || this.work_status == "all") {
+        data.append("timeStart", this.timeStart);
+        data.append("timeEnd", this.timeEnd);
+      } else if (this.work_status == "search") {
+        data.append("search", this.searchInServer);
+      }
       data.append("work_status", this.work_status);
       const response = await apiWorks.followWork(data);
       // console.log(response.data);
@@ -1458,7 +1422,7 @@ export default {
     selectTimeStart(time) {
       this.timeStart = time.timeStart;
       this.timeEnd = time.timeEnd;
-      this.initialize();
+      // this.initialize();
     },
     async handleEnd() {
       this.renderComponent = false;
@@ -1467,7 +1431,7 @@ export default {
       this.renderComponent = true;
     },
     setSelectedHeaders() {
-      console.log(this.selectedHeaderIndexs);
+      // console.log(this.selectedHeaderIndexs);
       var selectedHeaderIndexs = this.selectedHeaderIndexs;
       var filteredArray = this.headers.filter(function (item, index) {
         return selectedHeaderIndexs.includes(item.value);
@@ -1490,7 +1454,9 @@ export default {
           key == "appointment_book_date" ||
           key == "appointment_transfer_date" ||
           key == "appointment_sentbook_date" ||
-          key == "appointment_money_date"
+          key == "appointment_money_date" ||
+          key == "car_tax_date" ||
+          key == "car_insurance"
         ) {
           let date = this.data
             .map((d) => {
@@ -1543,6 +1509,24 @@ export default {
           });
         this.filters["sale_name"].sort();
         this.activeFilters["sale_name"] = this.filters["sale_name"];
+      });
+    },
+    async updatePedding(id, pedding) {
+      var isConfirmed = customAlart.ConfirmedStatus();
+      await isConfirmed.then(async (result) => {
+        if (result == true) {
+          const respone = await apiWorks.updatePedding(id, {
+            pedding: pedding,
+          });
+          if (respone.status == 200) {
+            customAlart.TopSuccess();
+          } else {
+            customAlart.TopError();
+          }
+        }
+      });
+      this.$nextTick(async () => {
+        await this.initializeReload();
       });
     },
     togleHeaderAll() {
@@ -1639,6 +1623,10 @@ export default {
       this.status_bank = 5;
       this.actionAppointmentBank = "check";
     },
+    async PreApprove(working_id) {
+      this.dialogPreApprove = true;
+      this.idWork = working_id;
+    },
     async BankApproved(car_no, work_id) {
       this.car_no = car_no;
       this.formTitleAppointmentBank = "แบงค์อนุมัติ (" + car_no + ")";
@@ -1678,13 +1666,15 @@ export default {
     },
     handleDownload() {
       const filterVal = [];
-      for (let index = 0; index < this.tHeader.length; index++) {
-        filterVal.push(this.headers[index].value);
+      const header = [];
+      for (let index = 0; index < this.selectedHeaders.length; index++) {
+        filterVal.push(this.selectedHeaders[index].value);
+        header.push(this.selectedHeaders[index].text);
       }
       // console.log(moment().format("DD/MM/YYYY ( HH:mm น.)"));
       this.$nextTick(() => {
         import("@/vendor/Export2Excel").then((excel) => {
-          const tHeader = this.tHeader;
+          const tHeader = header;
           const list = this.filteredData;
           const data = this.formatJson(filterVal, list);
           excel.export_json_to_excel({
@@ -1724,6 +1714,8 @@ export default {
         this.dialogPathnerJobTechnician = false;
       } else if (value == "Appointment") {
         this.dialogAppointment = false;
+      } else if (value == "PreApprove") {
+        this.dialogPreApprove = false;
       } else if (value == "AppointmentBank") {
         this.dialogAppointmentBank = false;
       } else if (value == "InsurCertificate") {
@@ -1755,6 +1747,8 @@ export default {
         this.dialogPathnerJobTechnician = false;
       } else if (value == "Appointment") {
         this.dialogAppointment = false;
+      } else if (value == "PreApprove") {
+        this.dialogPreApprove = false;
       } else if (value == "AppointmentBank") {
         this.dialogAppointmentBank = false;
       } else if (value == "InsurCertificate") {

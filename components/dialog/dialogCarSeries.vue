@@ -2,21 +2,12 @@
   <v-container>
     <v-dialog v-model="dialogDeleteComponent" max-width="50%">
       <v-card>
-        <v-form
-          ref="form"
-          autocomplete="true"
-          @submit.prevent="onAction(formData.id)"
-        >
+        <v-form ref="form" autocomplete="true" @submit.prevent="onAction(formData.id)">
           <v-toolbar color="primary" dark flat>
             {{ formTitle }}
           </v-toolbar>
 
-          <v-progress-linear
-            v-if="formDataLoading"
-            indeterminate
-            color="yellow darken-2"
-          >
-          </v-progress-linear>
+          <v-progress-linear v-if="formDataLoading" indeterminate color="yellow darken-2"> </v-progress-linear>
 
           <v-card-text>
             <v-container>
@@ -96,7 +87,7 @@
                 outlined
                 dense
                 hide-details
-                :rules="rule"
+                :rules="[(value) => value >= 0]"
               >
               </v-text-field>
 
@@ -120,16 +111,8 @@
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="red darken-1" text @click="$emit('cancleItem')"
-              >ยกเลิก</v-btn
-            >
-            <v-btn
-              type="submit"
-              color="success darken-1"
-              text
-              :loading="btnloading"
-              >บันทึก
-            </v-btn>
+            <v-btn color="red darken-1" text @click="$emit('cancleItem')">ยกเลิก</v-btn>
+            <v-btn type="submit" color="success darken-1" text :loading="btnloading">บันทึก </v-btn>
           </v-card-actions>
         </v-form>
       </v-card>

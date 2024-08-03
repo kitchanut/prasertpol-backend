@@ -48,6 +48,8 @@
 
 <script>
 import * as apiBranches from "@/Api/apiBranches";
+import * as apiBranch_teams from "@/Api/apiBranch_teams";
+
 import * as customAlart from "@/customJS/customAlart";
 import jwt_decode from "jwt-decode";
 
@@ -72,7 +74,6 @@ export default {
   methods: {
     async onClick() {
       this.loading = true;
-
       var keys = Object.keys(localStorage),
         i = keys.length;
 
@@ -89,12 +90,7 @@ export default {
         });
         if (response.status == 200) {
           var decoded = await jwt_decode(response.data.access_token);
-          // console.log(decoded);
-          // console.log(decoded.sub_group);
-          // this.$auth.$storage.setLocalStorage(
-          //   "userData-user_image",
-          //   decoded.user_image
-          // );
+
           this.$auth.$storage.setLocalStorage("userData-sub_group", decoded.sub_group);
           this.$auth.$storage.setLocalStorage("userData-user_code", decoded.user_code.user_code);
           this.$auth.$storage.setLocalStorage("userData-id", decoded.sub);
@@ -122,15 +118,9 @@ export default {
           this.$auth.$storage.setLocalStorage("userDataOrg-user_group_name", decoded.user_group_name.user_group_name);
           this.$auth.$storage.setLocalStorage("userDataOrg-branch_id", decoded.branch_id.branch_id);
           this.$auth.$storage.setLocalStorage("userDataOrg-branch_name", decoded.branch_name.branch_name);
-          // this.$auth.$storage.setLocalStorage(
-          //   "userDataOrg-branch_team_id",
-          //   decoded.branch_id.branch_team_id
-          // );
 
-          const responseBranch = await apiBranches.show(decoded.branch_id.branch_id);
-
-          this.$auth.$storage.setLocalStorage("userDataOrg-branch_team_id", responseBranch.data.branch_team_id);
-          // console.log("branch", responseBranch.data);
+          this.$auth.$storage.setLocalStorage("userDataOrg-branch_team_id", decoded.branch_team_id);
+          this.$auth.$storage.setLocalStorage("userDataOrg-branch_team_name", decoded.branch_team.branch_team_name);
 
           this.$nextTick(async () => {
             if (decoded.user_group_permission.user_group_permission == -1) {
@@ -138,7 +128,7 @@ export default {
             } else if (decoded.user_group_permission.user_group_permission == 2) {
               await this.$router.push("/index_sale");
             } else if (decoded.user_group_permission.user_group_permission == 3) {
-              await this.$router.push("/work/works");
+              await this.$router.push("/index_sale");
             } else if (decoded.user_group_permission.user_group_permission == 4) {
               await this.$router.push("/work/work_Technician");
             } else if (decoded.user_group_permission.user_group_permission == 5) {
@@ -152,7 +142,7 @@ export default {
             } else if (decoded.user_group_permission.user_group_permission == 9) {
               await this.$router.push("/index_sale");
             } else if (decoded.user_group_permission.user_group_permission == 10) {
-              await this.$router.push("/work/works");
+              await this.$router.push("/index_sale");
             } else if (decoded.user_group_permission.user_group_permission == 11) {
               await this.$router.push("/work/works");
             } else if (decoded.user_group_permission.user_group_permission == 12) {
@@ -160,7 +150,6 @@ export default {
             } else if (decoded.user_group_permission.user_group_permission == 13) {
               await this.$router.push("settings/promotion");
             } else {
-              // console.log("error", decoded);
             }
           });
         }
@@ -169,7 +158,6 @@ export default {
           customAlart.Errorlogin();
           this.loading = false;
         }
-        // console.log(err);
       }
       this.loading = false;
     },

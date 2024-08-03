@@ -1,125 +1,140 @@
-export const Logo = () => import('../../components/Logo.vue' /* webpackChunkName: "components/logo" */).then(c => wrapFunctional(c.default || c))
-export const VuetifyLogo = () => import('../../components/VuetifyLogo.vue' /* webpackChunkName: "components/vuetify-logo" */).then(c => wrapFunctional(c.default || c))
-export const DialogLoader = () => import('../../components/dialog-loader.vue' /* webpackChunkName: "components/dialog-loader" */).then(c => wrapFunctional(c.default || c))
-export const FebButton = () => import('../../components/febButton.vue' /* webpackChunkName: "components/feb-button" */).then(c => wrapFunctional(c.default || c))
-export const FebButtonWork = () => import('../../components/febButtonWork.vue' /* webpackChunkName: "components/feb-button-work" */).then(c => wrapFunctional(c.default || c))
-export const BarChartBranch = () => import('../../components/BarChart/BarChartBranch.vue' /* webpackChunkName: "components/bar-chart-branch" */).then(c => wrapFunctional(c.default || c))
-export const BarChartCar = () => import('../../components/BarChart/BarChartCar.vue' /* webpackChunkName: "components/bar-chart-car" */).then(c => wrapFunctional(c.default || c))
-export const BarChartPriceCar = () => import('../../components/BarChart/BarChartPriceCar.vue' /* webpackChunkName: "components/bar-chart-price-car" */).then(c => wrapFunctional(c.default || c))
-export const BarChartSale = () => import('../../components/BarChart/BarChartSale.vue' /* webpackChunkName: "components/bar-chart-sale" */).then(c => wrapFunctional(c.default || c))
-export const BarChartSaleCarByBranch = () => import('../../components/BarChart/BarChartSaleCarByBranch.vue' /* webpackChunkName: "components/bar-chart-sale-car-by-branch" */).then(c => wrapFunctional(c.default || c))
-export const BarChartTopCars = () => import('../../components/BarChart/BarChartTopCars.vue' /* webpackChunkName: "components/bar-chart-top-cars" */).then(c => wrapFunctional(c.default || c))
-export const BarChartVisit = () => import('../../components/BarChart/BarChartVisit.vue' /* webpackChunkName: "components/bar-chart-visit" */).then(c => wrapFunctional(c.default || c))
-export const BarChartVisitCar = () => import('../../components/BarChart/BarChartVisitCar.vue' /* webpackChunkName: "components/bar-chart-visit-car" */).then(c => wrapFunctional(c.default || c))
-export const BarChartVisitLine = () => import('../../components/BarChart/BarChartVisitLine.vue' /* webpackChunkName: "components/bar-chart-visit-line" */).then(c => wrapFunctional(c.default || c))
-export const BarChartDashBranch = () => import('../../components/BarChartDash/BarChartDashBranch.vue' /* webpackChunkName: "components/bar-chart-dash-branch" */).then(c => wrapFunctional(c.default || c))
-export const BarChartDashCar = () => import('../../components/BarChartDash/BarChartDashCar.vue' /* webpackChunkName: "components/bar-chart-dash-car" */).then(c => wrapFunctional(c.default || c))
-export const BarChartDashSale = () => import('../../components/BarChartDash/BarChartDashSale.vue' /* webpackChunkName: "components/bar-chart-dash-sale" */).then(c => wrapFunctional(c.default || c))
-export const BarChartDashSaleByBranch = () => import('../../components/BarChartDash/BarChartDashSaleByBranch.vue' /* webpackChunkName: "components/bar-chart-dash-sale-by-branch" */).then(c => wrapFunctional(c.default || c))
-export const BarChartDashTopCarSerie = () => import('../../components/BarChartDash/BarChartDashTopCarSerie.vue' /* webpackChunkName: "components/bar-chart-dash-top-car-serie" */).then(c => wrapFunctional(c.default || c))
-export const BarChartDashVisit = () => import('../../components/BarChartDash/BarChartDashVisit.vue' /* webpackChunkName: "components/bar-chart-dash-visit" */).then(c => wrapFunctional(c.default || c))
-export const BarChartDashVisitCarDown = () => import('../../components/BarChartDash/BarChartDashVisitCarDown.vue' /* webpackChunkName: "components/bar-chart-dash-visit-car-down" */).then(c => wrapFunctional(c.default || c))
-export const BarChartDashVisitCarModel = () => import('../../components/BarChartDash/BarChartDashVisitCarModel.vue' /* webpackChunkName: "components/bar-chart-dash-visit-car-model" */).then(c => wrapFunctional(c.default || c))
-export const BarChartDashVisitCarSerie = () => import('../../components/BarChartDash/BarChartDashVisitCarSerie.vue' /* webpackChunkName: "components/bar-chart-dash-visit-car-serie" */).then(c => wrapFunctional(c.default || c))
-export const BarChartDashVisitCarSlacken = () => import('../../components/BarChartDash/BarChartDashVisitCarSlacken.vue' /* webpackChunkName: "components/bar-chart-dash-visit-car-slacken" */).then(c => wrapFunctional(c.default || c))
-export const BarChartDashVisitCarType = () => import('../../components/BarChartDash/BarChartDashVisitCarType.vue' /* webpackChunkName: "components/bar-chart-dash-visit-car-type" */).then(c => wrapFunctional(c.default || c))
-export const DoughnutChartBranch = () => import('../../components/DoughnutChart/DoughnutChartBranch.vue' /* webpackChunkName: "components/doughnut-chart-branch" */).then(c => wrapFunctional(c.default || c))
-export const DoughnutChartCar = () => import('../../components/DoughnutChart/DoughnutChartCar.vue' /* webpackChunkName: "components/doughnut-chart-car" */).then(c => wrapFunctional(c.default || c))
-export const DoughnutChartUser = () => import('../../components/DoughnutChart/DoughnutChartUser.vue' /* webpackChunkName: "components/doughnut-chart-user" */).then(c => wrapFunctional(c.default || c))
-export const DoughnutChartCarType = () => import('../../components/DoughnutChartDash/DoughnutChartCarType.vue' /* webpackChunkName: "components/doughnut-chart-car-type" */).then(c => wrapFunctional(c.default || c))
-export const DoughnutChartDashBranchCar = () => import('../../components/DoughnutChartDash/DoughnutChartDashBranchCar.vue' /* webpackChunkName: "components/doughnut-chart-dash-branch-car" */).then(c => wrapFunctional(c.default || c))
-export const DoughnutChartDashSale = () => import('../../components/DoughnutChartDash/DoughnutChartDashSale.vue' /* webpackChunkName: "components/doughnut-chart-dash-sale" */).then(c => wrapFunctional(c.default || c))
-export const DateSelect = () => import('../../components/DateSelect/dateSelect.vue' /* webpackChunkName: "components/date-select" */).then(c => wrapFunctional(c.default || c))
-export const DateSelect2 = () => import('../../components/DateSelect/dateSelect2.vue' /* webpackChunkName: "components/date-select2" */).then(c => wrapFunctional(c.default || c))
-export const DateSelectMonth = () => import('../../components/DateSelect/dateSelectMonth.vue' /* webpackChunkName: "components/date-select-month" */).then(c => wrapFunctional(c.default || c))
-export const DateSelectMonthAll = () => import('../../components/DateSelect/dateSelectMonthAll.vue' /* webpackChunkName: "components/date-select-month-all" */).then(c => wrapFunctional(c.default || c))
-export const DashboardComInventoryCar = () => import('../../components/Dashboard/ComInventoryCar.vue' /* webpackChunkName: "components/dashboard-com-inventory-car" */).then(c => wrapFunctional(c.default || c))
-export const DashboardComWorkStatus = () => import('../../components/Dashboard/ComWorkStatus.vue' /* webpackChunkName: "components/dashboard-com-work-status" */).then(c => wrapFunctional(c.default || c))
-export const DialogAddIncome = () => import('../../components/dialog/dialogAdd_income.vue' /* webpackChunkName: "components/dialog-add-income" */).then(c => wrapFunctional(c.default || c))
-export const DialogAddLowCars = () => import('../../components/dialog/dialogAdd_lowCars.vue' /* webpackChunkName: "components/dialog-add-low-cars" */).then(c => wrapFunctional(c.default || c))
-export const DialogAddMoney = () => import('../../components/dialog/dialogAdd_money.vue' /* webpackChunkName: "components/dialog-add-money" */).then(c => wrapFunctional(c.default || c))
-export const DialogAddOutlay = () => import('../../components/dialog/dialogAdd_outlay.vue' /* webpackChunkName: "components/dialog-add-outlay" */).then(c => wrapFunctional(c.default || c))
-export const DialogAddOutlaySmall = () => import('../../components/dialog/dialogAdd_outlay_small.vue' /* webpackChunkName: "components/dialog-add-outlay-small" */).then(c => wrapFunctional(c.default || c))
-export const DialogAmountDown = () => import('../../components/dialog/dialogAmount_down.vue' /* webpackChunkName: "components/dialog-amount-down" */).then(c => wrapFunctional(c.default || c))
-export const DialogAmountSlacken = () => import('../../components/dialog/dialogAmount_slacken.vue' /* webpackChunkName: "components/dialog-amount-slacken" */).then(c => wrapFunctional(c.default || c))
-export const DialogAmphure = () => import('../../components/dialog/dialogAmphure.vue' /* webpackChunkName: "components/dialog-amphure" */).then(c => wrapFunctional(c.default || c))
-export const DialogAppointment = () => import('../../components/dialog/dialogAppointment.vue' /* webpackChunkName: "components/dialog-appointment" */).then(c => wrapFunctional(c.default || c))
-export const DialogAppointmentBank = () => import('../../components/dialog/dialogAppointmentBank.vue' /* webpackChunkName: "components/dialog-appointment-bank" */).then(c => wrapFunctional(c.default || c))
-export const DialogBank = () => import('../../components/dialog/dialogBank.vue' /* webpackChunkName: "components/dialog-bank" */).then(c => wrapFunctional(c.default || c))
-export const DialogBankBranch = () => import('../../components/dialog/dialogBank_branch.vue' /* webpackChunkName: "components/dialog-bank-branch" */).then(c => wrapFunctional(c.default || c))
-export const DialogBooking = () => import('../../components/dialog/dialogBooking.vue' /* webpackChunkName: "components/dialog-booking" */).then(c => wrapFunctional(c.default || c))
-export const DialogBranch = () => import('../../components/dialog/dialogBranch.vue' /* webpackChunkName: "components/dialog-branch" */).then(c => wrapFunctional(c.default || c))
-export const DialogBranchTeam = () => import('../../components/dialog/dialogBranchTeam.vue' /* webpackChunkName: "components/dialog-branch-team" */).then(c => wrapFunctional(c.default || c))
-export const DialogCarLift = () => import('../../components/dialog/dialogCarLift.vue' /* webpackChunkName: "components/dialog-car-lift" */).then(c => wrapFunctional(c.default || c))
-export const DialogCarModel = () => import('../../components/dialog/dialogCarModel.vue' /* webpackChunkName: "components/dialog-car-model" */).then(c => wrapFunctional(c.default || c))
-export const DialogCarPart = () => import('../../components/dialog/dialogCarPart.vue' /* webpackChunkName: "components/dialog-car-part" */).then(c => wrapFunctional(c.default || c))
-export const DialogCarPartType = () => import('../../components/dialog/dialogCarPartType.vue' /* webpackChunkName: "components/dialog-car-part-type" */).then(c => wrapFunctional(c.default || c))
-export const DialogCarSerieSub = () => import('../../components/dialog/dialogCarSerieSub.vue' /* webpackChunkName: "components/dialog-car-serie-sub" */).then(c => wrapFunctional(c.default || c))
-export const DialogCarSeries = () => import('../../components/dialog/dialogCarSeries.vue' /* webpackChunkName: "components/dialog-car-series" */).then(c => wrapFunctional(c.default || c))
-export const DialogCarType = () => import('../../components/dialog/dialogCarType.vue' /* webpackChunkName: "components/dialog-car-type" */).then(c => wrapFunctional(c.default || c))
-export const DialogColor = () => import('../../components/dialog/dialogColor.vue' /* webpackChunkName: "components/dialog-color" */).then(c => wrapFunctional(c.default || c))
-export const DialogCommission = () => import('../../components/dialog/dialogCommission.vue' /* webpackChunkName: "components/dialog-commission" */).then(c => wrapFunctional(c.default || c))
-export const DialogContract = () => import('../../components/dialog/dialogContract.vue' /* webpackChunkName: "components/dialog-contract" */).then(c => wrapFunctional(c.default || c))
-export const DialogCustomer = () => import('../../components/dialog/dialogCustomer.vue' /* webpackChunkName: "components/dialog-customer" */).then(c => wrapFunctional(c.default || c))
-export const DialogCustomerDetail = () => import('../../components/dialog/dialogCustomer_detail.vue' /* webpackChunkName: "components/dialog-customer-detail" */).then(c => wrapFunctional(c.default || c))
-export const DialogCustomerVisit = () => import('../../components/dialog/dialogCustomer_visit.vue' /* webpackChunkName: "components/dialog-customer-visit" */).then(c => wrapFunctional(c.default || c))
-export const DialogDistricts = () => import('../../components/dialog/dialogDistricts.vue' /* webpackChunkName: "components/dialog-districts" */).then(c => wrapFunctional(c.default || c))
-export const DialogFileCar = () => import('../../components/dialog/dialogFileCar.vue' /* webpackChunkName: "components/dialog-file-car" */).then(c => wrapFunctional(c.default || c))
-export const DialogFinancial = () => import('../../components/dialog/dialogFinancial.vue' /* webpackChunkName: "components/dialog-financial" */).then(c => wrapFunctional(c.default || c))
-export const DialogFuel = () => import('../../components/dialog/dialogFuel.vue' /* webpackChunkName: "components/dialog-fuel" */).then(c => wrapFunctional(c.default || c))
-export const DialogGeographie = () => import('../../components/dialog/dialogGeographie.vue' /* webpackChunkName: "components/dialog-geographie" */).then(c => wrapFunctional(c.default || c))
-export const DialogImage = () => import('../../components/dialog/dialogImage.vue' /* webpackChunkName: "components/dialog-image" */).then(c => wrapFunctional(c.default || c))
-export const DialogImageCar = () => import('../../components/dialog/dialogImage_car.vue' /* webpackChunkName: "components/dialog-image-car" */).then(c => wrapFunctional(c.default || c))
-export const DialogInsurCertificate = () => import('../../components/dialog/dialogInsurCertificate.vue' /* webpackChunkName: "components/dialog-insur-certificate" */).then(c => wrapFunctional(c.default || c))
-export const DialogJobDetail = () => import('../../components/dialog/dialogJobDetail.vue' /* webpackChunkName: "components/dialog-job-detail" */).then(c => wrapFunctional(c.default || c))
-export const DialogJobTechnician = () => import('../../components/dialog/dialogJobTechnician.vue' /* webpackChunkName: "components/dialog-job-technician" */).then(c => wrapFunctional(c.default || c))
-export const DialogLowCars = () => import('../../components/dialog/dialogLowCars.vue' /* webpackChunkName: "components/dialog-low-cars" */).then(c => wrapFunctional(c.default || c))
-export const DialogMiddlePrice = () => import('../../components/dialog/dialogMiddle_price.vue' /* webpackChunkName: "components/dialog-middle-price" */).then(c => wrapFunctional(c.default || c))
-export const DialogMiniCar = () => import('../../components/dialog/dialogMini_car.vue' /* webpackChunkName: "components/dialog-mini-car" */).then(c => wrapFunctional(c.default || c))
-export const DialogMiniUser = () => import('../../components/dialog/dialogMini_user.vue' /* webpackChunkName: "components/dialog-mini-user" */).then(c => wrapFunctional(c.default || c))
-export const DialogNote = () => import('../../components/dialog/dialogNote.vue' /* webpackChunkName: "components/dialog-note" */).then(c => wrapFunctional(c.default || c))
-export const DialogPartnerCar = () => import('../../components/dialog/dialogPartnerCar.vue' /* webpackChunkName: "components/dialog-partner-car" */).then(c => wrapFunctional(c.default || c))
-export const DialogPartnerCompany = () => import('../../components/dialog/dialogPartnerCompany.vue' /* webpackChunkName: "components/dialog-partner-company" */).then(c => wrapFunctional(c.default || c))
-export const DialogPartnerTechnician = () => import('../../components/dialog/dialogPartner_technician.vue' /* webpackChunkName: "components/dialog-partner-technician" */).then(c => wrapFunctional(c.default || c))
-export const DialogPathnerJobTechnician = () => import('../../components/dialog/dialogPathnerJobTechnician.vue' /* webpackChunkName: "components/dialog-pathner-job-technician" */).then(c => wrapFunctional(c.default || c))
-export const DialogPriceRecord = () => import('../../components/dialog/dialogPriceRecord.vue' /* webpackChunkName: "components/dialog-price-record" */).then(c => wrapFunctional(c.default || c))
-export const DialogPromotion = () => import('../../components/dialog/dialogPromotion.vue' /* webpackChunkName: "components/dialog-promotion" */).then(c => wrapFunctional(c.default || c))
-export const DialogProvince = () => import('../../components/dialog/dialogProvince.vue' /* webpackChunkName: "components/dialog-province" */).then(c => wrapFunctional(c.default || c))
-export const DialogPurchaseCar = () => import('../../components/dialog/dialogPurchaseCar.vue' /* webpackChunkName: "components/dialog-purchase-car" */).then(c => wrapFunctional(c.default || c))
-export const DialogPurchasePart = () => import('../../components/dialog/dialogPurchasePart.vue' /* webpackChunkName: "components/dialog-purchase-part" */).then(c => wrapFunctional(c.default || c))
-export const DialogReceiveDown = () => import('../../components/dialog/dialogReceiveDown.vue' /* webpackChunkName: "components/dialog-receive-down" */).then(c => wrapFunctional(c.default || c))
-export const DialogReceivingMoney = () => import('../../components/dialog/dialogReceivingMoney.vue' /* webpackChunkName: "components/dialog-receiving-money" */).then(c => wrapFunctional(c.default || c))
-export const DialogRepairList = () => import('../../components/dialog/dialogRepairList.vue' /* webpackChunkName: "components/dialog-repair-list" */).then(c => wrapFunctional(c.default || c))
-export const DialogRepairPrice = () => import('../../components/dialog/dialogRepairPrice.vue' /* webpackChunkName: "components/dialog-repair-price" */).then(c => wrapFunctional(c.default || c))
-export const DialogRequestLog = () => import('../../components/dialog/dialogRequestLog.vue' /* webpackChunkName: "components/dialog-request-log" */).then(c => wrapFunctional(c.default || c))
-export const DialogSearchTerm = () => import('../../components/dialog/dialogSearch_term.vue' /* webpackChunkName: "components/dialog-search-term" */).then(c => wrapFunctional(c.default || c))
-export const DialogStockCar = () => import('../../components/dialog/dialogStockCar.vue' /* webpackChunkName: "components/dialog-stock-car" */).then(c => wrapFunctional(c.default || c))
-export const DialogStockPart = () => import('../../components/dialog/dialogStockPart.vue' /* webpackChunkName: "components/dialog-stock-part" */).then(c => wrapFunctional(c.default || c))
-export const DialogUnit = () => import('../../components/dialog/dialogUnit.vue' /* webpackChunkName: "components/dialog-unit" */).then(c => wrapFunctional(c.default || c))
-export const DialogUser = () => import('../../components/dialog/dialogUser.vue' /* webpackChunkName: "components/dialog-user" */).then(c => wrapFunctional(c.default || c))
-export const DialogUserGroup = () => import('../../components/dialog/dialogUserGroup.vue' /* webpackChunkName: "components/dialog-user-group" */).then(c => wrapFunctional(c.default || c))
-export const DialogUserLine = () => import('../../components/dialog/dialogUserLine.vue' /* webpackChunkName: "components/dialog-user-line" */).then(c => wrapFunctional(c.default || c))
-export const DialogUserTeam = () => import('../../components/dialog/dialogUserTeam.vue' /* webpackChunkName: "components/dialog-user-team" */).then(c => wrapFunctional(c.default || c))
-export const DialogWithdrawPart = () => import('../../components/dialog/dialogWithdrawPart.vue' /* webpackChunkName: "components/dialog-withdraw-part" */).then(c => wrapFunctional(c.default || c))
-export const DialogWork = () => import('../../components/dialog/dialogWork.vue' /* webpackChunkName: "components/dialog-work" */).then(c => wrapFunctional(c.default || c))
-export const DialogDrawerRequestLog = () => import('../../components/dialog/drawerRequestLog.vue' /* webpackChunkName: "components/dialog-drawer-request-log" */).then(c => wrapFunctional(c.default || c))
-export const MobileDialogBooking = () => import('../../components/mobile/dialogBooking.vue' /* webpackChunkName: "components/mobile-dialog-booking" */).then(c => wrapFunctional(c.default || c))
-export const MobileDialogContract = () => import('../../components/mobile/dialogContract.vue' /* webpackChunkName: "components/mobile-dialog-contract" */).then(c => wrapFunctional(c.default || c))
-export const MobileDialogFinancial = () => import('../../components/mobile/dialogFinancial.vue' /* webpackChunkName: "components/mobile-dialog-financial" */).then(c => wrapFunctional(c.default || c))
-export const MobileDialogInsurCertificate = () => import('../../components/mobile/dialogInsurCertificate.vue' /* webpackChunkName: "components/mobile-dialog-insur-certificate" */).then(c => wrapFunctional(c.default || c))
-export const MobileDialogReceiveDown = () => import('../../components/mobile/dialogReceiveDown.vue' /* webpackChunkName: "components/mobile-dialog-receive-down" */).then(c => wrapFunctional(c.default || c))
-export const SelectAddCarModel = () => import('../../components/selectAdd/selectAddCarModel.vue' /* webpackChunkName: "components/select-add-car-model" */).then(c => wrapFunctional(c.default || c))
-export const SelectAddCarPart = () => import('../../components/selectAdd/selectAddCarPart.vue' /* webpackChunkName: "components/select-add-car-part" */).then(c => wrapFunctional(c.default || c))
-export const SelectAddCarPartType = () => import('../../components/selectAdd/selectAddCarPartType.vue' /* webpackChunkName: "components/select-add-car-part-type" */).then(c => wrapFunctional(c.default || c))
-export const SelectAddCarSerie = () => import('../../components/selectAdd/selectAddCarSerie.vue' /* webpackChunkName: "components/select-add-car-serie" */).then(c => wrapFunctional(c.default || c))
-export const SelectAddCarSerieSub = () => import('../../components/selectAdd/selectAddCarSerieSub.vue' /* webpackChunkName: "components/select-add-car-serie-sub" */).then(c => wrapFunctional(c.default || c))
-export const SelectAddCarType = () => import('../../components/selectAdd/selectAddCarType.vue' /* webpackChunkName: "components/select-add-car-type" */).then(c => wrapFunctional(c.default || c))
-export const SelectAddCustomer = () => import('../../components/selectAdd/selectAddCustomer.vue' /* webpackChunkName: "components/select-add-customer" */).then(c => wrapFunctional(c.default || c))
-export const SelectAddPartnerCar = () => import('../../components/selectAdd/selectAddPartnerCar.vue' /* webpackChunkName: "components/select-add-partner-car" */).then(c => wrapFunctional(c.default || c))
-export const SelectAddPartnerTechnician = () => import('../../components/selectAdd/selectAddPartner_technician.vue' /* webpackChunkName: "components/select-add-partner-technician" */).then(c => wrapFunctional(c.default || c))
-export const SelectAddSearchTerm = () => import('../../components/selectAdd/selectAddSearch_term.vue' /* webpackChunkName: "components/select-add-search-term" */).then(c => wrapFunctional(c.default || c))
-export const SelectAddUnit = () => import('../../components/selectAdd/selectAddUnit.vue' /* webpackChunkName: "components/select-add-unit" */).then(c => wrapFunctional(c.default || c))
-export const SelectDropDownAmphure = () => import('../../components/selectDropDown/selectDropDownAmphure.vue' /* webpackChunkName: "components/select-drop-down-amphure" */).then(c => wrapFunctional(c.default || c))
+export { default as DialogDelete } from '../../components/DialogDelete.vue'
+export { default as ImageUpload } from '../../components/ImageUpload.vue'
+export { default as Logo } from '../../components/Logo.vue'
+export { default as VuetifyLogo } from '../../components/VuetifyLogo.vue'
+export { default as DialogLoader } from '../../components/dialog-loader.vue'
+export { default as FebButton } from '../../components/febButton.vue'
+export { default as FebButtonWork } from '../../components/febButtonWork.vue'
+export { default as BarChartDashBranch } from '../../components/BarChartDash/BarChartDashBranch.vue'
+export { default as BarChartDashCar } from '../../components/BarChartDash/BarChartDashCar.vue'
+export { default as BarChartDashSale } from '../../components/BarChartDash/BarChartDashSale.vue'
+export { default as BarChartDashSaleByBranch } from '../../components/BarChartDash/BarChartDashSaleByBranch.vue'
+export { default as BarChartDashTopCarSerie } from '../../components/BarChartDash/BarChartDashTopCarSerie.vue'
+export { default as BarChartDashVisit } from '../../components/BarChartDash/BarChartDashVisit.vue'
+export { default as BarChartDashVisitCarDown } from '../../components/BarChartDash/BarChartDashVisitCarDown.vue'
+export { default as BarChartDashVisitCarModel } from '../../components/BarChartDash/BarChartDashVisitCarModel.vue'
+export { default as BarChartDashVisitCarSerie } from '../../components/BarChartDash/BarChartDashVisitCarSerie.vue'
+export { default as BarChartDashVisitCarSlacken } from '../../components/BarChartDash/BarChartDashVisitCarSlacken.vue'
+export { default as BarChartDashVisitCarType } from '../../components/BarChartDash/BarChartDashVisitCarType.vue'
+export { default as BarChartBranch } from '../../components/BarChart/BarChartBranch.vue'
+export { default as BarChartCar } from '../../components/BarChart/BarChartCar.vue'
+export { default as BarChartPriceCar } from '../../components/BarChart/BarChartPriceCar.vue'
+export { default as BarChartSale } from '../../components/BarChart/BarChartSale.vue'
+export { default as BarChartSaleCarByBranch } from '../../components/BarChart/BarChartSaleCarByBranch.vue'
+export { default as BarChartTopCars } from '../../components/BarChart/BarChartTopCars.vue'
+export { default as BarChartVisit } from '../../components/BarChart/BarChartVisit.vue'
+export { default as BarChartVisitCar } from '../../components/BarChart/BarChartVisitCar.vue'
+export { default as BarChartVisitLine } from '../../components/BarChart/BarChartVisitLine.vue'
+export { default as DashboardComInsurances } from '../../components/Dashboard/ComInsurances.vue'
+export { default as DashboardComInventoryCar } from '../../components/Dashboard/ComInventoryCar.vue'
+export { default as DashboardComRegis } from '../../components/Dashboard/ComRegis.vue'
+export { default as DashboardComWorkStatus } from '../../components/Dashboard/ComWorkStatus.vue'
+export { default as DateSelect } from '../../components/DateSelect/dateSelect.vue'
+export { default as DateSelect2 } from '../../components/DateSelect/dateSelect2.vue'
+export { default as DateSelectMonth } from '../../components/DateSelect/dateSelectMonth.vue'
+export { default as DateSelectMonthAll } from '../../components/DateSelect/dateSelectMonthAll.vue'
+export { default as ChartLine } from '../../components/Chart/Line.vue'
+export { default as DoughnutChartCarType } from '../../components/DoughnutChartDash/DoughnutChartCarType.vue'
+export { default as DoughnutChartDashBranchCar } from '../../components/DoughnutChartDash/DoughnutChartDashBranchCar.vue'
+export { default as DoughnutChartDashSale } from '../../components/DoughnutChartDash/DoughnutChartDashSale.vue'
+export { default as DoughnutChartBranch } from '../../components/DoughnutChart/DoughnutChartBranch.vue'
+export { default as DoughnutChartCar } from '../../components/DoughnutChart/DoughnutChartCar.vue'
+export { default as DoughnutChartUser } from '../../components/DoughnutChart/DoughnutChartUser.vue'
+export { default as DialogCardRequestLog } from '../../components/dialog/cardRequestLog.vue'
+export { default as DialogAddIncome } from '../../components/dialog/dialogAdd_income.vue'
+export { default as DialogAddLowCars } from '../../components/dialog/dialogAdd_lowCars.vue'
+export { default as DialogAddMoney } from '../../components/dialog/dialogAdd_money.vue'
+export { default as DialogAddOutlay } from '../../components/dialog/dialogAdd_outlay.vue'
+export { default as DialogAddOutlaySmall } from '../../components/dialog/dialogAdd_outlay_small.vue'
+export { default as DialogAmountDown } from '../../components/dialog/dialogAmount_down.vue'
+export { default as DialogAmountSlacken } from '../../components/dialog/dialogAmount_slacken.vue'
+export { default as DialogAmphure } from '../../components/dialog/dialogAmphure.vue'
+export { default as DialogAppointment } from '../../components/dialog/dialogAppointment.vue'
+export { default as DialogAppointmentBank } from '../../components/dialog/dialogAppointmentBank.vue'
+export { default as DialogBank } from '../../components/dialog/dialogBank.vue'
+export { default as DialogBankBranch } from '../../components/dialog/dialogBank_branch.vue'
+export { default as DialogBooking } from '../../components/dialog/dialogBooking.vue'
+export { default as DialogBranch } from '../../components/dialog/dialogBranch.vue'
+export { default as DialogBranchTeam } from '../../components/dialog/dialogBranchTeam.vue'
+export { default as DialogCarLift } from '../../components/dialog/dialogCarLift.vue'
+export { default as DialogCarModel } from '../../components/dialog/dialogCarModel.vue'
+export { default as DialogCarPart } from '../../components/dialog/dialogCarPart.vue'
+export { default as DialogCarPartType } from '../../components/dialog/dialogCarPartType.vue'
+export { default as DialogCarSerieSub } from '../../components/dialog/dialogCarSerieSub.vue'
+export { default as DialogCarSeries } from '../../components/dialog/dialogCarSeries.vue'
+export { default as DialogCarType } from '../../components/dialog/dialogCarType.vue'
+export { default as DialogColor } from '../../components/dialog/dialogColor.vue'
+export { default as DialogCommission } from '../../components/dialog/dialogCommission.vue'
+export { default as DialogContract } from '../../components/dialog/dialogContract.vue'
+export { default as DialogCustomer } from '../../components/dialog/dialogCustomer.vue'
+export { default as DialogCustomerDetail } from '../../components/dialog/dialogCustomer_detail.vue'
+export { default as DialogCustomerVisit } from '../../components/dialog/dialogCustomer_visit.vue'
+export { default as DialogDistricts } from '../../components/dialog/dialogDistricts.vue'
+export { default as DialogFileCar } from '../../components/dialog/dialogFileCar.vue'
+export { default as DialogFinancialFullOld } from '../../components/dialog/dialogFinancial-Full-old.vue'
+export { default as DialogFinancial } from '../../components/dialog/dialogFinancial.vue'
+export { default as DialogFuel } from '../../components/dialog/dialogFuel.vue'
+export { default as DialogGeographie } from '../../components/dialog/dialogGeographie.vue'
+export { default as DialogImage } from '../../components/dialog/dialogImage.vue'
+export { default as DialogImageCar } from '../../components/dialog/dialogImage_car.vue'
+export { default as DialogInstallment } from '../../components/dialog/dialogInstallment.vue'
+export { default as DialogInstallmentHistory } from '../../components/dialog/dialogInstallmentHistory.vue'
+export { default as DialogInstallmentPayment } from '../../components/dialog/dialogInstallmentPayment.vue'
+export { default as DialogInsurCertificate } from '../../components/dialog/dialogInsurCertificate.vue'
+export { default as DialogInsurance } from '../../components/dialog/dialogInsurance.vue'
+export { default as DialogInsurancesList } from '../../components/dialog/dialogInsurancesList.vue'
+export { default as DialogJobDetail } from '../../components/dialog/dialogJobDetail.vue'
+export { default as DialogJobTechnician } from '../../components/dialog/dialogJobTechnician.vue'
+export { default as DialogLowCars } from '../../components/dialog/dialogLowCars.vue'
+export { default as DialogMiddlePrice } from '../../components/dialog/dialogMiddle_price.vue'
+export { default as DialogMiniCar } from '../../components/dialog/dialogMini_car.vue'
+export { default as DialogMiniUser } from '../../components/dialog/dialogMini_user.vue'
+export { default as DialogNegotiation } from '../../components/dialog/dialogNegotiation.vue'
+export { default as DialogNote } from '../../components/dialog/dialogNote.vue'
+export { default as DialogPartnerCar } from '../../components/dialog/dialogPartnerCar.vue'
+export { default as DialogPartnerCompany } from '../../components/dialog/dialogPartnerCompany.vue'
+export { default as DialogPartnerTechnician } from '../../components/dialog/dialogPartner_technician.vue'
+export { default as DialogPathnerJobTechnician } from '../../components/dialog/dialogPathnerJobTechnician.vue'
+export { default as DialogPreApprove } from '../../components/dialog/dialogPreApprove.vue'
+export { default as DialogPriceRecord } from '../../components/dialog/dialogPriceRecord.vue'
+export { default as DialogPromotion } from '../../components/dialog/dialogPromotion.vue'
+export { default as DialogProvince } from '../../components/dialog/dialogProvince.vue'
+export { default as DialogPurchaseCar } from '../../components/dialog/dialogPurchaseCar.vue'
+export { default as DialogPurchasePart } from '../../components/dialog/dialogPurchasePart.vue'
+export { default as DialogReceiveDown } from '../../components/dialog/dialogReceiveDown.vue'
+export { default as DialogReceivingMoney } from '../../components/dialog/dialogReceivingMoney.vue'
+export { default as DialogRepairList } from '../../components/dialog/dialogRepairList.vue'
+export { default as DialogRepairPrice } from '../../components/dialog/dialogRepairPrice.vue'
+export { default as DialogRequestLog } from '../../components/dialog/dialogRequestLog.vue'
+export { default as DialogRequestUpdate } from '../../components/dialog/dialogRequestUpdate.vue'
+export { default as DialogRequestWithdraw } from '../../components/dialog/dialogRequestWithdraw.vue'
+export { default as DialogSearchTerm } from '../../components/dialog/dialogSearch_term.vue'
+export { default as DialogStockCar } from '../../components/dialog/dialogStockCar.vue'
+export { default as DialogStockPart } from '../../components/dialog/dialogStockPart.vue'
+export { default as DialogUnit } from '../../components/dialog/dialogUnit.vue'
+export { default as DialogUser } from '../../components/dialog/dialogUser.vue'
+export { default as DialogUserGroup } from '../../components/dialog/dialogUserGroup.vue'
+export { default as DialogUserLine } from '../../components/dialog/dialogUserLine.vue'
+export { default as DialogUserTeam } from '../../components/dialog/dialogUserTeam.vue'
+export { default as DialogWithdrawPart } from '../../components/dialog/dialogWithdrawPart.vue'
+export { default as DialogWork } from '../../components/dialog/dialogWork.vue'
+export { default as DialogDrawerFile } from '../../components/dialog/drawerFile.vue'
+export { default as DialogDrawerRequestLog } from '../../components/dialog/drawerRequestLog.vue'
+export { default as MobileDialogBooking } from '../../components/mobile/dialogBooking.vue'
+export { default as MobileDialogInsurCertificate } from '../../components/mobile/dialogInsurCertificate.vue'
+export { default as MobileDialogReceiveDown } from '../../components/mobile/dialogReceiveDown.vue'
+export { default as SelectDropDownAmphure } from '../../components/selectDropDown/selectDropDownAmphure.vue'
+export { default as SelectAddCarModel } from '../../components/selectAdd/selectAddCarModel.vue'
+export { default as SelectAddCarPart } from '../../components/selectAdd/selectAddCarPart.vue'
+export { default as SelectAddCarPartType } from '../../components/selectAdd/selectAddCarPartType.vue'
+export { default as SelectAddCarSerie } from '../../components/selectAdd/selectAddCarSerie.vue'
+export { default as SelectAddCarSerieSub } from '../../components/selectAdd/selectAddCarSerieSub.vue'
+export { default as SelectAddCarType } from '../../components/selectAdd/selectAddCarType.vue'
+export { default as SelectAddCustomer } from '../../components/selectAdd/selectAddCustomer.vue'
+export { default as SelectAddPartnerCar } from '../../components/selectAdd/selectAddPartnerCar.vue'
+export { default as SelectAddPartnerTechnician } from '../../components/selectAdd/selectAddPartner_technician.vue'
+export { default as SelectAddSearchTerm } from '../../components/selectAdd/selectAddSearch_term.vue'
+export { default as SelectAddUnit } from '../../components/selectAdd/selectAddUnit.vue'
 
 // nuxt/nuxt.js#8607
 function wrapFunctional(options) {

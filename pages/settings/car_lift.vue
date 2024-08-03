@@ -14,8 +14,8 @@
         <v-col cols="3">
           <v-text-field
             v-model="search"
-id="search"
-name="search"
+            id="search"
+            name="search"
             append-icon="mdi-magnify"
             label="ค้นหา"
             single-line
@@ -34,16 +34,12 @@ name="search"
         loading-text="กำลังโหลดข้อมูลกรุณารอสักครู่"
       >
         <template v-slot:[`item.carlift_status`]="{ item }">
-          <v-btn v-if="item.carlift_status == '1'" x-small color="success" dark
-            >ว่าง</v-btn
-          >
+          <v-btn v-if="item.carlift_status == '1'" x-small color="success" dark>ว่าง</v-btn>
           <v-btn v-else x-small color="red" dark>ใช้งานอยู่</v-btn>
         </template>
 
         <template v-slot:[`item.carlift_active`]="{ item }">
-          <v-btn v-if="item.carlift_active == '1'" x-small color="success" dark
-            >เปิดใช้งาน</v-btn
-          >
+          <v-btn v-if="item.carlift_active == '1'" x-small color="success" dark>เปิดใช้งาน</v-btn>
           <v-btn v-else x-small color="red" dark>ปิดการใช้งาน</v-btn>
         </template>
 
@@ -95,9 +91,7 @@ export default {
         { text: "จัดการ", value: "actions", sortable: false, width: "12%" },
       ],
       data: [],
-      user_group_permission: this.$auth.$storage.getLocalStorage(
-        "userData-user_group_permission"
-      ),
+      user_group_permission: this.$auth.$storage.getLocalStorage("userData-user_group_permission"),
     };
   },
   mounted() {

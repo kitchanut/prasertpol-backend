@@ -2,190 +2,209 @@
   <v-container>
     <v-dialog v-model="dialogDeleteComponent" max-width="70%">
       <v-card>
-        <v-form
-          autocomplete="true"
-          ref="form"
-          @submit.prevent="onAction(formData.id)"
-        >
+        <v-form autocomplete="true" ref="form" @submit.prevent="onAction(formData.id)">
           <v-toolbar color="primary" dark flat>
             {{ formTitle }}
           </v-toolbar>
 
-          <v-progress-linear
-            v-if="formDataLoading"
-            indeterminate
-            color="yellow darken-2"
-          >
-          </v-progress-linear>
+          <v-progress-linear v-if="formDataLoading" indeterminate color="yellow darken-2"> </v-progress-linear>
 
           <v-card-text>
-            <v-container>
-              <v-row v-if="action == 'add'">
-                <v-col cols="12">
-                  <h2 class="text-center red--text">
-                    กรุณาเช็คข้อมูลก่อนเพิ่มทุกครั้งว่ามีซ้ำกันหรือไม่
-                  </h2>
-                </v-col>
-              </v-row>
-              <v-row>
-                <v-col :cols="action == 'add' ? 6 : 4">
-                  <v-autocomplete
-                    v-model="formData.car_serie_id"
-                    id="formData.car_serie_id"
-                    name="formData.car_serie_id"
-                    :items="carSerie"
-                    no-data-text="ไม่มีข้อมูล"
-                    @change="getCarSerieSub"
-                    item-text="car_series_name"
-                    item-value="id"
-                    label="รุ่นรถ"
-                    outlined
-                    dense
-                    hide-details
-                    :rules="rule"
-                  >
-                  </v-autocomplete>
-                </v-col>
-                <v-col :cols="action == 'add' ? 6 : 4">
-                  <v-autocomplete
-                    v-model="formData.car_serie_sub_id"
-                    id="formData.car_serie_sub_id"
-                    name="formData.car_serie_sub_id"
-                    :items="carSerieSub"
-                    item-text="car_serie_sub_name"
-                    item-value="id"
-                    label="รุ่นย่อย"
-                    no-data-text="ไม่มีข้อมูล"
-                    outlined
-                    dense
-                    hide-details
-                    :rules="rule"
-                  >
-                  </v-autocomplete>
-                </v-col>
-                <v-col v-if="action == 'edit'">
-                  <v-autocomplete
-                    v-model="formData.year"
-                    id="formData.year"
-                    name="formData.year"
-                    :items="years_start"
-                    item-text="value"
-                    no-data-text="ไม่มีข้อมูล"
-                    item-value="value"
-                    label="ปีผลิต (ค.ศ)"
-                    outlined
-                    dense
-                    hide-details
-                    :rules="rule"
-                  ></v-autocomplete>
-                </v-col>
-              </v-row>
-
-              <v-row v-if="action == 'add'">
-                <v-col cols="6">
-                  <v-autocomplete
-                    v-model="formData.years_start"
-                    id="formData.years_start"
-                    name="formData.years_start"
-                    :items="years_start"
-                    item-text="value"
-                    no-data-text="ไม่มีข้อมูล"
-                    item-value="value"
-                    label="ตั้งค่าปีผลิตเริ่มต้น (ค.ศ)"
-                    @change="selectYears_start(formData.years_start)"
-                    outlined
-                    dense
-                    hide-details
-                    :rules="rule"
-                  ></v-autocomplete>
-                </v-col>
-
-                <v-col cols="6" v-if="formData.years_start != null">
-                  <v-autocomplete
-                    v-model="formData.years_end"
-                    id="formData.years_end"
-                    name="formData.years_end"
-                    :items="years_end"
-                    item-text="value"
-                    no-data-text="ไม่มีข้อมูล"
-                    item-value="value"
-                    label="ตั้งค่าปีผลิตสิ้นสุด (ค.ศ)"
-                    outlined
-                    dense
-                    hide-details
-                    :rules="rule"
-                  ></v-autocomplete>
-                </v-col>
-              </v-row>
-
-              <v-row>
-                <v-col cols="6">
-                  <v-radio-group
-                    v-model="formData.car_gear"
-                    id="formData.car_gear"
-                    name="formData.car_gear"
-                    :rules="[(value) => !!value]"
-                    row
-                  >
-                    <template>
-                      <div class="mr-1">เกียร์รถ:</div>
-                    </template>
-                    <v-radio label="อัตโนมัติ (AT)" value="1"></v-radio>
-                    <v-radio label="ธรรมดา (MT)" value="2"></v-radio>
-                  </v-radio-group>
-                </v-col>
-                <v-col cols="6">
-                  <v-radio-group
-                    v-model="formData.middle_price_active"
-                    id="formData.middle_price_active"
-                    name="formData.middle_price_active"
-                    :rules="[(value) => !!value]"
-                    row
-                  >
-                    <template>
-                      <div class="mr-1">แสดงตอนเลือก:</div>
-                    </template>
-
-                    <v-radio label="เปิดใช้งาน" value="1"></v-radio>
-                    <v-radio
-                      label="ปิดการใช้งาน"
-                      color="red"
-                      value="2"
-                    ></v-radio>
-                  </v-radio-group>
-                </v-col>
-              </v-row>
-
-              <br />
-              <v-row>
-                <v-col col="12">
-                  <h2 class="text-center">ราคากลาง</h2>
-                  <h2 v-show="false" class="text-center">
-                     {{ fix_amount_price }}
-                  </h2>
-                </v-col>
-              </v-row>
-              <br />
-              <v-radio-group v-model="formData.selected"
-                id="formData.selected"
-                name="formData.selected">
-                <v-row
-                  v-for="(
-                    middle_price_detail, keys
-                  ) in formData.middle_price_details"
-                  :key="keys"
+            <v-row v-if="action == 'add'">
+              <v-col cols="12">
+                <h2 class="text-center red--text">กรุณาเช็คข้อมูลก่อนเพิ่มทุกครั้งว่ามีซ้ำกันหรือไม่</h2>
+              </v-col>
+            </v-row>
+            <v-row>
+              <v-col :cols="action == 'add' ? 3 : 4">
+                <v-autocomplete
+                  v-model="formData.car_serie_id"
+                  id="formData.car_serie_id"
+                  name="formData.car_serie_id"
+                  :items="carSerie"
+                  no-data-text="ไม่มีข้อมูล"
+                  @change="getCarSerieSub"
+                  item-text="car_series_name"
+                  item-value="id"
+                  label="รุ่นรถ"
+                  outlined
+                  dense
+                  hide-details
+                  :rules="rule"
                 >
+                </v-autocomplete>
+              </v-col>
+              <v-col :cols="action == 'add' ? 3 : 4">
+                <v-autocomplete
+                  v-model="formData.car_serie_sub_id"
+                  id="formData.car_serie_sub_id"
+                  name="formData.car_serie_sub_id"
+                  :items="carSerieSub"
+                  item-text="car_serie_sub_name"
+                  item-value="id"
+                  label="รุ่นย่อย"
+                  no-data-text="ไม่มีข้อมูล"
+                  outlined
+                  dense
+                  hide-details
+                  :rules="rule"
+                >
+                </v-autocomplete>
+              </v-col>
+              <v-col v-if="action == 'edit'">
+                <v-autocomplete
+                  v-model="formData.year"
+                  id="formData.year"
+                  name="formData.year"
+                  :items="years_start"
+                  item-text="value"
+                  no-data-text="ไม่มีข้อมูล"
+                  item-value="value"
+                  label="ปีผลิต (ค.ศ)"
+                  outlined
+                  dense
+                  hide-details
+                  :rules="rule"
+                ></v-autocomplete>
+              </v-col>
+
+              <v-col cols="3" v-if="action == 'add'">
+                <v-autocomplete
+                  v-model="formData.years_start"
+                  id="formData.years_start"
+                  name="formData.years_start"
+                  :items="years_start"
+                  item-text="value"
+                  no-data-text="ไม่มีข้อมูล"
+                  item-value="value"
+                  label="ตั้งค่าปีผลิตเริ่มต้น (ค.ศ)"
+                  @change="selectYears_start(formData.years_start)"
+                  outlined
+                  dense
+                  hide-details
+                  :rules="rule"
+                ></v-autocomplete>
+              </v-col>
+
+              <v-col cols="3" v-if="action == 'add' && formData.years_start != null">
+                <v-autocomplete
+                  v-model="formData.years_end"
+                  id="formData.years_end"
+                  name="formData.years_end"
+                  :items="years_end"
+                  item-text="value"
+                  no-data-text="ไม่มีข้อมูล"
+                  item-value="value"
+                  label="ตั้งค่าปีผลิตสิ้นสุด (ค.ศ)"
+                  outlined
+                  dense
+                  hide-details
+                  :rules="rule"
+                ></v-autocomplete>
+              </v-col>
+            </v-row>
+
+            <v-row>
+              <v-col cols="6">
+                <v-radio-group v-model="formData.car_gear" :rules="[(value) => !!value]" row>
+                  <template>
+                    <div class="mr-1">เกียร์รถ:</div>
+                  </template>
+                  <v-radio label="อัตโนมัติ (AT)" value="1"></v-radio>
+                  <v-radio label="ธรรมดา (MT)" value="2"></v-radio>
+                </v-radio-group>
+              </v-col>
+              <v-col cols="6">
+                <v-radio-group v-model="formData.middle_price_active" :rules="[(value) => !!value]" row>
+                  <template>
+                    <div class="mr-1">แสดงตอนเลือก:</div>
+                  </template>
+                  <v-radio label="เปิดใช้งาน" value="1"></v-radio>
+                  <v-radio label="ปิดการใช้งาน" color="red" value="2"></v-radio>
+                </v-radio-group>
+              </v-col>
+            </v-row>
+
+            <v-card :loading="formDataLoading" outlined>
+              <v-card-text>
+                <h2 class="text-center">ราคากลาง</h2>
+                <h2 v-show="false" class="text-center"> {{ fix_amount_price }}</h2>
+              </v-card-text>
+              <v-divider></v-divider>
+              <v-radio-group v-model="formData.selected">
+                <v-simple-table dense>
+                  <template v-slot:default>
+                    <thead>
+                      <tr>
+                        <th>ธนาคาร</th>
+                        <th>ธนาคารให้ (บ.)</th>
+                        <th>บวก (%)</th>
+                        <th>คูณ (%)</th>
+                        <th>รวมจัด (บ.)</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr v-for="(middle_price_detail, keys) in formData.middle_price_details" :key="keys">
+                        <td>
+                          <!-- <v-radio :key="keys" :value="middle_price_detail.id" :label="middle_price_detail.bank_name">
+                          </v-radio> -->
+                          <v-radio :value="middle_price_detail.id" :label="middle_price_detail.bank_nick_name">
+                          </v-radio>
+                        </td>
+                        <td>
+                          <v-text-field
+                            dense
+                            min="0"
+                            type="number"
+                            v-model="middle_price_detail.middle_price"
+                            @keyup="cal_car(keys)"
+                            outlined
+                            hide-details
+                          ></v-text-field>
+                        </td>
+                        <td>
+                          <v-text-field
+                            dense
+                            min="0"
+                            type="number"
+                            v-model="middle_price_detail.middle_plus"
+                            @keyup="cal_car(keys)"
+                            outlined
+                            hide-details
+                          ></v-text-field>
+                        </td>
+                        <td>
+                          <v-text-field
+                            dense
+                            min="0"
+                            type="number"
+                            v-model="middle_price_detail.middle_multiply"
+                            @keyup="cal_car(keys)"
+                            outlined
+                            hide-details
+                          ></v-text-field>
+                        </td>
+                        <td>
+                          <v-text-field
+                            dense
+                            min="0"
+                            type="number"
+                            v-model="middle_price_detail.amount_price"
+                            outlined
+                            hide-details
+                          ></v-text-field>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </template>
+                </v-simple-table>
+
+                <!-- <v-row v-for="(middle_price_detail, keys) in formData.middle_price_details" :key="keys">
                   <v-col col="5">
                     <v-row>
                       <v-col>
-                        <v-text-field v-show="false">{{
-                          middle_price_detail.id
-                        }}</v-text-field>
-                        <v-radio
-                          :key="keys"
-                          :value="middle_price_detail.id"
-                          :label="middle_price_detail.bank_name"
-                        >
+                        <v-text-field v-show="false">{{ middle_price_detail.id }}</v-text-field>
+                        <v-radio :key="keys" :value="middle_price_detail.id" :label="middle_price_detail.bank_name">
                         </v-radio>
                       </v-col>
                     </v-row>
@@ -250,22 +269,16 @@
                       hide-details
                     ></v-text-field>
                   </v-col>
-                </v-row>
+                </v-row> -->
               </v-radio-group>
-            </v-container>
+            </v-card>
           </v-card-text>
+
+          <v-divider></v-divider>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="red darken-1" text @click="$emit('cancleItem')"
-              >ยกเลิก</v-btn
-            >
-            <v-btn
-              type="submit"
-              color="success darken-1"
-              text
-              :loading="btnloading"
-              >บันทึก</v-btn
-            >
+            <v-btn color="red darken-1" text @click="$emit('cancleItem')">ยกเลิก</v-btn>
+            <v-btn type="submit" color="success darken-1" text :loading="btnloading">บันทึก</v-btn>
           </v-card-actions>
         </v-form>
       </v-card>
@@ -309,7 +322,8 @@ export default {
         response.data[index].middle_price = 0;
         response.data[index].amount_price = 0;
       }
-      this.formData.middle_price_details = await response.data;
+      this.formData.middle_price_details = response.data;
+      this.$forceUpdate();
     },
     async getCarseries() {
       this.carSerie = [];
@@ -329,9 +343,7 @@ export default {
     async getCarSerieSub() {
       this.carSerieSub = [];
       if (Number.isInteger(this.formData.car_serie_id) == true) {
-        const response = await apiCar_serie_sub.select(
-          this.formData.car_serie_id
-        );
+        const response = await apiCar_serie_sub.select(this.formData.car_serie_id);
         this.carSerieSub = response.data;
       }
     },
@@ -344,16 +356,11 @@ export default {
     },
     async cal_car(keys) {
       let plus =
-        (parseFloat(this.formData.middle_price_details[keys].middle_plus) /
-          100) *
+        (parseFloat(this.formData.middle_price_details[keys].middle_plus) / 100) *
         parseFloat(this.formData.middle_price_details[keys].middle_price);
-      let new_middle =
-        parseFloat(plus) +
-        parseFloat(this.formData.middle_price_details[keys].middle_price);
+      let new_middle = parseFloat(plus) + parseFloat(this.formData.middle_price_details[keys].middle_price);
       let amount_price =
-        (parseFloat(this.formData.middle_price_details[keys].middle_multiply) /
-          100) *
-        parseFloat(new_middle);
+        (parseFloat(this.formData.middle_price_details[keys].middle_multiply) / 100) * parseFloat(new_middle);
       if (!isNaN(amount_price)) {
         this.formData.middle_price_details[keys].amount_price = amount_price;
         this.fix_amount_price = amount_price;
@@ -364,21 +371,24 @@ export default {
       if (this.$refs.form.validate()) {
         this.btnloading = true;
         this.formDataLoading = true;
+        console.log(this.formData);
         if (this.action == "add") {
           const response = await apiMiddle_price.store(this.formData);
           // console.log(response);
-          this.$refs.form.reset();
+
           if (response.status == 200) {
             this.$emit("success");
+            this.$refs.form.reset();
           } else {
             this.$emit("error");
           }
         } else if (this.action == "edit") {
           const response = await apiMiddle_price.update(id, this.formData);
-          // console.log(response);
-          this.$refs.form.reset();
+          console.log(response);
+
           if (response.status == 200) {
             this.$emit("success");
+            this.$refs.form.reset();
           } else {
             this.$emit("error");
           }
@@ -408,7 +418,6 @@ export default {
           await this.getBank();
         } else if (this.action == "edit") {
           const response = await apiMiddle_price.show(this.id);
-          // console.log(response);
           this.$nextTick(() => {
             this.$refs.form.reset();
             const self = this;

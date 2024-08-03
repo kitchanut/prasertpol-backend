@@ -1,16 +1,7 @@
 <template>
   <v-card>
-    <v-form
-      autocomplete="true"
-      ref="form"
-      @submit.prevent="onAction(formData.id)"
-    >
-      <v-progress-linear
-        v-if="formDataLoading"
-        indeterminate
-        color="yellow darken-2"
-      >
-      </v-progress-linear>
+    <v-form autocomplete="true" ref="form" @submit.prevent="onAction(formData.id)">
+      <v-progress-linear v-if="formDataLoading" indeterminate color="yellow darken-2"> </v-progress-linear>
 
       <v-card-title primary-title>แจ้งเบิกเงิน</v-card-title>
 
@@ -162,19 +153,10 @@
       <v-card-actions>
         <v-row>
           <v-col>
-            <v-btn dark block color="warning" @click="closeWindow">
-              ยกเลิก
-            </v-btn>
+            <v-btn dark block color="warning" @click="closeWindow"> ยกเลิก </v-btn>
           </v-col>
           <v-col>
-            <v-btn
-              block
-              type="submit"
-              color="success darken-1"
-              :loading="loading"
-            >
-              บันทึก
-            </v-btn>
+            <v-btn block type="submit" color="success darken-1" :loading="loading"> บันทึก </v-btn>
           </v-col>
         </v-row>
       </v-card-actions>
@@ -203,13 +185,8 @@ export default {
       id_card: null,
       sale_sheet: null,
       rule: [(value) => !!value || "กรุณาใส่ข้อมูล"],
-      ruleMustImage: [
-        (value) => !!value,
-        (value) => !value || value.size < 2000000 || "ขนาดรูปต้องน้อยกว่า 2 MB",
-      ],
-      ruleImage: [
-        (value) => !value || value.size < 2000000 || "ขนาดรูปต้องน้อยกว่า 2 MB",
-      ],
+      ruleMustImage: [(value) => !!value, (value) => !value || value.size < 2000000 || "ขนาดรูปต้องน้อยกว่า 2 MB"],
+      ruleImage: [(value) => !value || value.size < 2000000 || "ขนาดรูปต้องน้อยกว่า 2 MB"],
     };
   },
   mounted() {
@@ -232,8 +209,7 @@ export default {
           " (" +
           response.data.data.user_code +
           ")";
-        this.formData.branch_name =
-          response.data.data.branch.branch_team.branch_team_name;
+        this.formData.branch_name = response.data.data.branch.branch_team.branch_team_name;
       }
 
       // console.log(response.data);
@@ -610,18 +586,9 @@ export default {
     runApp() {
       liff.getProfile().then(async (profile) => {
         // console.log(profile);
-        this.$auth.$storage.setLocalStorage(
-          "userData-lineUUID",
-          profile.userId
-        );
-        this.$auth.$storage.setLocalStorage(
-          "userData-linepictureUrl",
-          profile.pictureUrl
-        );
-        this.$auth.$storage.setLocalStorage(
-          "userData-linedisplayName",
-          profile.displayName
-        );
+        this.$auth.$storage.setLocalStorage("userData-lineUUID", profile.userId);
+        this.$auth.$storage.setLocalStorage("userData-linepictureUrl", profile.pictureUrl);
+        this.$auth.$storage.setLocalStorage("userData-linedisplayName", profile.displayName);
 
         this.formData.lineUUID = profile.userId;
         this.formData.displayName = profile.displayName;
@@ -639,5 +606,4 @@ export default {
 };
 </script>
 
-<style>
-</style>
+<style></style>

@@ -9,10 +9,7 @@
   >
     <v-card>
       <v-card-title>
-        <v-col
-          cols="3"
-          v-if="user_group_permission == -1 || user_group_permission == 8"
-        >
+        <v-col cols="3" v-if="user_group_permission == -1 || user_group_permission == 8">
           <v-autocomplete
             v-model="branch_id"
             :items="branches"
@@ -31,8 +28,8 @@
         <v-col cols="3">
           <v-text-field
             v-model="search"
-id="search"
-name="search"
+            id="search"
+            name="search"
             append-icon="mdi-magnify"
             label="ค้นหา"
             single-line
@@ -50,6 +47,7 @@ name="search"
         show-expand
         no-data-text="ยังไม่มีการเพิ่มข้อมูล"
         loading-text="กำลังโหลดข้อมูลกรุณารอสักครู่"
+        dense
       >
         <template v-slot:expanded-item="{ item }">
           <td :colspan="headers.length">
@@ -98,21 +96,11 @@ name="search"
         </template>
 
         <template v-slot:[`item.work_status`]="{ item }">
-          <v-btn v-if="item.job_status == '1'" x-small color="orange" dark
-            >รอเริ่มงาน</v-btn
-          >
-          <v-btn v-if="item.job_status == '2'" x-small color="blue" dark
-            >กำลังซ่อม</v-btn
-          >
-          <v-btn v-if="item.job_status == '3'" x-small color="blue-grey" dark
-            >พักงาน</v-btn
-          >
-          <v-btn v-if="item.job_status == '4'" x-small color="success" dark
-            >ทำเสร็จแล้ว</v-btn
-          >
-          <v-btn v-if="item.job_status == '5'" x-small color="red" dark
-            >ยกเลิก</v-btn
-          >
+          <v-btn v-if="item.job_status == '1'" x-small color="orange" dark>รอเริ่มงาน</v-btn>
+          <v-btn v-if="item.job_status == '2'" x-small color="blue" dark>กำลังซ่อม</v-btn>
+          <v-btn v-if="item.job_status == '3'" x-small color="blue-grey" dark>พักงาน</v-btn>
+          <v-btn v-if="item.job_status == '4'" x-small color="success" dark>ทำเสร็จแล้ว</v-btn>
+          <v-btn v-if="item.job_status == '5'" x-small color="red" dark>ยกเลิก</v-btn>
         </template>
 
         <!-- <template v-slot:item.actions="{ item }"> -->
@@ -123,50 +111,32 @@ name="search"
                 icon
                 v-bind="attrs"
                 v-on="on"
-                v-if="
-                  user_group_permission == 4 ||
-                  user_group_permission == 5 ||
-                  user_group_permission == -1
-                "
+                v-if="user_group_permission == 4 || user_group_permission == 5 || user_group_permission == -1"
               >
                 <v-icon>mdi-dots-horizontal</v-icon>
               </v-btn>
             </template>
             <v-list>
-              <v-list-item
-                @click="startJob(item.id, item.carlift_id, item.repair_time, 2)"
-                v-if="item.job_status == 1"
-              >
+              <v-list-item @click="startJob(item.id, item.carlift_id, item.repair_time, 2)" v-if="item.job_status == 1">
                 <v-list-item-title>เริ่มงาน</v-list-item-title>
               </v-list-item>
 
               <v-list-item
-                @click="
-                  cancelJob(item.id, item.carlift_id, item.repair_time, 5)
-                "
+                @click="cancelJob(item.id, item.carlift_id, item.repair_time, 5)"
                 v-if="item.job_status == 1"
               >
                 <v-list-item-title>ยกเลิก</v-list-item-title>
               </v-list-item>
 
-              <v-list-item
-                @click="pauseJob(item.id, item.carlift_id, item.repair_time, 3)"
-                v-if="item.job_status == 2"
-              >
+              <v-list-item @click="pauseJob(item.id, item.carlift_id, item.repair_time, 3)" v-if="item.job_status == 2">
                 <v-list-item-title>พักงาน</v-list-item-title>
               </v-list-item>
 
-              <v-list-item
-                @click="startJob(item.id, item.carlift_id, item.repair_time, 2)"
-                v-if="item.job_status == 3"
-              >
+              <v-list-item @click="startJob(item.id, item.carlift_id, item.repair_time, 2)" v-if="item.job_status == 3">
                 <v-list-item-title>เริ่มงานช่างอีกครั้ง</v-list-item-title>
               </v-list-item>
 
-              <v-list-item
-                @click="endJob(item.id, item.carlift_id, item.repair_time, 4)"
-                v-if="item.job_status == 2"
-              >
+              <v-list-item @click="endJob(item.id, item.carlift_id, item.repair_time, 4)" v-if="item.job_status == 2">
                 <v-list-item-title>เสร็จงาน</v-list-item-title>
               </v-list-item>
             </v-list>
@@ -201,9 +171,7 @@ export default {
   },
   data() {
     return {
-      user_group_permission: this.$auth.$storage.getLocalStorage(
-        "userData-user_group_permission"
-      ),
+      user_group_permission: this.$auth.$storage.getLocalStorage("userData-user_group_permission"),
       loading: true,
       search: "",
       formTitle: "",
@@ -215,8 +183,8 @@ export default {
       selectOnsee: 4,
       moment: moment,
       headers: [
-        { text: "ลำดับ", value: "no", align: "center" },
-        { text: "รหัสงาน", value: "job_technician_id" },
+        { text: "ลำดับ", value: "no", align: "center", width: "5%" },
+        { text: "รหัสงาน", value: "job_technician_id", width: "7%" },
         { text: "ลำดับรถ", value: "cars.car_no" },
         { text: "ทะเบียน", value: "cars.car_regis" },
         { text: "ลิฟท์ซ่อม", value: "car_lift.carlift_name" },
@@ -224,16 +192,17 @@ export default {
         { text: "รายการซ่อม", value: "repair.repair_name" },
         { text: "เวลา", value: "timer" },
         { text: "สถานะ", value: "work_status" },
-        { text: "จัดการ", value: "actions", sortable: false, width: "10%" },
+        { text: "จัดการ", value: "actions", sortable: false, width: "5%" },
         {
           text: "เพิ่มเติม",
           sortable: false,
           value: "data-table-expand",
-          width: "10%",
+          width: "5%",
         },
       ],
       data: [],
-      branch_id: this.$auth.$storage.getLocalStorage("userData-branch_id"),
+      // branch_id: this.$auth.$storage.getLocalStorage("userData-branch_id"),
+      branch_id: 0,
       user_id: this.$auth.$storage.getLocalStorage("userData-id"),
 
       branches: [],

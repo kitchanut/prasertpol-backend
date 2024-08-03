@@ -18,12 +18,17 @@ export function store(params) {
 
 export function update(id, params) {
   const url = HOSTNAME + path + "/" + id;
-  return request("put", url, params);
+  return request("post", url, params);
 }
 
 export function show(id) {
   const url = HOSTNAME + path + "/" + id;
   return request("get", url, {});
+}
+
+export function indexTime(params) {
+  const url = HOSTNAME + "/api/financial/indexTime";
+  return request("post", url, params);
 }
 
 export function dataWork(idWork, payment_type) {

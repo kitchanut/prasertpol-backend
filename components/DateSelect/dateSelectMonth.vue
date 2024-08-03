@@ -1,5 +1,5 @@
 <template>
-  <v-row class="py-2">
+  <v-row>
     <v-col cols="3">
       <v-autocomplete
         v-model="selectYear"
@@ -59,7 +59,7 @@
           v-model="timeStart"
           locale="th-TH"
           picker-date
-          @change="changeSelectTime"
+          @change="returnDate"
           @input="menuTimeStart = false"
         ></v-date-picker>
       </v-menu>
@@ -93,14 +93,14 @@
           v-model="timeEnd"
           locale="th-TH"
           picker-date
-          @change="changeSelectTime"
+          @change="returnDate"
           @input="menuTimeEnd = false"
         ></v-date-picker>
       </v-menu>
     </v-col>
   </v-row>
 </template>
-  <script>
+<script>
 import moment from "moment";
 
 export default {
@@ -144,5 +144,4 @@ export default {
   },
 };
 </script>
-  <style lang=""></style>
-  
+<style lang=""></style>

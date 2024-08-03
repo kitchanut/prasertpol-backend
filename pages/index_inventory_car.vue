@@ -35,7 +35,7 @@
             <td align="center">
               <span
                 :style="
-                  countFieldSeparate('all', car_sery.car_serie_id, 'all') > car_sery.car_series_minimum
+                  countFieldSeparate('all', car_sery.car_serie_id, 'all') >= car_sery.car_series_minimum
                     ? 'color: blue'
                     : 'color: red'
                 "

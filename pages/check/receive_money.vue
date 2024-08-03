@@ -88,9 +88,11 @@
             </v-dialog>
           </v-col>
           <v-col v-if="idWork" class="d-flex align-center">
-            <v-btn color="primary" class="mr-2" height="39" @click="ReceivingMoney(idWork, 1)">ใบกำกับค่าตัวรถ</v-btn>
-            <v-btn class="mr-2" color="warning" height="39" @click="ReceivingMoney(idWork, 2)">ใบกำกับค่าคอม</v-btn>
-            <v-btn color="success" height="39" @click="ReceivingMoney(idWork, 3)">อื่นๆ</v-btn>
+            <v-btn color="primary" class="mr-2" height="39" @click="ReceivingMoney(idWork, 0, 1)"
+              >ใบกำกับค่าตัวรถ</v-btn
+            >
+            <v-btn class="mr-2" color="warning" height="39" @click="ReceivingMoney(idWork, 0, 2)">ใบกำกับค่าคอม</v-btn>
+            <v-btn color="success" height="39" @click="ReceivingMoney(idWork, 0, 3)">อื่นๆ</v-btn>
           </v-col>
           <v-spacer></v-spacer>
           <v-col xs="12" sm="12" md="6" lg="4" xl="4" class="d-flex align-center">
@@ -108,59 +110,85 @@
             </v-text-field>
           </v-col>
         </v-row>
-        <br />
-
-        <v-data-table :headers="headers" :items="data" :search="search" :multi-sort="true" :loading="loading" dense>
-          <template v-slot:[`item.car_no`]="{ item }">
-            <div>{{ item.car_no }}</div>
-            <div>W{{ item.id }}</div>
-          </template>
-
-          <template v-slot:[`item.car_regis`]="{ item }">
-            <div>{{ item.car_model_name }}</div>
-            <div>{{ item.car_regis }}</div>
-            <div>{{ item.name_th }}</div>
-          </template>
-
-          <template v-slot:[`item.receiving_money_sum`]="{ item }">
-            <div>{{ item.receiving_money_sum }}</div>
-            <div v-if="item.check1 == 'Ok'">
-              {{ item.receiving_money_sum_str }}
-            </div>
-            <div v-else class="red--text">
-              {{ item.receiving_money_sum_str }}
-            </div>
-          </template>
-
-          <template v-slot:[`item.receiving_money_sum_vat`]="{ item }">
-            <div>{{ item.receiving_money_sum_vat }}</div>
-            <div v-if="item.check2 == 'Ok'">
-              {{ item.receiving_money_sum_vat_str }}
-            </div>
-            <div v-else class="red--text">
-              {{ item.receiving_money_sum_vat_str }}
-            </div>
-          </template>
-
-          <template v-slot:[`item.receiving_money_all`]="{ item }">
-            <div>{{ item.receiving_money_all }}</div>
-            <div v-if="item.check3 == 'Ok'">
-              {{ item.receiving_money_all_str }}
-            </div>
-            <div v-else class="red--text">
-              {{ item.receiving_money_all_str }}
-            </div>
-          </template>
-          <template v-slot:[`item.actions`]="{ item }">
-            <v-btn color="primary" fab x-small dark @click="ReceivingMoney(item.working_id, item.receivingMoney_type)">
-              <v-icon> mdi-pencil </v-icon>
-            </v-btn>
-            <v-btn color="red" fab x-small dark @click="deleteItem(item.id)">
-              <v-icon> mdi-delete </v-icon>
-            </v-btn>
-          </template>
-        </v-data-table>
       </v-card-text>
+      <v-divider></v-divider>
+      <v-data-table :headers="headers" :items="data" :search="search" :multi-sort="true" :loading="loading" dense>
+        <template v-slot:[`item.car_no`]="{ item }">
+          <div>{{ item.car_no }}</div>
+          <div>W{{ item.working_id }}</div>
+        </template>
+
+        <template v-slot:[`item.car_regis`]="{ item }">
+          <div>{{ item.car_model_name }}</div>
+          <div>{{ item.car_regis }}</div>
+          <div>{{ item.name_th }}</div>
+        </template>
+
+        <template v-slot:[`item.receiving_money_sum`]="{ item }">
+          <div>
+            {{
+              Number(item.receiving_money_sum).toLocaleString("th-TH", {
+                maximumFractionDigits: 2,
+                minimumFractionDigits: 2,
+              })
+            }}
+          </div>
+          <div v-if="item.check1 == 'Ok'">
+            {{ item.receiving_money_sum_str }}
+          </div>
+          <div v-else class="red--text">
+            {{ item.receiving_money_sum_str }}
+          </div>
+        </template>
+
+        <template v-slot:[`item.receiving_money_sum_vat`]="{ item }">
+          <div>
+            {{
+              Number(item.receiving_money_sum_vat).toLocaleString("th-TH", {
+                maximumFractionDigits: 2,
+                minimumFractionDigits: 2,
+              })
+            }}
+          </div>
+          <div v-if="item.check2 == 'Ok'">
+            {{ item.receiving_money_sum_vat_str }}
+          </div>
+          <div v-else class="red--text">
+            {{ item.receiving_money_sum_vat_str }}
+          </div>
+        </template>
+
+        <template v-slot:[`item.receiving_money_all`]="{ item }">
+          <div>
+            {{
+              Number(item.receiving_money_all).toLocaleString("th-TH", {
+                maximumFractionDigits: 2,
+                minimumFractionDigits: 2,
+              })
+            }}
+          </div>
+          <div v-if="item.check3 == 'Ok'">
+            {{ item.receiving_money_all_str }}
+          </div>
+          <div v-else class="red--text">
+            {{ item.receiving_money_all_str }}
+          </div>
+        </template>
+        <template v-slot:[`item.actions`]="{ item }">
+          <v-btn
+            color="primary"
+            fab
+            x-small
+            dark
+            @click="ReceivingMoney(item.working_id, item.car_no, item.receivingMoney_type)"
+          >
+            <v-icon> mdi-pencil </v-icon>
+          </v-btn>
+          <v-btn color="red" fab x-small dark @click="deleteItem(item.id)">
+            <v-icon> mdi-delete </v-icon>
+          </v-btn>
+        </template>
+      </v-data-table>
     </v-card>
 
     <dialogReceivingMoney
@@ -208,10 +236,11 @@ export default {
       receivingMoney_type: 1,
 
       headers: [
+        { text: "ID", value: "id" },
         { text: "ลำดับรถ", value: "car_no" },
-        { text: "ประเภท", value: "receivingMoney_type_str" },
-        { text: "เล่มที่", value: "book_no" },
-        { text: "เลขที่", value: "number_no" },
+        { text: "ประเภท", value: "receivingMoney_type_str", width: "80px" },
+        { text: "เล่มที่", value: "book_no", width: "80px" },
+        { text: "เลขที่", value: "number_no", width: "80px" },
         { text: "รายละเอียด", value: "car_regis" },
         { text: "จำนวน", value: "receiving_money_sum" },
         { text: "vat", value: "receiving_money_sum_vat" },
@@ -242,7 +271,7 @@ export default {
       console.log(this.dataWorking);
     },
 
-    async ReceivingMoney(idWork, receivingMoney_type) {
+    async ReceivingMoney(idWork, car_no, receivingMoney_type) {
       if (receivingMoney_type == 1) {
         this.formTitleReceivingMoney = "เอกสารรับเงิน (ค่าตัวรถ)";
       } else if (receivingMoney_type == 2) {
@@ -250,8 +279,12 @@ export default {
       } else {
         this.formTitleReceivingMoney = "เอกสารรับเงิน (อื่นๆ)";
       }
-      this.idWork = this.idWork;
-      this.car_no = this.car_no;
+      this.idWork = idWork;
+      if (car_no == 0) {
+        this.car_no = this.car_no;
+      } else {
+        this.car_no = car_no;
+      }
       this.receivingMoney_type = receivingMoney_type;
       this.dialogReceivingMoney = true;
       this.actionReceivingMoney = "check";
