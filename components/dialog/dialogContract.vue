@@ -16,17 +16,6 @@
 
             <v-spacer></v-spacer>
             <v-toolbar-items>
-              <!-- <v-btn
-                v-if="this.formData.action == 'edit'"
-                @click="print_a4()"
-                dark
-                text
-                :loading="btnloading"
-                style="font-size: 18px"
-              >
-                ปริ้น
-              </v-btn> -->
-
               <v-btn type="submit" :loading="btnloading" dark text style="font-size: 18px"> บันทึก </v-btn>
             </v-toolbar-items>
           </v-toolbar>

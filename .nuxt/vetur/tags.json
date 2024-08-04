@@ -20,6 +20,60 @@
   "FebButtonWork": {
     "description": "Auto imported from components/febButtonWork.vue"
   },
+  "BarChartBranch": {
+    "description": "Auto imported from components/BarChart/BarChartBranch.vue"
+  },
+  "BarChartCar": {
+    "description": "Auto imported from components/BarChart/BarChartCar.vue"
+  },
+  "BarChartPriceCar": {
+    "description": "Auto imported from components/BarChart/BarChartPriceCar.vue"
+  },
+  "BarChartSale": {
+    "description": "Auto imported from components/BarChart/BarChartSale.vue"
+  },
+  "BarChartSaleCarByBranch": {
+    "description": "Auto imported from components/BarChart/BarChartSaleCarByBranch.vue"
+  },
+  "BarChartTopCars": {
+    "description": "Auto imported from components/BarChart/BarChartTopCars.vue"
+  },
+  "BarChartVisit": {
+    "description": "Auto imported from components/BarChart/BarChartVisit.vue"
+  },
+  "BarChartVisitCar": {
+    "description": "Auto imported from components/BarChart/BarChartVisitCar.vue"
+  },
+  "BarChartVisitLine": {
+    "description": "Auto imported from components/BarChart/BarChartVisitLine.vue"
+  },
+  "DashboardComInsurances": {
+    "description": "Auto imported from components/Dashboard/ComInsurances.vue"
+  },
+  "DashboardComInventoryCar": {
+    "description": "Auto imported from components/Dashboard/ComInventoryCar.vue"
+  },
+  "DashboardComRegis": {
+    "description": "Auto imported from components/Dashboard/ComRegis.vue"
+  },
+  "DashboardComWorkStatus": {
+    "description": "Auto imported from components/Dashboard/ComWorkStatus.vue"
+  },
+  "ChartLine": {
+    "description": "Auto imported from components/Chart/Line.vue"
+  },
+  "DateSelect": {
+    "description": "Auto imported from components/DateSelect/dateSelect.vue"
+  },
+  "DateSelect2": {
+    "description": "Auto imported from components/DateSelect/dateSelect2.vue"
+  },
+  "DateSelectMonth": {
+    "description": "Auto imported from components/DateSelect/dateSelectMonth.vue"
+  },
+  "DateSelectMonthAll": {
+    "description": "Auto imported from components/DateSelect/dateSelectMonthAll.vue"
+  },
   "BarChartDashBranch": {
     "description": "Auto imported from components/BarChartDash/BarChartDashBranch.vue"
   },
@@ -53,59 +107,14 @@
   "BarChartDashVisitCarType": {
     "description": "Auto imported from components/BarChartDash/BarChartDashVisitCarType.vue"
   },
-  "DashboardComInsurances": {
-    "description": "Auto imported from components/Dashboard/ComInsurances.vue"
+  "DoughnutChartBranch": {
+    "description": "Auto imported from components/DoughnutChart/DoughnutChartBranch.vue"
   },
-  "DashboardComInventoryCar": {
-    "description": "Auto imported from components/Dashboard/ComInventoryCar.vue"
+  "DoughnutChartCar": {
+    "description": "Auto imported from components/DoughnutChart/DoughnutChartCar.vue"
   },
-  "DashboardComRegis": {
-    "description": "Auto imported from components/Dashboard/ComRegis.vue"
-  },
-  "DashboardComWorkStatus": {
-    "description": "Auto imported from components/Dashboard/ComWorkStatus.vue"
-  },
-  "ChartLine": {
-    "description": "Auto imported from components/Chart/Line.vue"
-  },
-  "BarChartBranch": {
-    "description": "Auto imported from components/BarChart/BarChartBranch.vue"
-  },
-  "BarChartCar": {
-    "description": "Auto imported from components/BarChart/BarChartCar.vue"
-  },
-  "BarChartPriceCar": {
-    "description": "Auto imported from components/BarChart/BarChartPriceCar.vue"
-  },
-  "BarChartSale": {
-    "description": "Auto imported from components/BarChart/BarChartSale.vue"
-  },
-  "BarChartSaleCarByBranch": {
-    "description": "Auto imported from components/BarChart/BarChartSaleCarByBranch.vue"
-  },
-  "BarChartTopCars": {
-    "description": "Auto imported from components/BarChart/BarChartTopCars.vue"
-  },
-  "BarChartVisit": {
-    "description": "Auto imported from components/BarChart/BarChartVisit.vue"
-  },
-  "BarChartVisitCar": {
-    "description": "Auto imported from components/BarChart/BarChartVisitCar.vue"
-  },
-  "BarChartVisitLine": {
-    "description": "Auto imported from components/BarChart/BarChartVisitLine.vue"
-  },
-  "DateSelect": {
-    "description": "Auto imported from components/DateSelect/dateSelect.vue"
-  },
-  "DateSelect2": {
-    "description": "Auto imported from components/DateSelect/dateSelect2.vue"
-  },
-  "DateSelectMonth": {
-    "description": "Auto imported from components/DateSelect/dateSelectMonth.vue"
-  },
-  "DateSelectMonthAll": {
-    "description": "Auto imported from components/DateSelect/dateSelectMonthAll.vue"
+  "DoughnutChartUser": {
+    "description": "Auto imported from components/DoughnutChart/DoughnutChartUser.vue"
   },
   "DoughnutChartCarType": {
     "description": "Auto imported from components/DoughnutChartDash/DoughnutChartCarType.vue"
@@ -115,15 +124,6 @@
   },
   "DoughnutChartDashSale": {
     "description": "Auto imported from components/DoughnutChartDash/DoughnutChartDashSale.vue"
-  },
-  "DoughnutChartBranch": {
-    "description": "Auto imported from components/DoughnutChart/DoughnutChartBranch.vue"
-  },
-  "DoughnutChartCar": {
-    "description": "Auto imported from components/DoughnutChart/DoughnutChartCar.vue"
-  },
-  "DoughnutChartUser": {
-    "description": "Auto imported from components/DoughnutChart/DoughnutChartUser.vue"
   },
   "DialogCardRequestLog": {
     "description": "Auto imported from components/dialog/cardRequestLog.vue"
@@ -374,9 +374,6 @@
   "MobileDialogReceiveDown": {
     "description": "Auto imported from components/mobile/dialogReceiveDown.vue"
   },
-  "SelectDropDownAmphure": {
-    "description": "Auto imported from components/selectDropDown/selectDropDownAmphure.vue"
-  },
   "SelectAddCarModel": {
     "description": "Auto imported from components/selectAdd/selectAddCarModel.vue"
   },
@@ -409,5 +406,8 @@
   },
   "SelectAddUnit": {
     "description": "Auto imported from components/selectAdd/selectAddUnit.vue"
+  },
+  "SelectDropDownAmphure": {
+    "description": "Auto imported from components/selectDropDown/selectDropDownAmphure.vue"
   }
 }

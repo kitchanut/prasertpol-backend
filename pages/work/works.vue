@@ -382,17 +382,17 @@
                 <v-btn class="mt-1" small depressed color="red" dark>ยกเลิก</v-btn>
               </div>
               <div v-else>
-                <v-btn v-if="item.work_status == '1'" small depressed color="primary" dark>รอจอง</v-btn>
-                <v-btn v-if="item.work_status == '2'" small depressed color="primary" dark>รอมัดจำ</v-btn>
-                <v-btn v-if="item.work_status == '3'" small depressed color="primary" dark>รอนัดทำสัญญา</v-btn>
-                <v-btn v-if="item.work_status == '4'" small depressed color="primary" dark>รอทำสัญญา</v-btn>
-                <v-btn v-if="item.work_status == '5'" small depressed color="primary" dark>รอแบงค์อนุมัติ</v-btn>
-                <v-btn v-if="item.work_status == '6'" small depressed color="red" dark>แบงค์ไม่อนุมัติ</v-btn>
-                <v-btn v-if="item.work_status == '7'" small depressed color="primary" dark>รอปล่อยรถ</v-btn>
-                <v-btn v-if="item.work_status == '8'" small depressed color="primary" dark>รอชุดโอน</v-btn>
-                <v-btn v-if="item.work_status == '9'" small depressed color="warning" dark> รอตรวจสอบ </v-btn>
-                <v-btn v-if="item.work_status == '10'" small depressed color="warning" dark>รอปิดงาน</v-btn>
-                <v-btn v-if="item.work_status == '11'" small depressed color="success" dark>ปิดงาน</v-btn>
+                <v-chip v-if="item.work_status == '1'" small color="warning">รอจอง</v-chip>
+                <v-chip v-if="item.work_status == '2'" small color="warning">รอมัดจำ</v-chip>
+                <v-chip v-if="item.work_status == '3'" small color="secondary">รอนัดทำสัญญา</v-chip>
+                <v-chip v-if="item.work_status == '4'" small color="secondary">รอทำสัญญา</v-chip>
+                <v-chip v-if="item.work_status == '5'" small color="pink" dark>รอแบงค์อนุมัติ</v-chip>
+                <v-chip v-if="item.work_status == '6'" small color="red">แบงค์ไม่อนุมัติ</v-chip>
+                <v-chip v-if="item.work_status == '7'" small color="warning">รอปล่อยรถ</v-chip>
+                <v-chip v-if="item.work_status == '8'" small color="primary">รอชุดโอน</v-chip>
+                <v-chip v-if="item.work_status == '9'" small color="warning"> รอตรวจสอบ </v-chip>
+                <v-chip v-if="item.work_status == '10'" small color="info">รอปิดงาน</v-chip>
+                <v-chip v-if="item.work_status == '11'" small color="success">ปิดงาน</v-chip>
               </div>
 
               <v-btn v-if="item.pathner_job_technician == 1" class="mt-1" x-small depressed color="red" dark
@@ -1197,17 +1197,6 @@ export default {
       selectTab: 0,
       content: ["0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0"],
       timer: "",
-      pedding_main_items: [
-        "รอจอง",
-        "รอมัดจำ",
-        "รอนัดทำสัญญา",
-        "รอทำสัญญา",
-        "รอเอกสาร",
-        "รอแบงค์อนุมัติ",
-        "รอปล่อยรถ",
-        "ปล่อยรถแล้ว",
-      ],
-      pedding_items: ["รอรูปรถ", "รอเช็คเกอร์", "รอคนค้ำ", "รอคนซื้อแทน", "รอหารถ", "รอรถซ่อม", ""],
     };
   },
   beforeMount() {
@@ -1252,7 +1241,7 @@ export default {
       this.headers = [
         { text: "จัดการ", value: "actions", sortable: false, class: "textOneLine " },
         { text: "สถานะหลัก", value: "work_status", class: "textOneLine" },
-        { text: "รอ", value: "pedding", class: "textOneLine", align: "center" },
+
         { text: "รหัสงาน", value: "codeWorking", class: "textOneLine", align: "center" },
         { text: "ลำดับรถ", value: "car_no", class: "textOneLine" },
         { text: "ยี่ห้อ", value: "car_model_name", class: "textOneLine" },
@@ -1316,7 +1305,6 @@ export default {
       this.headers = [
         { text: "จัดการ", value: "actions", sortable: false, class: "textOneLine" },
         { text: "สถานะหลัก", value: "work_status", class: "textOneLine" },
-        { text: "รอ", value: "pedding", class: "textOneLine", align: "center" },
         { text: "รหัสงาน", value: "codeWorking", align: "center", class: "textOneLine" },
         { text: "ลำดับรถ", value: "car_no", class: "textOneLine" },
         { text: "ยี่ห้อ", value: "car_model_name", class: "textOneLine" },

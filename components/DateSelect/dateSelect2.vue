@@ -1,21 +1,6 @@
 <template>
-  <v-row class="py-2">
-    <!-- <v-col cols="3" v-show="user_group_permission == 2 ? false : true">
-      <v-autocomplete
-        v-model="branch_id"
-        :items="branches"
-        item-text="branch_name"
-        item-value="id"
-        label="สาขา"
-        no-data-text="ไม่มีข้อมูล"
-        outlined
-        dense
-        hide-details
-        @change="returnDate"
-      >
-      </v-autocomplete>
-    </v-col> -->
-    <v-col cols="4">
+  <v-row class="py-2" no-gutters>
+    <v-col cols="4 pr-2">
       <v-autocomplete
         v-model="selectTime"
         :items="timeSelect"
@@ -31,7 +16,7 @@
       </v-autocomplete>
     </v-col>
 
-    <v-col cols="4">
+    <v-col cols="4 pr-2">
       <v-menu
         ref="menuTimeStart"
         v-model="menuTimeStart"

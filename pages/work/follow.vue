@@ -1078,7 +1078,6 @@ export default {
     headers: [
       { text: "รหัสงาน", value: "id", width: "120px", align: "center" },
       { text: "สถานะหลัก", value: "work_status_name", width: "140px" },
-      { text: "รอ", value: "pedding", width: "140px" },
       { text: "ลำดับรถ", value: "car_no", width: "120px", align: "center" },
       { text: "รุ่น", value: "car_series_name", width: "180px" },
       { text: "รุ่นย่อย", width: "250px", value: "car_serie_sub_name" },
@@ -1140,7 +1139,6 @@ export default {
     moveDistance: 0,
     filters: {
       id: [],
-      pedding: [],
       car_no: [],
       car_series_name: [],
       car_serie_sub_name: [],
@@ -1241,18 +1239,6 @@ export default {
 
     dialogNote: false,
     idNote: "",
-
-    pedding_main_items: [
-      "รอจอง",
-      "รอมัดจำ",
-      "รอนัดทำสัญญา",
-      "รอทำสัญญา",
-      "รอเอกสาร",
-      "รอแบงค์อนุมัติ",
-      "รอปล่อยรถ",
-      "ปล่อยรถแล้ว",
-    ],
-    pedding_items: ["รอรูปรถ", "รอเช็คเกอร์", "รอคนค้ำ", "รอคนซื้อแทน", "รอหารถ", "รอรถซ่อม"],
   }),
 
   computed: {
