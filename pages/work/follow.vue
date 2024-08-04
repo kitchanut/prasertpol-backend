@@ -302,45 +302,6 @@
           <span>W{{ item.id }}</span>
         </template>
 
-        <template v-slot:[`item.pedding`]="{ item }">
-          <v-menu offset-y>
-            <template v-slot:activator="{ on, attrs }">
-              <v-btn
-                :color="item.pedding == 'ปล่อยรถแล้ว' ? 'success' : item.pedding ? 'warning' : ''"
-                small
-                depressed
-                v-bind="attrs"
-                v-on="on"
-              >
-                {{ item.pedding ? item.pedding : "กรุณาเลือก" }}
-              </v-btn>
-            </template>
-            <v-list>
-              <v-list-item-group v-model="item.pedding" :color="item.pedding == 'ปล่อยรถแล้ว' ? 'success' : 'warning'">
-                <v-list-item
-                  v-for="(pedding, i) in pedding_main_items"
-                  :key="'main_' + i"
-                  style="min-height: 32px"
-                  :value="pedding"
-                  @click="updatePedding(item.id, pedding)"
-                >
-                  <v-list-item-title>{{ pedding }}</v-list-item-title>
-                </v-list-item>
-                <v-divider></v-divider>
-                <v-list-item
-                  v-for="(pedding, i) in pedding_items"
-                  :key="i"
-                  style="min-height: 32px; color: blue"
-                  :value="pedding"
-                  @click="updatePedding(item.id, pedding)"
-                >
-                  <v-list-item-title>{{ pedding }}</v-list-item-title>
-                </v-list-item>
-              </v-list-item-group>
-            </v-list>
-          </v-menu>
-        </template>
-
         <template v-slot:[`item.sale`]="{ item }">
           <a @click="editItem(item.id)" style="cursor: pointer">
             {{ item.sale }}
@@ -1509,24 +1470,6 @@ export default {
           });
         this.filters["sale_name"].sort();
         this.activeFilters["sale_name"] = this.filters["sale_name"];
-      });
-    },
-    async updatePedding(id, pedding) {
-      var isConfirmed = customAlart.ConfirmedStatus();
-      await isConfirmed.then(async (result) => {
-        if (result == true) {
-          const respone = await apiWorks.updatePedding(id, {
-            pedding: pedding,
-          });
-          if (respone.status == 200) {
-            customAlart.TopSuccess();
-          } else {
-            customAlart.TopError();
-          }
-        }
-      });
-      this.$nextTick(async () => {
-        await this.initializeReload();
       });
     },
     togleHeaderAll() {

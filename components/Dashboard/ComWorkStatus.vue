@@ -406,68 +406,6 @@
                           </td>
                           <td>
                             {{ filter.car_no }}
-                            <v-menu offset-y>
-                              <template v-slot:activator="{ on, attrs }">
-                                <v-btn
-                                  v-if="
-                                    !filter.pedding ||
-                                    filter.pedding == 'รอจอง' ||
-                                    filter.pedding == 'รอมัดจำ' ||
-                                    filter.pedding == 'รอนัดทำสัญญา' ||
-                                    filter.pedding == 'รอทำสัญญา' ||
-                                    filter.pedding == 'รอแบงค์อนุมัติ' ||
-                                    filter.pedding == 'รอปล่อยรถ' ||
-                                    filter.pedding == 'ปล่อยรถแล้ว'
-                                  "
-                                  v-bind="attrs"
-                                  v-on="on"
-                                  icon
-                                  depressed
-                                  x-small
-                                  color="#ddd"
-                                  :disabled="user_group_permission != -1"
-                                >
-                                  <v-icon>mdi-chevron-down-circle</v-icon>
-                                </v-btn>
-                                <v-btn
-                                  v-else
-                                  :color="filter.pedding == 'ปล่อยรถแล้ว' ? 'success' : filter.pedding ? 'warning' : ''"
-                                  x-small
-                                  depressed
-                                  v-bind="attrs"
-                                  v-on="on"
-                                  :disabled="user_group_permission != -1"
-                                >
-                                  {{ filter.pedding }}
-                                </v-btn>
-                              </template>
-                              <v-list>
-                                <v-list-item-group
-                                  v-model="filter.pedding"
-                                  :color="filter.pedding == 'ปล่อยรถแล้ว' ? 'success' : 'warning'"
-                                >
-                                  <v-list-item
-                                    v-for="(pedding, i) in pedding_main_items"
-                                    :key="'main_' + i"
-                                    style="min-height: 32px"
-                                    :value="pedding"
-                                    @click="updatePedding(filter.id, pedding)"
-                                  >
-                                    <v-list-item-title>{{ pedding }}</v-list-item-title>
-                                  </v-list-item>
-                                  <v-divider></v-divider>
-                                  <v-list-item
-                                    v-for="(pedding, i) in pedding_items"
-                                    :key="i"
-                                    style="min-height: 32px; color: blue"
-                                    :value="pedding"
-                                    @click="updatePedding(filter.id, pedding)"
-                                  >
-                                    <v-list-item-title>{{ pedding }}</v-list-item-title>
-                                  </v-list-item>
-                                </v-list-item-group>
-                              </v-list>
-                            </v-menu>
                           </td>
                           <td>
                             <v-chip v-if="filter.work_status == '1'" small color="warning">รอจอง</v-chip>
@@ -572,68 +510,6 @@
                               </span>
                             </v-tooltip>
                             <span v-else>{{ filter.car_no }}</span>
-                            <v-menu offset-y>
-                              <template v-slot:activator="{ on, attrs }">
-                                <v-btn
-                                  v-if="
-                                    !filter.pedding ||
-                                    filter.pedding == 'รอจอง' ||
-                                    filter.pedding == 'รอมัดจำ' ||
-                                    filter.pedding == 'รอนัดทำสัญญา' ||
-                                    filter.pedding == 'รอทำสัญญา' ||
-                                    filter.pedding == 'รอแบงค์อนุมัติ' ||
-                                    filter.pedding == 'รอปล่อยรถ' ||
-                                    filter.pedding == 'ปล่อยรถแล้ว'
-                                  "
-                                  v-bind="attrs"
-                                  v-on="on"
-                                  icon
-                                  depressed
-                                  x-small
-                                  color="#ddd"
-                                  :disabled="user_group_permission != -1"
-                                >
-                                  <v-icon>mdi-chevron-down-circle</v-icon>
-                                </v-btn>
-                                <v-btn
-                                  v-else
-                                  :color="filter.pedding == 'ปล่อยรถแล้ว' ? 'success' : filter.pedding ? 'warning' : ''"
-                                  x-small
-                                  depressed
-                                  v-bind="attrs"
-                                  v-on="on"
-                                  :disabled="user_group_permission != -1"
-                                >
-                                  {{ filter.pedding }}
-                                </v-btn>
-                              </template>
-                              <v-list>
-                                <v-list-item-group
-                                  v-model="filter.pedding"
-                                  :color="filter.pedding == 'ปล่อยรถแล้ว' ? 'success' : 'warning'"
-                                >
-                                  <v-list-item
-                                    v-for="(pedding, i) in pedding_main_items"
-                                    :key="'main_' + i"
-                                    style="min-height: 32px"
-                                    :value="pedding"
-                                    @click="updatePedding(filter.id, pedding)"
-                                  >
-                                    <v-list-item-title>{{ pedding }}</v-list-item-title>
-                                  </v-list-item>
-                                  <v-divider></v-divider>
-                                  <v-list-item
-                                    v-for="(pedding, i) in pedding_items"
-                                    :key="i"
-                                    style="min-height: 32px; color: blue"
-                                    :value="pedding"
-                                    @click="updatePedding(filter.id, pedding)"
-                                  >
-                                    <v-list-item-title>{{ pedding }}</v-list-item-title>
-                                  </v-list-item>
-                                </v-list-item-group>
-                              </v-list>
-                            </v-menu>
                           </td>
                           <td>{{ filter.customer_name }}</td>
                           <td>
@@ -698,68 +574,6 @@
                           </td>
                           <td>
                             {{ filter.car_no }}
-                            <v-menu offset-y>
-                              <template v-slot:activator="{ on, attrs }">
-                                <v-btn
-                                  v-if="
-                                    !filter.pedding ||
-                                    filter.pedding == 'รอจอง' ||
-                                    filter.pedding == 'รอมัดจำ' ||
-                                    filter.pedding == 'รอนัดทำสัญญา' ||
-                                    filter.pedding == 'รอทำสัญญา' ||
-                                    filter.pedding == 'รอแบงค์อนุมัติ' ||
-                                    filter.pedding == 'รอปล่อยรถ' ||
-                                    filter.pedding == 'ปล่อยรถแล้ว'
-                                  "
-                                  v-bind="attrs"
-                                  v-on="on"
-                                  icon
-                                  depressed
-                                  x-small
-                                  color="#ddd"
-                                  :disabled="user_group_permission != -1"
-                                >
-                                  <v-icon>mdi-chevron-down-circle</v-icon>
-                                </v-btn>
-                                <v-btn
-                                  v-else
-                                  :color="filter.pedding == 'ปล่อยรถแล้ว' ? 'success' : filter.pedding ? 'warning' : ''"
-                                  x-small
-                                  depressed
-                                  v-bind="attrs"
-                                  v-on="on"
-                                  :disabled="user_group_permission != -1"
-                                >
-                                  {{ filter.pedding }}
-                                </v-btn>
-                              </template>
-                              <v-list>
-                                <v-list-item-group
-                                  v-model="filter.pedding"
-                                  :color="filter.pedding == 'ปล่อยรถแล้ว' ? 'success' : 'warning'"
-                                >
-                                  <v-list-item
-                                    v-for="(pedding, i) in pedding_main_items"
-                                    :key="'main_' + i"
-                                    style="min-height: 32px"
-                                    :value="pedding"
-                                    @click="updatePedding(filter.id, pedding)"
-                                  >
-                                    <v-list-item-title>{{ pedding }}</v-list-item-title>
-                                  </v-list-item>
-                                  <v-divider></v-divider>
-                                  <v-list-item
-                                    v-for="(pedding, i) in pedding_items"
-                                    :key="i"
-                                    style="min-height: 32px; color: blue"
-                                    :value="pedding"
-                                    @click="updatePedding(filter.id, pedding)"
-                                  >
-                                    <v-list-item-title>{{ pedding }}</v-list-item-title>
-                                  </v-list-item>
-                                </v-list-item-group>
-                              </v-list>
-                            </v-menu>
                           </td>
                           <td>{{ filter.customer_name }}</td>
                           <td>
@@ -1049,68 +863,6 @@
                           </td>
                           <td>
                             {{ filter.car_no }}
-                            <v-menu offset-y>
-                              <template v-slot:activator="{ on, attrs }">
-                                <v-btn
-                                  v-if="
-                                    !filter.pedding ||
-                                    filter.pedding == 'รอจอง' ||
-                                    filter.pedding == 'รอมัดจำ' ||
-                                    filter.pedding == 'รอนัดทำสัญญา' ||
-                                    filter.pedding == 'รอทำสัญญา' ||
-                                    filter.pedding == 'รอแบงค์อนุมัติ' ||
-                                    filter.pedding == 'รอปล่อยรถ' ||
-                                    filter.pedding == 'ปล่อยรถแล้ว'
-                                  "
-                                  v-bind="attrs"
-                                  v-on="on"
-                                  icon
-                                  depressed
-                                  x-small
-                                  color="#ddd"
-                                  :disabled="user_group_permission != -1"
-                                >
-                                  <v-icon>mdi-chevron-down-circle</v-icon>
-                                </v-btn>
-                                <v-btn
-                                  v-else
-                                  :color="filter.pedding == 'ปล่อยรถแล้ว' ? 'success' : filter.pedding ? 'warning' : ''"
-                                  x-small
-                                  depressed
-                                  v-bind="attrs"
-                                  v-on="on"
-                                  :disabled="user_group_permission != -1"
-                                >
-                                  {{ filter.pedding }}
-                                </v-btn>
-                              </template>
-                              <v-list>
-                                <v-list-item-group
-                                  v-model="filter.pedding"
-                                  :color="filter.pedding == 'ปล่อยรถแล้ว' ? 'success' : 'warning'"
-                                >
-                                  <v-list-item
-                                    v-for="(pedding, i) in pedding_main_items"
-                                    :key="'main_' + i"
-                                    style="min-height: 32px"
-                                    :value="pedding"
-                                    @click="updatePedding(filter.id, pedding)"
-                                  >
-                                    <v-list-item-title>{{ pedding }}</v-list-item-title>
-                                  </v-list-item>
-                                  <v-divider></v-divider>
-                                  <v-list-item
-                                    v-for="(pedding, i) in pedding_items"
-                                    :key="i"
-                                    style="min-height: 32px; color: blue"
-                                    :value="pedding"
-                                    @click="updatePedding(filter.id, pedding)"
-                                  >
-                                    <v-list-item-title>{{ pedding }}</v-list-item-title>
-                                  </v-list-item>
-                                </v-list-item-group>
-                              </v-list>
-                            </v-menu>
                           </td>
                           <td>{{ filter.customer_name }}</td>
                           <td>
@@ -1688,24 +1440,6 @@ export default {
           }
         });
       }
-    },
-    async updatePedding(id, pedding) {
-      var isConfirmed = customAlart.ConfirmedStatus();
-      await isConfirmed.then(async (result) => {
-        if (result == true) {
-          const respone = await apiWorks.updatePedding(id, {
-            pedding: pedding,
-          });
-          if (respone.status == 200) {
-            customAlart.TopSuccess();
-          } else {
-            customAlart.TopError();
-          }
-        }
-      });
-      this.$nextTick(async () => {
-        await this.getData();
-      });
     },
   },
 };

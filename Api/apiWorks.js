@@ -41,11 +41,6 @@ export function updateStatusWorking(workingID, params) {
   return request("post", url, params);
 }
 
-export function updatePedding(workingID, params) {
-  const url = HOSTNAME + "/api/updatePedding/" + workingID;
-  return request("post", url, params);
-}
-
 export function selectWhere(params) {
   const url = HOSTNAME + "/api/workWhere";
   return request("post", url, params);

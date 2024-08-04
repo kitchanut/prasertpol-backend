@@ -20,33 +20,6 @@
   "FebButtonWork": {
     "description": "Auto imported from components/febButtonWork.vue"
   },
-  "BarChartBranch": {
-    "description": "Auto imported from components/BarChart/BarChartBranch.vue"
-  },
-  "BarChartCar": {
-    "description": "Auto imported from components/BarChart/BarChartCar.vue"
-  },
-  "BarChartPriceCar": {
-    "description": "Auto imported from components/BarChart/BarChartPriceCar.vue"
-  },
-  "BarChartSale": {
-    "description": "Auto imported from components/BarChart/BarChartSale.vue"
-  },
-  "BarChartSaleCarByBranch": {
-    "description": "Auto imported from components/BarChart/BarChartSaleCarByBranch.vue"
-  },
-  "BarChartTopCars": {
-    "description": "Auto imported from components/BarChart/BarChartTopCars.vue"
-  },
-  "BarChartVisit": {
-    "description": "Auto imported from components/BarChart/BarChartVisit.vue"
-  },
-  "BarChartVisitCar": {
-    "description": "Auto imported from components/BarChart/BarChartVisitCar.vue"
-  },
-  "BarChartVisitLine": {
-    "description": "Auto imported from components/BarChart/BarChartVisitLine.vue"
-  },
   "BarChartDashBranch": {
     "description": "Auto imported from components/BarChartDash/BarChartDashBranch.vue"
   },
@@ -92,6 +65,36 @@
   "DashboardComWorkStatus": {
     "description": "Auto imported from components/Dashboard/ComWorkStatus.vue"
   },
+  "ChartLine": {
+    "description": "Auto imported from components/Chart/Line.vue"
+  },
+  "BarChartBranch": {
+    "description": "Auto imported from components/BarChart/BarChartBranch.vue"
+  },
+  "BarChartCar": {
+    "description": "Auto imported from components/BarChart/BarChartCar.vue"
+  },
+  "BarChartPriceCar": {
+    "description": "Auto imported from components/BarChart/BarChartPriceCar.vue"
+  },
+  "BarChartSale": {
+    "description": "Auto imported from components/BarChart/BarChartSale.vue"
+  },
+  "BarChartSaleCarByBranch": {
+    "description": "Auto imported from components/BarChart/BarChartSaleCarByBranch.vue"
+  },
+  "BarChartTopCars": {
+    "description": "Auto imported from components/BarChart/BarChartTopCars.vue"
+  },
+  "BarChartVisit": {
+    "description": "Auto imported from components/BarChart/BarChartVisit.vue"
+  },
+  "BarChartVisitCar": {
+    "description": "Auto imported from components/BarChart/BarChartVisitCar.vue"
+  },
+  "BarChartVisitLine": {
+    "description": "Auto imported from components/BarChart/BarChartVisitLine.vue"
+  },
   "DateSelect": {
     "description": "Auto imported from components/DateSelect/dateSelect.vue"
   },
@@ -104,8 +107,14 @@
   "DateSelectMonthAll": {
     "description": "Auto imported from components/DateSelect/dateSelectMonthAll.vue"
   },
-  "ChartLine": {
-    "description": "Auto imported from components/Chart/Line.vue"
+  "DoughnutChartCarType": {
+    "description": "Auto imported from components/DoughnutChartDash/DoughnutChartCarType.vue"
+  },
+  "DoughnutChartDashBranchCar": {
+    "description": "Auto imported from components/DoughnutChartDash/DoughnutChartDashBranchCar.vue"
+  },
+  "DoughnutChartDashSale": {
+    "description": "Auto imported from components/DoughnutChartDash/DoughnutChartDashSale.vue"
   },
   "DoughnutChartBranch": {
     "description": "Auto imported from components/DoughnutChart/DoughnutChartBranch.vue"
@@ -115,15 +124,6 @@
   },
   "DoughnutChartUser": {
     "description": "Auto imported from components/DoughnutChart/DoughnutChartUser.vue"
-  },
-  "DoughnutChartCarType": {
-    "description": "Auto imported from components/DoughnutChartDash/DoughnutChartCarType.vue"
-  },
-  "DoughnutChartDashBranchCar": {
-    "description": "Auto imported from components/DoughnutChartDash/DoughnutChartDashBranchCar.vue"
-  },
-  "DoughnutChartDashSale": {
-    "description": "Auto imported from components/DoughnutChartDash/DoughnutChartDashSale.vue"
   },
   "DialogCardRequestLog": {
     "description": "Auto imported from components/dialog/cardRequestLog.vue"
@@ -374,6 +374,9 @@
   "MobileDialogReceiveDown": {
     "description": "Auto imported from components/mobile/dialogReceiveDown.vue"
   },
+  "SelectDropDownAmphure": {
+    "description": "Auto imported from components/selectDropDown/selectDropDownAmphure.vue"
+  },
   "SelectAddCarModel": {
     "description": "Auto imported from components/selectAdd/selectAddCarModel.vue"
   },
@@ -406,8 +409,5 @@
   },
   "SelectAddUnit": {
     "description": "Auto imported from components/selectAdd/selectAddUnit.vue"
-  },
-  "SelectDropDownAmphure": {
-    "description": "Auto imported from components/selectDropDown/selectDropDownAmphure.vue"
   }
 }
