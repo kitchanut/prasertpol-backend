@@ -1,7 +1,7 @@
 <template>
   <v-container>
     <v-dialog v-model="dialogDeleteComponent" content-class="v-dialog--custom" fullscreen persistent>
-      <v-card>
+      <v-card style="background-color: #eee">
         <v-form autocomplete="true" ref="form" @submit.prevent="onAction(formData.id)">
           <v-toolbar color="primary" dark flat>
             <v-btn
@@ -31,38 +31,44 @@
 
           <v-progress-linear v-if="formDataLoading" indeterminate color="yellow darken-2"> </v-progress-linear>
 
-          <v-card-text>
+          <v-container>
+            <!-- <v-card-text> -->
             <div v-if="user_group_permission == -1 || user_group_permission == 8 || user_group_permission == 10">
               <v-row>
-                <v-col cols="7">
+                <v-col cols="6">
                   <v-card outlined>
-                    <v-card-text>
-                      <v-row>
-                        <v-col cols="4">
-                          <v-text-field
-                            autocomplete="true"
-                            label="รถคันที่"
-                            append-icon=""
-                            v-model="formData.car_no"
-                            id="formData.car_no"
-                            name="formData.car_no"
-                            outlined
+                    <v-card-title> ข้อมูลรถ </v-card-title>
+                    <v-card-text style="font-size: 1rem">
+                      <v-row no-gutters>
+                        <v-col cols="4" class="d-flex justify-end pr-3">สถานะ: </v-col>
+                        <v-col>
+                          <v-radio-group
+                            v-model="formData.car_stock"
+                            row
                             dense
                             hide-details
+                            @change="carStock_change(formData.car_stock)"
                           >
-                          </v-text-field>
+                            <v-radio label="รอรับรถ" color="yellow" value="1"></v-radio>
+                            <v-radio label="อยู่ในคลัง" color="red" value="2"></v-radio>
+                            <v-radio label="ขาย" color="green" value="3"></v-radio>
+                          </v-radio-group>
                         </v-col>
-
-                        <v-col cols="8">
+                      </v-row>
+                      <v-row no-gutters class="mt-2">
+                        <v-col cols="4" class="d-flex align-center justify-end pr-3">ลำดับรถ: </v-col>
+                        <v-col>
+                          <v-text-field v-model="formData.car_no" outlined dense hide-details> </v-text-field>
+                        </v-col>
+                      </v-row>
+                      <v-row no-gutters class="mt-1">
+                        <v-col cols="4" class="d-flex align-center justify-end pr-3">ซื้อรถจาก: </v-col>
+                        <v-col>
                           <v-autocomplete
                             v-model="formData.partner_car_id"
-                            id="formData.partner_car_id"
-                            name="formData.partner_car_id"
                             :items="partnerCar"
-                            no-data-text="ไม่มีข้อมูล"
                             item-text="partner_car_name"
                             item-value="id"
-                            label="ซื้อรถจาก"
                             outlined
                             dense
                             hide-details
@@ -74,17 +80,14 @@
                           </v-autocomplete>
                         </v-col>
                       </v-row>
-                      <v-row>
-                        <v-col cols="4">
+                      <v-row no-gutters class="mt-1">
+                        <v-col cols="4" class="d-flex align-center justify-end pr-3">สาขา: </v-col>
+                        <v-col>
                           <v-autocomplete
                             v-model="formData.branch_id"
-                            id="formData.branch_id"
-                            name="formData.branch_id"
                             :items="branches"
-                            no-data-text="ไม่มีข้อมูล"
                             item-text="branch_name"
                             item-value="id"
-                            label="สาขา"
                             outlined
                             dense
                             hide-details
@@ -92,36 +95,21 @@
                             @change="changeBranch(formData.branch_id)"
                           >
                           </v-autocomplete>
-                          <v-text-field
-                            autocomplete="true"
-                            v-show="false"
-                            label="จังหวัด"
-                            append-icon=""
-                            v-model="formData.branch_province_id"
-                            id="formData.branch_province_id"
-                            name="formData.branch_province_id"
-                            outlined
-                            dense
-                            hide-details
-                            :rules="rule"
-                          >
-                          </v-text-field>
                         </v-col>
+                      </v-row>
 
-                        <v-col cols="4">
+                      <v-row no-gutters class="mt-1">
+                        <v-col cols="4" class="d-flex align-center justify-end pr-3">ประเภทรถ: </v-col>
+                        <v-col>
                           <v-autocomplete
                             v-model="formData.car_types_id"
-                            id="formData.car_types_id"
-                            name="formData.car_types_id"
                             :items="carType"
-                            no-data-text="ไม่มีข้อมูล"
-                            @change="eventSelectType"
                             item-text="car_type_name"
                             item-value="id"
-                            label="ประเภทรถ"
                             outlined
                             dense
                             hide-details
+                            @change="eventSelectType"
                             :rules="rule"
                           >
                             <template slot="selection" slot-scope="{ item }">
@@ -136,39 +124,20 @@
                             </template>
                           </v-autocomplete>
                         </v-col>
-
-                        <v-col cols="4">
-                          <v-autocomplete
-                            v-model="formData.car_year"
-                            id="formData.car_year"
-                            name="formData.car_year"
-                            :items="years"
-                            item-text="value"
-                            no-data-text="ไม่มีข้อมูล"
-                            item-value="value"
-                            label="ปีผลิต (ค.ศ)"
-                            outlined
-                            dense
-                            hide-details
-                            :rules="rule"
-                          ></v-autocomplete>
-                        </v-col>
                       </v-row>
-                      <v-row>
-                        <v-col cols="4">
+
+                      <v-row no-gutters class="mt-1">
+                        <v-col cols="4" class="d-flex align-center justify-end pr-3">ยี่ห้อ: </v-col>
+                        <v-col>
                           <v-autocomplete
                             v-model="formData.car_models_id"
-                            id="formData.car_models_id"
-                            name="formData.car_models_id"
                             :items="carModel"
-                            @change="eventSelectModel"
-                            no-data-text="ไม่มีข้อมูล"
                             item-text="car_model_name"
                             item-value="id"
-                            label="ยี่ห้อ"
                             outlined
                             dense
                             hide-details
+                            @change="eventSelectModel"
                             :rules="rule"
                           >
                             <template v-slot:append-item>
@@ -176,18 +145,16 @@
                             </template>
                           </v-autocomplete>
                         </v-col>
+                      </v-row>
 
-                        <v-col cols="4">
+                      <v-row no-gutters class="mt-1">
+                        <v-col cols="4" class="d-flex align-center justify-end pr-3">รุ่นรถ: </v-col>
+                        <v-col>
                           <v-autocomplete
                             v-model="formData.car_serie_id"
-                            id="formData.car_serie_id"
-                            name="formData.car_serie_id"
                             :items="carSerie"
-                            no-data-text="ไม่มีข้อมูล"
-                            @change="getCarSerieSub"
                             item-text="car_series_name"
                             item-value="id"
-                            label="รุ่นรถ"
                             outlined
                             dense
                             hide-details
@@ -198,17 +165,16 @@
                             </template>
                           </v-autocomplete>
                         </v-col>
+                      </v-row>
 
-                        <v-col cols="4">
+                      <v-row no-gutters class="mt-1">
+                        <v-col cols="4" class="d-flex align-center justify-end pr-3">รุ่นย่อย: </v-col>
+                        <v-col>
                           <v-autocomplete
                             v-model="formData.car_serie_sub_id"
-                            id="formData.car_serie_sub_id"
-                            name="formData.car_serie_sub_id"
                             :items="carSerieSub"
                             item-text="car_serie_sub_name"
                             item-value="id"
-                            label="รุ่นย่อย"
-                            no-data-text="ไม่มีข้อมูล"
                             outlined
                             dense
                             hide-details
@@ -220,13 +186,46 @@
                           </v-autocomplete>
                         </v-col>
                       </v-row>
-                      <v-row>
+                      <v-row no-gutters class="mt-1">
+                        <v-col cols="4" class="d-flex align-center justify-end pr-3">สีของรถ: </v-col>
+                        <v-col>
+                          <v-autocomplete
+                            v-model="formData.color_id"
+                            :items="dataColor"
+                            item-text="color_name"
+                            no-data-text="ไม่มีข้อมูล"
+                            item-value="id"
+                            outlined
+                            dense
+                            hide-details
+                            :rules="rule"
+                          ></v-autocomplete>
+                        </v-col>
+                      </v-row>
+
+                      <v-row no-gutters class="mt-1">
+                        <v-col cols="4" class="d-flex align-center justify-end pr-3">ปีผลิต (ค.ศ): </v-col>
+                        <v-col>
+                          <v-autocomplete
+                            v-model="formData.car_year"
+                            :items="years"
+                            item-text="value"
+                            item-value="value"
+                            outlined
+                            dense
+                            hide-details
+                            :rules="rule"
+                          >
+                          </v-autocomplete>
+                        </v-col>
+                      </v-row>
+
+                      <v-row no-gutters class="mt-1">
+                        <v-col cols="4" class="d-flex align-center justify-end pr-3">ปีจดทะเบียน (ค.ศ): </v-col>
                         <v-col>
                           <v-menu
                             ref="menuDateCreated_at"
                             v-model="menuDateCreated_at"
-                            id="menuDateCreated_at"
-                            name="menuDateCreated_at"
                             :close-on-content-click="false"
                             transition="scale-transition"
                             offset-y
@@ -235,17 +234,12 @@
                           >
                             <template v-slot:activator="{ on, attrs }">
                               <v-text-field
-                                autocomplete="true"
                                 v-model="formData.car_mark_year"
-                                id="formData.car_mark_year"
-                                name="formData.car_mark_year"
-                                label="ปีจดทะเบียน (ค.ศ)"
                                 v-bind="attrs"
                                 v-on="on"
                                 clearable
                                 readonly
                                 persistent-hint
-                                prepend-icon=""
                                 outlined
                                 dense
                                 hide-details
@@ -254,106 +248,464 @@
                             </template>
                             <v-date-picker
                               v-model="formData.car_mark_year"
-                              id="formData.car_mark_year"
-                              name="formData.car_mark_year"
                               locale="th-TH"
                               picker-date
                               @input="menuDateCreated_at = false"
                             ></v-date-picker>
                           </v-menu>
                         </v-col>
-
+                      </v-row>
+                      <v-row no-gutters class="mt-1">
+                        <v-col cols="4" class="d-flex align-center justify-end pr-3">เลขเครื่องยนต์: </v-col>
                         <v-col>
-                          <v-menu
-                            ref="menuDate_buy"
-                            v-model="menuDate_act"
-                            id="menuDate_act"
-                            name="menuDate_act"
-                            :close-on-content-click="false"
-                            transition="scale-transition"
-                            offset-y
-                            max-width="290px"
-                            min-width="auto"
-                          >
-                            <template v-slot:activator="{ on, attrs }">
-                              <v-text-field
-                                autocomplete="true"
-                                v-model="formData.tex_date"
-                                id="formData.tex_date"
-                                name="formData.tex_date"
-                                label="ภาษี"
-                                clearable
-                                readonly
-                                v-bind="attrs"
-                                v-on="on"
-                                persistent-hint
-                                prepend-icon=""
-                                outlined
-                                dense
-                                hide-details
-                                flat
-                              ></v-text-field>
-                            </template>
-                            <v-date-picker
-                              v-model="formData.tex_date"
-                              id="formData.tex_date"
-                              name="formData.tex_date"
-                              locale="th-TH"
-                              picker-date
-                              @input="menuDate_act = false"
-                            ></v-date-picker>
-                          </v-menu>
-                        </v-col>
-
-                        <v-col>
-                          <v-menu
-                            ref="menuDate_buy"
-                            v-model="menuDate_book"
-                            id="menuDate_book"
-                            name="menuDate_book"
-                            :close-on-content-click="false"
-                            transition="scale-transition"
-                            offset-y
-                            max-width="290px"
-                            min-width="auto"
-                          >
-                            <template v-slot:activator="{ on, attrs }">
-                              <v-text-field
-                                autocomplete="true"
-                                v-model="formData.car_date_book"
-                                id="formData.car_date_book"
-                                name="formData.car_date_book"
-                                label="วันรับเล่ม"
-                                readonly
-                                clearable
-                                v-bind="attrs"
-                                v-on="on"
-                                persistent-hint
-                                prepend-icon=""
-                                outlined
-                                dense
-                                hide-details
-                                flat
-                              ></v-text-field>
-                            </template>
-                            <v-date-picker
-                              v-model="formData.car_date_book"
-                              id="formData.car_date_book"
-                              name="formData.car_date_book"
-                              locale="th-TH"
-                              picker-date
-                              @input="menuDate_book = false"
-                            ></v-date-picker>
-                          </v-menu>
+                          <v-text-field v-model="formData.car_no_engine" outlined dense hide-details> </v-text-field>
                         </v-col>
                       </v-row>
+                      <v-row no-gutters class="mt-1">
+                        <v-col cols="4" class="d-flex align-center justify-end pr-3">เลขตัวถัง: </v-col>
+                        <v-col>
+                          <v-text-field v-model="formData.car_no_body" outlined dense hide-details> </v-text-field>
+                        </v-col>
+                      </v-row>
+                      <v-row no-gutters class="mt-1">
+                        <v-col cols="4" class="d-flex align-center justify-end pr-3">เลขไมค์: </v-col>
+                        <v-col>
+                          <v-text-field v-model="formData.car_mileage" outlined dense hide-details> </v-text-field>
+                        </v-col>
+                      </v-row>
+                      <v-row no-gutters class="mt-1">
+                        <v-col cols="4" class="d-flex align-center justify-end pr-3">ขนาดเครื่องยนต์ CC: </v-col>
+                        <v-col>
+                          <v-text-field v-model="formData.car_engine_amount" outlined dense hide-details>
+                          </v-text-field>
+                        </v-col>
+                      </v-row>
+
+                      <v-row no-gutters class="mt-1">
+                        <v-col cols="4" class="d-flex align-center justify-end pr-3">ชนิดเชื้อเพลง: </v-col>
+                        <v-col>
+                          <v-autocomplete
+                            v-model="formData.fuel_id"
+                            :items="dataFuel"
+                            item-text="fuel_name"
+                            no-data-text="ไม่มีข้อมูล"
+                            item-value="id"
+                            outlined
+                            dense
+                            hide-details
+                            :rules="rule"
+                          ></v-autocomplete>
+                        </v-col>
+                      </v-row>
+                    </v-card-text>
+                  </v-card>
+
+                  <v-card v-if="user_group_permission == -1" outlined class="mt-3">
+                    <v-card-title> ราคา </v-card-title>
+                    <v-card-text style="font-size: 1rem">
+                      <v-row no-gutters>
+                        <v-col cols="4" class="d-flex align-center justify-end pr-3">ราคาดาวน์ (บ.) </v-col>
+                        <v-col>
+                          <v-text-field
+                            type="number"
+                            v-model="formData.amount_down"
+                            outlined
+                            dense
+                            hide-details
+                            :rules="[(v) => !isNaN(parseFloat(v))]"
+                          >
+                          </v-text-field>
+                        </v-col>
+                      </v-row>
+                      <v-row no-gutters class="mt-1">
+                        <v-col cols="4" class="d-flex align-center justify-end pr-3">งวดผ่อน (บ.) </v-col>
+                        <v-col>
+                          <v-text-field
+                            type="number"
+                            v-model="formData.amount_slacken"
+                            outlined
+                            dense
+                            hide-details
+                            :rules="rule"
+                          >
+                          </v-text-field>
+                        </v-col>
+                      </v-row>
+                      <v-row no-gutters class="mt-1">
+                        <v-col cols="4" class="d-flex align-center justify-end pr-3">ขายประมาณ (บ) </v-col>
+                        <v-col>
+                          <v-text-field v-model="formData.car_price_vat" outlined dense hide-details disabled>
+                          </v-text-field>
+                        </v-col>
+                      </v-row>
+                      <v-row no-gutters class="mt-1">
+                        <v-col cols="4" class="d-flex align-center justify-end pr-3">ราคาจัด </v-col>
+                        <v-col>
+                          <v-text-field v-model="formData.amount_price" outlined dense hide-details disabled>
+                          </v-text-field>
+                        </v-col>
+                      </v-row>
+                      <v-row no-gutters class="mt-1">
+                        <v-col cols="4" class="d-flex align-center justify-end pr-3">จัดรวม Vat (บ) </v-col>
+                        <v-col>
+                          <v-text-field v-model="formData.amount_price_vat" outlined dense hide-details disabled>
+                          </v-text-field>
+                        </v-col>
+                      </v-row>
+                      <v-row no-gutters class="mt-1">
+                        <v-col cols="4" class="d-flex align-center justify-end pr-3">เงินเข้าธนาคาร </v-col>
+                        <v-col>
+                          <v-text-field type="number" v-model="formData.car_price_bank" outlined dense hide-details>
+                          </v-text-field>
+                        </v-col>
+                      </v-row>
+                      <v-row no-gutters class="mt-1">
+                        <v-col cols="4" class="d-flex align-center justify-end pr-3">ราคาขายจริง </v-col>
+                        <v-col>
+                          <v-text-field type="number" v-model="formData.car_price" outlined dense hide-details>
+                          </v-text-field>
+                        </v-col>
+                      </v-row>
+                      <v-row no-gutters class="mt-1">
+                        <v-col cols="4" class="d-flex align-center justify-end pr-3">บวก % </v-col>
+                        <v-col>
+                          <v-text-field v-model="formData.car_price_plus" outlined disabled dense hide-details>
+                          </v-text-field>
+                        </v-col>
+                      </v-row>
+                      <v-row no-gutters class="mt-1">
+                        <v-col cols="4" class="d-flex align-center justify-end pr-3">คูณ % </v-col>
+                        <v-col>
+                          <v-text-field disabled v-model="formData.car_price_multiply" outlined dense hide-details>
+                          </v-text-field>
+                        </v-col>
+                      </v-row>
+                      <v-row no-gutters class="mt-1">
+                        <v-col cols="4" class="d-flex align-center justify-end pr-3">ค่าใช้จ่าย </v-col>
+                        <v-col>
+                          <v-text-field v-model="formData.expenses" outlined disabled dense hide-details>
+                          </v-text-field>
+                        </v-col>
+                      </v-row>
+                      <v-row no-gutters class="mt-1">
+                        <v-col cols="4" class="d-flex align-center justify-end pr-3">ราคาสุทธิ </v-col>
+                        <v-col>
+                          <v-text-field v-model="formData.net_price" outlined dense hide-details disabled>
+                          </v-text-field>
+                        </v-col>
+                      </v-row>
+                      <v-row no-gutters class="mt-1">
+                        <v-col cols="4" class="d-flex align-center justify-end pr-3">รายรับ </v-col>
+                        <v-col>
+                          <v-text-field v-model="formData.income" outlined dense hide-details disabled> </v-text-field>
+                        </v-col>
+                      </v-row>
+
+                      <v-row no-gutters class="mt-1">
+                        <v-col cols="4" class="d-flex align-center justify-end pr-3">ราคาซื้อเข้าก่อน Vat </v-col>
+                        <v-col>
+                          <v-text-field
+                            type="number"
+                            v-model="formData.car_buy_vat"
+                            outlined
+                            dense
+                            input
+                            hide-details
+                            @input="vatCal(formData.car_buy_vat, 'car_buy_vat')"
+                          >
+                          </v-text-field>
+                        </v-col>
+                      </v-row>
+                      <v-row no-gutters class="mt-1">
+                        <v-col cols="4" class="d-flex align-center justify-end pr-3">ราคาซื้อเข้ารวม Vat </v-col>
+                        <v-col>
+                          <v-text-field
+                            v-model="formData.car_buy"
+                            outlined
+                            dense
+                            hide-details
+                            @input="sumVatSumOverCos()"
+                            :rules="rule"
+                          >
+                          </v-text-field>
+                        </v-col>
+                      </v-row>
+                      <v-row no-gutters class="mt-1">
+                        <v-col cols="4" class="d-flex align-center justify-end pr-3">ค่าดำเนินการ </v-col>
+                        <v-col>
+                          <v-text-field
+                            type="number"
+                            v-model="formData.amount_overCost"
+                            outlined
+                            dense
+                            hide-details
+                            @input="sumVatSumOverCos()"
+                            :rules="rule"
+                          >
+                          </v-text-field>
+                        </v-col>
+                      </v-row>
+                      <v-row no-gutters class="mt-1">
+                        <v-col cols="4" class="d-flex align-center justify-end pr-3">เข้ารวม vat+ค่าดำเนิน </v-col>
+                        <v-col>
+                          <v-text-field
+                            v-model="formData.VatSumOverCos"
+                            outlined
+                            dense
+                            hide-details
+                            disabled
+                            :rules="rule"
+                          >
+                          </v-text-field>
+                        </v-col>
+                      </v-row>
+
+                      <!-- <v-text-field
+                        autocomplete="true"
+                        label="ราคาดาวน์ (บ.)"
+                        type="number"
+                        append-icon=""
+                        v-model="formData.amount_down"
+                        id="formData.amount_down"
+                        name="formData.amount_down"
+                        outlined
+                        dense
+                        hide-details
+                        :rules="rule"
+                      >
+                      </v-text-field>
+
+                      <v-text-field
+                        autocomplete="true"
+                        append-icon=""
+                        label="งวดผ่อน (บ.)"
+                        v-model="formData.amount_slacken"
+                        id="formData.amount_slacken"
+                        name="formData.amount_slacken"
+                        outlined
+                        dense
+                        hide-details
+                        :rules="rule"
+                      >
+                      </v-text-field>
+
+                      <v-text-field
+                        autocomplete="true"
+                        label="ขายประมาณ (บ)"
+                        type="number"
+                        disabled
+                        append-icon=""
+                        v-model="formData.car_price_vat"
+                        id="formData.car_price_vat"
+                        name="formData.car_price_vat"
+                        outlined
+                        dense
+                        hide-details
+                      >
+                      </v-text-field>
+
+                      <v-text-field
+                        autocomplete="true"
+                        label="ราคาจัด"
+                        type="number"
+                        append-icon=""
+                        v-model="formData.amount_price"
+                        id="formData.amount_price"
+                        name="formData.amount_price"
+                        outlined
+                        disabled
+                        dense
+                        hide-details
+                      >
+                      </v-text-field>
+
+                      <v-text-field
+                        autocomplete="true"
+                        label="จัดรวม Vat (บ)"
+                        type="number"
+                        append-icon=""
+                        v-model="formData.amount_price_vat"
+                        id="formData.amount_price_vat"
+                        name="formData.amount_price_vat"
+                        outlined
+                        disabled
+                        dense
+                        hide-details
+                      >
+                      </v-text-field>
+
+                      <v-text-field
+                        autocomplete="true"
+                        disabled
+                        label="เงินเข้าธนาคาร"
+                        append-icon=""
+                        v-model="formData.car_price_bank"
+                        id="formData.car_price_bank"
+                        name="formData.car_price_bank"
+                        outlined
+                        dense
+                        hide-details
+                      >
+                      </v-text-field>
+
+                      <v-text-field
+                        autocomplete="true"
+                        disabled
+                        label="ราคาขายจริง"
+                        append-icon=""
+                        v-model="formData.car_price"
+                        id="formData.car_price"
+                        name="formData.car_price"
+                        outlined
+                        dense
+                        hide-details
+                      >
+                      </v-text-field>
+
+                      <v-text-field
+                        autocomplete="true"
+                        label="บวก %"
+                        append-icon=""
+                        v-model="formData.car_price_plus"
+                        id="formData.car_price_plus"
+                        name="formData.car_price_plus"
+                        outlined
+                        disabled
+                        dense
+                        hide-details
+                      >
+                      </v-text-field>
+
+                      <v-text-field
+                        autocomplete="true"
+                        label="คูณ %"
+                        append-icon=""
+                        disabled
+                        v-model="formData.car_price_multiply"
+                        id="formData.car_price_multiply"
+                        name="formData.car_price_multiply"
+                        outlined
+                        dense
+                        hide-details
+                      >
+                      </v-text-field>
+
+                      <v-text-field
+                        autocomplete="true"
+                        label="ค่าใช้จ่าย (บ)"
+                        append-icon=""
+                        v-model="formData.expenses"
+                        id="formData.expenses"
+                        name="formData.expenses"
+                        outlined
+                        disabled
+                        dense
+                        hide-details
+                      >
+                      </v-text-field>
+
+                      <v-text-field
+                        autocomplete="true"
+                        label="ราคาสุทธิ (บ)"
+                        type="number"
+                        append-icon=""
+                        v-model="formData.net_price"
+                        id="formData.net_price"
+                        name="formData.net_price"
+                        outlined
+                        dense
+                        hide-details
+                        disabled
+                      >
+                      </v-text-field>
+
+                      <v-text-field
+                        autocomplete="true"
+                        label="รายรับ (บ)"
+                        type="number"
+                        disabled
+                        append-icon=""
+                        v-model="formData.income"
+                        id="formData.income"
+                        name="formData.income"
+                        outlined
+                        dense
+                        hide-details
+                      >
+                      </v-text-field>
+
+                      <v-text-field
+                        autocomplete="true"
+                        label="ราคาซื้อเข้าก่อน Vat (บ)"
+                        type="number"
+                        append-icon=""
+                        v-model="formData.car_buy_vat"
+                        id="formData.car_buy_vat"
+                        name="formData.car_buy_vat"
+                        @input="vatCal(formData.car_buy_vat, 'car_buy_vat')"
+                        outlined
+                        dense
+                        input
+                        hide-details
+                      >
+                      </v-text-field>
+
+                      <v-text-field
+                        autocomplete="true"
+                        label="ราคาซื้อเข้ารวม Vat (บ)"
+                        type="number"
+                        append-icon=""
+                        @input="sumVatSumOverCos()"
+                        v-model="formData.car_buy"
+                        id="formData.car_buy"
+                        name="formData.car_buy"
+                        outlined
+                        dense
+                        hide-details
+                        :rules="rule"
+                      >
+                      </v-text-field>
+
+                      <v-text-field
+                        autocomplete="true"
+                        label="ค่าดำเนินการ (บ.)"
+                        append-icon=""
+                        min="0"
+                        type="number"
+                        @input="sumVatSumOverCos()"
+                        v-model="formData.amount_overCost"
+                        id="formData.amount_overCost"
+                        name="formData.amount_overCost"
+                        outlined
+                        dense
+                        hide-details
+                        :rules="rule"
+                      >
+                      </v-text-field>
+
+                      <v-text-field
+                        autocomplete="true"
+                        label="เข้ารวม vat+ค่าดำเนิน (บ)"
+                        append-icon=""
+                        v-model="formData.VatSumOverCos"
+                        id="formData.VatSumOverCos"
+                        name="formData.VatSumOverCos"
+                        disabled
+                        outlined
+                        dense
+                        hide-details
+                        :rules="rule"
+                      >
+                      </v-text-field> -->
                     </v-card-text>
                   </v-card>
                 </v-col>
                 <v-col>
                   <v-card outlined>
-                    <v-card-text>
-                      <v-row>
+                    <v-card-title> ข้อมูลการซื้อรถ </v-card-title>
+                    <v-card-text style="font-size: 1rem">
+                      <v-row no-gutters>
+                        <v-col cols="4" class="d-flex align-center justify-end pr-3">วันที่สั่งซื้อ: </v-col>
                         <v-col>
                           <v-menu
                             v-model="menuDate_buy"
@@ -365,15 +717,12 @@
                           >
                             <template v-slot:activator="{ on, attrs }">
                               <v-text-field
-                                autocomplete="true"
                                 v-model="formData.car_date_buy"
-                                label="วันที่สั่งซื้อ"
                                 readonly
                                 v-bind="attrs"
                                 v-on="on"
                                 clearable
                                 persistent-hint
-                                prepend-icon=""
                                 outlined
                                 dense
                                 hide-details
@@ -388,6 +737,10 @@
                             ></v-date-picker>
                           </v-menu>
                         </v-col>
+                      </v-row>
+
+                      <v-row no-gutters class="mt-1">
+                        <v-col cols="4" class="d-flex align-center justify-end pr-3">วันจอดขาย: </v-col>
                         <v-col>
                           <v-menu
                             v-model="menuDate_ready_sale"
@@ -395,23 +748,17 @@
                             transition="scale-transition"
                             offset-y
                             max-width="290px"
-                            min-width="auto"
                           >
                             <template v-slot:activator="{ on, attrs }">
                               <v-text-field
-                                autocomplete="true"
                                 v-model="formData.date_ready_sale"
-                                label="วันจอดขาย"
                                 readonly
                                 v-bind="attrs"
                                 v-on="on"
                                 clearable
-                                persistent-hint
-                                prepend-icon=""
                                 outlined
                                 dense
                                 hide-details
-                                flat
                               ></v-text-field>
                             </template>
                             <v-date-picker
@@ -423,7 +770,9 @@
                           </v-menu>
                         </v-col>
                       </v-row>
-                      <v-row>
+
+                      <v-row no-gutters class="mt-1">
+                        <v-col cols="4" class="d-flex align-center justify-end pr-3">วันส่งเทรลเลอร์: </v-col>
                         <v-col>
                           <v-menu
                             v-model="menuDate_sent_trailer"
@@ -431,23 +780,17 @@
                             transition="scale-transition"
                             offset-y
                             max-width="290px"
-                            min-width="auto"
                           >
                             <template v-slot:activator="{ on, attrs }">
                               <v-text-field
-                                autocomplete="true"
                                 v-model="formData.date_sent_trailer"
-                                label="วันส่งเทรลเลอร์"
                                 readonly
                                 v-bind="attrs"
                                 v-on="on"
                                 clearable
-                                persistent-hint
-                                prepend-icon=""
                                 outlined
                                 dense
                                 hide-details
-                                flat
                               ></v-text-field>
                             </template>
                             <v-date-picker
@@ -458,6 +801,10 @@
                             ></v-date-picker>
                           </v-menu>
                         </v-col>
+                      </v-row>
+
+                      <v-row no-gutters class="mt-1">
+                        <v-col cols="4" class="d-flex align-center justify-end pr-3">วันรับรถจากเทรลเลอร์: </v-col>
                         <v-col>
                           <v-menu
                             v-model="menuDate_receive_car"
@@ -465,13 +812,11 @@
                             transition="scale-transition"
                             offset-y
                             max-width="290px"
-                            min-width="auto"
                           >
                             <template v-slot:activator="{ on, attrs }">
                               <v-text-field
                                 autocomplete="true"
                                 v-model="formData.date_receive_car"
-                                label="วันรับรถจากเทรลเลอร์"
                                 readonly
                                 v-bind="attrs"
                                 v-on="on"
@@ -493,19 +838,16 @@
                           </v-menu>
                         </v-col>
                       </v-row>
-                      <v-row>
+
+                      <v-row no-gutters class="mt-1">
+                        <v-col cols="4" class="d-flex align-center justify-end pr-3">ชื่อเทรลเลอร์: </v-col>
                         <v-col>
-                          <v-text-field
-                            label="ชื่อเทรลเลอร์"
-                            v-model="formData.trailer_name"
-                            outlined
-                            dense
-                            hide-details
-                          >
-                          </v-text-field>
+                          <v-text-field v-model="formData.trailer_name" outlined dense hide-details> </v-text-field>
                         </v-col>
                       </v-row>
-                      <v-row>
+
+                      <v-row no-gutters class="mt-1">
+                        <v-col cols="4" class="d-flex align-center justify-end pr-3">วันเข้าอู่: </v-col>
                         <v-col>
                           <v-menu
                             v-model="menuDate_sent_repair"
@@ -519,7 +861,6 @@
                               <v-text-field
                                 autocomplete="true"
                                 v-model="formData.date_sent_repair"
-                                label="วันเข้าอู่"
                                 readonly
                                 v-bind="attrs"
                                 v-on="on"
@@ -540,6 +881,10 @@
                             ></v-date-picker>
                           </v-menu>
                         </v-col>
+                      </v-row>
+
+                      <v-row no-gutters class="mt-1">
+                        <v-col cols="4" class="d-flex align-center justify-end pr-3">วันรับจากอู่: </v-col>
                         <v-col>
                           <v-menu
                             v-model="menuDate_receive_repair"
@@ -553,7 +898,6 @@
                               <v-text-field
                                 autocomplete="true"
                                 v-model="formData.date_receive_repair"
-                                label="วันรับจากอู่"
                                 readonly
                                 v-bind="attrs"
                                 v-on="on"
@@ -574,107 +918,157 @@
                             ></v-date-picker>
                           </v-menu>
                         </v-col>
+                      </v-row>
+
+                      <v-row no-gutters class="mt-1">
+                        <v-col cols="4" class="d-flex align-center justify-end pr-3">ชื่ออู่: </v-col>
                         <v-col>
-                          <v-text-field label="ชื่ออู่" v-model="formData.repair_name" outlined dense hide-details>
-                          </v-text-field>
+                          <v-text-field v-model="formData.repair_name" outlined dense hide-details> </v-text-field>
                         </v-col>
                       </v-row>
                     </v-card-text>
                   </v-card>
-                </v-col>
-              </v-row>
 
-              <v-row>
-                <v-col>
-                  <v-text-field
-                    autocomplete="true"
-                    label="ทะเบียนเดิม"
-                    append-icon=""
-                    v-model="formData.car_regis"
-                    id="formData.car_regis"
-                    name="formData.car_regis"
-                    outlined
-                    dense
-                    hide-details
-                    :rules="rule"
-                  >
-                  </v-text-field>
-                </v-col>
+                  <v-card class="mt-3" outlined>
+                    <v-card-title> ทะเบียน/ภาษี </v-card-title>
+                    <v-card-text style="font-size: 1rem">
+                      <v-row no-gutters class="mt-1">
+                        <v-col cols="4" class="d-flex align-center justify-end pr-3">ภาษี: </v-col>
+                        <v-col>
+                          <v-menu
+                            ref="menuDate_buy"
+                            v-model="menuDate_act"
+                            :close-on-content-click="false"
+                            transition="scale-transition"
+                            offset-y
+                            max-width="290px"
+                            min-width="auto"
+                          >
+                            <template v-slot:activator="{ on, attrs }">
+                              <v-text-field
+                                v-model="formData.tex_date"
+                                clearable
+                                readonly
+                                v-bind="attrs"
+                                v-on="on"
+                                persistent-hint
+                                prepend-icon=""
+                                outlined
+                                dense
+                                hide-details
+                                flat
+                              ></v-text-field>
+                            </template>
+                            <v-date-picker
+                              v-model="formData.tex_date"
+                              locale="th-TH"
+                              picker-date
+                              @input="menuDate_act = false"
+                            ></v-date-picker>
+                          </v-menu>
+                        </v-col>
+                      </v-row>
 
-                <v-col>
-                  <v-autocomplete
-                    v-model="formData.province_id"
-                    :items="dataProvinces"
-                    item-text="name_th"
-                    no-data-text="ไม่มีข้อมูล"
-                    item-value="id"
-                    label="ทะเบียนเดิมจังหวัด"
-                    outlined
-                    dense
-                    hide-details
-                    :rules="rule"
-                  ></v-autocomplete>
-                </v-col>
+                      <v-row no-gutters class="mt-1">
+                        <v-col cols="4" class="d-flex align-center justify-end pr-3">วันรับเล่ม: </v-col>
+                        <v-col>
+                          <v-menu
+                            ref="menuDate_buy"
+                            v-model="menuDate_book"
+                            :close-on-content-click="false"
+                            transition="scale-transition"
+                            offset-y
+                            max-width="290px"
+                            min-width="auto"
+                          >
+                            <template v-slot:activator="{ on, attrs }">
+                              <v-text-field
+                                v-model="formData.car_date_book"
+                                readonly
+                                clearable
+                                v-bind="attrs"
+                                v-on="on"
+                                persistent-hint
+                                prepend-icon=""
+                                outlined
+                                dense
+                                hide-details
+                                flat
+                              ></v-text-field>
+                            </template>
+                            <v-date-picker
+                              v-model="formData.car_date_book"
+                              locale="th-TH"
+                              picker-date
+                              @input="menuDate_book = false"
+                            ></v-date-picker>
+                          </v-menu>
+                        </v-col>
+                      </v-row>
+                      <v-row no-gutters class="mt-1">
+                        <v-col cols="4" class="d-flex align-center justify-end pr-3">ทะเบียนเดิม: </v-col>
+                        <v-col>
+                          <v-text-field v-model="formData.car_regis" outlined dense hide-details :rules="rule">
+                          </v-text-field>
+                        </v-col>
+                      </v-row>
+                      <v-row no-gutters class="mt-1">
+                        <v-col cols="4" class="d-flex align-center justify-end pr-3">จังหวัด: </v-col>
+                        <v-col>
+                          <v-autocomplete
+                            v-model="formData.province_id"
+                            :items="dataProvinces"
+                            item-text="name_th"
+                            item-value="id"
+                            outlined
+                            dense
+                            hide-details
+                            :rules="rule"
+                          ></v-autocomplete>
+                        </v-col>
+                      </v-row>
+                      <v-row no-gutters class="mt-1">
+                        <v-col cols="4" class="d-flex align-center justify-end pr-3">ทะเบียนใหม่: </v-col>
+                        <v-col>
+                          <v-text-field v-model="formData.car_regis_current" outlined dense hide-details :rules="rule">
+                          </v-text-field>
+                        </v-col>
+                      </v-row>
+                      <v-row no-gutters class="mt-1">
+                        <v-col cols="4" class="d-flex align-center justify-end pr-3">จังหวัด: </v-col>
+                        <v-col>
+                          <v-autocomplete
+                            v-model="formData.province_id_current"
+                            :items="dataProvinces"
+                            item-text="name_th"
+                            item-value="id"
+                            outlined
+                            dense
+                            hide-details
+                            :rules="rule"
+                          ></v-autocomplete>
+                        </v-col>
+                      </v-row>
+                    </v-card-text>
+                  </v-card>
 
-                <v-col>
-                  <v-text-field
-                    autocomplete="true"
-                    label="ทะเบียนใหม่"
-                    append-icon=""
-                    v-model="formData.car_regis_current"
-                    outlined
-                    dense
-                    hide-details
-                  >
-                  </v-text-field>
-                </v-col>
+                  <v-card class="mt-3" outlined>
+                    <v-card-title> เจ้าของเดิม </v-card-title>
+                    <v-card-text style="font-size: 1rem">
+                      <v-row no-gutters class="mt-1">
+                        <v-col cols="4" class="d-flex align-center justify-end pr-3">เจ้าของลำดับที่: </v-col>
+                        <v-col>
+                          <v-text-field v-model="formData.owner_no" outlined dense hide-details> </v-text-field>
+                        </v-col>
+                      </v-row>
+                      <v-row no-gutters class="mt-1">
+                        <v-col cols="4" class="d-flex align-center justify-end pr-3">ชื่อ: </v-col>
+                        <v-col>
+                          <v-text-field v-model="formData.owner_name" outlined dense hide-details> </v-text-field>
+                        </v-col>
+                      </v-row>
 
-                <v-col>
-                  <v-autocomplete
-                    v-model="formData.province_id_current"
-                    :items="dataProvinces"
-                    item-text="name_th"
-                    no-data-text="ไม่มีข้อมูล"
-                    item-value="id"
-                    label="ทะเบียนใหม่จังหวัด"
-                    outlined
-                    dense
-                    hide-details
-                  ></v-autocomplete>
-                </v-col>
-              </v-row>
-
-              <v-row>
-                <v-col cols="2">
-                  <v-text-field
-                    autocomplete="true"
-                    label="เจ้าของลำดับที่"
-                    append-icon=""
-                    v-model="formData.owner_no"
-                    id="formData.owner_no"
-                    name="formData.owner_no"
-                    outlined
-                    dense
-                    hide-details
-                  >
-                  </v-text-field>
-                </v-col>
-                <v-col cols="4">
-                  <v-text-field
-                    autocomplete="true"
-                    label="ชื่อ"
-                    append-icon=""
-                    v-model="formData.owner_name"
-                    id="formData.owner_name"
-                    name="formData.owner_name"
-                    outlined
-                    dense
-                    hide-details
-                  >
-                  </v-text-field>
-                </v-col>
-                <v-col cols="5">
-                  <v-text-field
+                      <!-- <v-text-field
                     autocomplete="true"
                     label="ซ่อมที่"
                     append-icon=""
@@ -686,8 +1080,6 @@
                     hide-details
                   >
                   </v-text-field>
-                </v-col>
-                <v-col cols="1">
                   <v-text-field
                     autocomplete="true"
                     label="จอง"
@@ -699,568 +1091,268 @@
                     dense
                     hide-details
                   >
-                  </v-text-field>
+                  </v-text-field> -->
+                    </v-card-text>
+                  </v-card>
+
+                  <v-card outlined class="mt-3">
+                    <v-card-title> เพิ่มเติม </v-card-title>
+                    <v-card-text style="font-size: 1rem">
+                      <v-row no-gutters class="mt-1">
+                        <v-col cols="3" class="d-flex justify-end pr-3">ประเภทเชื้อเพลิง: </v-col>
+                        <v-col>
+                          <v-radio-group v-model="formData.fuel_type" row dense hide-details>
+                            <v-radio label="น้ำมัน" value="1"></v-radio>
+                            <v-radio label="แก๊ส" value="2"></v-radio>
+                            <v-radio label="ไฟฟ้า" value="3"></v-radio>
+                            <v-radio label="น้ำมัน/แก๊ส" value="4"></v-radio>
+                            <v-radio label="น้ำมัน/ไฟฟ้า" value="5"></v-radio>
+                          </v-radio-group>
+                        </v-col>
+                      </v-row>
+                      <v-row no-gutters class="mt-1">
+                        <v-col cols="3" class="d-flex justify-end pr-3">เกียร์รถ: </v-col>
+                        <v-col>
+                          <v-radio-group v-model="formData.car_gear" row dense hide-details>
+                            <v-radio label="อัตโนมัติ (AT)" value="1"></v-radio>
+                            <v-radio label="ธรรมดา (MT)" value="2"></v-radio>
+                          </v-radio-group>
+                        </v-col>
+                      </v-row>
+                      <v-row no-gutters class="mt-1">
+                        <v-col cols="3" class="d-flex justify-end pr-3">ABS: </v-col>
+                        <v-col>
+                          <v-radio-group v-model="formData.abs" row dense hide-details>
+                            <v-radio label="มี" value="1"></v-radio>
+                            <v-radio label="ไม่มี" value="2"></v-radio>
+                          </v-radio-group>
+                        </v-col>
+                      </v-row>
+                      <v-row no-gutters class="mt-1">
+                        <v-col cols="3" class="d-flex justify-end pr-3">AIRBAG: </v-col>
+                        <v-col>
+                          <v-radio-group v-model="formData.airbag" row dense hide-details>
+                            <v-radio label="มี" value="1"></v-radio>
+                            <v-radio label="ไม่มี" value="2"></v-radio>
+                          </v-radio-group>
+                        </v-col>
+                      </v-row>
+                      <v-row no-gutters class="mt-1">
+                        <v-col cols="3" class="d-flex justify-end pr-3">CD: </v-col>
+                        <v-col>
+                          <v-radio-group v-model="formData.cd" row dense hide-details>
+                            <v-radio label="มี" value="1"></v-radio>
+                            <v-radio label="ไม่มี" value="2"></v-radio>
+                          </v-radio-group>
+                        </v-col>
+                      </v-row>
+                      <v-row no-gutters class="mt-1">
+                        <v-col cols="3" class="d-flex justify-end pr-3">ภาระผูกพัน: </v-col>
+                        <v-col>
+                          <v-radio-group v-model="formData.obligation" row dense hide-details>
+                            <v-radio label="มี" value="1"></v-radio>
+                            <v-radio label="ไม่มี" value="2"></v-radio>
+                          </v-radio-group>
+                        </v-col>
+                      </v-row>
+                      <v-row no-gutters class="mt-1">
+                        <v-col cols="3" class="d-flex justify-end pr-3">เคยประสบภัย: </v-col>
+                        <v-col>
+                          <v-radio-group v-model="formData.danger_type" row dense hide-details>
+                            <v-radio label="เคย" value="1"></v-radio>
+                            <v-radio label="ไม่เคย" value="2"></v-radio>
+                          </v-radio-group>
+                        </v-col>
+                      </v-row>
+                      <v-row v-if="formData.danger_type == 1" no-gutters class="mt-1">
+                        <v-col cols="3" class="d-flex justify-end pr-3">ข้อมูลประสบภัย: </v-col>
+                        <v-col>
+                          <v-text-field v-model="formData.danger_text" outlined dense hide-details> </v-text-field>
+                        </v-col>
+                      </v-row>
+
+                      <v-row no-gutters class="mt-1">
+                        <v-col cols="3" class="d-flex justify-end pr-3">เคยน้ำท่วม: </v-col>
+                        <v-col>
+                          <v-radio-group v-model="formData.water_type" row dense hide-details>
+                            <v-radio label="เคย" value="1"></v-radio>
+                            <v-radio label="ไม่เคย" value="2"></v-radio>
+                          </v-radio-group>
+                        </v-col>
+                      </v-row>
+                      <v-row v-if="formData.water_type == 1" no-gutters class="mt-1">
+                        <v-col cols="3" class="d-flex justify-end pr-3">ระดับน้ำที่ท่วม: </v-col>
+                        <v-col>
+                          <v-text-field v-model="formData.water_text" outlined dense hide-details> </v-text-field>
+                        </v-col>
+                      </v-row>
+
+                      <v-row no-gutters class="mt-1">
+                        <v-col cols="3" class="d-flex justify-end pr-3">การจอง: </v-col>
+                        <v-col>
+                          <v-radio-group v-model="formData.booking_status" row dense hide-details>
+                            <v-radio label="ยังไม่จอง" value="1"></v-radio>
+                            <v-radio label="จอง" color="red" value="0"></v-radio>
+                          </v-radio-group>
+                        </v-col>
+                      </v-row>
+                      <v-row no-gutters class="mt-1">
+                        <v-col cols="3" class="d-flex justify-end pr-3">แสดงหน้าร้าน: </v-col>
+                        <v-col>
+                          <v-radio-group v-model="formData.car_active" row dense hide-details>
+                            <v-radio label="แสดง" value="1"></v-radio>
+                            <v-radio label="ไม่แสดง" color="red" value="0"></v-radio>
+                          </v-radio-group>
+                        </v-col>
+                      </v-row>
+
+                      <!-- <v-row class="mt-3 d-flex justify-space-around">
+                        <v-radio-group
+                          v-model="formData.fuel_type"
+                          id="formData.fuel_type"
+                          name="formData.fuel_type"
+                          row
+                        >
+                          <template>
+                            <div class="mr-1">ประเภทเชื้อเพลิง:</div>
+                          </template>
+                          <v-radio label="น้ำมัน" value="1"></v-radio>
+                          <v-radio label="แก๊ส" value="2"></v-radio>
+                          <v-radio label="ไฟฟ้า" value="3"></v-radio>
+                          <v-radio label="น้ำมัน/แก๊ส" value="4"></v-radio>
+                          <v-radio label="น้ำมัน/ไฟฟ้า" value="5"></v-radio>
+                        </v-radio-group>
+
+                        <v-radio-group v-model="formData.car_gear" id="formData.car_gear" name="formData.car_gear" row>
+                          <template>
+                            <div class="mr-1">เกียร์รถ:</div>
+                          </template>
+                          <v-radio label="อัตโนมัติ (AT)" value="1"></v-radio>
+                          <v-radio label="ธรรมดา (MT)" value="2"></v-radio>
+                        </v-radio-group>
+                      </v-row>
+
+                      <v-row class="d-flex justify-space-around">
+                        <v-radio-group v-model="formData.abs" id="formData.abs" name="formData.abs" row>
+                          <template>
+                            <div class="mr-1">ABS:</div>
+                          </template>
+                          <v-radio label="มี" value="1"></v-radio>
+                          <v-radio label="ไม่มี" value="2"></v-radio>
+                        </v-radio-group>
+
+                        <v-radio-group v-model="formData.airbag" id="formData.airbag" name="formData.airbag" row>
+                          <template>
+                            <div class="mr-1">AIRBAG:</div>
+                          </template>
+                          <v-radio label="มี" value="1"></v-radio>
+                          <v-radio label="ไม่มี" value="2"></v-radio>
+                        </v-radio-group>
+
+                        <v-radio-group v-model="formData.cd" id="formData.cd" name="formData.cd" row>
+                          <template>
+                            <div class="mr-1">CD:</div>
+                          </template>
+                          <v-radio label="มี" value="1"></v-radio>
+                          <v-radio label="ไม่มี" value="2"></v-radio>
+                        </v-radio-group>
+                      </v-row>
+
+                      <v-row class="d-flex justify-space-around">
+                        <v-radio-group
+                          v-model="formData.obligation"
+                          id="formData.obligation"
+                          name="formData.obligation"
+                          row
+                        >
+                          <template>
+                            <div class="mr-1">ภาระผูกพัน:</div>
+                          </template>
+                          <v-radio label="มี" value="1"></v-radio>
+                          <v-radio label="ไม่มี" value="2"></v-radio>
+                        </v-radio-group>
+
+                        <v-radio-group
+                          v-model="formData.water_type"
+                          id="formData.water_type"
+                          name="formData.water_type"
+                          row
+                        >
+                          <template>
+                            <div class="mr-1">เคยประสบภัย:</div>
+                          </template>
+                          <v-radio label="เคย" value="1"></v-radio>
+                          <v-radio label="ไม่เคย" value="2"></v-radio>
+                        </v-radio-group>
+
+                        <v-radio-group
+                          v-model="formData.danger_type"
+                          id="formData.danger_type"
+                          name="formData.danger_type"
+                          row
+                        >
+                          <template>
+                            <div class="mr-1">เคยน้ำท่วม:</div>
+                          </template>
+                          <v-radio label="เคย" value="1"></v-radio>
+                          <v-radio label="ไม่เคย" value="2"></v-radio>
+                        </v-radio-group>
+                      </v-row>
+
+                      <v-row class="d-flex justify-space-around">
+                        <v-radio-group
+                          v-model="formData.booking_status"
+                          id="formData.booking_status"
+                          name="formData.booking_status"
+                          row
+                        >
+                          <template>
+                            <div class="mr-1">การจอง:</div>
+                          </template>
+                          <v-radio label="ยังไม่จอง" value="1"></v-radio>
+                          <v-radio label="จอง" color="red" value="0"></v-radio>
+                        </v-radio-group>
+
+                        <v-radio-group
+                          v-model="formData.car_active"
+                          id="formData.car_active"
+                          name="formData.car_active"
+                          row
+                          readonly
+                        >
+                          <template>
+                            <div class="mr-1">แสดงหน้าร้าน:</div>
+                          </template>
+                          <v-radio label="แสดง" value="1"></v-radio>
+                          <v-radio label="ไม่แสดง" color="red" value="0"></v-radio>
+                        </v-radio-group>
+
+                        <v-radio-group
+                          v-model="formData.car_stock"
+                          id="formData.car_stock"
+                          name="formData.car_stock"
+                          row
+                          @change="carStock_change(formData.car_stock)"
+                        >
+                          <template>
+                            <div class="mr-1">สถานะ:</div>
+                          </template>
+                          <v-radio label="รอรับรถ" color="yellow" value="1"></v-radio>
+                          <v-radio label="อยู่ในคลัง" color="red" value="2"></v-radio>
+                          <v-radio label="ขาย" color="green" value="3"></v-radio>
+                        </v-radio-group>
+                      </v-row> -->
+                    </v-card-text>
+                  </v-card>
+
+                  <v-card outlined class="mt-3">
+                    <v-card-title> หมายเหตุ </v-card-title>
+                    <v-card-text>
+                      <v-textarea rows="3" v-model="formData.comment" outlined dense hide-details> </v-textarea>
+                    </v-card-text>
+                  </v-card>
                 </v-col>
               </v-row>
-
-              <v-row>
-                <v-col cols="6">
-                  <v-text-field
-                    autocomplete="true"
-                    label="เลขเครื่องยนต์"
-                    append-icon=""
-                    v-model="formData.car_no_engine"
-                    id="formData.car_no_engine"
-                    name="formData.car_no_engine"
-                    outlined
-                    dense
-                    hide-details
-                  >
-                  </v-text-field>
-                </v-col>
-                <v-col cols="6">
-                  <v-text-field
-                    autocomplete="true"
-                    label="เลขตัวถัง"
-                    append-icon=""
-                    v-model="formData.car_no_body"
-                    id="formData.car_no_body"
-                    name="formData.car_no_body"
-                    outlined
-                    dense
-                    hide-details
-                  >
-                  </v-text-field>
-                </v-col>
-              </v-row>
-
-              <v-row>
-                <v-col cols="3">
-                  <v-text-field
-                    autocomplete="true"
-                    label="เลขไมค์"
-                    type="number"
-                    append-icon=""
-                    v-model="formData.car_mileage"
-                    id="formData.car_mileage"
-                    name="formData.car_mileage"
-                    outlined
-                    dense
-                    hide-details
-                  >
-                  </v-text-field>
-                </v-col>
-
-                <v-col cols="3">
-                  <v-text-field
-                    autocomplete="true"
-                    label="ขนาดเครื่องยนต์ CC"
-                    type="number"
-                    append-icon=""
-                    v-model="formData.car_engine_amount"
-                    id="formData.car_engine_amount"
-                    name="formData.car_engine_amount"
-                    outlined
-                    dense
-                    hide-details
-                  >
-                  </v-text-field>
-                </v-col>
-
-                <v-col cols="3">
-                  <v-autocomplete
-                    v-model="formData.color_id"
-                    id="formData.color_id"
-                    name="formData.color_id"
-                    :items="dataColor"
-                    item-text="color_name"
-                    no-data-text="ไม่มีข้อมูล"
-                    item-value="id"
-                    label="สีของรถ"
-                    outlined
-                    dense
-                    hide-details
-                    :rules="rule"
-                  ></v-autocomplete>
-                </v-col>
-
-                <v-col cols="3">
-                  <v-autocomplete
-                    v-model="formData.fuel_id"
-                    id="formData.fuel_id"
-                    name="formData.fuel_id"
-                    :items="dataFuel"
-                    item-text="fuel_name"
-                    no-data-text="ไม่มีข้อมูล"
-                    item-value="id"
-                    label="ชนิดเชื้อเพลง"
-                    outlined
-                    dense
-                    hide-details
-                    :rules="rule"
-                  ></v-autocomplete>
-                </v-col>
-              </v-row>
-              <br />
-              <hr />
-              <br />
-
-              <v-row v-if="user_group_permission == 8 || user_group_permission == 10"></v-row>
-              <v-row v-else>
-                <v-col cols="3">
-                  <v-text-field
-                    autocomplete="true"
-                    label="ราคาซื้อเข้าก่อน Vat (บ)"
-                    type="number"
-                    append-icon=""
-                    v-model="formData.car_buy_vat"
-                    id="formData.car_buy_vat"
-                    name="formData.car_buy_vat"
-                    @input="vatCal(formData.car_buy_vat, 'car_buy_vat')"
-                    outlined
-                    dense
-                    input
-                    hide-details
-                  >
-                  </v-text-field>
-                </v-col>
-                <v-col cols="3">
-                  <v-text-field
-                    autocomplete="true"
-                    label="ราคาซื้อเข้ารวม Vat (บ)"
-                    type="number"
-                    append-icon=""
-                    @input="sumVatSumOverCos()"
-                    v-model="formData.car_buy"
-                    id="formData.car_buy"
-                    name="formData.car_buy"
-                    outlined
-                    dense
-                    hide-details
-                    :rules="rule"
-                  >
-                  </v-text-field>
-                </v-col>
-                <v-col cols="3">
-                  <v-text-field
-                    autocomplete="true"
-                    label="ค่าดำเนินการ (บ.)"
-                    append-icon=""
-                    min="0"
-                    type="number"
-                    @input="sumVatSumOverCos()"
-                    v-model="formData.amount_overCost"
-                    id="formData.amount_overCost"
-                    name="formData.amount_overCost"
-                    outlined
-                    dense
-                    hide-details
-                    :rules="rule"
-                  >
-                  </v-text-field>
-                </v-col>
-                <v-col cols="3">
-                  <v-text-field
-                    autocomplete="true"
-                    label="เข้ารวม vat+ค่าดำเนิน (บ)"
-                    append-icon=""
-                    v-model="formData.VatSumOverCos"
-                    id="formData.VatSumOverCos"
-                    name="formData.VatSumOverCos"
-                    disabled
-                    outlined
-                    dense
-                    hide-details
-                    :rules="rule"
-                  >
-                  </v-text-field>
-                </v-col>
-              </v-row>
-
-              <v-row v-if="user_group_permission == 8 || user_group_permission == 10"> </v-row>
-              <v-row v-else>
-                <v-col cols="2">
-                  <v-text-field
-                    autocomplete="true"
-                    label="ราคาดาวน์ (บ.)"
-                    type="number"
-                    append-icon=""
-                    v-model="formData.amount_down"
-                    id="formData.amount_down"
-                    name="formData.amount_down"
-                    outlined
-                    dense
-                    hide-details
-                    :rules="rule"
-                  >
-                  </v-text-field>
-                </v-col>
-                <v-col cols="2">
-                  <v-text-field
-                    autocomplete="true"
-                    append-icon=""
-                    label="งวดผ่อน (บ.)"
-                    v-model="formData.amount_slacken"
-                    id="formData.amount_slacken"
-                    name="formData.amount_slacken"
-                    outlined
-                    dense
-                    hide-details
-                    :rules="rule"
-                  >
-                  </v-text-field>
-                </v-col>
-
-                <v-col cols="2">
-                  <v-text-field
-                    autocomplete="true"
-                    label="ขายประมาณ (บ)"
-                    type="number"
-                    disabled
-                    append-icon=""
-                    v-model="formData.car_price_vat"
-                    id="formData.car_price_vat"
-                    name="formData.car_price_vat"
-                    outlined
-                    dense
-                    hide-details
-                  >
-                  </v-text-field>
-                </v-col>
-
-                <v-col cols="3">
-                  <v-text-field
-                    autocomplete="true"
-                    label="ราคาจัด"
-                    type="number"
-                    append-icon=""
-                    v-model="formData.amount_price"
-                    id="formData.amount_price"
-                    name="formData.amount_price"
-                    outlined
-                    disabled
-                    dense
-                    hide-details
-                  >
-                  </v-text-field>
-                </v-col>
-
-                <v-col cols="3">
-                  <v-text-field
-                    autocomplete="true"
-                    label="จัดรวม Vat (บ)"
-                    type="number"
-                    append-icon=""
-                    v-model="formData.amount_price_vat"
-                    id="formData.amount_price_vat"
-                    name="formData.amount_price_vat"
-                    outlined
-                    disabled
-                    dense
-                    hide-details
-                  >
-                  </v-text-field>
-                </v-col>
-              </v-row>
-              <v-row v-if="user_group_permission == -1">
-                <v-col cols="2">
-                  <v-text-field
-                    autocomplete="true"
-                    disabled
-                    label="เงินเข้าธนาคาร"
-                    append-icon=""
-                    v-model="formData.car_price_bank"
-                    id="formData.car_price_bank"
-                    name="formData.car_price_bank"
-                    outlined
-                    dense
-                    hide-details
-                  >
-                  </v-text-field>
-                </v-col>
-
-                <v-col cols="2">
-                  <v-text-field
-                    autocomplete="true"
-                    disabled
-                    label="ราคาขายจริง"
-                    append-icon=""
-                    v-model="formData.car_price"
-                    id="formData.car_price"
-                    name="formData.car_price"
-                    outlined
-                    dense
-                    hide-details
-                  >
-                  </v-text-field>
-                </v-col>
-
-                <v-col cols="1">
-                  <v-text-field
-                    autocomplete="true"
-                    label="บวก %"
-                    append-icon=""
-                    v-model="formData.car_price_plus"
-                    id="formData.car_price_plus"
-                    name="formData.car_price_plus"
-                    outlined
-                    disabled
-                    dense
-                    hide-details
-                  >
-                  </v-text-field>
-                </v-col>
-
-                <v-col cols="1">
-                  <v-text-field
-                    autocomplete="true"
-                    label="คูณ %"
-                    append-icon=""
-                    disabled
-                    v-model="formData.car_price_multiply"
-                    id="formData.car_price_multiply"
-                    name="formData.car_price_multiply"
-                    outlined
-                    dense
-                    hide-details
-                  >
-                  </v-text-field>
-                </v-col>
-
-                <v-col cols="2">
-                  <v-text-field
-                    autocomplete="true"
-                    label="ค่าใช้จ่าย (บ)"
-                    append-icon=""
-                    v-model="formData.expenses"
-                    id="formData.expenses"
-                    name="formData.expenses"
-                    outlined
-                    disabled
-                    dense
-                    hide-details
-                  >
-                  </v-text-field>
-                </v-col>
-
-                <v-col cols="2">
-                  <v-text-field
-                    autocomplete="true"
-                    label="ราคาสุทธิ (บ)"
-                    type="number"
-                    append-icon=""
-                    v-model="formData.net_price"
-                    id="formData.net_price"
-                    name="formData.net_price"
-                    outlined
-                    dense
-                    hide-details
-                    disabled
-                  >
-                  </v-text-field>
-                </v-col>
-
-                <v-col cols="2">
-                  <v-text-field
-                    autocomplete="true"
-                    label="รายรับ (บ)"
-                    type="number"
-                    disabled
-                    append-icon=""
-                    v-model="formData.income"
-                    id="formData.income"
-                    name="formData.income"
-                    outlined
-                    dense
-                    hide-details
-                  >
-                  </v-text-field>
-                </v-col>
-              </v-row>
-
-              <v-row>
-                <v-col v-if="formData.danger_type == 1" cols="6">
-                  <v-text-field
-                    autocomplete="true"
-                    label="ข้อมูลประสบภัย"
-                    append-icon=""
-                    v-model="formData.danger_text"
-                    id="formData.danger_text"
-                    name="formData.danger_text"
-                    outlined
-                    dense
-                    hide-details
-                  >
-                  </v-text-field>
-                </v-col>
-                <v-col v-if="formData.water_type == 1" cols="6">
-                  <v-text-field
-                    autocomplete="true"
-                    label="ระดับน้ำที่ท่วม"
-                    append-icon=""
-                    v-model="formData.water_text"
-                    id="formData.water_text"
-                    name="formData.water_text"
-                    outlined
-                    dense
-                    hide-details
-                  >
-                  </v-text-field>
-                </v-col>
-              </v-row>
-
-              <v-row>
-                <v-col cols="12">
-                  <v-textarea
-                    rows="2"
-                    label="หมายเหตุ"
-                    append-icon=""
-                    v-model="formData.comment"
-                    id="formData.comment"
-                    name="formData.comment"
-                    outlined
-                    dense
-                    hide-details
-                  >
-                  </v-textarea>
-                </v-col>
-              </v-row>
-
-              <v-card outlined class="mt-5" style="border: 1px solid #aaa">
-                <v-card-text>
-                  <v-row class="mt-3 d-flex justify-space-around">
-                    <v-radio-group v-model="formData.fuel_type" id="formData.fuel_type" name="formData.fuel_type" row>
-                      <template>
-                        <div class="mr-1">ประเภทเชื้อเพลิง:</div>
-                      </template>
-                      <v-radio label="น้ำมัน" value="1"></v-radio>
-                      <v-radio label="แก๊ส" value="2"></v-radio>
-                      <v-radio label="ไฟฟ้า" value="3"></v-radio>
-                      <v-radio label="น้ำมัน/แก๊ส" value="4"></v-radio>
-                      <v-radio label="น้ำมัน/ไฟฟ้า" value="5"></v-radio>
-                    </v-radio-group>
-
-                    <v-radio-group v-model="formData.car_gear" id="formData.car_gear" name="formData.car_gear" row>
-                      <template>
-                        <div class="mr-1">เกียร์รถ:</div>
-                      </template>
-                      <v-radio label="อัตโนมัติ (AT)" value="1"></v-radio>
-                      <v-radio label="ธรรมดา (MT)" value="2"></v-radio>
-                    </v-radio-group>
-                  </v-row>
-
-                  <v-row class="d-flex justify-space-around">
-                    <v-radio-group v-model="formData.abs" id="formData.abs" name="formData.abs" row>
-                      <template>
-                        <div class="mr-1">ABS:</div>
-                      </template>
-                      <v-radio label="มี" value="1"></v-radio>
-                      <v-radio label="ไม่มี" value="2"></v-radio>
-                    </v-radio-group>
-
-                    <v-radio-group v-model="formData.airbag" id="formData.airbag" name="formData.airbag" row>
-                      <template>
-                        <div class="mr-1">AIRBAG:</div>
-                      </template>
-                      <v-radio label="มี" value="1"></v-radio>
-                      <v-radio label="ไม่มี" value="2"></v-radio>
-                    </v-radio-group>
-
-                    <v-radio-group v-model="formData.cd" id="formData.cd" name="formData.cd" row>
-                      <template>
-                        <div class="mr-1">CD:</div>
-                      </template>
-                      <v-radio label="มี" value="1"></v-radio>
-                      <v-radio label="ไม่มี" value="2"></v-radio>
-                    </v-radio-group>
-                  </v-row>
-
-                  <v-row class="d-flex justify-space-around">
-                    <v-radio-group
-                      v-model="formData.obligation"
-                      id="formData.obligation"
-                      name="formData.obligation"
-                      row
-                    >
-                      <template>
-                        <div class="mr-1">ภาระผูกพัน:</div>
-                      </template>
-                      <v-radio label="มี" value="1"></v-radio>
-                      <v-radio label="ไม่มี" value="2"></v-radio>
-                    </v-radio-group>
-
-                    <v-radio-group
-                      v-model="formData.water_type"
-                      id="formData.water_type"
-                      name="formData.water_type"
-                      row
-                    >
-                      <template>
-                        <div class="mr-1">เคยประสบภัย:</div>
-                      </template>
-                      <v-radio label="เคย" value="1"></v-radio>
-                      <v-radio label="ไม่เคย" value="2"></v-radio>
-                    </v-radio-group>
-
-                    <v-radio-group
-                      v-model="formData.danger_type"
-                      id="formData.danger_type"
-                      name="formData.danger_type"
-                      row
-                    >
-                      <template>
-                        <div class="mr-1">เคยน้ำท่วม:</div>
-                      </template>
-                      <v-radio label="เคย" value="1"></v-radio>
-                      <v-radio label="ไม่เคย" value="2"></v-radio>
-                    </v-radio-group>
-                  </v-row>
-
-                  <v-row class="d-flex justify-space-around">
-                    <v-radio-group
-                      v-model="formData.booking_status"
-                      id="formData.booking_status"
-                      name="formData.booking_status"
-                      row
-                    >
-                      <template>
-                        <div class="mr-1">การจอง:</div>
-                      </template>
-                      <v-radio label="ยังไม่จอง" value="1"></v-radio>
-                      <v-radio label="จอง" color="red" value="0"></v-radio>
-                    </v-radio-group>
-
-                    <v-radio-group
-                      v-model="formData.car_active"
-                      id="formData.car_active"
-                      name="formData.car_active"
-                      row
-                      readonly
-                    >
-                      <template>
-                        <div class="mr-1">แสดงหน้าร้าน:</div>
-                      </template>
-                      <v-radio label="แสดง" value="1"></v-radio>
-                      <v-radio label="ไม่แสดง" color="red" value="0"></v-radio>
-                    </v-radio-group>
-
-                    <v-radio-group
-                      v-model="formData.car_stock"
-                      id="formData.car_stock"
-                      name="formData.car_stock"
-                      row
-                      @change="carStock_change(formData.car_stock)"
-                    >
-                      <template>
-                        <div class="mr-1">สถานะ:</div>
-                      </template>
-                      <v-radio label="รอรับรถ" color="yellow" value="1"></v-radio>
-                      <v-radio label="อยู่ในคลัง" color="red" value="2"></v-radio>
-                      <v-radio label="ขาย" color="green" value="3"></v-radio>
-                    </v-radio-group>
-                  </v-row>
-                </v-card-text>
-              </v-card>
             </div>
 
             <v-row class="mt-3" v-if="user_group_permission == 13">
@@ -1403,10 +1495,7 @@
                   </v-card-text>
                 </v-card>
               </v-col>
-              <!-- <v-col
-                cols="6"
-                v-if="action == 'edit' && user_group_permission != 13"
-              > -->
+
               <v-col cols="6" v-if="action == 'edit'">
                 <v-card outlined>
                   <v-card-title>
@@ -1574,7 +1663,8 @@
                 </v-row> -->
               </v-col>
             </v-row>
-          </v-card-text>
+            <!-- </v-card-text> -->
+          </v-container>
         </v-form>
       </v-card>
     </v-dialog>

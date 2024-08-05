@@ -251,11 +251,11 @@
         loading-text="กำลังโหลดข้อมูลกรุณารอสักครู่"
         dense
       >
-        <template v-slot:[`item.image`]="{ item }">
+        <!-- <template v-slot:[`item.image`]="{ item }">
           <div v-if="item.image != null" class="images" v-viewer>
             <img height="40px" :src="serverUrl + '/' + item.image" />
           </div>
-        </template>
+        </template> -->
 
         <template v-slot:[`item.date`]="{ item }">
           <span>{{ $moment(item.date).format("DD/MM/YYYY") }}</span>
@@ -268,8 +268,17 @@
         <template v-slot:[`item.price`]="{ item }">
           <span style="color: green">{{ Number(item.price).toLocaleString() }}</span>
         </template>
+        <template v-slot:[`item.sale_price`]="{ item }">
+          <span>{{ Number(item.sale_price).toLocaleString() }}</span>
+        </template>
+        <template v-slot:[`item.market_price`]="{ item }">
+          <span>{{ Number(item.market_price).toLocaleString() }}</span>
+        </template>
 
         <template v-slot:[`item.actions`]="{ item }">
+          <v-btn v-if="item.image != null" color="info" fab x-small dark @click="showImg(serverUrl + '/' + item.image)">
+            <v-icon> mdi-image </v-icon>
+          </v-btn>
           <v-btn color="primary" fab x-small dark @click="editItem(item.id)">
             <v-icon> mdi-pencil </v-icon>
           </v-btn>
@@ -361,12 +370,12 @@ export default {
       search: "",
       loading: false,
       headers: [
-        {
-          text: "รูปภาพ",
-          value: "image",
-          align: "center",
-          width: "10%",
-        },
+        // {
+        //   text: "รูปภาพ",
+        //   value: "image",
+        //   align: "center",
+        //   width: "10%",
+        // },
         { text: "วันที่", value: "date" },
         { text: "ยี่ห้อ", value: "car_models.car_model_name" },
         { text: "รุ่น", value: "car_series.car_series_name", width: "15%" },
@@ -378,7 +387,9 @@ export default {
         { text: "เกรด", value: "grade", align: "center" },
         { text: "ชื่อลาน", value: "location" },
         { text: "ราคาจบ", value: "price", align: "end" },
-        { text: "ผู้ลงข้อมูล", value: "user.first_name" },
+        { text: "ราคาขาย", value: "sale_price", align: "end" },
+        { text: "ราคาตลาด", value: "market_price", align: "end" },
+        // { text: "ผู้ลงข้อมูล", value: "user.first_name" },
         { text: "จัดการ", value: "actions", sortable: false, width: "9%" },
       ],
     };

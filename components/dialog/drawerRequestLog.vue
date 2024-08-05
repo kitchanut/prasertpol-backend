@@ -397,6 +397,15 @@
             </v-card-text>
           </v-card>
 
+          <v-card class="mr-2 mt-3" v-if="item.social" outlined>
+            <v-card-text>
+              <div class="text-center">Facebook/Tiltok</div>
+              <div class="images" v-viewer>
+                <img width="80px" :src="serverUrl + item.social" />
+              </div>
+            </v-card-text>
+          </v-card>
+
           <v-card
             class="mr-2 mt-3"
             v-if="

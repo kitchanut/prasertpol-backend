@@ -598,7 +598,7 @@ export default {
 
       const response = await apiReport.report_profit(data);
       if (response.status == 200) {
-        // console.log(response.data);
+        console.log(response.data);
         this.data = response.data;
         this.filterData();
       } else {
@@ -720,19 +720,63 @@ export default {
       window.open(routeData.href, "_blank");
     },
     handleDownload() {
-      const filterVal = [];
-      for (let index = 0; index < this.tHeader.length; index++) {
-        filterVal.push(this.headers[index].value);
+      let tHeader;
+      let filterVal = [];
+      if (this.toggleTeam == "team") {
+        tHeader = this.tHeader;
+        for (let index = 0; index < this.tHeader.length; index++) {
+          filterVal.push(this.headers[index].value);
+        }
+      } else {
+        tHeader = [
+          "ลำดับ",
+          "ยี่ห้อ",
+          "รุ่น",
+          "รุ่นย่อย",
+          "สี",
+          "ปี",
+          "เกียร์",
+          "วันที่ปล่อยรถ",
+          "วันรับเงิน",
+          "สาขา",
+          "รวมรายรับ",
+          "ค่าตัวรถ",
+          "ค่าดำเนินการ",
+          "ค่าใช้จ่าย",
+          "รวมรายจ่าย",
+          "กำไร/ขาดทุน",
+          "%",
+        ];
+        filterVal = [
+          "cars.car_no",
+          "cars.car_models.car_model_name",
+          "cars.car_series.car_series_name",
+          "cars.car_serie_sub.car_serie_sub_name",
+          "cars.color.color_name",
+          "cars.car_year",
+          "cars.car_gear",
+          "contract.contract_date",
+          "appointment_banks.appointment_money_date",
+          "branch_team.branch_team_name",
+          "income_sum_money",
+          "expenses_only_car_sum_money",
+          "amount_overCost",
+          "expenses_without_car_sum_money",
+          "sum_over_all_expenses_sum_money",
+          "profitOrLoss",
+          "persent",
+        ];
       }
+
       this.$nextTick(() => {
         import("@/vendor/Export2Excel").then((excel) => {
-          const tHeader = this.tHeader;
-          const list = this.data_filter;
+          // const tHeader = this.tHeader;
+          let list = this.toggleTeam == "team" ? this.data_filter : this.data;
           const data = this.formatJson(filterVal, list);
           excel.export_json_to_excel({
             header: tHeader,
             data,
-            filename: "รายงานกำไรขาดทุน (" + moment().format("DD/MM/YYYY ( HH:mm น.)") + ")",
+            filename: "รายงานกำไรขาดทุน (" + moment().format("DD/MM/YYYY HH:mm") + ")",
             autoWidth: true,
             bookType: "xlsx",
           });
@@ -744,6 +788,24 @@ export default {
         filterVal.map((j) => {
           if (j == "cars.car_no") {
             return v.cars.car_no;
+          } else if (j == "cars.car_models.car_model_name") {
+            return v.cars.car_models.car_model_name;
+          } else if (j == "cars.car_series.car_series_name") {
+            return v.cars.car_series.car_series_name;
+          } else if (j == "cars.car_serie_sub.car_serie_sub_name") {
+            return v.cars.car_serie_sub.car_serie_sub_name;
+          } else if (j == "cars.color.color_name") {
+            return v.cars.color.color_name;
+          } else if (j == "cars.car_year") {
+            return v.cars.car_year;
+          } else if (j == "cars.car_gear") {
+            if (v.cars.car_gear == "1") {
+              return "AT";
+            } else if (v.cars.car_gear == "2") {
+              return "MT";
+            } else {
+              return v.cars.car_gear;
+            }
           } else if (j == "contract.contract_date" && v.contract) {
             return v.contract.contract_date;
           } else if (j == "appointment_banks.appointment_money_date" && v.appointment_banks) {

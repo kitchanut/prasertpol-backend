@@ -395,29 +395,13 @@
                 <v-chip v-if="item.work_status == '11'" small color="success">ปิดงาน</v-chip>
               </div>
 
-              <v-btn v-if="item.pathner_job_technician == 1" class="mt-1" x-small depressed color="red" dark
-                >มีงานซ่อมนอก</v-btn
-              >
-              <span v-if="item.job_fix != 0">
-                <v-btn class="mt-1" x-small depressed color="red" dark>มีงานซ่อม</v-btn>
-              </span>
-
+              <v-chip v-if="item.pathner_job_technician == 1" x-small color="error" outlined>มีงานซ่อมนอก</v-chip>
+              <v-chip v-if="item.job_fix != 0" x-small color="error" outlined>มีงานซ่อม</v-chip>
               <div v-if="item.contract != null">
-                <span v-if="item.appointment_book_date == ' '">
-                  <v-btn class="mt-1" x-small depressed color="red" dark>ชุดโอน</v-btn>
-                </span>
-
-                <span v-if="item.appointment_transfer_date == ' '">
-                  <v-btn class="mt-1" x-small depressed color="red" dark>โอนรถ</v-btn>
-                </span>
-
-                <span v-if="item.appointment_money_date == ' '">
-                  <v-btn class="mt-1" x-small depressed color="red" dark>ได้เงิน</v-btn>
-                </span>
-
-                <span v-if="item.appointment_mkt_date == null">
-                  <v-btn class="mt-1" x-small depressed color="red" dark>MRT</v-btn>
-                </span>
+                <v-chip v-if="item.appointment_book_date == ' '" x-small color="error" outlined>ชุดโอน</v-chip>
+                <v-chip v-if="item.appointment_transfer_date == ' '" x-small color="error" outlined>โอนรถ</v-chip>
+                <v-chip v-if="item.appointment_money_date == ' '" x-small color="error" outlined>ได้เงิน</v-chip>
+                <v-chip v-if="item.appointment_mkt_date == ' '" x-small color="error" outlined>MRT</v-chip>
               </div>
             </template>
             <template v-slot:[`item.amount_price`]="{ item }">

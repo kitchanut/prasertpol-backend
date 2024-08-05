@@ -26,7 +26,7 @@
                   <v-text-field
                     autocomplete="true"
                     v-model="formData.date"
-                    label="วันจบ"
+                    label="วันจบ*"
                     v-bind="attrs"
                     v-on="on"
                     persistent-hint
@@ -55,7 +55,7 @@
                 @change="eventSelectType"
                 item-text="car_type_name"
                 item-value="id"
-                label="ประเภทรถ"
+                label="ประเภทรถ*"
                 outlined
                 dense
                 hide-details
@@ -81,7 +81,7 @@
                 no-data-text="ไม่มีข้อมูล"
                 item-text="car_model_name"
                 item-value="id"
-                label="ยี่ห้อ"
+                label="ยี่ห้อ*"
                 outlined
                 dense
                 hide-details
@@ -100,7 +100,7 @@
                 @change="getCarSerieSub"
                 item-text="car_series_name"
                 item-value="id"
-                label="รุ่นรถ"
+                label="รุ่นรถ*"
                 outlined
                 dense
                 hide-details
@@ -117,7 +117,7 @@
                 :items="carSerieSub"
                 item-text="car_serie_sub_name"
                 item-value="id"
-                label="รุ่นย่อย"
+                label="รุ่นย่อย*"
                 no-data-text="ไม่มีข้อมูล"
                 outlined
                 dense
@@ -136,7 +136,7 @@
                 item-text="value"
                 no-data-text="ไม่มีข้อมูล"
                 item-value="value"
-                label="ปีผลิต (ค.ศ)"
+                label="ปีผลิต (ค.ศ)*"
                 outlined
                 dense
                 hide-details
@@ -150,7 +150,7 @@
                 item-text="color_name"
                 no-data-text="ไม่มีข้อมูล"
                 item-value="id"
-                label="สีของรถ"
+                label="สีของรถ*"
                 outlined
                 dense
                 hide-details
@@ -159,7 +159,7 @@
 
               <v-radio-group class="mt-2" v-model="formData.car_gear" row hide-details="" :rules="rule">
                 <template>
-                  <div class="mr-1">เกียร์รถ:</div>
+                  <div class="mr-1">เกียร์รถ*:</div>
                 </template>
                 <v-radio label="อัตโนมัติ (AT)" value="AT"></v-radio>
                 <v-radio label="ธรรมดา (MT)" value="MT"></v-radio>
@@ -169,7 +169,7 @@
               <v-text-field
                 class="mt-2"
                 autocomplete="true"
-                label="เลขไมค์"
+                label="เลขไมค์*"
                 append-icon=""
                 v-model="formData.car_mileage"
                 outlined
@@ -182,7 +182,7 @@
               <v-text-field
                 class="mt-2"
                 autocomplete="true"
-                label="เกรด"
+                label="เกรด*"
                 append-icon=""
                 v-model="formData.grade"
                 outlined
@@ -195,7 +195,7 @@
               <v-text-field
                 class="mt-2"
                 autocomplete="true"
-                label="ชื่อลาน"
+                label="ชื่อลาน*"
                 append-icon=""
                 v-model="formData.location"
                 outlined
@@ -208,7 +208,7 @@
               <v-text-field
                 class="mt-2"
                 autocomplete="true"
-                label="ราคาจบ"
+                label="ราคาจบ*"
                 type="number"
                 append-icon=""
                 v-model="formData.price"
@@ -219,15 +219,43 @@
               >
               </v-text-field>
 
+              <v-text-field
+                class="mt-2"
+                autocomplete="true"
+                label="ราคาขาย"
+                type="number"
+                append-icon=""
+                v-model="formData.sale_price"
+                outlined
+                dense
+                hide-details
+              >
+              </v-text-field>
+
+              <v-text-field
+                class="mt-2"
+                autocomplete="true"
+                label="ราคาตลาด"
+                type="number"
+                append-icon=""
+                v-model="formData.market_price"
+                outlined
+                dense
+                hide-details
+              >
+              </v-text-field>
+
               <div class="d-flex flex-column justify-center">
                 <v-file-input
                   class="mt-2"
                   outlined
                   dense
                   accept="image/*"
+                  prepend-icon=""
+                  append-icon="mdi-image"
                   show-size
                   :label="
-                    currentFile == null ? 'เลือกรูปภาพ' : imagePreviewURL == null ? 'เลือกรูปภาพ' : 'เลือกรูปใหม่'
+                    currentFile == null ? 'อัพโหลดรูปภาพ' : imagePreviewURL == null ? 'อัพโหลดรูปภาพ' : 'อัพโหลดรูปใหม่'
                   "
                   @change="selectFile"
                 ></v-file-input>
@@ -280,7 +308,12 @@ export default {
       imagePreviewURL: null,
     };
   },
-  mounted() {},
+  mounted() {
+    this.getCartypes();
+    this.getCarmodels();
+    this.getYearCurrent();
+    this.getColors();
+  },
   methods: {
     async getCartypes() {
       const response = await apiCar_types.select();
@@ -414,10 +447,6 @@ export default {
     async dialog() {
       this.dialogDeleteComponent = this.dialog;
       if (this.$props.dialog) {
-        await this.getCartypes();
-        await this.getCarmodels();
-        await this.getYearCurrent();
-        await this.getColors();
         if (this.action == "add") {
           this.$nextTick(() => {
             this.$refs.form.reset();

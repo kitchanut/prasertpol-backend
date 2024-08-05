@@ -47,33 +47,6 @@
   "BarChartVisitLine": {
     "description": "Auto imported from components/BarChart/BarChartVisitLine.vue"
   },
-  "DashboardComInsurances": {
-    "description": "Auto imported from components/Dashboard/ComInsurances.vue"
-  },
-  "DashboardComInventoryCar": {
-    "description": "Auto imported from components/Dashboard/ComInventoryCar.vue"
-  },
-  "DashboardComRegis": {
-    "description": "Auto imported from components/Dashboard/ComRegis.vue"
-  },
-  "DashboardComWorkStatus": {
-    "description": "Auto imported from components/Dashboard/ComWorkStatus.vue"
-  },
-  "ChartLine": {
-    "description": "Auto imported from components/Chart/Line.vue"
-  },
-  "DateSelect": {
-    "description": "Auto imported from components/DateSelect/dateSelect.vue"
-  },
-  "DateSelect2": {
-    "description": "Auto imported from components/DateSelect/dateSelect2.vue"
-  },
-  "DateSelectMonth": {
-    "description": "Auto imported from components/DateSelect/dateSelectMonth.vue"
-  },
-  "DateSelectMonthAll": {
-    "description": "Auto imported from components/DateSelect/dateSelectMonthAll.vue"
-  },
   "BarChartDashBranch": {
     "description": "Auto imported from components/BarChartDash/BarChartDashBranch.vue"
   },
@@ -106,6 +79,33 @@
   },
   "BarChartDashVisitCarType": {
     "description": "Auto imported from components/BarChartDash/BarChartDashVisitCarType.vue"
+  },
+  "ChartLine": {
+    "description": "Auto imported from components/Chart/Line.vue"
+  },
+  "DashboardComInsurances": {
+    "description": "Auto imported from components/Dashboard/ComInsurances.vue"
+  },
+  "DashboardComInventoryCar": {
+    "description": "Auto imported from components/Dashboard/ComInventoryCar.vue"
+  },
+  "DashboardComRegis": {
+    "description": "Auto imported from components/Dashboard/ComRegis.vue"
+  },
+  "DashboardComWorkStatus": {
+    "description": "Auto imported from components/Dashboard/ComWorkStatus.vue"
+  },
+  "DateSelect": {
+    "description": "Auto imported from components/DateSelect/dateSelect.vue"
+  },
+  "DateSelect2": {
+    "description": "Auto imported from components/DateSelect/dateSelect2.vue"
+  },
+  "DateSelectMonth": {
+    "description": "Auto imported from components/DateSelect/dateSelectMonth.vue"
+  },
+  "DateSelectMonthAll": {
+    "description": "Auto imported from components/DateSelect/dateSelectMonthAll.vue"
   },
   "DoughnutChartBranch": {
     "description": "Auto imported from components/DoughnutChart/DoughnutChartBranch.vue"

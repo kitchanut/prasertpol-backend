@@ -323,6 +323,20 @@
                   hide-details="auto"
                   :rules="ruleImage"
                 ></v-file-input>
+
+                <v-file-input
+                  class="mt-3"
+                  v-model="social"
+                  label="Facebook/Tiktok"
+                  prepend-icon=""
+                  append-icon="mdi-image"
+                  accept="image/*"
+                  show-size
+                  outlined
+                  dense
+                  hide-details="auto"
+                  :rules="ruleImage"
+                ></v-file-input>
               </div>
             </v-card-text>
           </v-container>
@@ -358,11 +372,11 @@ export default {
       rule: [(value) => !!value || "กรุณาใส่ข้อมูล"],
       ruleNumber: [(value) => value >= 0],
       rule2: [],
-      dataProvinces: [],
-      dataAmphures: [],
-      dataSelectAmphures: [],
-      dataDistricts: [],
-      dataSelectDistricts: [],
+      // dataProvinces: [],
+      // dataAmphures: [],
+      // dataSelectAmphures: [],
+      // dataDistricts: [],
+      // dataSelectDistricts: [],
       currentFile: null,
       imagePreviewURL: null,
       formDisabled: true,
@@ -377,11 +391,16 @@ export default {
       insurance_back_sheet: null,
       receipt: null,
       slip: null,
+      social: null,
       ruleMustImage: [(value) => !!value, (value) => !value || value.size < 10000000 || "ขนาดรูปต้องน้อยกว่า 10 MB"],
       ruleImage: [(value) => !value || value.size < 10000000 || "ขนาดรูปต้องน้อยกว่า 10 MB"],
     };
   },
-  async mounted() {},
+  async mounted() {
+    // this.getProvinces();
+    // this.getAmphures();
+    // this.getDistricts();
+  },
   methods: {
     async print_a4() {
       let routeData = this.$router.resolve({
@@ -391,51 +410,51 @@ export default {
       window.open(routeData.href, "_blank");
     },
 
-    async getProvinces() {
-      const response = await apiProvinces.select();
-      this.dataProvinces = response.data;
-    },
-    async getAmphures() {
-      const response = await apiAmphures.select();
-      this.dataAmphures = response.data;
-      this.dataSelectAmphures = response.data;
-    },
-    async getDistricts() {
-      const response = await apiDistricts.select();
-      this.dataDistricts = response.data;
-    },
-    async selectSeeProvince() {
-      this.dataSelectAmphures = [];
-      for (let index = 0; index < this.dataAmphures.length; index++) {
-        if (this.dataAmphures[index].province_id == this.formData.province_id) {
-          this.dataSelectAmphures.push(this.dataAmphures[index]);
-        }
-      }
-    },
+    // async getProvinces() {
+    //   const response = await apiProvinces.select();
+    //   this.dataProvinces = response.data;
+    // },
+    // async getAmphures() {
+    //   const response = await apiAmphures.select();
+    //   this.dataAmphures = response.data;
+    //   this.dataSelectAmphures = response.data;
+    // },
+    // async getDistricts() {
+    //   const response = await apiDistricts.select();
+    //   this.dataDistricts = response.data;
+    // },
+    // async selectSeeProvince() {
+    //   this.dataSelectAmphures = [];
+    //   for (let index = 0; index < this.dataAmphures.length; index++) {
+    //     if (this.dataAmphures[index].province_id == this.formData.province_id) {
+    //       this.dataSelectAmphures.push(this.dataAmphures[index]);
+    //     }
+    //   }
+    // },
 
-    async selectSeeAmphure() {
-      this.dataSelectDistricts = [];
-      for (let index = 0; index < this.dataDistricts.length; index++) {
-        if (this.dataDistricts[index].amphure_id == this.formData.amphure_id) {
-          this.dataSelectDistricts.push(this.dataDistricts[index]);
-        }
-      }
+    // async selectSeeAmphure() {
+    //   this.dataSelectDistricts = [];
+    //   for (let index = 0; index < this.dataDistricts.length; index++) {
+    //     if (this.dataDistricts[index].amphure_id == this.formData.amphure_id) {
+    //       this.dataSelectDistricts.push(this.dataDistricts[index]);
+    //     }
+    //   }
 
-      for (let index = 0; index < this.dataAmphures.length; index++) {
-        if (this.dataAmphures[index].id == this.formData.amphure_id) {
-          this.formData.province_id = this.dataAmphures[index].province_id;
-        }
-      }
-    },
+    //   for (let index = 0; index < this.dataAmphures.length; index++) {
+    //     if (this.dataAmphures[index].id == this.formData.amphure_id) {
+    //       this.formData.province_id = this.dataAmphures[index].province_id;
+    //     }
+    //   }
+    // },
 
-    async selectSeeDistrict() {
-      this.formData.zip_code = "";
-      for (let index = 0; index < this.dataDistricts.length; index++) {
-        if (this.dataDistricts[index].id == this.formData.district_id) {
-          this.formData.zip_code = this.dataDistricts[index].zip_code;
-        }
-      }
-    },
+    // async selectSeeDistrict() {
+    //   this.formData.zip_code = "";
+    //   for (let index = 0; index < this.dataDistricts.length; index++) {
+    //     if (this.dataDistricts[index].id == this.formData.district_id) {
+    //       this.formData.zip_code = this.dataDistricts[index].zip_code;
+    //     }
+    //   }
+    // },
 
     async cvToStringContract_bath(value) {
       if (value != null && value.length > 0) {
@@ -461,23 +480,7 @@ export default {
       }
     },
 
-    // selectFile(payload) {
-    //   if (payload != null) {
-    //     this.currentFile = payload;
-    //     const file = payload;
-    //     if (file) {
-    //       this.imagePreviewURL = URL.createObjectURL(file);
-    //       URL.revokeObjectURL(file);
-    //     } else {
-    //       this.imagePreviewURL = null;
-    //     }
-    //   }
-    // },
     async onAction() {
-      // console.log("onAction");
-      // if (this.imagePreviewURL == null) {
-      //   customAlart.noFileConfirm();
-      // } else {
       if (this.$refs.form.validate()) {
         this.btnloading = true;
         this.formDataLoading = true;
@@ -491,6 +494,7 @@ export default {
         data.append("insurance_back_sheet", this.insurance_back_sheet);
         data.append("receipt", this.receipt);
         data.append("slip", this.slip);
+        data.append("social", this.social);
         data.append("Image", this.Image);
         data.append("ImageCar", this.ImageCar);
 
@@ -506,7 +510,6 @@ export default {
           }
         } else if (this.formData.action == "edit") {
           data.append("_method", "PATCH");
-
           const response = await apiContract.update(this.formData.id, data);
           console.log(response.data);
           this.$refs.form.reset();
@@ -530,9 +533,7 @@ export default {
       if (this.dialogContract) {
         this.formDataLoading = true;
         this.formDisabled = true;
-        await this.getProvinces();
-        await this.getAmphures();
-        await this.getDistricts();
+
         this.imagePreviewURL = null;
 
         if (this.actionContract == "check") {
@@ -550,7 +551,7 @@ export default {
           if (!this.formData.contract_at) {
             this.formData.contract_at = "บริษัท ประเสริฐผลรุ่งเรืองนครพนม จำกัด";
           }
-          await this.selectSeeAmphure();
+          // await this.selectSeeAmphure();
         }
 
         this.formDataLoading = false;

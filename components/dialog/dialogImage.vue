@@ -1,9 +1,9 @@
 <template>
   <v-container>
     <v-dialog v-model="dialogDeleteComponent" width="600px">
-      <v-card>
-        <img width="600px" height="auto" :src="imgUrl" />
-      </v-card>
+      <!-- <v-card> -->
+      <img width="600px" height="auto" :src="imgUrl" />
+      <!-- </v-card> -->
     </v-dialog>
   </v-container>
 </template>
