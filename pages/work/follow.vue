@@ -22,6 +22,159 @@
         <v-icon>mdi-sort</v-icon>
       </v-btn>
 
+      <v-dialog v-model="dialogFilter" width="550">
+        <template v-slot:activator="{ on, attrs }">
+          <v-btn
+            :color="
+              branch_team_id != 0 ||
+              branch_id != 0 ||
+              user_team_id != 0 ||
+              searchInServer != '' ||
+              commission_mount != ''
+                ? 'warning'
+                : ''
+            "
+            v-blur
+            class="ml-2 my-1"
+            style="min-width: 0px; padding: 0 8px"
+            v-bind="attrs"
+            v-on="on"
+          >
+            <v-icon>mdi-filter-variant</v-icon>
+          </v-btn>
+        </template>
+
+        <v-card>
+          <v-toolbar color="warning" dark flat dense style="font-size: 20px" height="6"> </v-toolbar>
+
+          <v-fab-transition>
+            <v-btn icon absolute style="top: 10px; right: 10px" fab small @click="dialogFilter = false">
+              <v-icon>mdi-close</v-icon>
+            </v-btn>
+          </v-fab-transition>
+
+          <h3 class="text-center" style="font-size: 22px; margin: 10px">กรองข้อมูล</h3>
+
+          <v-divider></v-divider>
+          <v-card-text class="mt-5">
+            <v-row no-gutters class="d-flex align-center mt-2">
+              <v-col cols="4">ค้นหางาน:</v-col>
+              <v-col cols="8">
+                <v-text-field
+                  v-model="searchInServer"
+                  label="ลำดับรถ ชื่อลูกค้า ทะเบียนรถ"
+                  outlined
+                  single-line
+                  hide-details=""
+                  dense
+                ></v-text-field>
+              </v-col>
+            </v-row>
+            <v-row no-gutters class="d-flex align-center mt-2">
+              <v-col cols="4">ทีมสาขา:</v-col>
+              <v-col cols="8">
+                <v-autocomplete
+                  v-model="branch_team_id"
+                  :items="dataSelectBranch_teams"
+                  item-text="branch_team_name"
+                  item-value="id"
+                  no-data-text="ไม่มีข้อมูล"
+                  outlined
+                  dense
+                  hide-details
+                  @change="changeBranch_team"
+                >
+                </v-autocomplete>
+              </v-col>
+            </v-row>
+
+            <v-row no-gutters class="d-flex align-center mt-2">
+              <v-col cols="4">สาขาย่อย:</v-col>
+              <v-col cols="8">
+                <v-autocomplete
+                  v-model="branch_id"
+                  :items="branches"
+                  item-text="branch_name"
+                  item-value="id"
+                  no-data-text="ไม่มีข้อมูล"
+                  outlined
+                  dense
+                  hide-details
+                  @change="selectBranch"
+                >
+                </v-autocomplete>
+              </v-col>
+            </v-row>
+
+            <v-row no-gutters class="d-flex align-center mt-2">
+              <v-col cols="4">ทีมเซล:</v-col>
+              <v-col cols="8">
+                <v-autocomplete
+                  v-model="user_team_id"
+                  :items="user_teams"
+                  no-data-text="ไม่มีข้อมูล"
+                  item-text="team_name"
+                  item-value="id"
+                  outlined
+                  dense
+                  hide-details
+                >
+                </v-autocomplete>
+              </v-col>
+            </v-row>
+            <v-row no-gutters class="d-flex align-center mt-2">
+              <v-col cols="4">เดือนคอม:</v-col>
+              <v-col cols="8">
+                <v-dialog v-model="menuCommission_mount" width="290px">
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-text-field
+                      autocomplete="true"
+                      v-model="commission_mount"
+                      readonly
+                      v-bind="attrs"
+                      v-on="on"
+                      persistent-hint
+                      clearable
+                      prepend-icon=""
+                      outlined
+                      dense
+                      hide-details
+                    ></v-text-field>
+                  </template>
+                  <v-date-picker
+                    v-model="commission_mount"
+                    locale="th-TH"
+                    type="month"
+                    @input="menuCommission_mount = false"
+                  ></v-date-picker>
+                </v-dialog>
+              </v-col>
+            </v-row>
+          </v-card-text>
+          <v-divider></v-divider>
+          <v-card-actions>
+            <v-btn
+              color="warning"
+              text
+              @click="
+                branch_team_id = 0;
+                branch_id = 0;
+                user_team_id = 0;
+                searchInServer = '';
+                commission_mount = '';
+                initialize();
+              "
+            >
+              <v-icon left>mdi-replay</v-icon>ล้างข้อมูล
+            </v-btn>
+            <v-spacer></v-spacer>
+            <v-btn color="primary" v-blur class="ml-2" style="min-width: 0px; padding: 0 8px" @click="initialize()">
+              <v-icon>mdi-magnify</v-icon>
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+
       <v-btn @click="handleDownload()" color="success" class="ml-2 my-1" style="min-width: 0px; padding: 0 8px">
         <v-icon>mdi-microsoft-excel</v-icon>
       </v-btn>
@@ -46,10 +199,10 @@
               text: 'งานทั้งหมด',
               value: 'all',
             },
-            {
-              text: 'ค้นหาบางรายการ',
-              value: 'search',
-            },
+            // {
+            //   text: 'ค้นหาบางรายการ',
+            //   value: 'search',
+            // },
           ]"
           item-text="text"
           item-value="value"
@@ -59,7 +212,7 @@
         ></v-select>
       </v-col>
 
-      <v-col cols="3" v-if="work_status == 'search'">
+      <!-- <v-col cols="3" v-if="work_status == 'search'">
         <v-text-field
           v-model="searchInServer"
           label="ลำดับรถ ชื่อลูกค้า ทะเบียนรถ"
@@ -68,7 +221,7 @@
           hide-details=""
           dense
         ></v-text-field>
-      </v-col>
+      </v-col> -->
 
       <v-col cols="7" v-if="work_status == 'close' || work_status == 'all'">
         <dateSelectMonthAll @timeSelect="selectTimeStart" />
@@ -1038,6 +1191,10 @@ import * as customAlart from "@/customJS/customAlart";
 import moment from "moment";
 import draggable from "vuedraggable";
 
+import * as apiBranches from "@/Api/apiBranches";
+import * as apiBranch_teams from "@/Api/apiBranch_teams";
+import * as apiUser_teams from "@/Api/apiUser_teams";
+
 import dialogWork from "@/components/dialog/dialogWork";
 import dialogBooking from "@/components/dialog/dialogBooking";
 import dialogAppointment from "@/components/dialog/dialogAppointment";
@@ -1065,9 +1222,21 @@ export default {
     drawerSetting: false,
     renderComponent: true,
     toggleView: "small",
+    dialogFilter: false,
 
     work_status: -1,
     searchInServer: "",
+
+    // Filter
+    branch_id: 0,
+    branches: [],
+    branch_team_id: 0,
+    dataSelectBranch_teams: [],
+    user_teams_all: [],
+    user_teams: [],
+    user_team_id: 0,
+    menuCommission_mount: false,
+    commission_mount: "",
 
     timeStart: moment().startOf("years").format("YYYY-MM-DD HH:mm"),
     timeEnd: moment().endOf("years").format("YYYY-MM-DD HH:mm"),
@@ -1322,6 +1491,10 @@ export default {
       $(".v-data-table__wrapper").scrollLeft($(".wrapper1").scrollLeft());
     });
     this.headersDefault = this.headers;
+
+    this.getUser_teams();
+    this.getBranches();
+    this.getBranch_teams();
   },
   methods: {
     async initialize() {
@@ -1331,15 +1504,22 @@ export default {
         data.append("timeStart", this.timeStart);
         data.append("timeEnd", this.timeEnd);
         data.append("work_status", this.work_status);
-      } else if (this.work_status == "search") {
-        data.append("search", this.searchInServer);
-        data.append("work_status", "all");
       } else {
         data.append("work_status", this.work_status);
       }
 
+      if (this.searchInServer) {
+        data.append("search", this.searchInServer);
+        data.append("work_status", "all");
+      }
+
+      // Filter
+      data.append("branch_team_id", this.branch_team_id);
+      data.append("branch_id", this.branch_id);
+      data.append("user_team_id", this.user_team_id);
+      data.append("commission_mount", this.commission_mount);
+
       const response = await apiWorks.followWork(data);
-      console.log(response.data);
       this.data = response.data.data;
       this.loading = false;
       this.tableWidth = $(".v-data-table-header").width();
@@ -1512,6 +1692,74 @@ export default {
     getFiltered(e) {
       this.currentItems = e;
     },
+    async selectBranch() {
+      await this.changeUser_teams();
+    },
+    async getBranch_teams() {
+      const response = await apiBranch_teams.select();
+      this.dataSelectBranch_teams = response.data;
+      this.dataSelectBranch_teams.push({ id: 0, branch_team_name: "ทั้งหมด" });
+    },
+    async getBranches() {
+      const response = await apiBranches.select();
+      this.branches = response.data;
+      this.branches_all = response.data;
+      this.branches.push({ id: 0, branch_name: "ทั้งหมด" });
+    },
+    changeBranch_team(branch_team_id) {
+      let newBranch = [];
+      if (branch_team_id == 0) {
+        newBranch = this.branches_all;
+        this.branch_team_name = "ทั้งหมด";
+      } else {
+        for (let index = 0; index < this.branches_all.length; index++) {
+          if (this.branches_all[index].branch_team_id == branch_team_id) {
+            newBranch.push(this.branches_all[index]);
+          }
+        }
+        for (let index = 0; index < this.dataSelectBranch_teams.length; index++) {
+          if (this.dataSelectBranch_teams[index].id == branch_team_id) {
+            this.branch_team_name = this.dataSelectBranch_teams[index].branch_team_name;
+          }
+        }
+      }
+      newBranch.push({ id: 0, branch_name: "ทั้งหมด" });
+
+      this.$nextTick(() => {
+        this.branches = newBranch;
+        this.branch_id = 0;
+        this.branch_team_id = branch_team_id;
+      });
+    },
+    async getUser_teams() {
+      const response = await apiUser_teams.select();
+      if (this.user_group_permission == 3 || this.user_group_permission == 2) {
+        let user_team_id = this.$auth.$storage.getLocalStorage("userData-user_team_id");
+        if (user_team_id == null) {
+          this.user_team_id = 0;
+        } else {
+          this.user_team_id = user_team_id;
+        }
+      } else {
+        this.user_team_id = 0;
+      }
+      this.user_teams_all = response.data;
+      this.user_teams.push({ id: 0, team_name: "ทั้งหมด" });
+    },
+    async changeUser_teams() {
+      this.$nextTick(() => {
+        let new_teams = [];
+        if (this.branch_id == 0) {
+          this.new_teams = this.user_teams_all;
+        } else {
+          for (let index = 0; index < this.user_teams_all.length; index++) {
+            if (this.user_teams_all[index].branch_id == this.branch_id) new_teams.push(this.user_teams_all[index]);
+          }
+        }
+        this.user_teams = new_teams;
+        this.user_teams.push({ id: 0, team_name: "ทั้งหมด" });
+      });
+    },
     async editItem(item) {
       this.formTitleWork = "แก้ไขข้อมูล";
       this.dialogWork = true;
@@ -1621,6 +1869,12 @@ export default {
         filterVal.map((j) => {
           if (j === "timestamp") {
             return parseTime(v[j]);
+          } else if (j == "request_update") {
+            let str = "";
+            v.request_update.forEach((element) => {
+              str += element.created_at + " > " + element.note + "\n ";
+            });
+            return str;
           } else {
             return v[j];
           }

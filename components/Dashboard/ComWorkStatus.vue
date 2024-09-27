@@ -148,6 +148,7 @@
 
       <v-divider v-if="user_group_permission != 2 && user_group_permission != 3"></v-divider>
       <v-tabs v-model="tab" background-color="#eee" color="black">
+        <v-tab>Perfomance</v-tab>
         <v-tab>ทั้งหมด ({{ filterWork("all", "all").length }})</v-tab>
         <v-tab>รอจอง ({{ filterWork(1, "all").length }})</v-tab>
         <v-tab>รอเซนต์ ({{ filterWork("not_sign", "all").length }})</v-tab>
@@ -161,6 +162,115 @@
       <v-progress-linear v-if="loading" indeterminate color="yellow darken-2"></v-progress-linear>
       <v-card-text>
         <v-tabs-items v-model="tab">
+          <v-tab-item>
+            <div class="mb-2">* พิจารณาจากวันจองว่าอยู่ในเดือนปัจจุบันหรือเดือนก่อนหน้า *</div>
+            <v-card
+              outlined
+              v-for="(item, index) in branchTeams"
+              :key="index"
+              class="mb-5"
+              v-if="item.branch_team_name != 'ไม่พบทีมสาขา' && filterWork('all', item.branch_team_name).length > 0"
+            >
+              <v-card-text>
+                <div style="font-weight: 900; color: blue">{{ item.branch_team_name }}</div>
+              </v-card-text>
+              <v-divider></v-divider>
+              <v-simple-table dense>
+                <template v-slot:default>
+                  <thead>
+                    <tr>
+                      <th rowspan="2" width="200px">เซล</th>
+                      <th colspan="4" class="text-center">2 เดือนก่อนหน้า</th>
+                      <th colspan="4" class="text-center">เดือนก่อนหน้า</th>
+                      <th colspan="4" class="text-center">เดือนปัจจุบัน</th>
+                    </tr>
+                    <tr>
+                      <th style="border-left: 1px solid #eee" class="text-center">จอง</th>
+                      <th class="text-center">เซนต์</th>
+                      <th class="text-center">อนุมัติ</th>
+                      <th class="text-center">ปล่อย</th>
+                      <th class="text-center">จอง</th>
+                      <th class="text-center">เซนต์</th>
+                      <th class="text-center">อนุมัติ</th>
+                      <th class="text-center">ปล่อย</th>
+                      <th class="text-center">จอง</th>
+                      <th class="text-center">เซนต์</th>
+                      <th class="text-center">อนุมัติ</th>
+                      <th class="text-center">ปล่อย</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr v-for="user in filterTeam(item.branch_team_name)">
+                      <td>
+                        {{ user.first_name }}
+                      </td>
+
+                      <td align="center">
+                        <span v-if="filterPerfomanceTwoMounthAgo(user.id, 2).length">
+                          {{ filterPerfomanceTwoMounthAgo(user.id, 2).length }}
+                        </span>
+                      </td>
+                      <td align="center">
+                        <span v-if="filterPerfomanceTwoMounthAgo(user.id, 5).length">
+                          {{ filterPerfomanceTwoMounthAgo(user.id, 5).length }}
+                        </span>
+                      </td>
+                      <td align="center">
+                        <span v-if="filterPerfomanceTwoMounthAgo(user.id, 7).length">
+                          {{ filterPerfomanceTwoMounthAgo(user.id, 7).length }}
+                        </span>
+                      </td>
+                      <td align="center">
+                        <span v-if="filterPerfomanceTwoMounthAgo(user.id, 8).length">
+                          {{ filterPerfomanceTwoMounthAgo(user.id, 8).length }}
+                        </span>
+                      </td>
+                      <td align="center">
+                        <span v-if="filterPerfomancePrevious(user.id, 2).length">
+                          {{ filterPerfomancePrevious(user.id, 2).length }}
+                        </span>
+                      </td>
+                      <td align="center">
+                        <span v-if="filterPerfomancePrevious(user.id, 5).length">
+                          {{ filterPerfomancePrevious(user.id, 5).length }}
+                        </span>
+                      </td>
+                      <td align="center">
+                        <span v-if="filterPerfomancePrevious(user.id, 7).length">
+                          {{ filterPerfomancePrevious(user.id, 7).length }}
+                        </span>
+                      </td>
+                      <td align="center">
+                        <span v-if="filterPerfomancePrevious(user.id, 8).length">
+                          {{ filterPerfomancePrevious(user.id, 8).length }}
+                        </span>
+                      </td>
+                      <td align="center">
+                        <span v-if="filterPerfomance(user.id, 2).length">
+                          {{ filterPerfomance(user.id, 2).length }}
+                        </span>
+                      </td>
+                      <td align="center">
+                        <span v-if="filterPerfomance(user.id, 5).length">
+                          {{ filterPerfomance(user.id, 5).length }}
+                        </span>
+                      </td>
+                      <td align="center">
+                        <span v-if="filterPerfomance(user.id, 7).length">
+                          {{ filterPerfomance(user.id, 7).length }}
+                        </span>
+                      </td>
+                      <td align="center">
+                        <span v-if="filterPerfomance(user.id, 8).length">
+                          {{ filterPerfomance(user.id, 8).length }}
+                        </span>
+                      </td>
+                    </tr>
+                  </tbody>
+                </template>
+              </v-simple-table>
+            </v-card>
+          </v-tab-item>
           <v-tab-item>
             <v-row>
               <v-col
@@ -184,6 +294,7 @@
                           <th width="180px">ลำดับ</th>
                           <th>สถานะ</th>
                           <th width="180px">ลูกค้า</th>
+                          <th width="170px">วันจอง</th>
                           <th>อัพเดทล่าสุด</th>
                         </tr>
                       </thead>
@@ -219,6 +330,12 @@
                             <v-chip v-if="filter.work_status == '11'" small color="success">ปิดงาน</v-chip>
                           </td>
                           <td>{{ filter.customer_name }}</td>
+                          <td>
+                            <span v-if="filter.work_status >= 2">
+                              {{ $moment(filter.booking_date).format("YYYY-MM-DD") }}
+                              ({{ $moment(filter.booking_date).fromNow(true) }})
+                            </span>
+                          </td>
                           <td>
                             <div v-if="filter.request_log.length">
                               <v-btn
@@ -262,6 +379,17 @@
                               </span>
                             </div>
                           </td>
+                        </tr>
+                        <tr
+                          v-for="user in filterTeam(item.branch_team_name)"
+                          v-if="
+                            filterWork('all', item.branch_team_name).findIndex((x) => x.sale == user.first_name) == -1
+                          "
+                        >
+                          <td style="color: red">
+                            {{ user.first_name }}
+                          </td>
+                          <td colspan="4">ไม่มีงาน</td>
                         </tr>
                       </tbody>
                     </template>
@@ -648,15 +776,15 @@
                         <tr v-for="(filter, key) in filterWork(7, item.branch_team_name)" :key="key">
                           <td style="color: green">
                             <span v-if="key == 0">
-                              {{ filterWork("not_sign", item.branch_team_name)[key].sale }}
+                              {{ filterWork(7, item.branch_team_name)[key].sale }}
                             </span>
                             <span
                               v-else-if="
-                                filterWork('not_sign', item.branch_team_name)[key].sale !=
-                                filterWork('not_sign', item.branch_team_name)[key - 1].sale
+                                filterWork(7, item.branch_team_name)[key].sale !=
+                                filterWork(7, item.branch_team_name)[key - 1].sale
                               "
                             >
-                              {{ filterWork("not_sign", item.branch_team_name)[key].sale }}
+                              {{ filterWork(7, item.branch_team_name)[key].sale }}
                             </span>
                           </td>
                           <td>
@@ -955,8 +1083,11 @@
 import * as apiBranch_teams from "@/Api/apiBranch_teams";
 import * as apiBank from "@/Api/apiBank";
 import * as apiWorks from "@/Api/apiWorks";
+import * as apiUsers from "@/Api/apiUsers";
 import * as customAlart from "@/customJS/customAlart";
 import drawerRequestLog from "@/components/dialog/drawerRequestLog";
+
+import moment from "moment";
 export default {
   components: {
     drawerRequestLog,
@@ -966,6 +1097,7 @@ export default {
       user_group_permission: this.$auth.$storage.getLocalStorage("userData-user_group_permission"),
       notice_time: 259200,
       loading: false,
+      users: [],
       data: [],
       branchTeams: [],
       banks: [],
@@ -994,11 +1126,17 @@ export default {
       type: "",
       logs: [],
       request_update: [],
+
+      performances: [],
+      performances_previous: [],
+      performances_two_mounth_ago: [],
     };
   },
   mounted() {
     this.getBranchTeam();
     this.getData();
+    this.getPerfimance();
+    this.getUsers();
     this.getBank();
   },
   methods: {
@@ -1028,9 +1166,42 @@ export default {
       }
       data.append("user_group_permission", this.user_group_permission);
       const response = await apiWorks.followWork(data);
-      console.log(response.data);
+      // console.log(response.data);
       this.data = response.data.data;
       this.loading = false;
+    },
+    async getPerfimance() {
+      this.loading = true;
+      const data = new FormData();
+      if (this.user_group_permission == 2) {
+        data.append("branch_team_id", this.$auth.$storage.getLocalStorage("userDataOrg-branch_team_id"));
+      } else if (this.user_group_permission == 3) {
+        data.append("user_id", this.$auth.$storage.getLocalStorage("userData-id"));
+      }
+      data.append("user_group_permission", this.user_group_permission);
+      data.append("work_status", "all");
+
+      // เดือนปัจจุบัน
+      data.append("timeStart", moment().startOf("months").format("YYYY-MM-DD HH:mm"));
+      data.append("timeEnd", moment().endOf("months").format("YYYY-MM-DD HH:mm"));
+      const response = await apiWorks.followWork(data);
+      this.performances = response.data.data;
+
+      // เดิอนก่อน
+      data.append("timeStart", moment().add(-1, "months").startOf("months").format("YYYY-MM-DD HH:mm"));
+      data.append("timeEnd", moment().add(-1, "months").endOf("months").format("YYYY-MM-DD HH:mm"));
+      const response_previous = await apiWorks.followWork(data);
+      this.performances_previous = response_previous.data.data;
+
+      // 2 เดิอนก่อน
+      data.append("timeStart", moment().add(-2, "months").startOf("months").format("YYYY-MM-DD HH:mm"));
+      data.append("timeEnd", moment().add(-2, "months").endOf("months").format("YYYY-MM-DD HH:mm"));
+      const response_two_mounth_ago = await apiWorks.followWork(data);
+      this.performances_two_mounth_ago = response_two_mounth_ago.data.data;
+    },
+    async getUsers() {
+      const response = await apiUsers.index();
+      this.users = response.data;
     },
     showLog(logs, request_update, car_no) {
       this.car_no = car_no;
@@ -1042,6 +1213,22 @@ export default {
       this.type = type;
       this.id = id;
       this.drawerRequestLog = true;
+    },
+    filterTeam(branch_team_name) {
+      return this.users
+        .filter((d) => {
+          return d.user_active == 1;
+        })
+        .filter((d) => {
+          return d.user_group_id == 3;
+        })
+        .filter((d) => {
+          if (d.branch_team) {
+            return d.branch_team.branch_team_name == branch_team_name;
+          } else {
+            return false;
+          }
+        });
     },
     filterWork(key, name, bankNickName) {
       if (key == "all") {
@@ -1160,6 +1347,21 @@ export default {
           }
         });
       }
+    },
+    filterPerfomanceTwoMounthAgo(sale_id, work_status) {
+      return this.performances_two_mounth_ago.filter((d) => {
+        return d.sale_id == sale_id && d.work_status >= work_status;
+      });
+    },
+    filterPerfomancePrevious(sale_id, work_status) {
+      return this.performances_previous.filter((d) => {
+        return d.sale_id == sale_id && d.work_status >= work_status;
+      });
+    },
+    filterPerfomance(sale_id, work_status) {
+      return this.performances.filter((d) => {
+        return d.sale_id == sale_id && d.work_status >= work_status;
+      });
     },
   },
 };

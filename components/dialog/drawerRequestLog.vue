@@ -273,7 +273,7 @@
             </v-card-text>
           </v-card>
 
-          <v-card
+          <!-- <v-card
             class="mr-2 mt-3"
             v-if="item.sign_sheet && (user_group_permission == -1 || user_group_permission == 11)"
             outlined
@@ -284,7 +284,7 @@
                 <img width="80px" :src="serverUrl + item.sign_sheet" />
               </div>
             </v-card-text>
-          </v-card>
+          </v-card> -->
 
           <v-card
             class="mr-2 mt-3"
@@ -399,7 +399,7 @@
 
           <v-card class="mr-2 mt-3" v-if="item.social" outlined>
             <v-card-text>
-              <div class="text-center">Facebook/Tiltok</div>
+              <div class="text-center">Facebook/Tiktok</div>
               <div class="images" v-viewer>
                 <img width="80px" :src="serverUrl + item.social" />
               </div>

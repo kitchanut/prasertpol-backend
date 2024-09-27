@@ -359,6 +359,8 @@ export default {
             { title: "รายรับ", to: "/reports/report_income" },
             { title: "รายจ่าย", to: "/reports/report_expense" },
             { title: "กำไร/ขาดทุน", to: "/reports/report_profit" },
+            { title: "แจ้งรับเงิน", to: "/reports/report_request_receive_money" },
+            { title: "แจ้งเบิกเงิน", to: "/reports/report_request_withdraw_money" },
 
             // { title: "งานซื้อขายรถ", to: "/reports/report_workings" },
             // { title: "ยกเลิกการจอง", to: "/reports/report_cancel_workings" },

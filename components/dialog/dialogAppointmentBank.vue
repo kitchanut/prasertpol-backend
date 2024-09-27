@@ -2,7 +2,7 @@
   <v-container>
     <v-dialog
       v-model="dialogDeleteComponent"
-      width="550px"
+      width="500px"
       :fullscreen="$vuetify.breakpoint.name == 'xs' || $vuetify.breakpoint.name == 'sm' ? true : false"
     >
       <v-card>
@@ -165,7 +165,7 @@
                 </v-textarea>
               </v-card>
 
-              <v-card class="mt-3" outlined style="border: 1px solid #aaa">
+              <!-- <v-card class="mt-3" outlined style="border: 1px solid #aaa">
                 <v-card-text>
                   <v-file-input
                     label="รูปบัตรประจำตัวประชาชนลูกค้า*"
@@ -205,11 +205,43 @@
                     :rules="ruleMustImage"
                   ></v-file-input>
                 </v-card-text>
-              </v-card>
+              </v-card> -->
             </div>
 
             <div v-if="status_bank == 7 && user_group_permission != 11">
               <v-card outlined>
+                <v-card-text>
+                  <h3 class="mb-1">ข้อมูลเบื้องต้น</h3>
+
+                  <v-row no-gutters>
+                    <v-col cols="3">ราคากลาง: </v-col>
+                    <v-col class="text-end">{{ Number(middle_price).toLocaleString() }}</v-col>
+                  </v-row>
+                  <v-row no-gutters>
+                    <v-col cols="3">คูณ: </v-col>
+                    <v-col class="text-end">{{ Number(car_price_multiply).toLocaleString() }}%</v-col>
+                  </v-row>
+                  <v-row no-gutters>
+                    <v-col cols="3">ส่วนลด/ส่วนเพิ่ม: </v-col>
+                    <v-col class="text-end" :style="`color: ${car_price_discount < 0 ? 'red' : ''}`">
+                      {{ Number(car_price_discount).toLocaleString() }}
+                    </v-col>
+                  </v-row>
+                  <v-row no-gutters>
+                    <v-col cols="3">ราคาจัด: </v-col>
+                    <v-col class="text-end">{{ Number(amount_price).toLocaleString() }}</v-col>
+                  </v-row>
+                  <v-row no-gutters>
+                    <v-col cols="3">เงินดาวน์: </v-col>
+                    <v-col class="text-end">{{ Number(down).toLocaleString() }}</v-col>
+                  </v-row>
+                  <v-row no-gutters>
+                    <v-col cols="3">ราคาขายรถ: </v-col>
+                    <v-col class="text-end">{{ Number(car_price_vat).toLocaleString() }}</v-col>
+                  </v-row>
+                </v-card-text>
+              </v-card>
+              <v-card class="mt-3" outlined>
                 <v-card-text>
                   <h3 class="mb-3">ข้อมูลการอนุมัติของแบงค์</h3>
 
@@ -317,6 +349,16 @@
                 <v-card-text>
                   <v-text-field label="ซับดาวน์" type="number" v-model="formData.sub_down" outlined dense hide-details>
                   </v-text-field>
+                  <v-select
+                    class="mt-3"
+                    :items="['พี่ยุพิน', 'เฮียดิเรก', 'ซ้อแพ็ค', 'อื่นๆ']"
+                    v-model="formData.approver"
+                    label="ผู้อนุมัติ"
+                    outlined
+                    dense
+                    hide-details
+                    :rules="rule"
+                  ></v-select>
                 </v-card-text>
               </v-card>
 
@@ -763,6 +805,7 @@
 import * as apiAppointmentBank from "@/Api/apiAppointmentBank";
 import * as apiBank from "@/Api/apiBank";
 import * as apiBank_branch from "@/Api/apiBank_branch";
+import * as apiCars from "@/Api/apiCars";
 
 export default {
   props: ["dialogAppointmentBank", "actionAppointmentBank", "idWork", "formTitleAppointmentBank", "status_bank"],
@@ -791,10 +834,13 @@ export default {
       dataBank: [],
       user_group_permission: this.$auth.$storage.getLocalStorage("userData-user_group_permission"),
 
-      id_card: null,
-      booking_sheet: null,
-      sign_sheet: null,
-      po: null,
+      // ข้อมูลเบื้องต้นของรถ
+      middle_price: null,
+      car_price_multiply: null,
+      car_price_discount: null,
+      amount_price: null,
+      down: null,
+      car_price_vat: null,
 
       ruleMustImage: [(value) => !!value, (value) => !value || value.size < 2000000 || "ขนาดรูปต้องน้อยกว่า 2 MB"],
     };
@@ -828,9 +874,9 @@ export default {
         if (this.formData.action == "add") {
           let formData = new FormData();
           formData.append("formData", JSON.stringify(this.formData));
-          formData.append("id_card", this.id_card);
-          formData.append("booking_sheet", this.booking_sheet);
-          formData.append("sign_sheet", this.sign_sheet);
+          // formData.append("id_card", this.id_card);
+          // formData.append("booking_sheet", this.booking_sheet);
+          // formData.append("sign_sheet", this.sign_sheet);
           const response = await apiAppointmentBank.store(formData);
 
           if (response.status == 200) {
@@ -842,10 +888,10 @@ export default {
           let formData = new FormData();
           formData.append("_method", "PUT");
           formData.append("formData", JSON.stringify(this.formData));
-          formData.append("id_card", this.id_card);
-          formData.append("booking_sheet", this.booking_sheet);
-          formData.append("sign_sheet", this.sign_sheet);
-          formData.append("po", this.po);
+          // formData.append("id_card", this.id_card);
+          // formData.append("booking_sheet", this.booking_sheet);
+          // formData.append("sign_sheet", this.sign_sheet);
+          // formData.append("po", this.po);
           const response = await apiAppointmentBank.update(this.formData.id, formData);
 
           if (response.status == 200) {
@@ -871,6 +917,7 @@ export default {
           this.sign_sheet = null;
           this.po = null;
           const response = await apiAppointmentBank.checkAppointmentBank(this.idWork);
+          console.log("response", response.data);
           this.$nextTick(async () => {
             const self = this;
             this.$nextTick(async () => {
@@ -879,6 +926,20 @@ export default {
               self.change_branch(response.data.bank_id);
             });
           });
+          if (this.status_bank == 7) {
+            const car = await apiCars.getAllinfo(response.data.car_id, -1);
+            console.log("car", car.data);
+            const middle_prices = car.data.dataPreviewBanks;
+            let middle_price = middle_prices.find((item) => item.isSelected == 1);
+            if (middle_price) {
+              this.middle_price = middle_price.middle_price;
+            }
+            this.car_price_multiply = car.data.queryCar.car_price_multiply;
+            this.car_price_discount = car.data.queryCar.car_price_discount;
+            this.amount_price = car.data.queryCar.amount_price;
+            this.down = car.data.queryCar.amount_down;
+            this.car_price_vat = car.data.queryCar.car_price_vat;
+          }
 
           this.formDataLoading = false;
         }

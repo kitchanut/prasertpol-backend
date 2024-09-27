@@ -98,14 +98,13 @@
           <v-btn v-else x-small color="red" dark>ปิดการใช้งาน</v-btn>
         </template>
 
-        <!-- <template v-slot:item.actions="{ item }"> -->
+        <template v-slot:item.updated_at="{ item }">
+          {{ $moment(item.updated_at).fromNow(true) }}
+        </template>
         <template v-slot:[`item.actions`]="{ item }">
           <v-btn color="primary" fab x-small dark @click="editItem(item.id)">
             <v-icon> mdi-pencil </v-icon>
           </v-btn>
-          <!-- <v-btn color="red" fab x-small dark @click="deleteItem(item.id)">
-            <v-icon> mdi-delete </v-icon>
-          </v-btn> -->
         </template>
       </v-data-table>
 
@@ -161,6 +160,8 @@ export default {
           width: "10%",
         },
         { text: "สถานะ", value: "middle_price_active", width: "5%" },
+        { text: "อัพเดทเมื่อ", value: "updated_at", width: "7%", align: "center" },
+
         { text: "จัดการ", value: "actions", sortable: false, width: "5%" },
       ],
       carSerie: [],

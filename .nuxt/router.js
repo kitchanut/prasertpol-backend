@@ -73,6 +73,8 @@ const _4731c4fe = () => interopDefault(import('../pages/reports/report_purchase_
 const _6b6884ee = () => interopDefault(import('../pages/reports/report_purchase_POparts.vue' /* webpackChunkName: "pages/reports/report_purchase_POparts" */))
 const _5c228feb = () => interopDefault(import('../pages/reports/report_repairs.vue' /* webpackChunkName: "pages/reports/report_repairs" */))
 const _502aa50c = () => interopDefault(import('../pages/reports/report_repairs_out.vue' /* webpackChunkName: "pages/reports/report_repairs_out" */))
+const _3e682b4e = () => interopDefault(import('../pages/reports/report_request_receive_money.vue' /* webpackChunkName: "pages/reports/report_request_receive_money" */))
+const _a1ee52b4 = () => interopDefault(import('../pages/reports/report_request_withdraw_money.vue' /* webpackChunkName: "pages/reports/report_request_withdraw_money" */))
 const _18d75447 = () => interopDefault(import('../pages/reports/report_sale_car.vue' /* webpackChunkName: "pages/reports/report_sale_car" */))
 const _46dffadc = () => interopDefault(import('../pages/reports/report_stock_parts.vue' /* webpackChunkName: "pages/reports/report_stock_parts" */))
 const _88b57414 = () => interopDefault(import('../pages/reports/report_withdraw_money.vue' /* webpackChunkName: "pages/reports/report_withdraw_money" */))
@@ -426,6 +428,14 @@ export const routerOptions = {
     path: "/reports/report_repairs_out",
     component: _502aa50c,
     name: "reports-report_repairs_out"
+  }, {
+    path: "/reports/report_request_receive_money",
+    component: _3e682b4e,
+    name: "reports-report_request_receive_money"
+  }, {
+    path: "/reports/report_request_withdraw_money",
+    component: _a1ee52b4,
+    name: "reports-report_request_withdraw_money"
   }, {
     path: "/reports/report_sale_car",
     component: _18d75447,

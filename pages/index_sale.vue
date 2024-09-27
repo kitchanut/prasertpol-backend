@@ -19,10 +19,13 @@
         <v-tab>สถานะงาน</v-tab>
         <v-tab>การจอง</v-tab>
         <v-tab>ยอดซื้อขาย</v-tab>
+        <v-tab>ยอดปล่อยรถ</v-tab>
         <v-tab>รุ่นรถขายดี</v-tab>
+        <v-tab>ยอดนักขาย</v-tab>
         <v-tab>คลังรถยนต์</v-tab>
         <v-tab>ภาษี</v-tab>
         <v-tab>ประกัน</v-tab>
+        <v-tab>รูปภาพ</v-tab>
       </v-tabs>
 
       <v-tabs-items v-model="tab">
@@ -36,7 +39,13 @@
           <BarChartDashCar :branch_id="branch_id" />
         </v-tab-item>
         <v-tab-item>
+          <DashboardComSaleCompare />
+        </v-tab-item>
+        <v-tab-item>
           <BarChartDashTopCarSerie />
+        </v-tab-item>
+        <v-tab-item>
+          <DashboardComTopSaler />
         </v-tab-item>
         <v-tab-item>
           <ComInventoryCar />
@@ -46,6 +55,9 @@
         </v-tab-item>
         <v-tab-item>
           <ComInsurances />
+        </v-tab-item>
+        <v-tab-item>
+          <ComFiles />
         </v-tab-item>
       </v-tabs-items>
     </v-card>
@@ -62,6 +74,7 @@ import ComWorkStatus from "@/components/Dashboard/ComWorkStatus.vue";
 import ComInventoryCar from "@/components/Dashboard/ComInventoryCar.vue";
 import ComRegis from "@/components/Dashboard/ComRegis.vue";
 import ComInsurances from "@/components/Dashboard/ComInsurances.vue";
+import ComFiles from "@/components/Dashboard/ComFiles.vue";
 
 // Bar chart
 import BarChartDashCar from "@/components/BarChartDash/BarChartDashCar";
@@ -86,6 +99,7 @@ export default {
     ComInventoryCar,
     ComRegis,
     ComInsurances,
+    ComFiles,
     // Bar
     BarChartDashCar,
     BarChartDashBranch,

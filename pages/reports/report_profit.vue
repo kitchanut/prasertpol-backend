@@ -318,6 +318,17 @@
           </div>
         </template>
 
+        <template v-slot:[`item.sum_income_com`]="{ item }">
+          <div>
+            {{
+              Number(item.sum_income_com).toLocaleString("th-TH", {
+                maximumFractionDigits: 2,
+                minimumFractionDigits: 0,
+              })
+            }}
+          </div>
+        </template>
+
         <template v-slot:[`item.expenses_without_car_sum_money`]="{ item }">
           {{
             Number(item.expenses_without_car_sum_money).toLocaleString("th-TH", {
@@ -471,6 +482,12 @@ export default {
             class: "textOneLine",
             align: "end",
           },
+          {
+            text: "ค่าคอม",
+            value: "sum_income_com",
+            class: "textOneLine",
+            align: "end",
+          },
 
           {
             text: "ค่าตัวรถ",
@@ -539,7 +556,12 @@ export default {
             class: "textOneLine",
             align: "end",
           },
-
+          {
+            text: "ค่าคอม",
+            value: "sum_income_com",
+            class: "textOneLine",
+            align: "end",
+          },
           {
             text: "ค่าตัวรถ",
             value: "expenses_only_car_sum_money",
@@ -617,10 +639,23 @@ export default {
 
           // sum_income
           let sum_income = this.data
-            .filter((x) => x.detail != "ค่าคอมจากธนาคาร")
+
             .filter((x) => x.branch_team_id == item.id)
             .map((map) => {
-              return map.income.reduce((sum, item) => sum + item["money"], 0);
+              return map.income
+                .filter((x) => x.detail != "ค่าคอมจากธนาคาร")
+                .reduce((sum, item) => sum + item["money"], 0);
+            })
+            .reduce((sum, item) => sum + item, 0);
+
+          // sum_income จากค่าคอมจากธนาคาร
+          let sum_income_com = this.data
+
+            .filter((x) => x.branch_team_id == item.id)
+            .map((map) => {
+              return map.income
+                .filter((x) => x.detail == "ค่าคอมจากธนาคาร")
+                .reduce((sum, item) => sum + item["money"], 0);
             })
             .reduce((sum, item) => sum + item, 0);
 
@@ -676,6 +711,7 @@ export default {
             },
             amount_overCost: amount_overCost,
             income_sum_money: sum_income,
+            sum_income_com: sum_income_com,
             sum_over_all_expenses_sum_money: sum_expense,
             expenses_only_car_sum_money: sum_expense_only_car,
             expenses_without_car_sum_money: sum_expense - sum_expense_only_car - amount_overCost,
@@ -688,20 +724,35 @@ export default {
         });
       } else {
         this.data.map(function (item) {
+          // ค่าดำเนินการ
           item.amount_overCost = item.cars.amount_overCost;
+
+          // รวมรายรับ
           item.income_sum_money = item.income
             .filter((x) => x.detail != "ค่าคอมจากธนาคาร")
             .reduce((sum, item) => sum + item["money"], 0);
+
+          // รวมรายรับจากค่าคอมจากธนาคาร
+          item.sum_income_com = item.income
+            .filter((x) => x.detail === "ค่าคอมจากธนาคาร")
+            .reduce((sum, item) => sum + item["money"], 0);
+
+          // รวมค่าใช้จ่าย
           item.sum_over_all_expenses_sum_money =
             Number(item.expenses.reduce((sum, item) => sum + item["money"], 0)) + Number(item.amount_overCost);
           item.expenses_only_car_sum_money = item.expenses.reduce(
             (sum, item) => (item["detail"] == "ค่าตัวรถ" ? sum + item["money"] : sum),
             0
           );
+
+          // รวมค่าใช้จ่าย ไม่รวมค่าตัวรถ
           item.expenses_without_car_sum_money =
             item.sum_over_all_expenses_sum_money - item.expenses_only_car_sum_money - Number(item.amount_overCost);
 
+          // กำไร/ขาดทุน
           item.profitOrLoss = item.income_sum_money - item.sum_over_all_expenses_sum_money;
+
+          // %
           item.persent = (item.profitOrLoss / item.income_sum_money) * 100;
         });
         this.data_filter = this.data;

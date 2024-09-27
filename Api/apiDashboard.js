@@ -70,3 +70,33 @@ export function dashboard_car_insurances(params) {
   const url = HOSTNAME + "/api/dashboard_car_insurances";
   return request("get", url, {});
 }
+
+export function dashboard_chanel(params) {
+  const url = HOSTNAME + "/api/dashboard_chanel";
+  return request("post", url, params);
+}
+
+export function dashboard_files(params) {
+  const url = HOSTNAME + "/api/dashboard_files?path=" + params.path;
+  return request("get", url, {});
+}
+
+export function dashboard_file_main(params) {
+  const url = HOSTNAME + "/api/dashboard_file_main?path=" + params.path;
+  return request("get", url, {});
+}
+
+export function dashboard_delete_files(params) {
+  const url = HOSTNAME + "/api/dashboard_delete_files?path=" + params.path + "&month=" + params.month;
+  return request("get", url, {});
+}
+
+export function dashboard_top_saler(params) {
+  const url = HOSTNAME + "/api/dashboard_top_saler";
+  return request("post", url, params);
+}
+
+export function dashboard_sale_compare(params) {
+  const url = HOSTNAME + "/api/dashboard_sale_compare";
+  return request("post", url, params);
+}

@@ -47,6 +47,14 @@
         <template v-slot:[`item.car_date_buy`]="{ item }">
           {{ $moment(item.car_date_buy).format("DD/MM/YYYY") }}
         </template>
+        <template v-slot:[`item.car_date_book`]="{ item }">
+          <span v-if="item.car_date_book">{{ $moment(item.car_date_book).format("DD/MM/YYYY") }}</span>
+        </template>
+        <template v-slot:[`item.tax_invoice_received_date`]="{ item }">
+          <span v-if="item.tax_invoice_received_date">
+            {{ $moment(item.tax_invoice_received_date).format("DD/MM/YYYY") }}
+          </span>
+        </template>
 
         <template v-slot:[`item.car_types`]="{ item }">
           <span> {{ item.car_types.car_type_name }} ({{ item.car_types.car_type_name_en }})</span>
@@ -115,16 +123,22 @@ export default {
       data: [],
       headers: [
         {
-          text: "วันที่ซื้อ",
-          value: "car_date_buy",
-          width: "120px",
-        },
-        {
           text: "ลำดับ",
           value: "car_no",
           class: "textOneLine",
         },
-
+        {
+          text: "ซื้อ",
+          value: "car_date_buy",
+        },
+        {
+          text: "รับเล่ม",
+          value: "car_date_book",
+        },
+        {
+          text: "ใบกำกับ",
+          value: "tax_invoice_received_date",
+        },
         // {
         //   text: "ประเภท",
         //   value: "car_types",
@@ -216,7 +230,7 @@ export default {
           class: "textOneLine",
         },
         {
-          text: "ราคาซื้อก่อน vat",
+          text: "ซื้อก่อน vat",
           value: "car_buy_vat",
           class: "textOneLine",
           align: "end",
@@ -228,7 +242,7 @@ export default {
           align: "end",
         },
         {
-          text: "ราคาซื้อรวม vat",
+          text: "ซื้อรวม vat",
           value: "car_buy",
           class: "textOneLine",
           align: "end",
@@ -285,37 +299,10 @@ export default {
     formatJson(filterVal, jsonData) {
       return jsonData.map((v) =>
         filterVal.map((j) => {
-          if (j == "car_models.car_model_name") {
-            return v.car_models == null ? "" : v.car_models.car_model_name;
-          } else if (j == "color.color_name") {
-            return v.color == null ? "" : v.color.color_name;
-          } else if (j == "branch.branch_name") {
-            return v.branch == null ? "" : v.branch.branch_name;
-          } else if (j == "car_series.car_series_name") {
-            return v.car_series == null ? "" : v.car_series.car_series_name;
-          } else if (j == "car_types") {
-            return v.car_types.car_type_name + "(" + v.car_types.car_type_name_en + ")";
-          } else if (j == "car_gear") {
-            return v.car_gear === "1" ? "AT" : v.car_gear === "2" ? "MT" : "";
-          } else if (j == "car_date_buy") {
-            return moment(v.car_date_buy).format("DD/MM/YYYY");
-          } else if (j == "province.name_th") {
-            return v.province == null ? "" : v.province.name_th;
-          } else if (j == "car_regis") {
-            return v.car_regis == null || v.province == null ? "" : v.car_regis + " " + v.province.name_th;
-          } else if (j == "partner_car.partner_car_name") {
-            return v.partner_car == null ? "" : v.partner_car.partner_car_name;
-          } else if (j == "car_regis_current") {
-            return v.car_regis_current == null || v.province_current == null
-              ? ""
-              : v.car_regis_current + " " + v.province_current.name_th;
-          } else if (j == "vat") {
-            return (Number(v.car_buy_vat) * 0.07).toFixed(2);
-          } else if (j == "created_at") {
-            return moment(v.created_at).format("DD/MM/YYYY ( HH:mm น.)");
-          } else {
-            return v[j];
+          if (j == "car_gear") {
+            return v[j] == "1" ? "AT" : v[j] == "2" ? "MT" : "";
           }
+          return j.split(".").reduce((acc, part) => acc && acc[part], v);
         })
       );
     },

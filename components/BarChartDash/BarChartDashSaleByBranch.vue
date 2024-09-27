@@ -3,16 +3,29 @@
     <v-card>
       <v-card-text>
         <dateSelectMonth @timeSelect="selectTimeStart" />
-        <br />
-        <div>
-          <p style="font-size: 16px">
-            ยอดปล่อยรวม:
-            <v-chip class="ma-2" color="green" text-color="white">
-              {{ total }}
-            </v-chip>
-          </p>
-          <BarChartSaleCarByBranch class="mt-5" :chart-data="dataChart" />
-        </div>
+
+        <v-row>
+          <v-col cols="7">
+            <v-card outlined>
+              <v-card-text>
+                <p style="font-size: 16px">
+                  ยอดจองรวม:
+                  <v-chip class="ma-2" color="green" text-color="white">
+                    {{ total }}
+                  </v-chip>
+                </p>
+                <BarChartSaleCarByBranch :chart-data="dataChart" />
+              </v-card-text>
+            </v-card>
+          </v-col>
+          <v-col>
+            <v-card outlined height="100%">
+              <v-card-text>
+                <PieChart :chart-data="dataChartPie" />
+              </v-card-text>
+            </v-card>
+          </v-col>
+        </v-row>
       </v-card-text>
 
       <v-simple-table dense class="table-border table-border-top">
@@ -25,7 +38,7 @@
               <th class="text-center">เซนต์สัญญา</th>
               <th class="text-center">อนุมัติ</th>
               <th class="text-center">ปล่อยรถ</th>
-              <th class="text-center">ยอดปิด</th>
+              <th class="text-center">ยอดเดือนคอม</th>
             </tr>
           </thead>
           <tbody>
@@ -98,11 +111,13 @@ import * as apiDashboard from "@/Api/apiDashboard";
 import * as apiBranch_teams from "@/Api/apiBranch_teams";
 import * as apiWorks from "@/Api/apiWorks";
 import BarChartSaleCarByBranch from "@/components/BarChart/BarChartSaleCarByBranch";
+import PieChart from "@/components/PieChart/Channel";
 
 export default {
   components: {
     // Bar
     BarChartSaleCarByBranch,
+    PieChart,
   },
   data() {
     return {
@@ -112,6 +127,7 @@ export default {
       follow: [],
       commission: [],
       dataChart: null,
+      dataChartPie: null,
       branchTeams: [],
       total: null,
     };
@@ -119,6 +135,7 @@ export default {
   async mounted() {
     await this.getBranchTeam();
     this.getData();
+    this.getDataPie();
     this.getDataFollowWork();
     this.getDataCom();
   },
@@ -126,17 +143,13 @@ export default {
     async getBranchTeam() {
       const response = await apiBranch_teams.index();
       this.branchTeams = response.data;
-      //   this.branchTeams.unshift({
-      //     id: 0,
-      //     branch_team_name: "ทั้งหมด",
-      //   });
-      // this.getData();
     },
     selectTimeStart(time) {
       this.timeStart = time.timeStart;
       this.timeEnd = time.timeEnd;
 
       this.getData();
+      this.getDataPie();
       this.getDataFollowWork();
       this.getDataCom();
     },
@@ -145,28 +158,78 @@ export default {
       data.append("timeStart", this.timeStart);
       data.append("timeEnd", this.timeEnd);
       const response = await apiDashboard.dashboard_saleByBranch(data);
-      this.data = response.data.car_sale;
-      this.total = response.data.sumCar_sale;
-      // console.log(this.data);
+      // this.data = response.data.car_sale;
+      this.total = response.data.sum;
+      console.log(response.data);
 
       var datasets = [];
       var label = [];
       this.branchTeams.forEach((element) => {
-        label.push(element.branch_team_name);
-        datasets.push(this.countFieldBarChart(element.id));
+        let find = response.data.booking.find((d) => d.branch_team_id == element.id);
+        if (find) {
+          label.push(element.branch_team_name);
+          datasets.push(find.count);
+        } else {
+          label.push(element.branch_team_name);
+          datasets.push(0);
+        }
       });
-      //   console.log(datasets);
-
       this.dataChart = {
         labels: label,
         datasets: [
           {
-            label: "ยอดปล่อยรถ",
+            label: "ยอดจอง",
             backgroundColor: "#3D5B96",
             data: datasets,
           },
         ],
       };
+    },
+    async getDataPie() {
+      const data = new FormData();
+      data.append("timeStart", this.timeStart);
+      data.append("timeEnd", this.timeEnd);
+      const response = await apiDashboard.dashboard_chanel(data);
+      // console.log(response.data);
+
+      var datasets = [];
+      var label = [];
+      var backgroundColor = [];
+      response.data.forEach((element) => {
+        label.push(element.hear_from_type);
+        datasets.push(element.count);
+        backgroundColor.push(this.generateRandomPastelColor().hex);
+      });
+
+      this.dataChartPie = {
+        labels: label,
+        datasets: [
+          {
+            data: datasets,
+            backgroundColor: backgroundColor,
+          },
+        ],
+      };
+    },
+    generateRandomPastelColor() {
+      function pastelValue(value) {
+        return Math.floor((value + 255) / 2);
+      }
+
+      const r = Math.floor(Math.random() * 256);
+      const g = Math.floor(Math.random() * 256);
+      const b = Math.floor(Math.random() * 256);
+
+      const pastelR = pastelValue(r);
+      const pastelG = pastelValue(g);
+      const pastelB = pastelValue(b);
+
+      const rgb = `RGB(${pastelR}, ${pastelG}, ${pastelB})`;
+      const hex = `#${pastelR.toString(16).padStart(2, "0")}${pastelG.toString(16).padStart(2, "0")}${pastelB
+        .toString(16)
+        .padStart(2, "0")}`;
+
+      return { rgb, hex };
     },
     async getDataFollowWork() {
       const data = new FormData();
@@ -174,14 +237,12 @@ export default {
       data.append("timeEnd", this.timeEnd);
       data.append("work_status", "all");
       const response = await apiWorks.followWork(data);
-      // console.log("getDataFollowWork", response.data.data);
       this.follow = response.data.data;
     },
     async getDataCom() {
       const data = new FormData();
       data.append("timeStart", this.timeStart);
       const response = await apiWorks.commission_month_by_team_branch(data);
-      console.log("getDataCom", response.data);
       this.commission = response.data;
     },
     countFieldBarChart(branch_team_id) {

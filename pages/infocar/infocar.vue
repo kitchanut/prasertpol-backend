@@ -489,6 +489,41 @@
                         %</v-col
                       >
                     </v-row>
+                    <!-- <v-row no-gutters>
+                      <v-col cols="5">
+                        <h3>ส่วนลด/ส่วนเพิ่ม:</h3>
+                      </v-col>
+                      <v-col class="d-flex justify-end">
+                        <span :style="`color: ${formDataBuy.queryCar.car_price_discount < 0 ? 'red' : ''}`">
+                          {{
+                            Number(formDataBuy.queryCar.car_price_discount).toLocaleString("th-TH", {
+                              maximumFractionDigits: 0,
+                            })
+                          }}
+                        </span>
+                        บ.
+                      </v-col>
+                    </v-row> -->
+
+                    <v-row no-gutters>
+                      <v-col cols="5">
+                        <h3>ส่วนลด/ส่วนเพิ่ม:</h3>
+                      </v-col>
+                      <v-col class="d-flex justify-end">
+                        <span
+                          class="mr-1"
+                          :style="`color: ${formDataBuy.queryCar.car_price_discount < 0 ? 'red' : ''}`"
+                          >{{
+                            Number(formDataBuy.queryCar.car_price_discount).toLocaleString("th-TH", {
+                              maximumFractionDigits: 0,
+                              minimumFractionDigits: 0,
+                            })
+                          }}</span
+                        >
+
+                        บ.</v-col
+                      >
+                    </v-row>
 
                     <v-divider></v-divider>
 

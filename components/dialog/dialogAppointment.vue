@@ -169,7 +169,7 @@
                 </v-col>
               </v-row>
 
-              <v-file-input
+              <!-- <v-file-input
                 class="mt-5"
                 label="รูปบัตรประจำตัวประชาชนลูกค้า*"
                 v-model="id_card"
@@ -180,7 +180,7 @@
                 dense
                 hide-details=""
                 :rules="ruleMustImage"
-              ></v-file-input>
+              ></v-file-input> -->
             </div>
 
             <div v-if="status_bank == 6">
@@ -328,7 +328,7 @@ export default {
       dataBank_branch_all: [],
       user_group_permission: this.$auth.$storage.getLocalStorage("userData-user_group_permission"),
       dataPreviewBanks: [],
-      id_card: null,
+      // id_card: null,
       ruleMustImage: [(value) => !!value, (value) => !value || value.size < 11000000 || "ขนาดรูปต้องน้อยกว่า 10 MB"],
     };
   },
@@ -362,7 +362,7 @@ export default {
         if (this.formData.action == "add") {
           let formData = new FormData();
           formData.append("formData", JSON.stringify(this.formData));
-          formData.append("id_card", this.id_card);
+          // formData.append("id_card", this.id_card);
           const response = await apiAppointment.store(formData);
           // console.log(response);
           this.$refs.form.reset();
@@ -375,7 +375,7 @@ export default {
           let formData = new FormData();
           formData.append("_method", "PUT");
           formData.append("formData", JSON.stringify(this.formData));
-          formData.append("id_card", this.id_card);
+          // formData.append("id_card", this.id_card);
           const response = await apiAppointment.update(this.formData.id, formData);
           this.$refs.form.reset();
           if (response.status == 200) {

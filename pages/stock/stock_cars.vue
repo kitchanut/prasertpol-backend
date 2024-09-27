@@ -45,6 +45,7 @@
                   car_types_id != 0 ||
                   car_status != 1 ||
                   car_stock != 2 ||
+                  type != 'all' ||
                   car_price_vat_start != '' ||
                   car_price_vat_end != '' ||
                   amount_price_start != '' ||
@@ -75,6 +76,17 @@
 
               <v-divider></v-divider>
               <v-card-text class="mt-5">
+                <v-row class="mt-2" no-gutters>
+                  <v-col cols="3">ประเภท: </v-col>
+                  <v-col>
+                    <v-radio-group v-model="type" row dense hide-details>
+                      <v-radio label="ทั้งหมด" value="all"></v-radio>
+                      <v-radio label="ขาย" color="green" value="รถขาย"></v-radio>
+                      <v-radio label="เช่า" color="primary" value="รถเช่า"></v-radio>
+                      <v-radio label="ใช้งาน" color="warning" value="รถใช้งาน"></v-radio>
+                    </v-radio-group>
+                  </v-col>
+                </v-row>
                 <v-row no-gutters class="d-flex align-center mt-2">
                   <v-col cols="3">ช่วงราคา:</v-col>
                   <v-col cols="4">
@@ -199,6 +211,7 @@
                   color="warning"
                   text
                   @click="
+                    type = 'all';
                     car_price_vat_start = '';
                     car_price_vat_end = '';
                     amount_price_start = '';
@@ -261,6 +274,36 @@
             เพิ่มรายรับ
           </v-btn>
 
+          <v-card
+            v-if="user_group_permission == -1"
+            class="ml-2 my-1 px-3 d-flex align-center"
+            outlined
+            style="height: 36px"
+          >
+            <div style="font-size: 1rem; color: #1876d1; margin-right: 2px">{{ sumCarBuy.toLocaleString() }}</div>
+            <sub>ต้นทุน</sub>
+          </v-card>
+          <v-card
+            v-if="user_group_permission == -1"
+            class="ml-2 my-1 px-3 d-flex align-center"
+            outlined
+            style="height: 36px"
+          >
+            <div style="font-size: 1rem; color: #ff9800; margin-right: 2px">
+              {{ sumAmountOverCost.toLocaleString() }}
+            </div>
+            <sub>ดำเนินการ</sub>
+          </v-card>
+          <v-card
+            v-if="user_group_permission == -1"
+            class="ml-2 my-1 px-3 d-flex align-center"
+            outlined
+            style="height: 36px"
+          >
+            <div style="font-size: 1rem; color: green; margin-right: 2px">{{ sumNetPrice.toLocaleString() }}</div>
+            <sub>รวม</sub>
+          </v-card>
+
           <v-spacer></v-spacer>
           <v-text-field
             class="mx-2 my-1"
@@ -296,6 +339,7 @@
         <div id="outer">
           <v-divider></v-divider>
           <v-data-table
+            class="table-border"
             :headers="showHeaders"
             :items="data"
             :items-per-page="item_per_page"
@@ -310,6 +354,8 @@
             no-data-text="ยังไม่มีการเพิ่มข้อมูล"
             loading-text="กำลังโหลดข้อมูลกรุณารอสักครู่"
             :mobile-breakpoint="0"
+            show-select
+            dense
             @current-items="getFiltered"
           >
             <template v-slot:[`item.car_img`]="{ item }">
@@ -323,26 +369,44 @@
               </v-btn>
             </template>
 
+            <template v-slot:[`item.type`]="{ item }">
+              <span v-if="item.type == 'รถเช่า'" style="color: #1876d1">{{ item.type }}</span>
+              <span v-else-if="item.type == 'รถใช้งาน'" style="color: #ff9800">{{ item.type }}</span>
+              <span v-else>{{ item.type }}</span>
+            </template>
             <template v-slot:[`item.car_types`]="{ item }">
               <span> {{ item.car_types.car_type_name }} ({{ item.car_types.car_type_name_en }})</span>
             </template>
 
             <template v-slot:[`item.car_price_vat`]="{ item }">
-              {{
-                Number(item.car_price_vat).toLocaleString("th-TH", {
-                  maximumFractionDigits: 2,
-                  minimumFractionDigits: 2,
-                })
-              }}
+              {{ Number(item.car_price_vat).toLocaleString("th-TH", { maximumFractionDigits: 0 }) }}
             </template>
 
+            <!-- ราคาสุทธิ -->
             <template v-slot:[`item.net_price`]="{ item }">
-              {{
-                Number(item.net_price).toLocaleString("th-TH", {
-                  maximumFractionDigits: 2,
-                  minimumFractionDigits: 2,
-                })
-              }}
+              {{ Number(item.net_price).toLocaleString("th-TH", { maximumFractionDigits: 0 }) }}
+            </template>
+
+            <!-- ราคาซื้อ -->
+            <template v-slot:[`item.car_buy`]="{ item }">
+              {{ Number(item.car_buy).toLocaleString("th-TH", { maximumFractionDigits: 0 }) }}
+            </template>
+
+            <!-- ค่าดำเนินการ -->
+            <template v-slot:[`item.amount_overCost`]="{ item }">
+              <span v-if="item.amount_overCost != 0">
+                {{ Number(item.amount_overCost).toLocaleString("th-TH", { maximumFractionDigits: 0 }) }}
+              </span>
+            </template>
+
+            <!-- ส่วนลด -->
+            <template v-slot:[`item.car_price_discount`]="{ item }">
+              <span v-if="item.car_price_discount < 0" style="color: red">
+                {{ Number(item.car_price_discount).toLocaleString("th-TH", { maximumFractionDigits: 0 }) }}
+              </span>
+              <span v-else-if="item.car_price_discount > 0" style="color: green">
+                +{{ Number(item.car_price_discount).toLocaleString("th-TH", { maximumFractionDigits: 0 }) }}
+              </span>
             </template>
 
             <template v-slot:[`item.car_date_buy`]="{ item }">
@@ -358,21 +422,11 @@
             </template>
 
             <template v-slot:[`item.amount_down`]="{ item }">
-              {{
-                Number(item.amount_down).toLocaleString("th-TH", {
-                  maximumFractionDigits: 2,
-                  minimumFractionDigits: 2,
-                })
-              }}
+              {{ Number(item.amount_down).toLocaleString("th-TH", { maximumFractionDigits: 0 }) }}
             </template>
 
             <template v-slot:[`item.amount_price`]="{ item }">
-              {{
-                Number(item.amount_price).toLocaleString("th-TH", {
-                  maximumFractionDigits: 2,
-                  minimumFractionDigits: 2,
-                })
-              }}
+              {{ Number(item.amount_price).toLocaleString("th-TH", { maximumFractionDigits: 0 }) }}
             </template>
 
             <template v-slot:[`item.car_stock`]="{ item }">
@@ -380,13 +434,6 @@
               <h5 v-if="item.car_stock == '2'" class="blue--text">คลัง</h5>
               <h5 v-if="item.car_stock == '3'" class="green--text">ขาย</h5>
             </template>
-
-            <!-- <template v-slot:[`item.booking_status`]="{ item }">
-                <h5 v-if="item.booking_status == '1'" class="green--text">-</h5>
-                <h5 v-if="item.booking_status == '0'" class="orange--text">
-                  จอง
-                </h5>
-              </template> -->
 
             <template v-slot:[`item.count_booking`]="{ item }">
               <h5 v-if="item.count_booking > 0" class="green--text">
@@ -632,6 +679,7 @@ export default {
 
       dialogFilter: false,
       serch_text: "",
+      type: "all",
       car_price_vat_start: "",
       car_price_vat_end: "",
       amount_price_start: "",
@@ -726,9 +774,10 @@ export default {
       this.headersMap = [
         { text: "จัดการ", value: "actions", sortable: false, class: "textOneLine" },
         { text: "รูปภาพ", value: "car_img", class: "textOneLine" },
-        { text: "จอง", value: "count_booking", class: "textOneLine" },
+        { text: "จอง", value: "count_booking", align: "center", class: "textOneLine" },
         { text: "ลำดับ", value: "car_no", align: "center", class: "textOneLine" },
-        { text: "ประเภท", value: "car_types", class: "textOneLine" },
+        { text: "ประเภท", value: "type", class: "textOneLine" },
+        { text: "ประเภทรถ", value: "car_types", class: "textOneLine" },
         { text: "สาขา", value: "branch.branch_name", class: "textOneLine" },
         { text: "สถานะ", value: "car_stock", class: "textOneLine" },
         { text: "ค่ายรถ", value: "car_models.car_model_name", width: "100px", class: "textOneLine" },
@@ -747,6 +796,9 @@ export default {
         { text: "ดาวน์", value: "amount_down", class: "textOneLine", align: "end" },
         { text: "ขาย", value: "car_price_vat", class: "textOneLine", align: "end" },
         { text: "ราคาสุทธิ", value: "net_price", class: "textOneLine", align: "end" },
+        { text: "ราคาซื้อ", value: "car_buy", class: "textOneLine", align: "end" },
+        { text: "ดำเนินการ", value: "amount_overCost", class: "textOneLine", align: "end" },
+        { text: "ส่วนลด", value: "car_price_discount", class: "textOneLine", align: "end" },
         { text: "%ส่วนต่าง", value: "diff_price", class: "textOneLine", align: "center" },
         { text: "ซ่อม", value: "car_fix", class: "textOneLine" },
         { text: "หน้าร้าน", value: "car_active", class: "textOneLine" },
@@ -758,11 +810,12 @@ export default {
       this.headersMap = [
         { text: "จัดการ", value: "actions", sortable: false, class: "textOneLine" },
         { text: "รูปภาพ", value: "car_img", class: "textOneLine" },
-        { text: "จอง", value: "count_booking", class: "textOneLine" },
+        { text: "จอง", value: "count_booking", align: "center", class: "textOneLine" },
         { text: "ลำดับ", value: "car_no", align: "center", class: "textOneLine" },
         { text: "สาขา", value: "branch.branch_name", class: "textOneLine" },
         { text: "สถานะ", value: "car_stock", class: "textOneLine" },
-        { text: "ประเภท", value: "car_types", class: "textOneLine" },
+        { text: "ประเภท", value: "type", class: "textOneLine" },
+        { text: "ประเภทรถ", value: "car_types", class: "textOneLine" },
         { text: "ค่ายรถ", value: "car_models.car_model_name", width: "100px", class: "textOneLine" },
         { text: "รุ่น", value: "car_series.car_series_name", width: "150px", class: "textOneLine" },
         { text: "รุ่นย่อย", value: "car_serie_sub.car_serie_sub_name", width: "200px", class: "textOneLine" },
@@ -788,13 +841,14 @@ export default {
       this.headersMap = [
         { text: "จัดการ", value: "actions", sortable: false, class: "textOneLine" },
         { text: "รูปภาพ", value: "car_img", class: "textOneLine" },
-        { text: "จอง", value: "count_booking", class: "textOneLine" },
+        { text: "จอง", value: "count_booking", align: "center", class: "textOneLine" },
         { text: "ผู้ซื้อ", value: "working_customer_name", class: "textOneLine", width: "150px" },
         { text: "วันปล่อยรถ", value: "contract_contract_date", class: "textOneLine", width: "150px" },
         { text: "ลำดับ", value: "car_no", align: "center", class: "textOneLine" },
         { text: "สาขา", value: "branch.branch_name", class: "textOneLine" },
         { text: "สถานะ", value: "car_stock", class: "textOneLine" },
-        { text: "ประเภท", value: "car_types", class: "textOneLine" },
+        { text: "ประเภท", value: "type", class: "textOneLine" },
+        { text: "ประเภทรถ", value: "car_types", class: "textOneLine" },
         { text: "ค่ายรถ", value: "car_models.car_model_name", width: "100px", class: "textOneLine" },
         { text: "รุ่น", value: "car_series.car_series_name", width: "150px", class: "textOneLine" },
         { text: "รุ่นย่อย", value: "car_serie_sub.car_serie_sub_name", width: "200px", class: "textOneLine" },
@@ -818,11 +872,12 @@ export default {
       this.headersMap = [
         { text: "จัดการ", value: "actions", sortable: false, class: "textOneLine" },
         { text: "รูปภาพ", value: "car_img", class: "textOneLine" },
-        { text: "จอง", value: "count_booking", class: "textOneLine" },
+        { text: "จอง", value: "count_booking", align: "center", class: "textOneLine" },
         { text: "ลำดับ", value: "car_no", align: "center", class: "textOneLine" },
         { text: "สาขา", value: "branch.branch_name", class: "textOneLine" },
         { text: "สถานะ", value: "car_stock", class: "textOneLine" },
-        { text: "ประเภท", value: "car_types", class: "textOneLine" },
+        { text: "ประเภท", value: "type", class: "textOneLine" },
+        { text: "ประเภทรถ", value: "car_types", class: "textOneLine" },
         { text: "ค่ายรถ", value: "car_models.car_model_name", width: "100px", class: "textOneLine" },
         { text: "รุ่น", value: "car_series.car_series_name", width: "150px", class: "textOneLine" },
         { text: "รุ่นย่อย", value: "car_serie_sub.car_serie_sub_name", width: "200px", class: "textOneLine" },
@@ -867,6 +922,15 @@ export default {
     //Done to get the ordered headers
     showHeaders() {
       return this.headers.filter((s) => this.selectedHeaders.includes(s));
+    },
+    sumCarBuy() {
+      return this.data.reduce((sum, item) => sum + Number(item.car_buy), 0);
+    },
+    sumAmountOverCost() {
+      return this.data.reduce((sum, item) => sum + Number(item.amount_overCost), 0);
+    },
+    sumNetPrice() {
+      return this.data.reduce((sum, item) => sum + Number(item.net_price), 0);
     },
     // detectOS() {
     //   let userAgent = window.navigator.userAgent,
@@ -932,6 +996,7 @@ export default {
       const data = new FormData();
       data.append("user_group_permission", this.user_group_permission);
 
+      data.append("type", this.type);
       data.append("car_price_vat_start", this.car_price_vat_start);
       data.append("car_price_vat_end", this.car_price_vat_end);
       data.append("amount_price_start", this.amount_price_start);

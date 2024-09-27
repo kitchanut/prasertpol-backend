@@ -376,6 +376,8 @@
             loading-text="กำลังโหลดข้อมูลกรุณารอสักครู่"
             :mobile-breakpoint="0"
             dense
+            show-select
+            checkbox-color="primary"
           >
             <template v-slot:[`item.work_status`]="{ item }">
               <div v-if="item.status_del == 0">
@@ -629,8 +631,8 @@
                     "
                     @click="AppointmentBank(item.car_no, item.id)"
                   >
-                    <v-list-item-title :style="item.work_status == 3 ? 'color:blue' : ''">{{
-                      item.work_status > 3 ? `ดูข้อมูลการทำสัญญา (${item.appointment_bank_type})` : `ทำสัญญา`
+                    <v-list-item-title :style="item.work_status == 3 || item.work_status == 4 ? 'color:blue' : ''">{{
+                      item.work_status > 4 ? `ดูข้อมูลการทำสัญญา (${item.appointment_bank_type})` : `ทำสัญญา`
                     }}</v-list-item-title>
                   </v-list-item>
 
@@ -1715,6 +1717,12 @@ export default {
             return moment(v.booking_date).format("YYYY-MM-DD");
           } else if (j == "work_status") {
             return this.$store.state.status_working[Number(v[j])];
+          } else if (j == "request_update") {
+            let str = "";
+            v.request_update.forEach((element) => {
+              str += element.created_at + " > " + element.note + "\n ";
+            });
+            return str;
           } else {
             return v[j];
           }
