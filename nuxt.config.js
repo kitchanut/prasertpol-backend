@@ -112,11 +112,7 @@ export default {
   /*
    ** Nuxt.js dev-modules
    */
-  buildModules: [
-    "@nuxtjs/vuetify",
-    // Simple usage
-    "@nuxtjs/moment",
-  ],
+  buildModules: ["@nuxtjs/vuetify", "@nuxtjs/moment"],
   moment: {
     /* module options */
     locales: ["th"],

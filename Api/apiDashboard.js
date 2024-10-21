@@ -96,7 +96,22 @@ export function dashboard_top_saler(params) {
   return request("post", url, params);
 }
 
-export function dashboard_sale_compare(params) {
-  const url = HOSTNAME + "/api/dashboard_sale_compare";
+export function dashboard_top_profit(params) {
+  const url = HOSTNAME + "/api/dashboard_top_profit";
+  return request("post", url, params);
+}
+
+export function dashboard_sale_compare_commission_mount(params) {
+  const url = HOSTNAME + "/api/dashboard_sale_compare_commission_mount";
+  return request("post", url, params);
+}
+
+export function dashboard_sale_compare_commission_mount_previos_year(params) {
+  const url = HOSTNAME + "/api/dashboard_sale_compare_commission_mount_previos_year";
+  return request("post", url, params);
+}
+
+export function dashboard_sale_compare_quarters(params) {
+  const url = HOSTNAME + "/api/dashboard_sale_compare_quarters";
   return request("post", url, params);
 }

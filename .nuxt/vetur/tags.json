@@ -47,8 +47,8 @@
   "BarChartVisitLine": {
     "description": "Auto imported from components/BarChart/BarChartVisitLine.vue"
   },
-  "ChartLine": {
-    "description": "Auto imported from components/Chart/Line.vue"
+  "BarChart": {
+    "description": "Auto imported from components/BarChart/index.vue"
   },
   "BarChartDashBranch": {
     "description": "Auto imported from components/BarChartDash/BarChartDashBranch.vue"
@@ -82,6 +82,9 @@
   },
   "BarChartDashVisitCarType": {
     "description": "Auto imported from components/BarChartDash/BarChartDashVisitCarType.vue"
+  },
+  "ChartLine": {
+    "description": "Auto imported from components/Chart/Line.vue"
   },
   "DashboardComFiles": {
     "description": "Auto imported from components/Dashboard/ComFiles.vue"
@@ -136,15 +139,6 @@
   },
   "PieChartChannel": {
     "description": "Auto imported from components/PieChart/Channel.vue"
-  },
-  "MobileDialogBooking": {
-    "description": "Auto imported from components/mobile/dialogBooking.vue"
-  },
-  "MobileDialogInsurCertificate": {
-    "description": "Auto imported from components/mobile/dialogInsurCertificate.vue"
-  },
-  "MobileDialogReceiveDown": {
-    "description": "Auto imported from components/mobile/dialogReceiveDown.vue"
   },
   "DialogCardRequestLog": {
     "description": "Auto imported from components/dialog/cardRequestLog.vue"
@@ -385,6 +379,15 @@
   },
   "DialogDrawerRequestLog": {
     "description": "Auto imported from components/dialog/drawerRequestLog.vue"
+  },
+  "MobileDialogBooking": {
+    "description": "Auto imported from components/mobile/dialogBooking.vue"
+  },
+  "MobileDialogInsurCertificate": {
+    "description": "Auto imported from components/mobile/dialogInsurCertificate.vue"
+  },
+  "MobileDialogReceiveDown": {
+    "description": "Auto imported from components/mobile/dialogReceiveDown.vue"
   },
   "SelectAddCarModel": {
     "description": "Auto imported from components/selectAdd/selectAddCarModel.vue"

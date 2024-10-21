@@ -82,7 +82,6 @@
 </template>
 <script>
 import * as apiDashboard from "@/Api/apiDashboard";
-import * as apiReport from "@/Api/apiReport";
 import moment from "moment";
 export default {
   data() {
@@ -130,7 +129,12 @@ export default {
       data.append("timeStart", this.timeStart);
       data.append("timeEnd", this.timeEnd);
       data.append("type", "release");
-      const response = await apiReport.report_profit(data);
+      const response = await apiDashboard.dashboard_top_profit(data);
+      console.log(response.data);
+      // break;
+      // this.loadingProfit = false;
+      // return;
+
       if (response.status == 200) {
         this.profit = response.data;
       } else {
