@@ -115,3 +115,8 @@ export function dashboard_sale_compare_quarters(params) {
   const url = HOSTNAME + "/api/dashboard_sale_compare_quarters";
   return request("post", url, params);
 }
+
+export function dashboard_car_booking(params) {
+  const url = HOSTNAME + "/api/dashboard_car_booking";
+  return request("get", url, params);
+}

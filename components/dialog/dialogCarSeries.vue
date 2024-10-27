@@ -11,7 +11,7 @@
 
           <v-card-text>
             <v-container>
-              <v-autocomplete
+              <!-- <v-autocomplete
                 v-model="formData.car_type_id"
                 id="formData.car_type_id"
                 name="formData.car_type_id"
@@ -32,7 +32,7 @@
                 <template slot="item" slot-scope="{ item }">
                   {{ item.car_type_name }} ({{ item.car_type_name_en }})
                 </template>
-              </v-autocomplete>
+              </v-autocomplete> -->
 
               <v-autocomplete
                 class="mt-3"

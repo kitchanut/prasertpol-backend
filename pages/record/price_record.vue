@@ -247,6 +247,8 @@
         :items-per-page="10"
         :search="search"
         :loading="loading"
+        sort-by="date"
+        sort-desc
         no-data-text="ยังไม่มีการเพิ่มข้อมูล"
         loading-text="กำลังโหลดข้อมูลกรุณารอสักครู่"
         dense
@@ -257,9 +259,9 @@
           </div>
         </template> -->
 
-        <template v-slot:[`item.date`]="{ item }">
+        <!-- <template v-slot:[`item.date`]="{ item }">
           <span>{{ $moment(item.date).format("DD/MM/YYYY") }}</span>
-        </template>
+        </template> -->
 
         <template v-slot:[`item.car_mileage`]="{ item }">
           <span style="color: blue">{{ Number(item.car_mileage).toLocaleString() }}</span>
@@ -370,13 +372,7 @@ export default {
       search: "",
       loading: false,
       headers: [
-        // {
-        //   text: "รูปภาพ",
-        //   value: "image",
-        //   align: "center",
-        //   width: "10%",
-        // },
-        { text: "วันที่", value: "date" },
+        { text: "วันที่", value: "date", width: "100px" },
         { text: "ยี่ห้อ", value: "car_models.car_model_name" },
         { text: "รุ่น", value: "car_series.car_series_name", width: "15%" },
         { text: "รุ่นย่อย", value: "car_serie_sub.car_serie_sub_name", width: "15%" },
@@ -389,7 +385,6 @@ export default {
         { text: "ราคาจบ", value: "price", align: "end" },
         { text: "ราคาขาย", value: "sale_price", align: "end" },
         { text: "ราคาตลาด", value: "market_price", align: "end" },
-        // { text: "ผู้ลงข้อมูล", value: "user.first_name" },
         { text: "จัดการ", value: "actions", sortable: false, width: "9%" },
       ],
     };
@@ -427,17 +422,16 @@ export default {
       query += this.filter.car_year_end ? `&car_year_end=${this.filter.car_year_end}` : "";
 
       const response = await apiPriceRecord.index(query);
-
-      this.data = response.data;
-      this.averagePrice = this.data.reduce((total, item) => total + Number(item.price), 0) / this.data.length;
+      this.data = response.data.sort((a, b) => new Date(a.date) - new Date(b.date));
+      this.averagePrice = response.data.reduce((total, item) => total + Number(item.price), 0) / this.data.length;
 
       this.dataChart = {
-        labels: this.data.map((item) => item.car_year),
+        labels: this.data.map((item) => item.date),
         datasets: [
           {
             label: "เฉลี่ย",
             borderColor: "rgba(76, 175, 79, 0.5)",
-            data: this.data.map((item) => this.averagePrice),
+            data: response.data.map((item) => this.averagePrice),
           },
           {
             label: "ราคา",

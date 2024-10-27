@@ -199,10 +199,6 @@
               text: 'งานทั้งหมด',
               value: 'all',
             },
-            // {
-            //   text: 'ค้นหาบางรายการ',
-            //   value: 'search',
-            // },
           ]"
           item-text="text"
           item-value="value"

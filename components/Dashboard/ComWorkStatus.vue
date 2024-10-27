@@ -1106,6 +1106,11 @@ export default {
         {
           text: "ลำดับ",
           value: "car_no",
+          width: "12%",
+        },
+        {
+          text: "ทีมสาขา",
+          value: "branch_team_name",
         },
         { text: "ทะเบียน", value: "car_regis" },
         { text: "รุ่น", value: "car_series_name" },

@@ -5,83 +5,33 @@
       id="dialogDeleteComponent"
       name="dialogDeleteComponent"
       width="500px"
-      :fullscreen="
-        $vuetify.breakpoint.name == 'xs' || $vuetify.breakpoint.name == 'sm'
-          ? true
-          : false
-      "
+      :fullscreen="$vuetify.breakpoint.name == 'xs' || $vuetify.breakpoint.name == 'sm' ? true : false"
     >
       <v-card>
-        <v-form
-          autocomplete="true"
-          ref="form"
-          @submit.prevent="onAction(formData.id)"
-        >
-          <v-toolbar
-            color="primary"
-            dark
-            flat
-          >
-            หมายเหตุ
-          </v-toolbar>
+        <v-form autocomplete="true" ref="form" @submit.prevent="onAction(formData.id)">
+          <v-toolbar color="primary" dark flat> หมายเหตุ </v-toolbar>
 
-          <v-progress-linear
-            v-if="formDataLoading"
-            indeterminate
-            color="yellow darken-2"
-          >
-          </v-progress-linear>
+          <v-progress-linear v-if="formDataLoading" indeterminate color="yellow darken-2"> </v-progress-linear>
 
           <v-card-text>
-            <v-container>
+            <div>สถานที่ปล่อยรถ:</div>
+            <v-textarea v-model="formData.release_location" outlined dense hide-details rows="3"> </v-textarea>
 
-              <v-row>
-                <v-col>
-                  <v-textarea
-                    label="หมายเหตุ (เซล)"
-                    append-icon=""
-                    v-model="formData.note_sale"
-                    id="formData.note_sale"
-                    name="formData.note_sale"
-                    outlined
-                    dense
-                    hide-details
-                  >
-                  </v-textarea>
-                </v-col>
-              </v-row>
+            <div class="mt-3">หมายเหตุ (เซล):</div>
+            <v-textarea v-model="formData.note_sale" outlined dense hide-details> </v-textarea>
 
-              <v-row v-show="user_group_permission == -1 || user_group_permission == 9 || user_group_permission == 10">
-                <v-col>
-                  <v-textarea
-                    label="หมายเหตุ (ส่วนกลาง)"
-                    append-icon=""
-                    v-model="formData.note"
-                    id="formData.note"
-                    name="formData.note"
-                    outlined
-                    dense
-                    hide-details
-                  >
-                  </v-textarea>
-                </v-col>
-              </v-row>
-
-            </v-container>
+            <div
+              class="mt-3"
+              v-show="user_group_permission == -1 || user_group_permission == 9 || user_group_permission == 10"
+            >
+              <div>หมายเหตุ (ส่วนกลาง):</div>
+              <v-textarea v-model="formData.note" outlined dense hide-details> </v-textarea>
+            </div>
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn
-              color="red darken-1"
-              text
-              @click="$emit('cancleItem')"
-            >ยกเลิก</v-btn>
-            <v-btn
-              type="submit"
-              color="success darken-1"
-              text
-              :loading="btnloading"
-            >บันทึก</v-btn>
+            <v-btn color="red darken-1" text @click="$emit('cancleItem')">ยกเลิก</v-btn>
+            <v-btn type="submit" color="success darken-1" text :loading="btnloading">บันทึก</v-btn>
           </v-card-actions>
         </v-form>
       </v-card>
@@ -101,9 +51,7 @@ export default {
       formDataLoading: false,
       formData: {},
       dialogDeleteComponent: false,
-      user_group_permission: this.$auth.$storage.getLocalStorage(
-        "userData-user_group_permission"
-      ),
+      user_group_permission: this.$auth.$storage.getLocalStorage("userData-user_group_permission"),
     };
   },
   mounted() {},
@@ -138,6 +86,7 @@ export default {
         // console.log(response);
         this.formData.note = response.data.note;
         this.formData.note_sale = response.data.note_sale;
+        this.formData.release_location = response.data.release_location;
 
         this.formDataLoading = false;
         this.loading = false;

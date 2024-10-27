@@ -58,6 +58,7 @@
               <div style="width: 200px" class="d-flex justify-space-between align-center">รุ่นรถ</div>
             </th>
             <th>ทั้งหมด</th>
+            <th>จอง</th>
             <th>ขั้นต่ำ</th>
             <th>รอรับรถ</th>
             <th v-for="(branch, key) in branches" :key="key" align="center">
@@ -70,10 +71,15 @@
             <th class="text-center" style="color: blue">
               <b>{{ countFieldSeparate("all", "all", "all") }}</b>
             </th>
-            <th></th>
+            <th class="text-center" style="color: green">{{ booking.length }}</th>
+            <th>
+              {{ car_series_filter.reduce((sum, item) => sum + item.car_series_minimum, 0) }}
+            </th>
+
             <th class="text-center" style="color: orange">
               <b>{{ countFieldSeparate("all", "all", 1) }}</b>
             </th>
+
             <th v-for="(branch, key) in branches" :key="key" class="text-center">
               <b v-if="countFieldSeparate(branch.id, 'all', 2) > 0">{{ countFieldSeparate(branch.id, "all", 2) }}</b>
             </th>
@@ -96,6 +102,20 @@
                 </b>
               </span>
             </td>
+            <td align="center">
+              <span
+                v-if="booking.filter((d) => d.cars.car_serie_id == car_sery.car_serie_id).length > 0"
+                :style="
+                  countFieldSeparate('all', car_sery.car_serie_id, 'all') +
+                    countFieldSeparate('all', car_sery.car_serie_id, 1) >
+                  booking.filter((d) => d.cars.car_serie_id == car_sery.car_serie_id).length
+                    ? 'color: green'
+                    : 'color: red'
+                "
+              >
+                {{ booking.filter((d) => d.cars.car_serie_id == car_sery.car_serie_id).length }}
+              </span>
+            </td>
             <td align="center">{{ car_sery.car_series_minimum }}</td>
             <td align="center">
               <b v-if="countFieldSeparate('all', car_sery.car_serie_id, 1) > 0" style="color: orange">{{
@@ -103,6 +123,7 @@
               }}</b>
               <!-- <span v-else>0</span> -->
             </td>
+
             <td v-for="(branch, key) in branches" :key="key" align="center">
               <b v-if="countFieldSeparate(branch.id, car_sery.car_serie_id, 2) > 0" style="color: green">{{
                 countFieldSeparate(branch.id, car_sery.car_serie_id, 2)
@@ -126,6 +147,7 @@ export default {
       branches: [],
       car_series: [],
       data: [],
+      booking: [],
       rect: {},
       windowHeight: 0,
       activeFilters: {},
@@ -144,6 +166,7 @@ export default {
   async mounted() {
     await this.getBranches();
     await this.getData();
+    await this.getCarBooking();
     var element = document.getElementById("first_header");
     this.rect = element.getBoundingClientRect();
     this.windowHeight = window.innerHeight;
@@ -160,6 +183,11 @@ export default {
     async getBranches() {
       const response = await apiBranches.select();
       this.branches = response.data;
+    },
+    async getCarBooking() {
+      const response = await apiDashboard.dashboard_car_booking();
+      console.log(response.data);
+      this.booking = response.data;
     },
     toggleAll(col) {
       this.activeFilters[col] = this.car_series

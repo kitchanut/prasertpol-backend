@@ -1267,6 +1267,7 @@ export default {
         { text: "จัดได้ %", value: "car_price_persen", width: "100px", align: "center" },
         { text: "อนุมัติเบื้องต้น", value: "pre_approve_date", class: "textOneLine ", width: "120px", align: "center" },
         { text: "อนุมัติ", value: "appointment_date", class: "textOneLine ", width: "120px", align: "center" },
+        { text: "สถานที่ปล่อยรถ", value: "release_location", class: "textOneLine " },
         { text: "ปล่อยรถ", value: "contract_date", class: "textOneLine ", width: "120px", align: "center" },
         { text: "ชุดโอนมา", value: "appointment_book_date", class: "textOneLine ", width: "120px", align: "center" },
         { text: "โอนรถ", value: "appointment_transfer_date", class: "textOneLine ", width: "120px", align: "center" },
@@ -1284,6 +1285,7 @@ export default {
         { text: "เดือนคอม", value: "commission_mount", class: "textOneLine ", width: "120px", align: "center" },
         { text: "หมายเหตุ (ส่วนกลาง)", value: "note", width: "220px" },
         { text: "หมายเหตุ (เซล)", value: "note_sale", width: "400px" },
+
         { text: "รายการอัพเดท", value: "request_update", width: "500px" },
         { text: "ผู้ลงข้อมูล", value: "user", class: "textOneLine " },
       ];
@@ -1327,6 +1329,7 @@ export default {
         { text: "ผลเครดิต", value: "credit", width: "100px", align: "center" },
         { text: "อนุมัติเบื้องต้น", value: "pre_approve_date", class: "textOneLine ", width: "120px", align: "center" },
         { text: "อนุมัติ", value: "appointment_date", class: "textOneLine ", width: "120px", align: "center" },
+        { text: "สถานที่ปล่อยรถ", value: "release_location", class: "textOneLine " },
         { text: "ปล่อยรถ", value: "contract_date", class: "textOneLine ", width: "120px", align: "center" },
         { text: "ชุดโอนมา", value: "appointment_book_date", class: "textOneLine ", width: "120px", align: "center" },
         { text: "หมายเหตุ (เซล)", value: "note_sale", width: "400px" },
